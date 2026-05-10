@@ -1,0 +1,30 @@
+# Dépendances (frontend + backend)
+**/node_modules/
+**/.pnpm-store/
+
+note
+
+# Fichiers de build
+**/dist/
+**/build/
+**/.next/
+
+# Environnement
+**/.env
+**/.env.local
+**/.env.production
+
+# Logs
+**/logs/
+**/*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+**/docker-compose.override.yml
