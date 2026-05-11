@@ -39,6 +39,10 @@ model User {
   paiements Paiement[]
   notes     Note[]
 
+  devisCrees    Devis[]    @relation("UserDevis")
+  facturesCrees Facture[]  @relation("UserFacture")
+  commandesCrees Commande[] @relation("UserCommande")
+
   resetTokens PasswordResetToken[]
 }
 
@@ -106,6 +110,8 @@ model Devis {
   // ⬇️ Lien vers la facture (si transformé)
   factureTransformee Facture? @relation("DevisToFacture")
 
+  createdById   String
+ createdBy     User   @relation("UserDevis", fields: [createdById], references: [id])
   // ⬇️ TOUTES les commandes de CE devis
   commandes Commande[] // ← Prisma utilise devisId
 
@@ -136,6 +142,9 @@ model Facture {
   // ⬇️ Lien vers le devis original (si cette facture vient d'un devis)
   devisOrigineId Int?   @unique
   devisOrigine   Devis? @relation("DevisToFacture", fields: [devisOrigineId], references: [id])
+
+  createdById   String
+ createdBy     User   @relation("UserFacture", fields: [createdById], references: [id])
 
   // ⬇️ TOUTES les commandes de CETTE facture
   commandes Commande[] // ← Prisma utilise factureId
@@ -228,6 +237,9 @@ model Commande {
   quantite       Int
   prixUnitaire Int 
   prixTotal Int // prix total de la ligne de commande au moment de la création
+
+  createdById   String
+ createdBy     User   @relation("UserCommande", fields: [createdById], references: [id])
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
