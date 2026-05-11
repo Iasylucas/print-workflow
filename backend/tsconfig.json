@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    /* Language & Environment */
+    "target": "ES2023",
+    "lib": ["ES2023"], 
+    /* IMPORTANT : Pour un backend Node.js pur (sans Next.js/Vite), 
+       "NodeNext" ou "Node16" est le meilleur choix car il gère 
+       parfaitement les ES Modules (.mjs / type: module) */
+    "module": "NodeNext", 
+    "moduleResolution": "NodeNext", 
+    "types": ["node"],
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Emit (Output) */
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "sourceMap": true,
+    "declaration": true,
+    "removeComments": true,
+
+    /* Interop & Performance */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "incremental": true,
+
+    /* Advanced Path Aliases */
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

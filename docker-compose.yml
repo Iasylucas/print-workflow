@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:16-alpine
+    image: postgres:16
     container_name: print_db
     restart: unless-stopped
     environment:
@@ -17,26 +17,28 @@ services:
       timeout: 5s
       retries: 5
 
-  backend:
-    build: ./backend
-    container_name: print_backend
-    restart: unless-stopped
-    ports:
-      - "5050:5050"
-    environment:
-      PORT: 5050
-      NODE_ENV: development
-      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
-      JWT_SECRET: ${JWT_SECRET}
-      RESEND_API_KEY: ${RESEND_API_KEY}
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    command: sh -c "pnpm run dev"
+  # backend:
+  #   build: ./backend
+  #   container_name: print_backend
+  #   restart: unless-stopped
+  #   ports:
+  #     - "5050:5050"
+  #   environment:
+  #     PORT: 5050
+  #     NODE_ENV: development
+  #     DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+  #     JWT_SECRET: ${JWT_SECRET}
+  #     RESEND_API_KEY: ${RESEND_API_KEY}
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   volumes:
+  #     - ./backend:/app
+  #     - /app/node_modules
+  #   command: sh -c "pnpm run dev"
 
+volumes:
+  postgres_data:
 
 
 #   frontend:
