@@ -159,6 +159,7 @@ export const DevisScalarFieldEnum = {
   total: 'total',
   statut: 'statut',
   entrepriseInfoId: 'entrepriseInfoId',
+  createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -180,6 +181,7 @@ export const FactureScalarFieldEnum = {
   statutPaiement: 'statutPaiement',
   entrepriseInfoId: 'entrepriseInfoId',
   devisOrigineId: 'devisOrigineId',
+  createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -250,6 +252,7 @@ export const CommandeScalarFieldEnum = {
   quantite: 'quantite',
   prixUnitaire: 'prixUnitaire',
   prixTotal: 'prixTotal',
+  createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'

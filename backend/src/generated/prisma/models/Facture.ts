@@ -58,6 +58,7 @@ export type FactureMinAggregateOutputType = {
   statutPaiement: string | null
   entrepriseInfoId: number | null
   devisOrigineId: number | null
+  createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -76,6 +77,7 @@ export type FactureMaxAggregateOutputType = {
   statutPaiement: string | null
   entrepriseInfoId: number | null
   devisOrigineId: number | null
+  createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -94,6 +96,7 @@ export type FactureCountAggregateOutputType = {
   statutPaiement: number
   entrepriseInfoId: number
   devisOrigineId: number
+  createdById: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -132,6 +135,7 @@ export type FactureMinAggregateInputType = {
   statutPaiement?: true
   entrepriseInfoId?: true
   devisOrigineId?: true
+  createdById?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -150,6 +154,7 @@ export type FactureMaxAggregateInputType = {
   statutPaiement?: true
   entrepriseInfoId?: true
   devisOrigineId?: true
+  createdById?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -168,6 +173,7 @@ export type FactureCountAggregateInputType = {
   statutPaiement?: true
   entrepriseInfoId?: true
   devisOrigineId?: true
+  createdById?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -273,6 +279,7 @@ export type FactureGroupByOutputType = {
   statutPaiement: string
   entrepriseInfoId: number
   devisOrigineId: number | null
+  createdById: string
   createdAt: Date
   updatedAt: Date
   _count: FactureCountAggregateOutputType | null
@@ -314,11 +321,13 @@ export type FactureWhereInput = {
   statutPaiement?: Prisma.StringFilter<"Facture"> | string
   entrepriseInfoId?: Prisma.IntFilter<"Facture"> | number
   devisOrigineId?: Prisma.IntNullableFilter<"Facture"> | number | null
+  createdById?: Prisma.StringFilter<"Facture"> | string
   createdAt?: Prisma.DateTimeFilter<"Facture"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Facture"> | Date | string
   client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   entrepriseInfo?: Prisma.XOR<Prisma.EntrepriseInfoScalarRelationFilter, Prisma.EntrepriseInfoWhereInput>
   devisOrigine?: Prisma.XOR<Prisma.DevisNullableScalarRelationFilter, Prisma.DevisWhereInput> | null
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   commandes?: Prisma.CommandeListRelationFilter
   paiements?: Prisma.PaiementListRelationFilter
 }
@@ -337,11 +346,13 @@ export type FactureOrderByWithRelationInput = {
   statutPaiement?: Prisma.SortOrder
   entrepriseInfoId?: Prisma.SortOrder
   devisOrigineId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   client?: Prisma.ClientOrderByWithRelationInput
   entrepriseInfo?: Prisma.EntrepriseInfoOrderByWithRelationInput
   devisOrigine?: Prisma.DevisOrderByWithRelationInput
+  createdBy?: Prisma.UserOrderByWithRelationInput
   commandes?: Prisma.CommandeOrderByRelationAggregateInput
   paiements?: Prisma.PaiementOrderByRelationAggregateInput
 }
@@ -363,11 +374,13 @@ export type FactureWhereUniqueInput = Prisma.AtLeast<{
   estLivree?: Prisma.BoolFilter<"Facture"> | boolean
   statutPaiement?: Prisma.StringFilter<"Facture"> | string
   entrepriseInfoId?: Prisma.IntFilter<"Facture"> | number
+  createdById?: Prisma.StringFilter<"Facture"> | string
   createdAt?: Prisma.DateTimeFilter<"Facture"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Facture"> | Date | string
   client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   entrepriseInfo?: Prisma.XOR<Prisma.EntrepriseInfoScalarRelationFilter, Prisma.EntrepriseInfoWhereInput>
   devisOrigine?: Prisma.XOR<Prisma.DevisNullableScalarRelationFilter, Prisma.DevisWhereInput> | null
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   commandes?: Prisma.CommandeListRelationFilter
   paiements?: Prisma.PaiementListRelationFilter
 }, "id" | "numero" | "devisOrigineId">
@@ -386,6 +399,7 @@ export type FactureOrderByWithAggregationInput = {
   statutPaiement?: Prisma.SortOrder
   entrepriseInfoId?: Prisma.SortOrder
   devisOrigineId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.FactureCountOrderByAggregateInput
@@ -412,6 +426,7 @@ export type FactureScalarWhereWithAggregatesInput = {
   statutPaiement?: Prisma.StringWithAggregatesFilter<"Facture"> | string
   entrepriseInfoId?: Prisma.IntWithAggregatesFilter<"Facture"> | number
   devisOrigineId?: Prisma.IntNullableWithAggregatesFilter<"Facture"> | number | null
+  createdById?: Prisma.StringWithAggregatesFilter<"Facture"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Facture"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Facture"> | Date | string
 }
@@ -431,6 +446,7 @@ export type FactureCreateInput = {
   client: Prisma.ClientCreateNestedOneWithoutFacturesInput
   entrepriseInfo: Prisma.EntrepriseInfoCreateNestedOneWithoutFacturesInput
   devisOrigine?: Prisma.DevisCreateNestedOneWithoutFactureTransformeeInput
+  createdBy: Prisma.UserCreateNestedOneWithoutFacturesCreesInput
   commandes?: Prisma.CommandeCreateNestedManyWithoutFactureInput
   paiements?: Prisma.PaiementCreateNestedManyWithoutFactureInput
 }
@@ -449,6 +465,7 @@ export type FactureUncheckedCreateInput = {
   statutPaiement?: string
   entrepriseInfoId: number
   devisOrigineId?: number | null
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   commandes?: Prisma.CommandeUncheckedCreateNestedManyWithoutFactureInput
@@ -470,6 +487,7 @@ export type FactureUpdateInput = {
   client?: Prisma.ClientUpdateOneRequiredWithoutFacturesNestedInput
   entrepriseInfo?: Prisma.EntrepriseInfoUpdateOneRequiredWithoutFacturesNestedInput
   devisOrigine?: Prisma.DevisUpdateOneWithoutFactureTransformeeNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutFacturesCreesNestedInput
   commandes?: Prisma.CommandeUpdateManyWithoutFactureNestedInput
   paiements?: Prisma.PaiementUpdateManyWithoutFactureNestedInput
 }
@@ -488,6 +506,7 @@ export type FactureUncheckedUpdateInput = {
   statutPaiement?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
   devisOrigineId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   commandes?: Prisma.CommandeUncheckedUpdateManyWithoutFactureNestedInput
@@ -508,6 +527,7 @@ export type FactureCreateManyInput = {
   statutPaiement?: string
   entrepriseInfoId: number
   devisOrigineId?: number | null
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -540,6 +560,7 @@ export type FactureUncheckedUpdateManyInput = {
   statutPaiement?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
   devisOrigineId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -573,6 +594,7 @@ export type FactureCountOrderByAggregateInput = {
   statutPaiement?: Prisma.SortOrder
   entrepriseInfoId?: Prisma.SortOrder
   devisOrigineId?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -600,6 +622,7 @@ export type FactureMaxOrderByAggregateInput = {
   statutPaiement?: Prisma.SortOrder
   entrepriseInfoId?: Prisma.SortOrder
   devisOrigineId?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -618,6 +641,7 @@ export type FactureMinOrderByAggregateInput = {
   statutPaiement?: Prisma.SortOrder
   entrepriseInfoId?: Prisma.SortOrder
   devisOrigineId?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -675,6 +699,48 @@ export type FactureUncheckedUpdateManyWithoutClientNestedInput = {
   connect?: Prisma.FactureWhereUniqueInput | Prisma.FactureWhereUniqueInput[]
   update?: Prisma.FactureUpdateWithWhereUniqueWithoutClientInput | Prisma.FactureUpdateWithWhereUniqueWithoutClientInput[]
   updateMany?: Prisma.FactureUpdateManyWithWhereWithoutClientInput | Prisma.FactureUpdateManyWithWhereWithoutClientInput[]
+  deleteMany?: Prisma.FactureScalarWhereInput | Prisma.FactureScalarWhereInput[]
+}
+
+export type FactureCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.FactureCreateWithoutCreatedByInput, Prisma.FactureUncheckedCreateWithoutCreatedByInput> | Prisma.FactureCreateWithoutCreatedByInput[] | Prisma.FactureUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.FactureCreateOrConnectWithoutCreatedByInput | Prisma.FactureCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.FactureCreateManyCreatedByInputEnvelope
+  connect?: Prisma.FactureWhereUniqueInput | Prisma.FactureWhereUniqueInput[]
+}
+
+export type FactureUncheckedCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.FactureCreateWithoutCreatedByInput, Prisma.FactureUncheckedCreateWithoutCreatedByInput> | Prisma.FactureCreateWithoutCreatedByInput[] | Prisma.FactureUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.FactureCreateOrConnectWithoutCreatedByInput | Prisma.FactureCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.FactureCreateManyCreatedByInputEnvelope
+  connect?: Prisma.FactureWhereUniqueInput | Prisma.FactureWhereUniqueInput[]
+}
+
+export type FactureUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.FactureCreateWithoutCreatedByInput, Prisma.FactureUncheckedCreateWithoutCreatedByInput> | Prisma.FactureCreateWithoutCreatedByInput[] | Prisma.FactureUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.FactureCreateOrConnectWithoutCreatedByInput | Prisma.FactureCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.FactureUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.FactureUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.FactureCreateManyCreatedByInputEnvelope
+  set?: Prisma.FactureWhereUniqueInput | Prisma.FactureWhereUniqueInput[]
+  disconnect?: Prisma.FactureWhereUniqueInput | Prisma.FactureWhereUniqueInput[]
+  delete?: Prisma.FactureWhereUniqueInput | Prisma.FactureWhereUniqueInput[]
+  connect?: Prisma.FactureWhereUniqueInput | Prisma.FactureWhereUniqueInput[]
+  update?: Prisma.FactureUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.FactureUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.FactureUpdateManyWithWhereWithoutCreatedByInput | Prisma.FactureUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.FactureScalarWhereInput | Prisma.FactureScalarWhereInput[]
+}
+
+export type FactureUncheckedUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.FactureCreateWithoutCreatedByInput, Prisma.FactureUncheckedCreateWithoutCreatedByInput> | Prisma.FactureCreateWithoutCreatedByInput[] | Prisma.FactureUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.FactureCreateOrConnectWithoutCreatedByInput | Prisma.FactureCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.FactureUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.FactureUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.FactureCreateManyCreatedByInputEnvelope
+  set?: Prisma.FactureWhereUniqueInput | Prisma.FactureWhereUniqueInput[]
+  disconnect?: Prisma.FactureWhereUniqueInput | Prisma.FactureWhereUniqueInput[]
+  delete?: Prisma.FactureWhereUniqueInput | Prisma.FactureWhereUniqueInput[]
+  connect?: Prisma.FactureWhereUniqueInput | Prisma.FactureWhereUniqueInput[]
+  update?: Prisma.FactureUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.FactureUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.FactureUpdateManyWithWhereWithoutCreatedByInput | Prisma.FactureUpdateManyWithWhereWithoutCreatedByInput[]
   deleteMany?: Prisma.FactureScalarWhereInput | Prisma.FactureScalarWhereInput[]
 }
 
@@ -804,6 +870,7 @@ export type FactureCreateWithoutClientInput = {
   updatedAt?: Date | string
   entrepriseInfo: Prisma.EntrepriseInfoCreateNestedOneWithoutFacturesInput
   devisOrigine?: Prisma.DevisCreateNestedOneWithoutFactureTransformeeInput
+  createdBy: Prisma.UserCreateNestedOneWithoutFacturesCreesInput
   commandes?: Prisma.CommandeCreateNestedManyWithoutFactureInput
   paiements?: Prisma.PaiementCreateNestedManyWithoutFactureInput
 }
@@ -821,6 +888,7 @@ export type FactureUncheckedCreateWithoutClientInput = {
   statutPaiement?: string
   entrepriseInfoId: number
   devisOrigineId?: number | null
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   commandes?: Prisma.CommandeUncheckedCreateNestedManyWithoutFactureInput
@@ -870,8 +938,74 @@ export type FactureScalarWhereInput = {
   statutPaiement?: Prisma.StringFilter<"Facture"> | string
   entrepriseInfoId?: Prisma.IntFilter<"Facture"> | number
   devisOrigineId?: Prisma.IntNullableFilter<"Facture"> | number | null
+  createdById?: Prisma.StringFilter<"Facture"> | string
   createdAt?: Prisma.DateTimeFilter<"Facture"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Facture"> | Date | string
+}
+
+export type FactureCreateWithoutCreatedByInput = {
+  numero: string
+  date?: Date | string
+  total: number
+  acompte?: number
+  reste: number
+  lieuLivraison?: string | null
+  dateLivraisonPrevue?: Date | string | null
+  estLivree?: boolean
+  statutPaiement?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  client: Prisma.ClientCreateNestedOneWithoutFacturesInput
+  entrepriseInfo: Prisma.EntrepriseInfoCreateNestedOneWithoutFacturesInput
+  devisOrigine?: Prisma.DevisCreateNestedOneWithoutFactureTransformeeInput
+  commandes?: Prisma.CommandeCreateNestedManyWithoutFactureInput
+  paiements?: Prisma.PaiementCreateNestedManyWithoutFactureInput
+}
+
+export type FactureUncheckedCreateWithoutCreatedByInput = {
+  id?: number
+  numero: string
+  date?: Date | string
+  clientId: string
+  total: number
+  acompte?: number
+  reste: number
+  lieuLivraison?: string | null
+  dateLivraisonPrevue?: Date | string | null
+  estLivree?: boolean
+  statutPaiement?: string
+  entrepriseInfoId: number
+  devisOrigineId?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  commandes?: Prisma.CommandeUncheckedCreateNestedManyWithoutFactureInput
+  paiements?: Prisma.PaiementUncheckedCreateNestedManyWithoutFactureInput
+}
+
+export type FactureCreateOrConnectWithoutCreatedByInput = {
+  where: Prisma.FactureWhereUniqueInput
+  create: Prisma.XOR<Prisma.FactureCreateWithoutCreatedByInput, Prisma.FactureUncheckedCreateWithoutCreatedByInput>
+}
+
+export type FactureCreateManyCreatedByInputEnvelope = {
+  data: Prisma.FactureCreateManyCreatedByInput | Prisma.FactureCreateManyCreatedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type FactureUpsertWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.FactureWhereUniqueInput
+  update: Prisma.XOR<Prisma.FactureUpdateWithoutCreatedByInput, Prisma.FactureUncheckedUpdateWithoutCreatedByInput>
+  create: Prisma.XOR<Prisma.FactureCreateWithoutCreatedByInput, Prisma.FactureUncheckedCreateWithoutCreatedByInput>
+}
+
+export type FactureUpdateWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.FactureWhereUniqueInput
+  data: Prisma.XOR<Prisma.FactureUpdateWithoutCreatedByInput, Prisma.FactureUncheckedUpdateWithoutCreatedByInput>
+}
+
+export type FactureUpdateManyWithWhereWithoutCreatedByInput = {
+  where: Prisma.FactureScalarWhereInput
+  data: Prisma.XOR<Prisma.FactureUpdateManyMutationInput, Prisma.FactureUncheckedUpdateManyWithoutCreatedByInput>
 }
 
 export type FactureCreateWithoutEntrepriseInfoInput = {
@@ -888,6 +1022,7 @@ export type FactureCreateWithoutEntrepriseInfoInput = {
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutFacturesInput
   devisOrigine?: Prisma.DevisCreateNestedOneWithoutFactureTransformeeInput
+  createdBy: Prisma.UserCreateNestedOneWithoutFacturesCreesInput
   commandes?: Prisma.CommandeCreateNestedManyWithoutFactureInput
   paiements?: Prisma.PaiementCreateNestedManyWithoutFactureInput
 }
@@ -905,6 +1040,7 @@ export type FactureUncheckedCreateWithoutEntrepriseInfoInput = {
   estLivree?: boolean
   statutPaiement?: string
   devisOrigineId?: number | null
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   commandes?: Prisma.CommandeUncheckedCreateNestedManyWithoutFactureInput
@@ -951,6 +1087,7 @@ export type FactureCreateWithoutDevisOrigineInput = {
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutFacturesInput
   entrepriseInfo: Prisma.EntrepriseInfoCreateNestedOneWithoutFacturesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutFacturesCreesInput
   commandes?: Prisma.CommandeCreateNestedManyWithoutFactureInput
   paiements?: Prisma.PaiementCreateNestedManyWithoutFactureInput
 }
@@ -968,6 +1105,7 @@ export type FactureUncheckedCreateWithoutDevisOrigineInput = {
   estLivree?: boolean
   statutPaiement?: string
   entrepriseInfoId: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   commandes?: Prisma.CommandeUncheckedCreateNestedManyWithoutFactureInput
@@ -1004,6 +1142,7 @@ export type FactureUpdateWithoutDevisOrigineInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutFacturesNestedInput
   entrepriseInfo?: Prisma.EntrepriseInfoUpdateOneRequiredWithoutFacturesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutFacturesCreesNestedInput
   commandes?: Prisma.CommandeUpdateManyWithoutFactureNestedInput
   paiements?: Prisma.PaiementUpdateManyWithoutFactureNestedInput
 }
@@ -1021,6 +1160,7 @@ export type FactureUncheckedUpdateWithoutDevisOrigineInput = {
   estLivree?: Prisma.BoolFieldUpdateOperationsInput | boolean
   statutPaiement?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   commandes?: Prisma.CommandeUncheckedUpdateManyWithoutFactureNestedInput
@@ -1042,6 +1182,7 @@ export type FactureCreateWithoutPaiementsInput = {
   client: Prisma.ClientCreateNestedOneWithoutFacturesInput
   entrepriseInfo: Prisma.EntrepriseInfoCreateNestedOneWithoutFacturesInput
   devisOrigine?: Prisma.DevisCreateNestedOneWithoutFactureTransformeeInput
+  createdBy: Prisma.UserCreateNestedOneWithoutFacturesCreesInput
   commandes?: Prisma.CommandeCreateNestedManyWithoutFactureInput
 }
 
@@ -1059,6 +1200,7 @@ export type FactureUncheckedCreateWithoutPaiementsInput = {
   statutPaiement?: string
   entrepriseInfoId: number
   devisOrigineId?: number | null
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   commandes?: Prisma.CommandeUncheckedCreateNestedManyWithoutFactureInput
@@ -1095,6 +1237,7 @@ export type FactureUpdateWithoutPaiementsInput = {
   client?: Prisma.ClientUpdateOneRequiredWithoutFacturesNestedInput
   entrepriseInfo?: Prisma.EntrepriseInfoUpdateOneRequiredWithoutFacturesNestedInput
   devisOrigine?: Prisma.DevisUpdateOneWithoutFactureTransformeeNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutFacturesCreesNestedInput
   commandes?: Prisma.CommandeUpdateManyWithoutFactureNestedInput
 }
 
@@ -1112,6 +1255,7 @@ export type FactureUncheckedUpdateWithoutPaiementsInput = {
   statutPaiement?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
   devisOrigineId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   commandes?: Prisma.CommandeUncheckedUpdateManyWithoutFactureNestedInput
@@ -1132,6 +1276,7 @@ export type FactureCreateWithoutCommandesInput = {
   client: Prisma.ClientCreateNestedOneWithoutFacturesInput
   entrepriseInfo: Prisma.EntrepriseInfoCreateNestedOneWithoutFacturesInput
   devisOrigine?: Prisma.DevisCreateNestedOneWithoutFactureTransformeeInput
+  createdBy: Prisma.UserCreateNestedOneWithoutFacturesCreesInput
   paiements?: Prisma.PaiementCreateNestedManyWithoutFactureInput
 }
 
@@ -1149,6 +1294,7 @@ export type FactureUncheckedCreateWithoutCommandesInput = {
   statutPaiement?: string
   entrepriseInfoId: number
   devisOrigineId?: number | null
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   paiements?: Prisma.PaiementUncheckedCreateNestedManyWithoutFactureInput
@@ -1185,6 +1331,7 @@ export type FactureUpdateWithoutCommandesInput = {
   client?: Prisma.ClientUpdateOneRequiredWithoutFacturesNestedInput
   entrepriseInfo?: Prisma.EntrepriseInfoUpdateOneRequiredWithoutFacturesNestedInput
   devisOrigine?: Prisma.DevisUpdateOneWithoutFactureTransformeeNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutFacturesCreesNestedInput
   paiements?: Prisma.PaiementUpdateManyWithoutFactureNestedInput
 }
 
@@ -1202,6 +1349,7 @@ export type FactureUncheckedUpdateWithoutCommandesInput = {
   statutPaiement?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
   devisOrigineId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paiements?: Prisma.PaiementUncheckedUpdateManyWithoutFactureNestedInput
@@ -1220,6 +1368,7 @@ export type FactureCreateManyClientInput = {
   statutPaiement?: string
   entrepriseInfoId: number
   devisOrigineId?: number | null
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1238,6 +1387,7 @@ export type FactureUpdateWithoutClientInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entrepriseInfo?: Prisma.EntrepriseInfoUpdateOneRequiredWithoutFacturesNestedInput
   devisOrigine?: Prisma.DevisUpdateOneWithoutFactureTransformeeNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutFacturesCreesNestedInput
   commandes?: Prisma.CommandeUpdateManyWithoutFactureNestedInput
   paiements?: Prisma.PaiementUpdateManyWithoutFactureNestedInput
 }
@@ -1255,6 +1405,7 @@ export type FactureUncheckedUpdateWithoutClientInput = {
   statutPaiement?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
   devisOrigineId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   commandes?: Prisma.CommandeUncheckedUpdateManyWithoutFactureNestedInput
@@ -1265,6 +1416,82 @@ export type FactureUncheckedUpdateManyWithoutClientInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  total?: Prisma.IntFieldUpdateOperationsInput | number
+  acompte?: Prisma.IntFieldUpdateOperationsInput | number
+  reste?: Prisma.IntFieldUpdateOperationsInput | number
+  lieuLivraison?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateLivraisonPrevue?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estLivree?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  statutPaiement?: Prisma.StringFieldUpdateOperationsInput | string
+  entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
+  devisOrigineId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type FactureCreateManyCreatedByInput = {
+  id?: number
+  numero: string
+  date?: Date | string
+  clientId: string
+  total: number
+  acompte?: number
+  reste: number
+  lieuLivraison?: string | null
+  dateLivraisonPrevue?: Date | string | null
+  estLivree?: boolean
+  statutPaiement?: string
+  entrepriseInfoId: number
+  devisOrigineId?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type FactureUpdateWithoutCreatedByInput = {
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  total?: Prisma.IntFieldUpdateOperationsInput | number
+  acompte?: Prisma.IntFieldUpdateOperationsInput | number
+  reste?: Prisma.IntFieldUpdateOperationsInput | number
+  lieuLivraison?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateLivraisonPrevue?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estLivree?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  statutPaiement?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  client?: Prisma.ClientUpdateOneRequiredWithoutFacturesNestedInput
+  entrepriseInfo?: Prisma.EntrepriseInfoUpdateOneRequiredWithoutFacturesNestedInput
+  devisOrigine?: Prisma.DevisUpdateOneWithoutFactureTransformeeNestedInput
+  commandes?: Prisma.CommandeUpdateManyWithoutFactureNestedInput
+  paiements?: Prisma.PaiementUpdateManyWithoutFactureNestedInput
+}
+
+export type FactureUncheckedUpdateWithoutCreatedByInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  total?: Prisma.IntFieldUpdateOperationsInput | number
+  acompte?: Prisma.IntFieldUpdateOperationsInput | number
+  reste?: Prisma.IntFieldUpdateOperationsInput | number
+  lieuLivraison?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateLivraisonPrevue?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estLivree?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  statutPaiement?: Prisma.StringFieldUpdateOperationsInput | string
+  entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
+  devisOrigineId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  commandes?: Prisma.CommandeUncheckedUpdateManyWithoutFactureNestedInput
+  paiements?: Prisma.PaiementUncheckedUpdateManyWithoutFactureNestedInput
+}
+
+export type FactureUncheckedUpdateManyWithoutCreatedByInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   acompte?: Prisma.IntFieldUpdateOperationsInput | number
   reste?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1291,6 +1518,7 @@ export type FactureCreateManyEntrepriseInfoInput = {
   estLivree?: boolean
   statutPaiement?: string
   devisOrigineId?: number | null
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1309,6 +1537,7 @@ export type FactureUpdateWithoutEntrepriseInfoInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutFacturesNestedInput
   devisOrigine?: Prisma.DevisUpdateOneWithoutFactureTransformeeNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutFacturesCreesNestedInput
   commandes?: Prisma.CommandeUpdateManyWithoutFactureNestedInput
   paiements?: Prisma.PaiementUpdateManyWithoutFactureNestedInput
 }
@@ -1326,6 +1555,7 @@ export type FactureUncheckedUpdateWithoutEntrepriseInfoInput = {
   estLivree?: Prisma.BoolFieldUpdateOperationsInput | boolean
   statutPaiement?: Prisma.StringFieldUpdateOperationsInput | string
   devisOrigineId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   commandes?: Prisma.CommandeUncheckedUpdateManyWithoutFactureNestedInput
@@ -1345,6 +1575,7 @@ export type FactureUncheckedUpdateManyWithoutEntrepriseInfoInput = {
   estLivree?: Prisma.BoolFieldUpdateOperationsInput | boolean
   statutPaiement?: Prisma.StringFieldUpdateOperationsInput | string
   devisOrigineId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1403,11 +1634,13 @@ export type FactureSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   statutPaiement?: boolean
   entrepriseInfoId?: boolean
   devisOrigineId?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
   devisOrigine?: boolean | Prisma.Facture$devisOrigineArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   commandes?: boolean | Prisma.Facture$commandesArgs<ExtArgs>
   paiements?: boolean | Prisma.Facture$paiementsArgs<ExtArgs>
   _count?: boolean | Prisma.FactureCountOutputTypeDefaultArgs<ExtArgs>
@@ -1427,11 +1660,13 @@ export type FactureSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   statutPaiement?: boolean
   entrepriseInfoId?: boolean
   devisOrigineId?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
   devisOrigine?: boolean | Prisma.Facture$devisOrigineArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["facture"]>
 
 export type FactureSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1448,11 +1683,13 @@ export type FactureSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   statutPaiement?: boolean
   entrepriseInfoId?: boolean
   devisOrigineId?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
   devisOrigine?: boolean | Prisma.Facture$devisOrigineArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["facture"]>
 
 export type FactureSelectScalar = {
@@ -1469,15 +1706,17 @@ export type FactureSelectScalar = {
   statutPaiement?: boolean
   entrepriseInfoId?: boolean
   devisOrigineId?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type FactureOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "numero" | "date" | "clientId" | "total" | "acompte" | "reste" | "lieuLivraison" | "dateLivraisonPrevue" | "estLivree" | "statutPaiement" | "entrepriseInfoId" | "devisOrigineId" | "createdAt" | "updatedAt", ExtArgs["result"]["facture"]>
+export type FactureOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "numero" | "date" | "clientId" | "total" | "acompte" | "reste" | "lieuLivraison" | "dateLivraisonPrevue" | "estLivree" | "statutPaiement" | "entrepriseInfoId" | "devisOrigineId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["facture"]>
 export type FactureInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
   devisOrigine?: boolean | Prisma.Facture$devisOrigineArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   commandes?: boolean | Prisma.Facture$commandesArgs<ExtArgs>
   paiements?: boolean | Prisma.Facture$paiementsArgs<ExtArgs>
   _count?: boolean | Prisma.FactureCountOutputTypeDefaultArgs<ExtArgs>
@@ -1486,11 +1725,13 @@ export type FactureIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
   devisOrigine?: boolean | Prisma.Facture$devisOrigineArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type FactureIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
   devisOrigine?: boolean | Prisma.Facture$devisOrigineArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $FacturePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1499,6 +1740,7 @@ export type $FacturePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     client: Prisma.$ClientPayload<ExtArgs>
     entrepriseInfo: Prisma.$EntrepriseInfoPayload<ExtArgs>
     devisOrigine: Prisma.$DevisPayload<ExtArgs> | null
+    createdBy: Prisma.$UserPayload<ExtArgs>
     commandes: Prisma.$CommandePayload<ExtArgs>[]
     paiements: Prisma.$PaiementPayload<ExtArgs>[]
   }
@@ -1516,6 +1758,7 @@ export type $FacturePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     statutPaiement: string
     entrepriseInfoId: number
     devisOrigineId: number | null
+    createdById: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["facture"]>
@@ -1915,6 +2158,7 @@ export interface Prisma__FactureClient<T, Null = never, ExtArgs extends runtime.
   client<T extends Prisma.ClientDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClientDefaultArgs<ExtArgs>>): Prisma.Prisma__ClientClient<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   entrepriseInfo<T extends Prisma.EntrepriseInfoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EntrepriseInfoDefaultArgs<ExtArgs>>): Prisma.Prisma__EntrepriseInfoClient<runtime.Types.Result.GetResult<Prisma.$EntrepriseInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   devisOrigine<T extends Prisma.Facture$devisOrigineArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Facture$devisOrigineArgs<ExtArgs>>): Prisma.Prisma__DevisClient<runtime.Types.Result.GetResult<Prisma.$DevisPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   commandes<T extends Prisma.Facture$commandesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Facture$commandesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommandePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paiements<T extends Prisma.Facture$paiementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Facture$paiementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaiementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1959,6 +2203,7 @@ export interface FactureFieldRefs {
   readonly statutPaiement: Prisma.FieldRef<"Facture", 'String'>
   readonly entrepriseInfoId: Prisma.FieldRef<"Facture", 'Int'>
   readonly devisOrigineId: Prisma.FieldRef<"Facture", 'Int'>
+  readonly createdById: Prisma.FieldRef<"Facture", 'String'>
   readonly createdAt: Prisma.FieldRef<"Facture", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Facture", 'DateTime'>
 }

@@ -46,6 +46,7 @@ export type DevisMinAggregateOutputType = {
   total: number | null
   statut: string | null
   entrepriseInfoId: number | null
+  createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -58,6 +59,7 @@ export type DevisMaxAggregateOutputType = {
   total: number | null
   statut: string | null
   entrepriseInfoId: number | null
+  createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -70,6 +72,7 @@ export type DevisCountAggregateOutputType = {
   total: number
   statut: number
   entrepriseInfoId: number
+  createdById: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -96,6 +99,7 @@ export type DevisMinAggregateInputType = {
   total?: true
   statut?: true
   entrepriseInfoId?: true
+  createdById?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -108,6 +112,7 @@ export type DevisMaxAggregateInputType = {
   total?: true
   statut?: true
   entrepriseInfoId?: true
+  createdById?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -120,6 +125,7 @@ export type DevisCountAggregateInputType = {
   total?: true
   statut?: true
   entrepriseInfoId?: true
+  createdById?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -219,6 +225,7 @@ export type DevisGroupByOutputType = {
   total: number
   statut: string
   entrepriseInfoId: number
+  createdById: string
   createdAt: Date
   updatedAt: Date
   _count: DevisCountAggregateOutputType | null
@@ -254,11 +261,13 @@ export type DevisWhereInput = {
   total?: Prisma.IntFilter<"Devis"> | number
   statut?: Prisma.StringFilter<"Devis"> | string
   entrepriseInfoId?: Prisma.IntFilter<"Devis"> | number
+  createdById?: Prisma.StringFilter<"Devis"> | string
   createdAt?: Prisma.DateTimeFilter<"Devis"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Devis"> | Date | string
   client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   entrepriseInfo?: Prisma.XOR<Prisma.EntrepriseInfoScalarRelationFilter, Prisma.EntrepriseInfoWhereInput>
   factureTransformee?: Prisma.XOR<Prisma.FactureNullableScalarRelationFilter, Prisma.FactureWhereInput> | null
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   commandes?: Prisma.CommandeListRelationFilter
 }
 
@@ -270,11 +279,13 @@ export type DevisOrderByWithRelationInput = {
   total?: Prisma.SortOrder
   statut?: Prisma.SortOrder
   entrepriseInfoId?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   client?: Prisma.ClientOrderByWithRelationInput
   entrepriseInfo?: Prisma.EntrepriseInfoOrderByWithRelationInput
   factureTransformee?: Prisma.FactureOrderByWithRelationInput
+  createdBy?: Prisma.UserOrderByWithRelationInput
   commandes?: Prisma.CommandeOrderByRelationAggregateInput
 }
 
@@ -289,11 +300,13 @@ export type DevisWhereUniqueInput = Prisma.AtLeast<{
   total?: Prisma.IntFilter<"Devis"> | number
   statut?: Prisma.StringFilter<"Devis"> | string
   entrepriseInfoId?: Prisma.IntFilter<"Devis"> | number
+  createdById?: Prisma.StringFilter<"Devis"> | string
   createdAt?: Prisma.DateTimeFilter<"Devis"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Devis"> | Date | string
   client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   entrepriseInfo?: Prisma.XOR<Prisma.EntrepriseInfoScalarRelationFilter, Prisma.EntrepriseInfoWhereInput>
   factureTransformee?: Prisma.XOR<Prisma.FactureNullableScalarRelationFilter, Prisma.FactureWhereInput> | null
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   commandes?: Prisma.CommandeListRelationFilter
 }, "id" | "numero">
 
@@ -305,6 +318,7 @@ export type DevisOrderByWithAggregationInput = {
   total?: Prisma.SortOrder
   statut?: Prisma.SortOrder
   entrepriseInfoId?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.DevisCountOrderByAggregateInput
@@ -325,6 +339,7 @@ export type DevisScalarWhereWithAggregatesInput = {
   total?: Prisma.IntWithAggregatesFilter<"Devis"> | number
   statut?: Prisma.StringWithAggregatesFilter<"Devis"> | string
   entrepriseInfoId?: Prisma.IntWithAggregatesFilter<"Devis"> | number
+  createdById?: Prisma.StringWithAggregatesFilter<"Devis"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Devis"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Devis"> | Date | string
 }
@@ -339,6 +354,7 @@ export type DevisCreateInput = {
   client: Prisma.ClientCreateNestedOneWithoutDevisInput
   entrepriseInfo: Prisma.EntrepriseInfoCreateNestedOneWithoutDevisInput
   factureTransformee?: Prisma.FactureCreateNestedOneWithoutDevisOrigineInput
+  createdBy: Prisma.UserCreateNestedOneWithoutDevisCreesInput
   commandes?: Prisma.CommandeCreateNestedManyWithoutDevisInput
 }
 
@@ -350,6 +366,7 @@ export type DevisUncheckedCreateInput = {
   total: number
   statut?: string
   entrepriseInfoId: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   factureTransformee?: Prisma.FactureUncheckedCreateNestedOneWithoutDevisOrigineInput
@@ -366,6 +383,7 @@ export type DevisUpdateInput = {
   client?: Prisma.ClientUpdateOneRequiredWithoutDevisNestedInput
   entrepriseInfo?: Prisma.EntrepriseInfoUpdateOneRequiredWithoutDevisNestedInput
   factureTransformee?: Prisma.FactureUpdateOneWithoutDevisOrigineNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutDevisCreesNestedInput
   commandes?: Prisma.CommandeUpdateManyWithoutDevisNestedInput
 }
 
@@ -377,6 +395,7 @@ export type DevisUncheckedUpdateInput = {
   total?: Prisma.IntFieldUpdateOperationsInput | number
   statut?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   factureTransformee?: Prisma.FactureUncheckedUpdateOneWithoutDevisOrigineNestedInput
@@ -391,6 +410,7 @@ export type DevisCreateManyInput = {
   total: number
   statut?: string
   entrepriseInfoId: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -412,6 +432,7 @@ export type DevisUncheckedUpdateManyInput = {
   total?: Prisma.IntFieldUpdateOperationsInput | number
   statut?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -434,6 +455,7 @@ export type DevisCountOrderByAggregateInput = {
   total?: Prisma.SortOrder
   statut?: Prisma.SortOrder
   entrepriseInfoId?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -452,6 +474,7 @@ export type DevisMaxOrderByAggregateInput = {
   total?: Prisma.SortOrder
   statut?: Prisma.SortOrder
   entrepriseInfoId?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -464,6 +487,7 @@ export type DevisMinOrderByAggregateInput = {
   total?: Prisma.SortOrder
   statut?: Prisma.SortOrder
   entrepriseInfoId?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -518,6 +542,48 @@ export type DevisUncheckedUpdateManyWithoutClientNestedInput = {
   connect?: Prisma.DevisWhereUniqueInput | Prisma.DevisWhereUniqueInput[]
   update?: Prisma.DevisUpdateWithWhereUniqueWithoutClientInput | Prisma.DevisUpdateWithWhereUniqueWithoutClientInput[]
   updateMany?: Prisma.DevisUpdateManyWithWhereWithoutClientInput | Prisma.DevisUpdateManyWithWhereWithoutClientInput[]
+  deleteMany?: Prisma.DevisScalarWhereInput | Prisma.DevisScalarWhereInput[]
+}
+
+export type DevisCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.DevisCreateWithoutCreatedByInput, Prisma.DevisUncheckedCreateWithoutCreatedByInput> | Prisma.DevisCreateWithoutCreatedByInput[] | Prisma.DevisUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.DevisCreateOrConnectWithoutCreatedByInput | Prisma.DevisCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.DevisCreateManyCreatedByInputEnvelope
+  connect?: Prisma.DevisWhereUniqueInput | Prisma.DevisWhereUniqueInput[]
+}
+
+export type DevisUncheckedCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.DevisCreateWithoutCreatedByInput, Prisma.DevisUncheckedCreateWithoutCreatedByInput> | Prisma.DevisCreateWithoutCreatedByInput[] | Prisma.DevisUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.DevisCreateOrConnectWithoutCreatedByInput | Prisma.DevisCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.DevisCreateManyCreatedByInputEnvelope
+  connect?: Prisma.DevisWhereUniqueInput | Prisma.DevisWhereUniqueInput[]
+}
+
+export type DevisUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DevisCreateWithoutCreatedByInput, Prisma.DevisUncheckedCreateWithoutCreatedByInput> | Prisma.DevisCreateWithoutCreatedByInput[] | Prisma.DevisUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.DevisCreateOrConnectWithoutCreatedByInput | Prisma.DevisCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.DevisUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.DevisUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.DevisCreateManyCreatedByInputEnvelope
+  set?: Prisma.DevisWhereUniqueInput | Prisma.DevisWhereUniqueInput[]
+  disconnect?: Prisma.DevisWhereUniqueInput | Prisma.DevisWhereUniqueInput[]
+  delete?: Prisma.DevisWhereUniqueInput | Prisma.DevisWhereUniqueInput[]
+  connect?: Prisma.DevisWhereUniqueInput | Prisma.DevisWhereUniqueInput[]
+  update?: Prisma.DevisUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.DevisUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.DevisUpdateManyWithWhereWithoutCreatedByInput | Prisma.DevisUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.DevisScalarWhereInput | Prisma.DevisScalarWhereInput[]
+}
+
+export type DevisUncheckedUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DevisCreateWithoutCreatedByInput, Prisma.DevisUncheckedCreateWithoutCreatedByInput> | Prisma.DevisCreateWithoutCreatedByInput[] | Prisma.DevisUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.DevisCreateOrConnectWithoutCreatedByInput | Prisma.DevisCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.DevisUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.DevisUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.DevisCreateManyCreatedByInputEnvelope
+  set?: Prisma.DevisWhereUniqueInput | Prisma.DevisWhereUniqueInput[]
+  disconnect?: Prisma.DevisWhereUniqueInput | Prisma.DevisWhereUniqueInput[]
+  delete?: Prisma.DevisWhereUniqueInput | Prisma.DevisWhereUniqueInput[]
+  connect?: Prisma.DevisWhereUniqueInput | Prisma.DevisWhereUniqueInput[]
+  update?: Prisma.DevisUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.DevisUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.DevisUpdateManyWithWhereWithoutCreatedByInput | Prisma.DevisUpdateManyWithWhereWithoutCreatedByInput[]
   deleteMany?: Prisma.DevisScalarWhereInput | Prisma.DevisScalarWhereInput[]
 }
 
@@ -604,6 +670,7 @@ export type DevisCreateWithoutClientInput = {
   updatedAt?: Date | string
   entrepriseInfo: Prisma.EntrepriseInfoCreateNestedOneWithoutDevisInput
   factureTransformee?: Prisma.FactureCreateNestedOneWithoutDevisOrigineInput
+  createdBy: Prisma.UserCreateNestedOneWithoutDevisCreesInput
   commandes?: Prisma.CommandeCreateNestedManyWithoutDevisInput
 }
 
@@ -614,6 +681,7 @@ export type DevisUncheckedCreateWithoutClientInput = {
   total: number
   statut?: string
   entrepriseInfoId: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   factureTransformee?: Prisma.FactureUncheckedCreateNestedOneWithoutDevisOrigineInput
@@ -657,8 +725,62 @@ export type DevisScalarWhereInput = {
   total?: Prisma.IntFilter<"Devis"> | number
   statut?: Prisma.StringFilter<"Devis"> | string
   entrepriseInfoId?: Prisma.IntFilter<"Devis"> | number
+  createdById?: Prisma.StringFilter<"Devis"> | string
   createdAt?: Prisma.DateTimeFilter<"Devis"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Devis"> | Date | string
+}
+
+export type DevisCreateWithoutCreatedByInput = {
+  numero: string
+  date?: Date | string
+  total: number
+  statut?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  client: Prisma.ClientCreateNestedOneWithoutDevisInput
+  entrepriseInfo: Prisma.EntrepriseInfoCreateNestedOneWithoutDevisInput
+  factureTransformee?: Prisma.FactureCreateNestedOneWithoutDevisOrigineInput
+  commandes?: Prisma.CommandeCreateNestedManyWithoutDevisInput
+}
+
+export type DevisUncheckedCreateWithoutCreatedByInput = {
+  id?: number
+  numero: string
+  date?: Date | string
+  clientId: string
+  total: number
+  statut?: string
+  entrepriseInfoId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  factureTransformee?: Prisma.FactureUncheckedCreateNestedOneWithoutDevisOrigineInput
+  commandes?: Prisma.CommandeUncheckedCreateNestedManyWithoutDevisInput
+}
+
+export type DevisCreateOrConnectWithoutCreatedByInput = {
+  where: Prisma.DevisWhereUniqueInput
+  create: Prisma.XOR<Prisma.DevisCreateWithoutCreatedByInput, Prisma.DevisUncheckedCreateWithoutCreatedByInput>
+}
+
+export type DevisCreateManyCreatedByInputEnvelope = {
+  data: Prisma.DevisCreateManyCreatedByInput | Prisma.DevisCreateManyCreatedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type DevisUpsertWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.DevisWhereUniqueInput
+  update: Prisma.XOR<Prisma.DevisUpdateWithoutCreatedByInput, Prisma.DevisUncheckedUpdateWithoutCreatedByInput>
+  create: Prisma.XOR<Prisma.DevisCreateWithoutCreatedByInput, Prisma.DevisUncheckedCreateWithoutCreatedByInput>
+}
+
+export type DevisUpdateWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.DevisWhereUniqueInput
+  data: Prisma.XOR<Prisma.DevisUpdateWithoutCreatedByInput, Prisma.DevisUncheckedUpdateWithoutCreatedByInput>
+}
+
+export type DevisUpdateManyWithWhereWithoutCreatedByInput = {
+  where: Prisma.DevisScalarWhereInput
+  data: Prisma.XOR<Prisma.DevisUpdateManyMutationInput, Prisma.DevisUncheckedUpdateManyWithoutCreatedByInput>
 }
 
 export type DevisCreateWithoutEntrepriseInfoInput = {
@@ -670,6 +792,7 @@ export type DevisCreateWithoutEntrepriseInfoInput = {
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutDevisInput
   factureTransformee?: Prisma.FactureCreateNestedOneWithoutDevisOrigineInput
+  createdBy: Prisma.UserCreateNestedOneWithoutDevisCreesInput
   commandes?: Prisma.CommandeCreateNestedManyWithoutDevisInput
 }
 
@@ -680,6 +803,7 @@ export type DevisUncheckedCreateWithoutEntrepriseInfoInput = {
   clientId: string
   total: number
   statut?: string
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   factureTransformee?: Prisma.FactureUncheckedCreateNestedOneWithoutDevisOrigineInput
@@ -721,6 +845,7 @@ export type DevisCreateWithoutFactureTransformeeInput = {
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutDevisInput
   entrepriseInfo: Prisma.EntrepriseInfoCreateNestedOneWithoutDevisInput
+  createdBy: Prisma.UserCreateNestedOneWithoutDevisCreesInput
   commandes?: Prisma.CommandeCreateNestedManyWithoutDevisInput
 }
 
@@ -732,6 +857,7 @@ export type DevisUncheckedCreateWithoutFactureTransformeeInput = {
   total: number
   statut?: string
   entrepriseInfoId: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   commandes?: Prisma.CommandeUncheckedCreateNestedManyWithoutDevisInput
@@ -762,6 +888,7 @@ export type DevisUpdateWithoutFactureTransformeeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutDevisNestedInput
   entrepriseInfo?: Prisma.EntrepriseInfoUpdateOneRequiredWithoutDevisNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutDevisCreesNestedInput
   commandes?: Prisma.CommandeUpdateManyWithoutDevisNestedInput
 }
 
@@ -773,6 +900,7 @@ export type DevisUncheckedUpdateWithoutFactureTransformeeInput = {
   total?: Prisma.IntFieldUpdateOperationsInput | number
   statut?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   commandes?: Prisma.CommandeUncheckedUpdateManyWithoutDevisNestedInput
@@ -788,6 +916,7 @@ export type DevisCreateWithoutCommandesInput = {
   client: Prisma.ClientCreateNestedOneWithoutDevisInput
   entrepriseInfo: Prisma.EntrepriseInfoCreateNestedOneWithoutDevisInput
   factureTransformee?: Prisma.FactureCreateNestedOneWithoutDevisOrigineInput
+  createdBy: Prisma.UserCreateNestedOneWithoutDevisCreesInput
 }
 
 export type DevisUncheckedCreateWithoutCommandesInput = {
@@ -798,6 +927,7 @@ export type DevisUncheckedCreateWithoutCommandesInput = {
   total: number
   statut?: string
   entrepriseInfoId: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   factureTransformee?: Prisma.FactureUncheckedCreateNestedOneWithoutDevisOrigineInput
@@ -829,6 +959,7 @@ export type DevisUpdateWithoutCommandesInput = {
   client?: Prisma.ClientUpdateOneRequiredWithoutDevisNestedInput
   entrepriseInfo?: Prisma.EntrepriseInfoUpdateOneRequiredWithoutDevisNestedInput
   factureTransformee?: Prisma.FactureUpdateOneWithoutDevisOrigineNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutDevisCreesNestedInput
 }
 
 export type DevisUncheckedUpdateWithoutCommandesInput = {
@@ -839,6 +970,7 @@ export type DevisUncheckedUpdateWithoutCommandesInput = {
   total?: Prisma.IntFieldUpdateOperationsInput | number
   statut?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   factureTransformee?: Prisma.FactureUncheckedUpdateOneWithoutDevisOrigineNestedInput
@@ -851,6 +983,7 @@ export type DevisCreateManyClientInput = {
   total: number
   statut?: string
   entrepriseInfoId: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -864,6 +997,7 @@ export type DevisUpdateWithoutClientInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entrepriseInfo?: Prisma.EntrepriseInfoUpdateOneRequiredWithoutDevisNestedInput
   factureTransformee?: Prisma.FactureUpdateOneWithoutDevisOrigineNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutDevisCreesNestedInput
   commandes?: Prisma.CommandeUpdateManyWithoutDevisNestedInput
 }
 
@@ -874,6 +1008,7 @@ export type DevisUncheckedUpdateWithoutClientInput = {
   total?: Prisma.IntFieldUpdateOperationsInput | number
   statut?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   factureTransformee?: Prisma.FactureUncheckedUpdateOneWithoutDevisOrigineNestedInput
@@ -884,6 +1019,58 @@ export type DevisUncheckedUpdateManyWithoutClientInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  total?: Prisma.IntFieldUpdateOperationsInput | number
+  statut?: Prisma.StringFieldUpdateOperationsInput | string
+  entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DevisCreateManyCreatedByInput = {
+  id?: number
+  numero: string
+  date?: Date | string
+  clientId: string
+  total: number
+  statut?: string
+  entrepriseInfoId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DevisUpdateWithoutCreatedByInput = {
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  total?: Prisma.IntFieldUpdateOperationsInput | number
+  statut?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  client?: Prisma.ClientUpdateOneRequiredWithoutDevisNestedInput
+  entrepriseInfo?: Prisma.EntrepriseInfoUpdateOneRequiredWithoutDevisNestedInput
+  factureTransformee?: Prisma.FactureUpdateOneWithoutDevisOrigineNestedInput
+  commandes?: Prisma.CommandeUpdateManyWithoutDevisNestedInput
+}
+
+export type DevisUncheckedUpdateWithoutCreatedByInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  total?: Prisma.IntFieldUpdateOperationsInput | number
+  statut?: Prisma.StringFieldUpdateOperationsInput | string
+  entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factureTransformee?: Prisma.FactureUncheckedUpdateOneWithoutDevisOrigineNestedInput
+  commandes?: Prisma.CommandeUncheckedUpdateManyWithoutDevisNestedInput
+}
+
+export type DevisUncheckedUpdateManyWithoutCreatedByInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   statut?: Prisma.StringFieldUpdateOperationsInput | string
   entrepriseInfoId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -898,6 +1085,7 @@ export type DevisCreateManyEntrepriseInfoInput = {
   clientId: string
   total: number
   statut?: string
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -911,6 +1099,7 @@ export type DevisUpdateWithoutEntrepriseInfoInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutDevisNestedInput
   factureTransformee?: Prisma.FactureUpdateOneWithoutDevisOrigineNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutDevisCreesNestedInput
   commandes?: Prisma.CommandeUpdateManyWithoutDevisNestedInput
 }
 
@@ -921,6 +1110,7 @@ export type DevisUncheckedUpdateWithoutEntrepriseInfoInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   statut?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   factureTransformee?: Prisma.FactureUncheckedUpdateOneWithoutDevisOrigineNestedInput
@@ -934,6 +1124,7 @@ export type DevisUncheckedUpdateManyWithoutEntrepriseInfoInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   statut?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -977,11 +1168,13 @@ export type DevisSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   total?: boolean
   statut?: boolean
   entrepriseInfoId?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
   factureTransformee?: boolean | Prisma.Devis$factureTransformeeArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   commandes?: boolean | Prisma.Devis$commandesArgs<ExtArgs>
   _count?: boolean | Prisma.DevisCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["devis"]>
@@ -994,10 +1187,12 @@ export type DevisSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   total?: boolean
   statut?: boolean
   entrepriseInfoId?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["devis"]>
 
 export type DevisSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1008,10 +1203,12 @@ export type DevisSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   total?: boolean
   statut?: boolean
   entrepriseInfoId?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["devis"]>
 
 export type DevisSelectScalar = {
@@ -1022,25 +1219,29 @@ export type DevisSelectScalar = {
   total?: boolean
   statut?: boolean
   entrepriseInfoId?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DevisOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "numero" | "date" | "clientId" | "total" | "statut" | "entrepriseInfoId" | "createdAt" | "updatedAt", ExtArgs["result"]["devis"]>
+export type DevisOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "numero" | "date" | "clientId" | "total" | "statut" | "entrepriseInfoId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["devis"]>
 export type DevisInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
   factureTransformee?: boolean | Prisma.Devis$factureTransformeeArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   commandes?: boolean | Prisma.Devis$commandesArgs<ExtArgs>
   _count?: boolean | Prisma.DevisCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DevisIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type DevisIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   entrepriseInfo?: boolean | Prisma.EntrepriseInfoDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $DevisPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1049,6 +1250,7 @@ export type $DevisPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     client: Prisma.$ClientPayload<ExtArgs>
     entrepriseInfo: Prisma.$EntrepriseInfoPayload<ExtArgs>
     factureTransformee: Prisma.$FacturePayload<ExtArgs> | null
+    createdBy: Prisma.$UserPayload<ExtArgs>
     commandes: Prisma.$CommandePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1059,6 +1261,7 @@ export type $DevisPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     total: number
     statut: string
     entrepriseInfoId: number
+    createdById: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["devis"]>
@@ -1458,6 +1661,7 @@ export interface Prisma__DevisClient<T, Null = never, ExtArgs extends runtime.Ty
   client<T extends Prisma.ClientDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClientDefaultArgs<ExtArgs>>): Prisma.Prisma__ClientClient<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   entrepriseInfo<T extends Prisma.EntrepriseInfoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EntrepriseInfoDefaultArgs<ExtArgs>>): Prisma.Prisma__EntrepriseInfoClient<runtime.Types.Result.GetResult<Prisma.$EntrepriseInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   factureTransformee<T extends Prisma.Devis$factureTransformeeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Devis$factureTransformeeArgs<ExtArgs>>): Prisma.Prisma__FactureClient<runtime.Types.Result.GetResult<Prisma.$FacturePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   commandes<T extends Prisma.Devis$commandesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Devis$commandesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommandePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1495,6 +1699,7 @@ export interface DevisFieldRefs {
   readonly total: Prisma.FieldRef<"Devis", 'Int'>
   readonly statut: Prisma.FieldRef<"Devis", 'String'>
   readonly entrepriseInfoId: Prisma.FieldRef<"Devis", 'Int'>
+  readonly createdById: Prisma.FieldRef<"Devis", 'String'>
   readonly createdAt: Prisma.FieldRef<"Devis", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Devis", 'DateTime'>
 }
