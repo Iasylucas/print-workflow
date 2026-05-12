@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { email, z } from "zod";
 import { v7 as uuidv7 } from "uuid";
 
 const UserRole = z.enum(["ADMIN", "SALES", "PRINTER", "GRAPHIC_DESIGNER"]);
@@ -21,7 +21,10 @@ const emailSchema = z
 export const registerSchema = z
   .object({
     id: z.uuidv7().default(() => uuidv7()),
-    username: z.string().min(1, "Username must be at least 2 characters long"),
+    firstname: z
+      .string()
+      .min(2, "Firstname must be at least 2 characters long"),
+    lastname: z.string().min(2, "Lastname must be at least 2 characters long"),
     email: emailSchema,
     role: UserRole.default("SALES"),
     password: PasswordSchema,
@@ -33,18 +36,6 @@ export const registerSchema = z
   });
 
 export const loginSchema = z.object({
-  identifier: z
-    .string()
-    .min(1, "Email or username is required")
-    .refine(
-      (val) => {
-        const isEmail = emailSchema.safeParse(val).success;
-        const isUsername = val.length >= 1;
-        return isEmail || isUsername;
-      },
-      {
-        message: "Invalid email or username",
-      },
-    ),
+  email: emailSchema,
   password: z.string().min(1, "Password is required"),
 });

@@ -27,13 +27,15 @@ model Client {
 
 model User {
   id        String   @id
-  username  String   @unique
   email     String   @unique
   password  String
   role      String
-  name      String
+  isactif   Boolean  @default(true)
+  firstname String
+  lastname  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   fichiers  Fichier[]
   paiements Paiement[]
@@ -44,6 +46,13 @@ model User {
   commandesCrees Commande[] @relation("UserCommande")
 
   resetTokens PasswordResetToken[]
+}
+
+enum Role {
+  ADMIN
+  SALES
+  PRINTER
+  GRAPHIC_DESIGNER
 }
 
 model PasswordResetToken {

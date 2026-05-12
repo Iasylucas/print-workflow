@@ -26,70 +26,82 @@ export type AggregateUser = {
 
 export type UserMinAggregateOutputType = {
   id: string | null
-  username: string | null
   email: string | null
   password: string | null
   role: string | null
-  name: string | null
+  isactif: boolean | null
+  firstname: string | null
+  lastname: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
   id: string | null
-  username: string | null
   email: string | null
   password: string | null
   role: string | null
-  name: string | null
+  isactif: boolean | null
+  firstname: string | null
+  lastname: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
   id: number
-  username: number
   email: number
   password: number
   role: number
-  name: number
+  isactif: number
+  firstname: number
+  lastname: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
   _all: number
 }
 
 
 export type UserMinAggregateInputType = {
   id?: true
-  username?: true
   email?: true
   password?: true
   role?: true
-  name?: true
+  isactif?: true
+  firstname?: true
+  lastname?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type UserMaxAggregateInputType = {
   id?: true
-  username?: true
   email?: true
   password?: true
   role?: true
-  name?: true
+  isactif?: true
+  firstname?: true
+  lastname?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type UserCountAggregateInputType = {
   id?: true
-  username?: true
   email?: true
   password?: true
   role?: true
-  name?: true
+  isactif?: true
+  firstname?: true
+  lastname?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -167,13 +179,15 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type UserGroupByOutputType = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif: boolean
+  firstname: string
+  lastname: string
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -199,13 +213,15 @@ export type UserWhereInput = {
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
-  username?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
   role?: Prisma.StringFilter<"User"> | string
-  name?: Prisma.StringFilter<"User"> | string
+  isactif?: Prisma.BoolFilter<"User"> | boolean
+  firstname?: Prisma.StringFilter<"User"> | string
+  lastname?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   fichiers?: Prisma.FichierListRelationFilter
   paiements?: Prisma.PaiementListRelationFilter
   notes?: Prisma.NoteListRelationFilter
@@ -217,13 +233,15 @@ export type UserWhereInput = {
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  isactif?: Prisma.SortOrder
+  firstname?: Prisma.SortOrder
+  lastname?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   fichiers?: Prisma.FichierOrderByRelationAggregateInput
   paiements?: Prisma.PaiementOrderByRelationAggregateInput
   notes?: Prisma.NoteOrderByRelationAggregateInput
@@ -235,16 +253,18 @@ export type UserOrderByWithRelationInput = {
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  username?: string
   email?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   password?: Prisma.StringFilter<"User"> | string
   role?: Prisma.StringFilter<"User"> | string
-  name?: Prisma.StringFilter<"User"> | string
+  isactif?: Prisma.BoolFilter<"User"> | boolean
+  firstname?: Prisma.StringFilter<"User"> | string
+  lastname?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   fichiers?: Prisma.FichierListRelationFilter
   paiements?: Prisma.PaiementListRelationFilter
   notes?: Prisma.NoteListRelationFilter
@@ -252,17 +272,19 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   facturesCrees?: Prisma.FactureListRelationFilter
   commandesCrees?: Prisma.CommandeListRelationFilter
   resetTokens?: Prisma.PasswordResetTokenListRelationFilter
-}, "id" | "username" | "email">
+}, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  isactif?: Prisma.SortOrder
+  firstname?: Prisma.SortOrder
+  lastname?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -273,24 +295,28 @@ export type UserScalarWhereWithAggregatesInput = {
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
-  username?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
   role?: Prisma.StringWithAggregatesFilter<"User"> | string
-  name?: Prisma.StringWithAggregatesFilter<"User"> | string
+  isactif?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  firstname?: Prisma.StringWithAggregatesFilter<"User"> | string
+  lastname?: Prisma.StringWithAggregatesFilter<"User"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
@@ -302,13 +328,15 @@ export type UserCreateInput = {
 
 export type UserUncheckedCreateInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierUncheckedCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementUncheckedCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
@@ -320,13 +348,15 @@ export type UserUncheckedCreateInput = {
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
@@ -338,13 +368,15 @@ export type UserUpdateInput = {
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUncheckedUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUncheckedUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
@@ -356,73 +388,93 @@ export type UserUncheckedUpdateInput = {
 
 export type UserCreateManyInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  isactif?: Prisma.SortOrder
+  firstname?: Prisma.SortOrder
+  lastname?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  isactif?: Prisma.SortOrder
+  firstname?: Prisma.SortOrder
+  lastname?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  isactif?: Prisma.SortOrder
+  firstname?: Prisma.SortOrder
+  lastname?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type UserCreateNestedOneWithoutResetTokensInput = {
@@ -525,13 +577,15 @@ export type UserUpdateOneRequiredWithoutCommandesCreesNestedInput = {
 
 export type UserCreateWithoutResetTokensInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
@@ -542,13 +596,15 @@ export type UserCreateWithoutResetTokensInput = {
 
 export type UserUncheckedCreateWithoutResetTokensInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierUncheckedCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementUncheckedCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
@@ -575,13 +631,15 @@ export type UserUpdateToOneWithWhereWithoutResetTokensInput = {
 
 export type UserUpdateWithoutResetTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
@@ -592,13 +650,15 @@ export type UserUpdateWithoutResetTokensInput = {
 
 export type UserUncheckedUpdateWithoutResetTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUncheckedUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUncheckedUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
@@ -609,13 +669,15 @@ export type UserUncheckedUpdateWithoutResetTokensInput = {
 
 export type UserCreateWithoutDevisCreesInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
@@ -626,13 +688,15 @@ export type UserCreateWithoutDevisCreesInput = {
 
 export type UserUncheckedCreateWithoutDevisCreesInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierUncheckedCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementUncheckedCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
@@ -659,13 +723,15 @@ export type UserUpdateToOneWithWhereWithoutDevisCreesInput = {
 
 export type UserUpdateWithoutDevisCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
@@ -676,13 +742,15 @@ export type UserUpdateWithoutDevisCreesInput = {
 
 export type UserUncheckedUpdateWithoutDevisCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUncheckedUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUncheckedUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
@@ -693,13 +761,15 @@ export type UserUncheckedUpdateWithoutDevisCreesInput = {
 
 export type UserCreateWithoutFacturesCreesInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
@@ -710,13 +780,15 @@ export type UserCreateWithoutFacturesCreesInput = {
 
 export type UserUncheckedCreateWithoutFacturesCreesInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierUncheckedCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementUncheckedCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
@@ -743,13 +815,15 @@ export type UserUpdateToOneWithWhereWithoutFacturesCreesInput = {
 
 export type UserUpdateWithoutFacturesCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
@@ -760,13 +834,15 @@ export type UserUpdateWithoutFacturesCreesInput = {
 
 export type UserUncheckedUpdateWithoutFacturesCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUncheckedUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUncheckedUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
@@ -777,13 +853,15 @@ export type UserUncheckedUpdateWithoutFacturesCreesInput = {
 
 export type UserCreateWithoutFichiersInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   paiements?: Prisma.PaiementCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
   devisCrees?: Prisma.DevisCreateNestedManyWithoutCreatedByInput
@@ -794,13 +872,15 @@ export type UserCreateWithoutFichiersInput = {
 
 export type UserUncheckedCreateWithoutFichiersInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   paiements?: Prisma.PaiementUncheckedCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
   devisCrees?: Prisma.DevisUncheckedCreateNestedManyWithoutCreatedByInput
@@ -827,13 +907,15 @@ export type UserUpdateToOneWithWhereWithoutFichiersInput = {
 
 export type UserUpdateWithoutFichiersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paiements?: Prisma.PaiementUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
   devisCrees?: Prisma.DevisUpdateManyWithoutCreatedByNestedInput
@@ -844,13 +926,15 @@ export type UserUpdateWithoutFichiersInput = {
 
 export type UserUncheckedUpdateWithoutFichiersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paiements?: Prisma.PaiementUncheckedUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
   devisCrees?: Prisma.DevisUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -861,13 +945,15 @@ export type UserUncheckedUpdateWithoutFichiersInput = {
 
 export type UserCreateWithoutPaiementsInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierCreateNestedManyWithoutUploadedByInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
   devisCrees?: Prisma.DevisCreateNestedManyWithoutCreatedByInput
@@ -878,13 +964,15 @@ export type UserCreateWithoutPaiementsInput = {
 
 export type UserUncheckedCreateWithoutPaiementsInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierUncheckedCreateNestedManyWithoutUploadedByInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
   devisCrees?: Prisma.DevisUncheckedCreateNestedManyWithoutCreatedByInput
@@ -911,13 +999,15 @@ export type UserUpdateToOneWithWhereWithoutPaiementsInput = {
 
 export type UserUpdateWithoutPaiementsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUpdateManyWithoutUploadedByNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
   devisCrees?: Prisma.DevisUpdateManyWithoutCreatedByNestedInput
@@ -928,13 +1018,15 @@ export type UserUpdateWithoutPaiementsInput = {
 
 export type UserUncheckedUpdateWithoutPaiementsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUncheckedUpdateManyWithoutUploadedByNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
   devisCrees?: Prisma.DevisUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -945,13 +1037,15 @@ export type UserUncheckedUpdateWithoutPaiementsInput = {
 
 export type UserCreateWithoutNotesInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementCreateNestedManyWithoutEncaisseParInput
   devisCrees?: Prisma.DevisCreateNestedManyWithoutCreatedByInput
@@ -962,13 +1056,15 @@ export type UserCreateWithoutNotesInput = {
 
 export type UserUncheckedCreateWithoutNotesInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierUncheckedCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementUncheckedCreateNestedManyWithoutEncaisseParInput
   devisCrees?: Prisma.DevisUncheckedCreateNestedManyWithoutCreatedByInput
@@ -995,13 +1091,15 @@ export type UserUpdateToOneWithWhereWithoutNotesInput = {
 
 export type UserUpdateWithoutNotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUpdateManyWithoutEncaisseParNestedInput
   devisCrees?: Prisma.DevisUpdateManyWithoutCreatedByNestedInput
@@ -1012,13 +1110,15 @@ export type UserUpdateWithoutNotesInput = {
 
 export type UserUncheckedUpdateWithoutNotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUncheckedUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUncheckedUpdateManyWithoutEncaisseParNestedInput
   devisCrees?: Prisma.DevisUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1029,13 +1129,15 @@ export type UserUncheckedUpdateWithoutNotesInput = {
 
 export type UserCreateWithoutCommandesCreesInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
@@ -1046,13 +1148,15 @@ export type UserCreateWithoutCommandesCreesInput = {
 
 export type UserUncheckedCreateWithoutCommandesCreesInput = {
   id: string
-  username: string
   email: string
   password: string
   role: string
-  name: string
+  isactif?: boolean
+  firstname: string
+  lastname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   fichiers?: Prisma.FichierUncheckedCreateNestedManyWithoutUploadedByInput
   paiements?: Prisma.PaiementUncheckedCreateNestedManyWithoutEncaisseParInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
@@ -1079,13 +1183,15 @@ export type UserUpdateToOneWithWhereWithoutCommandesCreesInput = {
 
 export type UserUpdateWithoutCommandesCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
@@ -1096,13 +1202,15 @@ export type UserUpdateWithoutCommandesCreesInput = {
 
 export type UserUncheckedUpdateWithoutCommandesCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isactif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   fichiers?: Prisma.FichierUncheckedUpdateManyWithoutUploadedByNestedInput
   paiements?: Prisma.PaiementUncheckedUpdateManyWithoutEncaisseParNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
@@ -1198,13 +1306,15 @@ export type UserCountOutputTypeCountResetTokensArgs<ExtArgs extends runtime.Type
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  username?: boolean
   email?: boolean
   password?: boolean
   role?: boolean
-  name?: boolean
+  isactif?: boolean
+  firstname?: boolean
+  lastname?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   fichiers?: boolean | Prisma.User$fichiersArgs<ExtArgs>
   paiements?: boolean | Prisma.User$paiementsArgs<ExtArgs>
   notes?: boolean | Prisma.User$notesArgs<ExtArgs>
@@ -1217,38 +1327,44 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  username?: boolean
   email?: boolean
   password?: boolean
   role?: boolean
-  name?: boolean
+  isactif?: boolean
+  firstname?: boolean
+  lastname?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  username?: boolean
   email?: boolean
   password?: boolean
   role?: boolean
-  name?: boolean
+  isactif?: boolean
+  firstname?: boolean
+  lastname?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
   id?: boolean
-  username?: boolean
   email?: boolean
   password?: boolean
   role?: boolean
-  name?: boolean
+  isactif?: boolean
+  firstname?: boolean
+  lastname?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "email" | "password" | "role" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "role" | "isactif" | "firstname" | "lastname" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   fichiers?: boolean | Prisma.User$fichiersArgs<ExtArgs>
   paiements?: boolean | Prisma.User$paiementsArgs<ExtArgs>
@@ -1275,13 +1391,15 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    username: string
     email: string
     password: string
     role: string
-    name: string
+    isactif: boolean
+    firstname: string
+    lastname: string
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1713,13 +1831,15 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
-  readonly username: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'String'>
-  readonly name: Prisma.FieldRef<"User", 'String'>
+  readonly isactif: Prisma.FieldRef<"User", 'Boolean'>
+  readonly firstname: Prisma.FieldRef<"User", 'String'>
+  readonly lastname: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 
