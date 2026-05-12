@@ -1,4 +1,4 @@
-import { email, z } from "zod";
+import { z } from "zod";
 import { v7 as uuidv7 } from "uuid";
 
 const UserRole = z.enum(["ADMIN", "SALES", "PRINTER", "GRAPHIC_DESIGNER"]);
