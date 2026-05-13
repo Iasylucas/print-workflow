@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { v7 as uuidv7 } from "uuid";
+import { is } from "zod/locales";
 
 const UserRole = z.enum(["ADMIN", "SALES", "PRINTER", "GRAPHIC_DESIGNER"]);
 const PasswordSchema = z
@@ -29,6 +30,7 @@ export const registerSchema = z
     role: UserRole.default("SALES"),
     password: PasswordSchema,
     confirmPassword: PasswordSchema,
+    isActif: z.boolean().default(false),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

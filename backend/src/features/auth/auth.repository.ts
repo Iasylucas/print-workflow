@@ -7,14 +7,14 @@ import {
   userCompleteSelect,
 } from "./auth.types.js";
 
-export class authRepository {
+export class AuthRepository {
   // register function
   async createUser(data: RegisterInput): Promise<UserSafe> {
     return await prisma.user.create({
       data: {
         id: data.id,
-        firstname: data.firstname,
-        lastname: data.lastname,
+        firstName: data.firstname,
+        lastName: data.lastname,
         email: data.email,
         role: data.role,
         password: data.role,

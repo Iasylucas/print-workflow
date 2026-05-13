@@ -1,5 +1,6 @@
 allowBuilds:
   '@prisma/engines': false
+  argon2: false
   bcrypt: false
   esbuild: false
   prisma: false

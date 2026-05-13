@@ -4,8 +4,8 @@ import { z } from "zod";
 
 export const userSafeSelect = {
   id: true,
-  firstname: true,
-  lastname: true,
+  firstName: true,
+  lastName: true,
   email: true,
   role: true,
   createdAt: true,
@@ -14,6 +14,7 @@ export const userSafeSelect = {
 
 export const userCompleteSelect = {
   ...userSafeSelect,
+  isActif: true,
   deletedAt: true,
   password: true,
 } satisfies Prisma.UserSelect;
