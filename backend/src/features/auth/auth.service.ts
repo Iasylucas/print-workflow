@@ -19,6 +19,8 @@ import { env } from "@/config/env.js";
 import { Prisma } from "@/generated/prisma/client.js";
 import crypto from "node:crypto";
 import { v7 as uuidv7 } from "uuid";
+import { sendEmail } from "@/shared/infrastructure/mail/mail.service.js";
+import { getInvitationTemplate } from "@/shared/infrastructure/mail/templates/invitation.template.js";
 
 // function to genrate token
 function generateToken(payload: JWTpayload): string {
@@ -31,9 +33,7 @@ function generateToken(payload: JWTpayload): string {
 export class AuthService {
   constructor(private readonly authRepository: AuthRepository) {}
   //1. INVITATION (Action de l'Admin)
-  async invite(
-    data: InviteUserInput,
-  ): Promise<{ user: UserSafe; plainToken: string }> {
+  async invite(data: InviteUserInput): Promise<{ user: UserSafe }> {
     const existingUser = await this.authRepository.findByEmail(data.email);
 
     if (existingUser) {
@@ -64,7 +64,15 @@ export class AuthService {
         userId: user.id,
       });
 
-      return { user, plainToken };
+      const activationUrl = `${env.FRONTEND_URL}/finalize?token=${plainToken}`;
+
+      await sendEmail(
+        user.email,
+        "Invitation à rejoindre l'ERP EWA Print",
+        getInvitationTemplate(activationUrl, user.role),
+      );
+
+      return { user };
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
