@@ -7,14 +7,14 @@ const router: Router = Router();
 
 /**
  * @desc    Classic authentication
- * @route   POST /api/v1/auth/login
+ * @route   POST /api/auth/login
  * @access  Public
  */
 router.post("/login", catchAsync(authController.login));
 
 /**
  * @desc    Admin action: Invite a new collaborator
- * @route   POST /api/v1/auth/invite
+ * @route   POST /api/auth/invite
  * @access  Private (Admin only)
  */
 router.post(
@@ -26,7 +26,7 @@ router.post(
 
 /**
  * @desc    Finalisation of the registration via token
- * @route   POST /api/v1/auth/finalize
+ * @route   POST /api/auth/finalize
  * @access  Public (Verified by token in the body)
  */
 router.post("/finalize", catchAsync(authController.finalize));

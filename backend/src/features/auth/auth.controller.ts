@@ -5,7 +5,6 @@ import {
   finalizeRegistrationSchema,
   loginSchema,
 } from "./auth.schema.js";
-import { catchAsync } from "@/utils/catchAsync.js"; // Ton nouvel utilitaire
 
 export const authController = {
   // actin to invite a collabolator by the admin
