@@ -3,58 +3,68 @@ import {
   ForbiddenError,
   InternalServerError,
   UnauthorizedError,
+  BadRequestError,
 } from "@/shared/error/error.js";
 import { AuthRepository } from "./auth.repository.js";
+import { AuthResponse, JWTpayload, UserSafe } from "./auth.types.js";
 import {
-  AuthResponse,
-  JWTpayload,
+  InviteUserInput,
+  FinalizeRegistrationInput,
   LoginInput,
-  RegisterInput,
 } from "./auth.types.js";
 import { AUTH_ERRORS } from "@/constants/errorMessage.js";
 import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { env } from "@/config/env.js";
 import { Prisma } from "@/generated/prisma/client.js";
+import crypto from "node:crypto";
+import { v7 as uuidv7 } from "uuid";
 
-// function tu generate Token
+// function to genrate token
 function generateToken(payload: JWTpayload): string {
   return jwt.sign(payload, env.JWT_SECRET, {
     expiresIn: "8h",
   });
 }
 
-// authService class
+// class de service d'authentification
 export class AuthService {
-  //   construtor(private readonly authRepository: AuthRepository)
   constructor(private readonly authRepository: AuthRepository) {}
-
-  //   register function
-  async register(data: RegisterInput): Promise<AuthResponse> {
+  //1. INVITATION (Action de l'Admin)
+  async invite(
+    data: InviteUserInput,
+  ): Promise<{ user: UserSafe; plainToken: string }> {
     const existingUser = await this.authRepository.findByEmail(data.email);
 
     if (existingUser) {
       if (existingUser.deletedAt) {
         throw new ForbiddenError(AUTH_ERRORS.ACCOUNT_DELETED);
-      } else {
-        throw new ConflictError(AUTH_ERRORS.EMAIL_EXISTS);
       }
+      throw new ConflictError(AUTH_ERRORS.EMAIL_EXISTS);
     }
 
-    const hashedPassword = await argon2.hash(data.password);
+    const plainToken = crypto.randomBytes(32).toString("hex");
+
+    const tokenHash = crypto
+      .createHash("sha256")
+      .update(plainToken)
+      .digest("hex");
+
+    const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
 
     try {
-      const user = await this.authRepository.createUser({
-        ...data,
-        password: hashedPassword,
-      });
-      const token = generateToken({
-        sub: user.id,
-        email: user.email,
-        role: user.role,
+      const user = await this.authRepository.createInvitedUser(data);
+
+      await this.authRepository.createInvitationToken({
+        id: uuidv7(),
+        tokenHash,
+        email: data.email,
+        role: data.role,
+        expiresAt,
+        userId: user.id,
       });
 
-      return { user, token };
+      return { user, plainToken };
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -66,17 +76,74 @@ export class AuthService {
     }
   }
 
-  // login function
+  //  2. FINALISATION (Action du collaborateur invité)
+  async finalizeRegistration(
+    data: FinalizeRegistrationInput,
+  ): Promise<AuthResponse> {
+    const tokenHash = crypto
+      .createHash("sha256")
+      .update(data.token)
+      .digest("hex");
+
+    const invitation =
+      await this.authRepository.findInvitationByToken(tokenHash);
+
+    if (!invitation) {
+      throw new BadRequestError(AUTH_ERRORS.INVITATION_NOT_FOUND);
+    }
+
+    if (invitation.usedAt) {
+      throw new ConflictError(AUTH_ERRORS.INVITATION_USED);
+    }
+
+    if (new Date() > invitation.expiresAt) {
+      throw new BadRequestError(AUTH_ERRORS.INVITATION_EXPIRED);
+    }
+
+    const hashedPassword = await argon2.hash(data.password);
+
+    // Déclenchement de la transaction atomique (Mise à jour User + Clôture Token)
+    const user = await this.authRepository.finalizeUserRegistration(
+      invitation.userId,
+      invitation.id,
+      {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        passwordHash: hashedPassword,
+      },
+    );
+
+    const token = generateToken({
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+    });
+
+    return { user, token };
+  }
+
+  //  3. CONNEXION (Login standard)
   async login(data: LoginInput): Promise<AuthResponse> {
     const user = await this.authRepository.findByEmail(data.email);
 
+    // Protection contre l'énumération de comptes : message identique
     if (!user) {
       throw new UnauthorizedError(AUTH_ERRORS.INVALID_CREDENTIALS);
-    } else if (!user.isActif) {
+    }
+
+    if (user.deletedAt) {
+      throw new ForbiddenError(AUTH_ERRORS.ACCOUNT_DELETED);
+    }
+
+    if (!user.isActif) {
       throw new UnauthorizedError(AUTH_ERRORS.NOT_ACTIVATE);
     }
 
-    const isMatch = await argon2.verify(data.password, user.password);
+    if (!user.password) {
+      throw new UnauthorizedError(AUTH_ERRORS.NOT_ACTIVATE);
+    }
+
+    const isMatch = await argon2.verify(user.password, data.password);
 
     if (!isMatch) {
       throw new UnauthorizedError(AUTH_ERRORS.INVALID_CREDENTIALS);
@@ -103,5 +170,5 @@ export class AuthService {
   }
 }
 
-// export an instance of the authService
+// Export d'une instance du service avec le repository injecté (DI simple)
 export const authService = new AuthService(new AuthRepository());

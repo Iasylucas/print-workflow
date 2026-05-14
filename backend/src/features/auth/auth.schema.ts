@@ -41,11 +41,11 @@ export const inviteUserSchema = z.object({
 export const finalizeRegistrationSchema = z
   .object({
     token: z.string().min(1, "Invitation token is required"),
-    firstname: z
+    firstName: z
       .string()
       .trim()
       .min(2, "Firstname must be at least 2 characters long"),
-    lastname: z
+    lastName: z
       .string()
       .trim()
       .min(2, "Lastname must be at least 2 characters long"),

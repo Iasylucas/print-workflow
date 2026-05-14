@@ -10,4 +10,7 @@ export const AUTH_ERRORS = {
   REQUIRED_LAST_NAME: "Last name is required",
   ROLE_IS_REQUIRED: "Role is required",
   NOT_ACTIVATE: "This accound is not activated",
+  INVITATION_NOT_FOUND: "Invitation token not found",
+  INVITATION_USED: "This invitation token has already been used",
+  INVITATION_EXPIRED: "This invitation token has expired",
 } as const;

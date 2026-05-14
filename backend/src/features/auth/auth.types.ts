@@ -1,5 +1,9 @@
 import { Prisma } from "@/generated/prisma/client.js";
-import { loginSchema, registerSchema } from "./auth.schema.js";
+import {
+  loginSchema,
+  inviteUserSchema,
+  finalizeRegistrationSchema,
+} from "./auth.schema.js";
 import { z } from "zod";
 
 export const userSafeSelect = {
@@ -33,7 +37,10 @@ export type JWTpayload = {
   exp?: number;
 };
 
-export type RegisterInput = z.infer<typeof registerSchema>;
+export type InviteUserInput = z.infer<typeof inviteUserSchema>;
+export type FinalizeRegistrationInput = z.infer<
+  typeof finalizeRegistrationSchema
+>;
 export type LoginInput = z.infer<typeof loginSchema>;
 
 export interface ApiResponse<T> {
