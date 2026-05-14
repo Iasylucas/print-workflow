@@ -23,21 +23,14 @@ const emailSchema = z
   .toLowerCase()
   .pipe(z.email("Invalid email address"));
 
-/**
- * FEATURE : INVITATION (Action de l'Admin)
- * Utilisé dans le Controller pour valider l'invitation d'un nouveau membre
- */
+// input for the invitation action (by the admin)
 export const inviteUserSchema = z.object({
-  // Id de l'utilisateur temporaire créé en base
   id: z.uuid().default(() => uuidv7()),
   email: emailSchema,
   role: UserRole.default("SALES"),
 });
 
-/**
- * FEATURE : FINALISATION (Action de l'Invité)
- * Utilisé quand le user clique sur le lien et remplit son profil
- */
+// input for the finalization action (by the colaborator)
 export const finalizeRegistrationSchema = z
   .object({
     token: z.string().min(1, "Invitation token is required"),
@@ -54,12 +47,10 @@ export const finalizeRegistrationSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
-    path: ["confirmPassword"], // Cible l'erreur sur l'input confirmPassword
+    path: ["confirmPassword"],
   });
 
-/**
- * FEATURE : CONNEXION (Login classique)
- */
+// input for the login action (by the users)
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, "Password is required"),

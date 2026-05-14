@@ -13,4 +13,8 @@ export const AUTH_ERRORS = {
   INVITATION_NOT_FOUND: "Invitation token not found",
   INVITATION_USED: "This invitation token has already been used",
   INVITATION_EXPIRED: "This invitation token has expired",
+  NOT_LOGGED_IN: "Please login to access this resource",
+  INVALID_TOKEN: "Invalid or expired token",
+  NO_TOKEN_PROVIDED: "No token provided",
+  FORBIDDEN: "You do not have permission to perform this action",
 } as const;
