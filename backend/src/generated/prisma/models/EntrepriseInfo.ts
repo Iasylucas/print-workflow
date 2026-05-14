@@ -769,10 +769,6 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type EntrepriseInfoCreateNestedOneWithoutDevisInput = {
   create?: Prisma.XOR<Prisma.EntrepriseInfoCreateWithoutDevisInput, Prisma.EntrepriseInfoUncheckedCreateWithoutDevisInput>
   connectOrCreate?: Prisma.EntrepriseInfoCreateOrConnectWithoutDevisInput

@@ -180,11 +180,11 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type UserGroupByOutputType = {
   id: string
   email: string
-  password: string
+  password: string | null
   role: string
   isActif: boolean
-  firstName: string
-  lastName: string
+  firstName: string | null
+  lastName: string | null
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
@@ -214,11 +214,11 @@ export type UserWhereInput = {
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
-  password?: Prisma.StringFilter<"User"> | string
+  password?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.StringFilter<"User"> | string
   isActif?: Prisma.BoolFilter<"User"> | boolean
-  firstName?: Prisma.StringFilter<"User"> | string
-  lastName?: Prisma.StringFilter<"User"> | string
+  firstName?: Prisma.StringNullableFilter<"User"> | string | null
+  lastName?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
@@ -229,16 +229,17 @@ export type UserWhereInput = {
   facturesCrees?: Prisma.FactureListRelationFilter
   commandesCrees?: Prisma.CommandeListRelationFilter
   resetTokens?: Prisma.PasswordResetTokenListRelationFilter
+  invitations?: Prisma.InvitationTokenListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
+  password?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   isActif?: Prisma.SortOrder
-  firstName?: Prisma.SortOrder
-  lastName?: Prisma.SortOrder
+  firstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -249,6 +250,7 @@ export type UserOrderByWithRelationInput = {
   facturesCrees?: Prisma.FactureOrderByRelationAggregateInput
   commandesCrees?: Prisma.CommandeOrderByRelationAggregateInput
   resetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
+  invitations?: Prisma.InvitationTokenOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -257,11 +259,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
-  password?: Prisma.StringFilter<"User"> | string
+  password?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.StringFilter<"User"> | string
   isActif?: Prisma.BoolFilter<"User"> | boolean
-  firstName?: Prisma.StringFilter<"User"> | string
-  lastName?: Prisma.StringFilter<"User"> | string
+  firstName?: Prisma.StringNullableFilter<"User"> | string | null
+  lastName?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
@@ -272,16 +274,17 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   facturesCrees?: Prisma.FactureListRelationFilter
   commandesCrees?: Prisma.CommandeListRelationFilter
   resetTokens?: Prisma.PasswordResetTokenListRelationFilter
+  invitations?: Prisma.InvitationTokenListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
+  password?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   isActif?: Prisma.SortOrder
-  firstName?: Prisma.SortOrder
-  lastName?: Prisma.SortOrder
+  firstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -296,11 +299,11 @@ export type UserScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
-  password?: Prisma.StringWithAggregatesFilter<"User"> | string
+  password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.StringWithAggregatesFilter<"User"> | string
   isActif?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
-  firstName?: Prisma.StringWithAggregatesFilter<"User"> | string
-  lastName?: Prisma.StringWithAggregatesFilter<"User"> | string
+  firstName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  lastName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -309,11 +312,11 @@ export type UserScalarWhereWithAggregatesInput = {
 export type UserCreateInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -324,16 +327,17 @@ export type UserCreateInput = {
   facturesCrees?: Prisma.FactureCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -344,16 +348,17 @@ export type UserUncheckedCreateInput = {
   facturesCrees?: Prisma.FactureUncheckedCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -364,16 +369,17 @@ export type UserUpdateInput = {
   facturesCrees?: Prisma.FactureUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -384,16 +390,17 @@ export type UserUncheckedUpdateInput = {
   facturesCrees?: Prisma.FactureUncheckedUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -402,11 +409,11 @@ export type UserCreateManyInput = {
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -415,11 +422,11 @@ export type UserUpdateManyMutationInput = {
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -469,12 +476,30 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type UserCreateNestedOneWithoutInvitationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvitationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutInvitationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvitationsInput
+  upsert?: Prisma.UserUpsertWithoutInvitationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvitationsInput, Prisma.UserUpdateWithoutInvitationsInput>, Prisma.UserUncheckedUpdateWithoutInvitationsInput>
 }
 
 export type UserCreateNestedOneWithoutResetTokensInput = {
@@ -575,14 +600,14 @@ export type UserUpdateOneRequiredWithoutCommandesCreesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCommandesCreesInput, Prisma.UserUpdateWithoutCommandesCreesInput>, Prisma.UserUncheckedUpdateWithoutCommandesCreesInput>
 }
 
-export type UserCreateWithoutResetTokensInput = {
+export type UserCreateWithoutInvitationsInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -592,16 +617,17 @@ export type UserCreateWithoutResetTokensInput = {
   devisCrees?: Prisma.DevisCreateNestedManyWithoutCreatedByInput
   facturesCrees?: Prisma.FactureCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeCreateNestedManyWithoutCreatedByInput
+  resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutResetTokensInput = {
+export type UserUncheckedCreateWithoutInvitationsInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -611,6 +637,103 @@ export type UserUncheckedCreateWithoutResetTokensInput = {
   devisCrees?: Prisma.DevisUncheckedCreateNestedManyWithoutCreatedByInput
   facturesCrees?: Prisma.FactureUncheckedCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeUncheckedCreateNestedManyWithoutCreatedByInput
+  resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutInvitationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
+}
+
+export type UserUpsertWithoutInvitationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutInvitationsInput, Prisma.UserUncheckedUpdateWithoutInvitationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutInvitationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutInvitationsInput, Prisma.UserUncheckedUpdateWithoutInvitationsInput>
+}
+
+export type UserUpdateWithoutInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fichiers?: Prisma.FichierUpdateManyWithoutUploadedByNestedInput
+  paiements?: Prisma.PaiementUpdateManyWithoutEncaisseParNestedInput
+  notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
+  devisCrees?: Prisma.DevisUpdateManyWithoutCreatedByNestedInput
+  facturesCrees?: Prisma.FactureUpdateManyWithoutCreatedByNestedInput
+  commandesCrees?: Prisma.CommandeUpdateManyWithoutCreatedByNestedInput
+  resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fichiers?: Prisma.FichierUncheckedUpdateManyWithoutUploadedByNestedInput
+  paiements?: Prisma.PaiementUncheckedUpdateManyWithoutEncaisseParNestedInput
+  notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
+  devisCrees?: Prisma.DevisUncheckedUpdateManyWithoutCreatedByNestedInput
+  facturesCrees?: Prisma.FactureUncheckedUpdateManyWithoutCreatedByNestedInput
+  commandesCrees?: Prisma.CommandeUncheckedUpdateManyWithoutCreatedByNestedInput
+  resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutResetTokensInput = {
+  id: string
+  email: string
+  password?: string | null
+  role: string
+  isActif?: boolean
+  firstName?: string | null
+  lastName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  fichiers?: Prisma.FichierCreateNestedManyWithoutUploadedByInput
+  paiements?: Prisma.PaiementCreateNestedManyWithoutEncaisseParInput
+  notes?: Prisma.NoteCreateNestedManyWithoutUserInput
+  devisCrees?: Prisma.DevisCreateNestedManyWithoutCreatedByInput
+  facturesCrees?: Prisma.FactureCreateNestedManyWithoutCreatedByInput
+  commandesCrees?: Prisma.CommandeCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutResetTokensInput = {
+  id: string
+  email: string
+  password?: string | null
+  role: string
+  isActif?: boolean
+  firstName?: string | null
+  lastName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  fichiers?: Prisma.FichierUncheckedCreateNestedManyWithoutUploadedByInput
+  paiements?: Prisma.PaiementUncheckedCreateNestedManyWithoutEncaisseParInput
+  notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
+  devisCrees?: Prisma.DevisUncheckedCreateNestedManyWithoutCreatedByInput
+  facturesCrees?: Prisma.FactureUncheckedCreateNestedManyWithoutCreatedByInput
+  commandesCrees?: Prisma.CommandeUncheckedCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutResetTokensInput = {
@@ -632,11 +755,11 @@ export type UserUpdateToOneWithWhereWithoutResetTokensInput = {
 export type UserUpdateWithoutResetTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -646,16 +769,17 @@ export type UserUpdateWithoutResetTokensInput = {
   devisCrees?: Prisma.DevisUpdateManyWithoutCreatedByNestedInput
   facturesCrees?: Prisma.FactureUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResetTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -665,16 +789,17 @@ export type UserUncheckedUpdateWithoutResetTokensInput = {
   devisCrees?: Prisma.DevisUncheckedUpdateManyWithoutCreatedByNestedInput
   facturesCrees?: Prisma.FactureUncheckedUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUncheckedUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDevisCreesInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -684,16 +809,17 @@ export type UserCreateWithoutDevisCreesInput = {
   facturesCrees?: Prisma.FactureCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDevisCreesInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -703,6 +829,7 @@ export type UserUncheckedCreateWithoutDevisCreesInput = {
   facturesCrees?: Prisma.FactureUncheckedCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDevisCreesInput = {
@@ -724,11 +851,11 @@ export type UserUpdateToOneWithWhereWithoutDevisCreesInput = {
 export type UserUpdateWithoutDevisCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -738,16 +865,17 @@ export type UserUpdateWithoutDevisCreesInput = {
   facturesCrees?: Prisma.FactureUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDevisCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -757,16 +885,17 @@ export type UserUncheckedUpdateWithoutDevisCreesInput = {
   facturesCrees?: Prisma.FactureUncheckedUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFacturesCreesInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -776,16 +905,17 @@ export type UserCreateWithoutFacturesCreesInput = {
   devisCrees?: Prisma.DevisCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFacturesCreesInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -795,6 +925,7 @@ export type UserUncheckedCreateWithoutFacturesCreesInput = {
   devisCrees?: Prisma.DevisUncheckedCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFacturesCreesInput = {
@@ -816,11 +947,11 @@ export type UserUpdateToOneWithWhereWithoutFacturesCreesInput = {
 export type UserUpdateWithoutFacturesCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -830,16 +961,17 @@ export type UserUpdateWithoutFacturesCreesInput = {
   devisCrees?: Prisma.DevisUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFacturesCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -849,16 +981,17 @@ export type UserUncheckedUpdateWithoutFacturesCreesInput = {
   devisCrees?: Prisma.DevisUncheckedUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFichiersInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -868,16 +1001,17 @@ export type UserCreateWithoutFichiersInput = {
   facturesCrees?: Prisma.FactureCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFichiersInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -887,6 +1021,7 @@ export type UserUncheckedCreateWithoutFichiersInput = {
   facturesCrees?: Prisma.FactureUncheckedCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFichiersInput = {
@@ -908,11 +1043,11 @@ export type UserUpdateToOneWithWhereWithoutFichiersInput = {
 export type UserUpdateWithoutFichiersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -922,16 +1057,17 @@ export type UserUpdateWithoutFichiersInput = {
   facturesCrees?: Prisma.FactureUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFichiersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -941,16 +1077,17 @@ export type UserUncheckedUpdateWithoutFichiersInput = {
   facturesCrees?: Prisma.FactureUncheckedUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPaiementsInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -960,16 +1097,17 @@ export type UserCreateWithoutPaiementsInput = {
   facturesCrees?: Prisma.FactureCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPaiementsInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -979,6 +1117,7 @@ export type UserUncheckedCreateWithoutPaiementsInput = {
   facturesCrees?: Prisma.FactureUncheckedCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPaiementsInput = {
@@ -1000,11 +1139,11 @@ export type UserUpdateToOneWithWhereWithoutPaiementsInput = {
 export type UserUpdateWithoutPaiementsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1014,16 +1153,17 @@ export type UserUpdateWithoutPaiementsInput = {
   facturesCrees?: Prisma.FactureUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaiementsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1033,16 +1173,17 @@ export type UserUncheckedUpdateWithoutPaiementsInput = {
   facturesCrees?: Prisma.FactureUncheckedUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotesInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1052,16 +1193,17 @@ export type UserCreateWithoutNotesInput = {
   facturesCrees?: Prisma.FactureCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotesInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1071,6 +1213,7 @@ export type UserUncheckedCreateWithoutNotesInput = {
   facturesCrees?: Prisma.FactureUncheckedCreateNestedManyWithoutCreatedByInput
   commandesCrees?: Prisma.CommandeUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotesInput = {
@@ -1092,11 +1235,11 @@ export type UserUpdateToOneWithWhereWithoutNotesInput = {
 export type UserUpdateWithoutNotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1106,16 +1249,17 @@ export type UserUpdateWithoutNotesInput = {
   facturesCrees?: Prisma.FactureUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1125,16 +1269,17 @@ export type UserUncheckedUpdateWithoutNotesInput = {
   facturesCrees?: Prisma.FactureUncheckedUpdateManyWithoutCreatedByNestedInput
   commandesCrees?: Prisma.CommandeUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCommandesCreesInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1144,16 +1289,17 @@ export type UserCreateWithoutCommandesCreesInput = {
   devisCrees?: Prisma.DevisCreateNestedManyWithoutCreatedByInput
   facturesCrees?: Prisma.FactureCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCommandesCreesInput = {
   id: string
   email: string
-  password: string
+  password?: string | null
   role: string
   isActif?: boolean
-  firstName: string
-  lastName: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1163,6 +1309,7 @@ export type UserUncheckedCreateWithoutCommandesCreesInput = {
   devisCrees?: Prisma.DevisUncheckedCreateNestedManyWithoutCreatedByInput
   facturesCrees?: Prisma.FactureUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCommandesCreesInput = {
@@ -1184,11 +1331,11 @@ export type UserUpdateToOneWithWhereWithoutCommandesCreesInput = {
 export type UserUpdateWithoutCommandesCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1198,16 +1345,17 @@ export type UserUpdateWithoutCommandesCreesInput = {
   devisCrees?: Prisma.DevisUpdateManyWithoutCreatedByNestedInput
   facturesCrees?: Prisma.FactureUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommandesCreesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   isActif?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1217,6 +1365,7 @@ export type UserUncheckedUpdateWithoutCommandesCreesInput = {
   devisCrees?: Prisma.DevisUncheckedUpdateManyWithoutCreatedByNestedInput
   facturesCrees?: Prisma.FactureUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1232,6 +1381,7 @@ export type UserCountOutputType = {
   facturesCrees: number
   commandesCrees: number
   resetTokens: number
+  invitations: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1242,6 +1392,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   facturesCrees?: boolean | UserCountOutputTypeCountFacturesCreesArgs
   commandesCrees?: boolean | UserCountOutputTypeCountCommandesCreesArgs
   resetTokens?: boolean | UserCountOutputTypeCountResetTokensArgs
+  invitations?: boolean | UserCountOutputTypeCountInvitationsArgs
 }
 
 /**
@@ -1303,6 +1454,13 @@ export type UserCountOutputTypeCountResetTokensArgs<ExtArgs extends runtime.Type
   where?: Prisma.PasswordResetTokenWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvitationTokenWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1322,6 +1480,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   facturesCrees?: boolean | Prisma.User$facturesCreesArgs<ExtArgs>
   commandesCrees?: boolean | Prisma.User$commandesCreesArgs<ExtArgs>
   resetTokens?: boolean | Prisma.User$resetTokensArgs<ExtArgs>
+  invitations?: boolean | Prisma.User$invitationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1373,6 +1532,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   facturesCrees?: boolean | Prisma.User$facturesCreesArgs<ExtArgs>
   commandesCrees?: boolean | Prisma.User$commandesCreesArgs<ExtArgs>
   resetTokens?: boolean | Prisma.User$resetTokensArgs<ExtArgs>
+  invitations?: boolean | Prisma.User$invitationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1388,15 +1548,16 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     facturesCrees: Prisma.$FacturePayload<ExtArgs>[]
     commandesCrees: Prisma.$CommandePayload<ExtArgs>[]
     resetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
+    invitations: Prisma.$InvitationTokenPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
-    password: string
+    password: string | null
     role: string
     isActif: boolean
-    firstName: string
-    lastName: string
+    firstName: string | null
+    lastName: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -1801,6 +1962,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   facturesCrees<T extends Prisma.User$facturesCreesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$facturesCreesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FacturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   commandesCrees<T extends Prisma.User$commandesCreesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commandesCreesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommandePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   resetTokens<T extends Prisma.User$resetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invitations<T extends Prisma.User$invitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2398,6 +2560,30 @@ export type User$resetTokensArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.PasswordResetTokenScalarFieldEnum | Prisma.PasswordResetTokenScalarFieldEnum[]
+}
+
+/**
+ * User.invitations
+ */
+export type User$invitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InvitationToken
+   */
+  select?: Prisma.InvitationTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InvitationToken
+   */
+  omit?: Prisma.InvitationTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvitationTokenInclude<ExtArgs> | null
+  where?: Prisma.InvitationTokenWhereInput
+  orderBy?: Prisma.InvitationTokenOrderByWithRelationInput | Prisma.InvitationTokenOrderByWithRelationInput[]
+  cursor?: Prisma.InvitationTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvitationTokenScalarFieldEnum | Prisma.InvitationTokenScalarFieldEnum[]
 }
 
 /**

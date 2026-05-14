@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Client: 'Client',
   User: 'User',
+  InvitationToken: 'InvitationToken',
   PasswordResetToken: 'PasswordResetToken',
   EntrepriseInfo: 'EntrepriseInfo',
   Devis: 'Devis',
@@ -111,6 +112,20 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const InvitationTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  email: 'email',
+  role: 'role',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  usedAt: 'usedAt',
+  userId: 'userId'
+} as const
+
+export type InvitationTokenScalarFieldEnum = (typeof InvitationTokenScalarFieldEnum)[keyof typeof InvitationTokenScalarFieldEnum]
 
 
 export const PasswordResetTokenScalarFieldEnum = {

@@ -28,11 +28,11 @@ model Client {
 model User {
   id        String   @id
   email     String   @unique
-  password  String
+  password  String?
   role      String
   isActif   Boolean  @default(false)
-  firstName String
-  lastName  String
+  firstName String?
+  lastName  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
@@ -46,6 +46,7 @@ model User {
   commandesCrees Commande[] @relation("UserCommande")
 
   resetTokens PasswordResetToken[]
+  invitations    InvitationToken[]
 }
 
 enum Role {
@@ -53,6 +54,19 @@ enum Role {
   SALES
   PRINTER
   GRAPHIC_DESIGNER
+}
+
+model InvitationToken {
+  id        String   @id // UUIDv7
+  token     String   @unique // Le hash du token (sécurité)
+  email     String   // L'email invité
+  role      Role     // Le rôle pré-attribué
+  expiresAt DateTime // Date d'expiration (ex: 48h)
+  createdAt DateTime @default(now())
+  usedAt    DateTime? // Pour marquer s'il a déjà servi
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model PasswordResetToken {
