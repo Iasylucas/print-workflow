@@ -63,6 +63,7 @@ export type CommandeMinAggregateOutputType = {
   quantite: number | null
   prixUnitaire: number | null
   prixTotal: number | null
+  createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
@@ -83,6 +84,7 @@ export type CommandeMaxAggregateOutputType = {
   quantite: number | null
   prixUnitaire: number | null
   prixTotal: number | null
+  createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
@@ -104,6 +106,7 @@ export type CommandeCountAggregateOutputType = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: number
   createdAt: number
   updatedAt: number
   deletedAt: number
@@ -148,6 +151,7 @@ export type CommandeMinAggregateInputType = {
   quantite?: true
   prixUnitaire?: true
   prixTotal?: true
+  createdById?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
@@ -168,6 +172,7 @@ export type CommandeMaxAggregateInputType = {
   quantite?: true
   prixUnitaire?: true
   prixTotal?: true
+  createdById?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
@@ -189,6 +194,7 @@ export type CommandeCountAggregateInputType = {
   quantite?: true
   prixUnitaire?: true
   prixTotal?: true
+  createdById?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
@@ -297,6 +303,7 @@ export type CommandeGroupByOutputType = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
@@ -341,6 +348,7 @@ export type CommandeWhereInput = {
   quantite?: Prisma.IntFilter<"Commande"> | number
   prixUnitaire?: Prisma.IntFilter<"Commande"> | number
   prixTotal?: Prisma.IntFilter<"Commande"> | number
+  createdById?: Prisma.StringFilter<"Commande"> | string
   createdAt?: Prisma.DateTimeFilter<"Commande"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Commande"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Commande"> | Date | string | null
@@ -349,6 +357,7 @@ export type CommandeWhereInput = {
   facture?: Prisma.XOR<Prisma.FactureNullableScalarRelationFilter, Prisma.FactureWhereInput> | null
   variant?: Prisma.XOR<Prisma.ProductVariantScalarRelationFilter, Prisma.ProductVariantWhereInput>
   pricingRule?: Prisma.XOR<Prisma.PricingRuleScalarRelationFilter, Prisma.PricingRuleWhereInput>
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   fichiers?: Prisma.FichierListRelationFilter
   notes?: Prisma.NoteListRelationFilter
 }
@@ -369,6 +378,7 @@ export type CommandeOrderByWithRelationInput = {
   quantite?: Prisma.SortOrder
   prixUnitaire?: Prisma.SortOrder
   prixTotal?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -377,6 +387,7 @@ export type CommandeOrderByWithRelationInput = {
   facture?: Prisma.FactureOrderByWithRelationInput
   variant?: Prisma.ProductVariantOrderByWithRelationInput
   pricingRule?: Prisma.PricingRuleOrderByWithRelationInput
+  createdBy?: Prisma.UserOrderByWithRelationInput
   fichiers?: Prisma.FichierOrderByRelationAggregateInput
   notes?: Prisma.NoteOrderByRelationAggregateInput
 }
@@ -400,6 +411,7 @@ export type CommandeWhereUniqueInput = Prisma.AtLeast<{
   quantite?: Prisma.IntFilter<"Commande"> | number
   prixUnitaire?: Prisma.IntFilter<"Commande"> | number
   prixTotal?: Prisma.IntFilter<"Commande"> | number
+  createdById?: Prisma.StringFilter<"Commande"> | string
   createdAt?: Prisma.DateTimeFilter<"Commande"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Commande"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Commande"> | Date | string | null
@@ -408,6 +420,7 @@ export type CommandeWhereUniqueInput = Prisma.AtLeast<{
   facture?: Prisma.XOR<Prisma.FactureNullableScalarRelationFilter, Prisma.FactureWhereInput> | null
   variant?: Prisma.XOR<Prisma.ProductVariantScalarRelationFilter, Prisma.ProductVariantWhereInput>
   pricingRule?: Prisma.XOR<Prisma.PricingRuleScalarRelationFilter, Prisma.PricingRuleWhereInput>
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   fichiers?: Prisma.FichierListRelationFilter
   notes?: Prisma.NoteListRelationFilter
 }, "id" | "reference">
@@ -428,6 +441,7 @@ export type CommandeOrderByWithAggregationInput = {
   quantite?: Prisma.SortOrder
   prixUnitaire?: Prisma.SortOrder
   prixTotal?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -457,6 +471,7 @@ export type CommandeScalarWhereWithAggregatesInput = {
   quantite?: Prisma.IntWithAggregatesFilter<"Commande"> | number
   prixUnitaire?: Prisma.IntWithAggregatesFilter<"Commande"> | number
   prixTotal?: Prisma.IntWithAggregatesFilter<"Commande"> | number
+  createdById?: Prisma.StringWithAggregatesFilter<"Commande"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Commande"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Commande"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Commande"> | Date | string | null
@@ -480,6 +495,7 @@ export type CommandeCreateInput = {
   facture?: Prisma.FactureCreateNestedOneWithoutCommandesInput
   variant: Prisma.ProductVariantCreateNestedOneWithoutCommandesInput
   pricingRule: Prisma.PricingRuleCreateNestedOneWithoutCommandesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCommandesCreesInput
   fichiers?: Prisma.FichierCreateNestedManyWithoutCommandeInput
   notes?: Prisma.NoteCreateNestedManyWithoutCommandeInput
 }
@@ -500,6 +516,7 @@ export type CommandeUncheckedCreateInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -525,6 +542,7 @@ export type CommandeUpdateInput = {
   facture?: Prisma.FactureUpdateOneWithoutCommandesNestedInput
   variant?: Prisma.ProductVariantUpdateOneRequiredWithoutCommandesNestedInput
   pricingRule?: Prisma.PricingRuleUpdateOneRequiredWithoutCommandesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCommandesCreesNestedInput
   fichiers?: Prisma.FichierUpdateManyWithoutCommandeNestedInput
   notes?: Prisma.NoteUpdateManyWithoutCommandeNestedInput
 }
@@ -545,6 +563,7 @@ export type CommandeUncheckedUpdateInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -568,6 +587,7 @@ export type CommandeCreateManyInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -604,6 +624,7 @@ export type CommandeUncheckedUpdateManyInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -640,6 +661,7 @@ export type CommandeCountOrderByAggregateInput = {
   quantite?: Prisma.SortOrder
   prixUnitaire?: Prisma.SortOrder
   prixTotal?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -671,6 +693,7 @@ export type CommandeMaxOrderByAggregateInput = {
   quantite?: Prisma.SortOrder
   prixUnitaire?: Prisma.SortOrder
   prixTotal?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -691,6 +714,7 @@ export type CommandeMinOrderByAggregateInput = {
   quantite?: Prisma.SortOrder
   prixUnitaire?: Prisma.SortOrder
   prixTotal?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -746,6 +770,48 @@ export type CommandeUncheckedUpdateManyWithoutClientNestedInput = {
   connect?: Prisma.CommandeWhereUniqueInput | Prisma.CommandeWhereUniqueInput[]
   update?: Prisma.CommandeUpdateWithWhereUniqueWithoutClientInput | Prisma.CommandeUpdateWithWhereUniqueWithoutClientInput[]
   updateMany?: Prisma.CommandeUpdateManyWithWhereWithoutClientInput | Prisma.CommandeUpdateManyWithWhereWithoutClientInput[]
+  deleteMany?: Prisma.CommandeScalarWhereInput | Prisma.CommandeScalarWhereInput[]
+}
+
+export type CommandeCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.CommandeCreateWithoutCreatedByInput, Prisma.CommandeUncheckedCreateWithoutCreatedByInput> | Prisma.CommandeCreateWithoutCreatedByInput[] | Prisma.CommandeUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.CommandeCreateOrConnectWithoutCreatedByInput | Prisma.CommandeCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.CommandeCreateManyCreatedByInputEnvelope
+  connect?: Prisma.CommandeWhereUniqueInput | Prisma.CommandeWhereUniqueInput[]
+}
+
+export type CommandeUncheckedCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.CommandeCreateWithoutCreatedByInput, Prisma.CommandeUncheckedCreateWithoutCreatedByInput> | Prisma.CommandeCreateWithoutCreatedByInput[] | Prisma.CommandeUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.CommandeCreateOrConnectWithoutCreatedByInput | Prisma.CommandeCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.CommandeCreateManyCreatedByInputEnvelope
+  connect?: Prisma.CommandeWhereUniqueInput | Prisma.CommandeWhereUniqueInput[]
+}
+
+export type CommandeUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.CommandeCreateWithoutCreatedByInput, Prisma.CommandeUncheckedCreateWithoutCreatedByInput> | Prisma.CommandeCreateWithoutCreatedByInput[] | Prisma.CommandeUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.CommandeCreateOrConnectWithoutCreatedByInput | Prisma.CommandeCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.CommandeUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.CommandeUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.CommandeCreateManyCreatedByInputEnvelope
+  set?: Prisma.CommandeWhereUniqueInput | Prisma.CommandeWhereUniqueInput[]
+  disconnect?: Prisma.CommandeWhereUniqueInput | Prisma.CommandeWhereUniqueInput[]
+  delete?: Prisma.CommandeWhereUniqueInput | Prisma.CommandeWhereUniqueInput[]
+  connect?: Prisma.CommandeWhereUniqueInput | Prisma.CommandeWhereUniqueInput[]
+  update?: Prisma.CommandeUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.CommandeUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.CommandeUpdateManyWithWhereWithoutCreatedByInput | Prisma.CommandeUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.CommandeScalarWhereInput | Prisma.CommandeScalarWhereInput[]
+}
+
+export type CommandeUncheckedUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.CommandeCreateWithoutCreatedByInput, Prisma.CommandeUncheckedCreateWithoutCreatedByInput> | Prisma.CommandeCreateWithoutCreatedByInput[] | Prisma.CommandeUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.CommandeCreateOrConnectWithoutCreatedByInput | Prisma.CommandeCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.CommandeUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.CommandeUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.CommandeCreateManyCreatedByInputEnvelope
+  set?: Prisma.CommandeWhereUniqueInput | Prisma.CommandeWhereUniqueInput[]
+  disconnect?: Prisma.CommandeWhereUniqueInput | Prisma.CommandeWhereUniqueInput[]
+  delete?: Prisma.CommandeWhereUniqueInput | Prisma.CommandeWhereUniqueInput[]
+  connect?: Prisma.CommandeWhereUniqueInput | Prisma.CommandeWhereUniqueInput[]
+  update?: Prisma.CommandeUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.CommandeUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.CommandeUpdateManyWithWhereWithoutCreatedByInput | Prisma.CommandeUpdateManyWithWhereWithoutCreatedByInput[]
   deleteMany?: Prisma.CommandeScalarWhereInput | Prisma.CommandeScalarWhereInput[]
 }
 
@@ -970,6 +1036,7 @@ export type CommandeCreateWithoutClientInput = {
   facture?: Prisma.FactureCreateNestedOneWithoutCommandesInput
   variant: Prisma.ProductVariantCreateNestedOneWithoutCommandesInput
   pricingRule: Prisma.PricingRuleCreateNestedOneWithoutCommandesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCommandesCreesInput
   fichiers?: Prisma.FichierCreateNestedManyWithoutCommandeInput
   notes?: Prisma.NoteCreateNestedManyWithoutCommandeInput
 }
@@ -989,6 +1056,7 @@ export type CommandeUncheckedCreateWithoutClientInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1041,9 +1109,81 @@ export type CommandeScalarWhereInput = {
   quantite?: Prisma.IntFilter<"Commande"> | number
   prixUnitaire?: Prisma.IntFilter<"Commande"> | number
   prixTotal?: Prisma.IntFilter<"Commande"> | number
+  createdById?: Prisma.StringFilter<"Commande"> | string
   createdAt?: Prisma.DateTimeFilter<"Commande"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Commande"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Commande"> | Date | string | null
+}
+
+export type CommandeCreateWithoutCreatedByInput = {
+  reference: string
+  designation: string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  largeurPieceCm?: number | null
+  hauteurPieceCm?: number | null
+  statut?: string
+  quantite: number
+  prixUnitaire: number
+  prixTotal: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  client: Prisma.ClientCreateNestedOneWithoutCommandesInput
+  devis?: Prisma.DevisCreateNestedOneWithoutCommandesInput
+  facture?: Prisma.FactureCreateNestedOneWithoutCommandesInput
+  variant: Prisma.ProductVariantCreateNestedOneWithoutCommandesInput
+  pricingRule: Prisma.PricingRuleCreateNestedOneWithoutCommandesInput
+  fichiers?: Prisma.FichierCreateNestedManyWithoutCommandeInput
+  notes?: Prisma.NoteCreateNestedManyWithoutCommandeInput
+}
+
+export type CommandeUncheckedCreateWithoutCreatedByInput = {
+  id?: number
+  reference: string
+  designation: string
+  clientId: string
+  devisId?: number | null
+  factureId?: number | null
+  variantId: string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  pricingRuleId: string
+  largeurPieceCm?: number | null
+  hauteurPieceCm?: number | null
+  statut?: string
+  quantite: number
+  prixUnitaire: number
+  prixTotal: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  fichiers?: Prisma.FichierUncheckedCreateNestedManyWithoutCommandeInput
+  notes?: Prisma.NoteUncheckedCreateNestedManyWithoutCommandeInput
+}
+
+export type CommandeCreateOrConnectWithoutCreatedByInput = {
+  where: Prisma.CommandeWhereUniqueInput
+  create: Prisma.XOR<Prisma.CommandeCreateWithoutCreatedByInput, Prisma.CommandeUncheckedCreateWithoutCreatedByInput>
+}
+
+export type CommandeCreateManyCreatedByInputEnvelope = {
+  data: Prisma.CommandeCreateManyCreatedByInput | Prisma.CommandeCreateManyCreatedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type CommandeUpsertWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.CommandeWhereUniqueInput
+  update: Prisma.XOR<Prisma.CommandeUpdateWithoutCreatedByInput, Prisma.CommandeUncheckedUpdateWithoutCreatedByInput>
+  create: Prisma.XOR<Prisma.CommandeCreateWithoutCreatedByInput, Prisma.CommandeUncheckedCreateWithoutCreatedByInput>
+}
+
+export type CommandeUpdateWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.CommandeWhereUniqueInput
+  data: Prisma.XOR<Prisma.CommandeUpdateWithoutCreatedByInput, Prisma.CommandeUncheckedUpdateWithoutCreatedByInput>
+}
+
+export type CommandeUpdateManyWithWhereWithoutCreatedByInput = {
+  where: Prisma.CommandeScalarWhereInput
+  data: Prisma.XOR<Prisma.CommandeUpdateManyMutationInput, Prisma.CommandeUncheckedUpdateManyWithoutCreatedByInput>
 }
 
 export type CommandeCreateWithoutDevisInput = {
@@ -1063,6 +1203,7 @@ export type CommandeCreateWithoutDevisInput = {
   facture?: Prisma.FactureCreateNestedOneWithoutCommandesInput
   variant: Prisma.ProductVariantCreateNestedOneWithoutCommandesInput
   pricingRule: Prisma.PricingRuleCreateNestedOneWithoutCommandesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCommandesCreesInput
   fichiers?: Prisma.FichierCreateNestedManyWithoutCommandeInput
   notes?: Prisma.NoteCreateNestedManyWithoutCommandeInput
 }
@@ -1082,6 +1223,7 @@ export type CommandeUncheckedCreateWithoutDevisInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1132,6 +1274,7 @@ export type CommandeCreateWithoutFactureInput = {
   devis?: Prisma.DevisCreateNestedOneWithoutCommandesInput
   variant: Prisma.ProductVariantCreateNestedOneWithoutCommandesInput
   pricingRule: Prisma.PricingRuleCreateNestedOneWithoutCommandesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCommandesCreesInput
   fichiers?: Prisma.FichierCreateNestedManyWithoutCommandeInput
   notes?: Prisma.NoteCreateNestedManyWithoutCommandeInput
 }
@@ -1151,6 +1294,7 @@ export type CommandeUncheckedCreateWithoutFactureInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1202,6 +1346,7 @@ export type CommandeCreateWithoutFichiersInput = {
   facture?: Prisma.FactureCreateNestedOneWithoutCommandesInput
   variant: Prisma.ProductVariantCreateNestedOneWithoutCommandesInput
   pricingRule: Prisma.PricingRuleCreateNestedOneWithoutCommandesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCommandesCreesInput
   notes?: Prisma.NoteCreateNestedManyWithoutCommandeInput
 }
 
@@ -1221,6 +1366,7 @@ export type CommandeUncheckedCreateWithoutFichiersInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1261,6 +1407,7 @@ export type CommandeUpdateWithoutFichiersInput = {
   facture?: Prisma.FactureUpdateOneWithoutCommandesNestedInput
   variant?: Prisma.ProductVariantUpdateOneRequiredWithoutCommandesNestedInput
   pricingRule?: Prisma.PricingRuleUpdateOneRequiredWithoutCommandesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCommandesCreesNestedInput
   notes?: Prisma.NoteUpdateManyWithoutCommandeNestedInput
 }
 
@@ -1280,6 +1427,7 @@ export type CommandeUncheckedUpdateWithoutFichiersInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1304,6 +1452,7 @@ export type CommandeCreateWithoutNotesInput = {
   facture?: Prisma.FactureCreateNestedOneWithoutCommandesInput
   variant: Prisma.ProductVariantCreateNestedOneWithoutCommandesInput
   pricingRule: Prisma.PricingRuleCreateNestedOneWithoutCommandesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCommandesCreesInput
   fichiers?: Prisma.FichierCreateNestedManyWithoutCommandeInput
 }
 
@@ -1323,6 +1472,7 @@ export type CommandeUncheckedCreateWithoutNotesInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1363,6 +1513,7 @@ export type CommandeUpdateWithoutNotesInput = {
   facture?: Prisma.FactureUpdateOneWithoutCommandesNestedInput
   variant?: Prisma.ProductVariantUpdateOneRequiredWithoutCommandesNestedInput
   pricingRule?: Prisma.PricingRuleUpdateOneRequiredWithoutCommandesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCommandesCreesNestedInput
   fichiers?: Prisma.FichierUpdateManyWithoutCommandeNestedInput
 }
 
@@ -1382,6 +1533,7 @@ export type CommandeUncheckedUpdateWithoutNotesInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1405,6 +1557,7 @@ export type CommandeCreateWithoutVariantInput = {
   devis?: Prisma.DevisCreateNestedOneWithoutCommandesInput
   facture?: Prisma.FactureCreateNestedOneWithoutCommandesInput
   pricingRule: Prisma.PricingRuleCreateNestedOneWithoutCommandesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCommandesCreesInput
   fichiers?: Prisma.FichierCreateNestedManyWithoutCommandeInput
   notes?: Prisma.NoteCreateNestedManyWithoutCommandeInput
 }
@@ -1424,6 +1577,7 @@ export type CommandeUncheckedCreateWithoutVariantInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1474,6 +1628,7 @@ export type CommandeCreateWithoutPricingRuleInput = {
   devis?: Prisma.DevisCreateNestedOneWithoutCommandesInput
   facture?: Prisma.FactureCreateNestedOneWithoutCommandesInput
   variant: Prisma.ProductVariantCreateNestedOneWithoutCommandesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCommandesCreesInput
   fichiers?: Prisma.FichierCreateNestedManyWithoutCommandeInput
   notes?: Prisma.NoteCreateNestedManyWithoutCommandeInput
 }
@@ -1493,6 +1648,7 @@ export type CommandeUncheckedCreateWithoutPricingRuleInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1541,6 +1697,7 @@ export type CommandeCreateManyClientInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1563,6 +1720,7 @@ export type CommandeUpdateWithoutClientInput = {
   facture?: Prisma.FactureUpdateOneWithoutCommandesNestedInput
   variant?: Prisma.ProductVariantUpdateOneRequiredWithoutCommandesNestedInput
   pricingRule?: Prisma.PricingRuleUpdateOneRequiredWithoutCommandesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCommandesCreesNestedInput
   fichiers?: Prisma.FichierUpdateManyWithoutCommandeNestedInput
   notes?: Prisma.NoteUpdateManyWithoutCommandeNestedInput
 }
@@ -1582,6 +1740,7 @@ export type CommandeUncheckedUpdateWithoutClientInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1593,6 +1752,94 @@ export type CommandeUncheckedUpdateManyWithoutClientInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   designation?: Prisma.StringFieldUpdateOperationsInput | string
+  devisId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  factureId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  largeurPieceCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  hauteurPieceCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  statut?: Prisma.StringFieldUpdateOperationsInput | string
+  quantite?: Prisma.IntFieldUpdateOperationsInput | number
+  prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
+  prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type CommandeCreateManyCreatedByInput = {
+  id?: number
+  reference: string
+  designation: string
+  clientId: string
+  devisId?: number | null
+  factureId?: number | null
+  variantId: string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  pricingRuleId: string
+  largeurPieceCm?: number | null
+  hauteurPieceCm?: number | null
+  statut?: string
+  quantite: number
+  prixUnitaire: number
+  prixTotal: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+}
+
+export type CommandeUpdateWithoutCreatedByInput = {
+  reference?: Prisma.StringFieldUpdateOperationsInput | string
+  designation?: Prisma.StringFieldUpdateOperationsInput | string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  largeurPieceCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  hauteurPieceCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  statut?: Prisma.StringFieldUpdateOperationsInput | string
+  quantite?: Prisma.IntFieldUpdateOperationsInput | number
+  prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
+  prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  client?: Prisma.ClientUpdateOneRequiredWithoutCommandesNestedInput
+  devis?: Prisma.DevisUpdateOneWithoutCommandesNestedInput
+  facture?: Prisma.FactureUpdateOneWithoutCommandesNestedInput
+  variant?: Prisma.ProductVariantUpdateOneRequiredWithoutCommandesNestedInput
+  pricingRule?: Prisma.PricingRuleUpdateOneRequiredWithoutCommandesNestedInput
+  fichiers?: Prisma.FichierUpdateManyWithoutCommandeNestedInput
+  notes?: Prisma.NoteUpdateManyWithoutCommandeNestedInput
+}
+
+export type CommandeUncheckedUpdateWithoutCreatedByInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  reference?: Prisma.StringFieldUpdateOperationsInput | string
+  designation?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  devisId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  factureId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  largeurPieceCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  hauteurPieceCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  statut?: Prisma.StringFieldUpdateOperationsInput | string
+  quantite?: Prisma.IntFieldUpdateOperationsInput | number
+  prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
+  prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fichiers?: Prisma.FichierUncheckedUpdateManyWithoutCommandeNestedInput
+  notes?: Prisma.NoteUncheckedUpdateManyWithoutCommandeNestedInput
+}
+
+export type CommandeUncheckedUpdateManyWithoutCreatedByInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  reference?: Prisma.StringFieldUpdateOperationsInput | string
+  designation?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
   devisId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   factureId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   variantId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1624,6 +1871,7 @@ export type CommandeCreateManyDevisInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1646,6 +1894,7 @@ export type CommandeUpdateWithoutDevisInput = {
   facture?: Prisma.FactureUpdateOneWithoutCommandesNestedInput
   variant?: Prisma.ProductVariantUpdateOneRequiredWithoutCommandesNestedInput
   pricingRule?: Prisma.PricingRuleUpdateOneRequiredWithoutCommandesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCommandesCreesNestedInput
   fichiers?: Prisma.FichierUpdateManyWithoutCommandeNestedInput
   notes?: Prisma.NoteUpdateManyWithoutCommandeNestedInput
 }
@@ -1665,6 +1914,7 @@ export type CommandeUncheckedUpdateWithoutDevisInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1687,6 +1937,7 @@ export type CommandeUncheckedUpdateManyWithoutDevisInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1707,6 +1958,7 @@ export type CommandeCreateManyFactureInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1729,6 +1981,7 @@ export type CommandeUpdateWithoutFactureInput = {
   devis?: Prisma.DevisUpdateOneWithoutCommandesNestedInput
   variant?: Prisma.ProductVariantUpdateOneRequiredWithoutCommandesNestedInput
   pricingRule?: Prisma.PricingRuleUpdateOneRequiredWithoutCommandesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCommandesCreesNestedInput
   fichiers?: Prisma.FichierUpdateManyWithoutCommandeNestedInput
   notes?: Prisma.NoteUpdateManyWithoutCommandeNestedInput
 }
@@ -1748,6 +2001,7 @@ export type CommandeUncheckedUpdateWithoutFactureInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1770,6 +2024,7 @@ export type CommandeUncheckedUpdateManyWithoutFactureInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1790,6 +2045,7 @@ export type CommandeCreateManyVariantInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1812,6 +2068,7 @@ export type CommandeUpdateWithoutVariantInput = {
   devis?: Prisma.DevisUpdateOneWithoutCommandesNestedInput
   facture?: Prisma.FactureUpdateOneWithoutCommandesNestedInput
   pricingRule?: Prisma.PricingRuleUpdateOneRequiredWithoutCommandesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCommandesCreesNestedInput
   fichiers?: Prisma.FichierUpdateManyWithoutCommandeNestedInput
   notes?: Prisma.NoteUpdateManyWithoutCommandeNestedInput
 }
@@ -1831,6 +2088,7 @@ export type CommandeUncheckedUpdateWithoutVariantInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1853,6 +2111,7 @@ export type CommandeUncheckedUpdateManyWithoutVariantInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1873,6 +2132,7 @@ export type CommandeCreateManyPricingRuleInput = {
   quantite: number
   prixUnitaire: number
   prixTotal: number
+  createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1895,6 +2155,7 @@ export type CommandeUpdateWithoutPricingRuleInput = {
   devis?: Prisma.DevisUpdateOneWithoutCommandesNestedInput
   facture?: Prisma.FactureUpdateOneWithoutCommandesNestedInput
   variant?: Prisma.ProductVariantUpdateOneRequiredWithoutCommandesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCommandesCreesNestedInput
   fichiers?: Prisma.FichierUpdateManyWithoutCommandeNestedInput
   notes?: Prisma.NoteUpdateManyWithoutCommandeNestedInput
 }
@@ -1914,6 +2175,7 @@ export type CommandeUncheckedUpdateWithoutPricingRuleInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1936,6 +2198,7 @@ export type CommandeUncheckedUpdateManyWithoutPricingRuleInput = {
   quantite?: Prisma.IntFieldUpdateOperationsInput | number
   prixUnitaire?: Prisma.IntFieldUpdateOperationsInput | number
   prixTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1997,6 +2260,7 @@ export type CommandeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   quantite?: boolean
   prixUnitaire?: boolean
   prixTotal?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
@@ -2005,6 +2269,7 @@ export type CommandeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   facture?: boolean | Prisma.Commande$factureArgs<ExtArgs>
   variant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
   pricingRule?: boolean | Prisma.PricingRuleDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   fichiers?: boolean | Prisma.Commande$fichiersArgs<ExtArgs>
   notes?: boolean | Prisma.Commande$notesArgs<ExtArgs>
   _count?: boolean | Prisma.CommandeCountOutputTypeDefaultArgs<ExtArgs>
@@ -2026,6 +2291,7 @@ export type CommandeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   quantite?: boolean
   prixUnitaire?: boolean
   prixTotal?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
@@ -2034,6 +2300,7 @@ export type CommandeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   facture?: boolean | Prisma.Commande$factureArgs<ExtArgs>
   variant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
   pricingRule?: boolean | Prisma.PricingRuleDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["commande"]>
 
 export type CommandeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2052,6 +2319,7 @@ export type CommandeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   quantite?: boolean
   prixUnitaire?: boolean
   prixTotal?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
@@ -2060,6 +2328,7 @@ export type CommandeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   facture?: boolean | Prisma.Commande$factureArgs<ExtArgs>
   variant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
   pricingRule?: boolean | Prisma.PricingRuleDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["commande"]>
 
 export type CommandeSelectScalar = {
@@ -2078,18 +2347,20 @@ export type CommandeSelectScalar = {
   quantite?: boolean
   prixUnitaire?: boolean
   prixTotal?: boolean
+  createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
 }
 
-export type CommandeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reference" | "designation" | "clientId" | "devisId" | "factureId" | "variantId" | "options" | "pricingRuleId" | "largeurPieceCm" | "hauteurPieceCm" | "statut" | "quantite" | "prixUnitaire" | "prixTotal" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["commande"]>
+export type CommandeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reference" | "designation" | "clientId" | "devisId" | "factureId" | "variantId" | "options" | "pricingRuleId" | "largeurPieceCm" | "hauteurPieceCm" | "statut" | "quantite" | "prixUnitaire" | "prixTotal" | "createdById" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["commande"]>
 export type CommandeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   devis?: boolean | Prisma.Commande$devisArgs<ExtArgs>
   facture?: boolean | Prisma.Commande$factureArgs<ExtArgs>
   variant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
   pricingRule?: boolean | Prisma.PricingRuleDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   fichiers?: boolean | Prisma.Commande$fichiersArgs<ExtArgs>
   notes?: boolean | Prisma.Commande$notesArgs<ExtArgs>
   _count?: boolean | Prisma.CommandeCountOutputTypeDefaultArgs<ExtArgs>
@@ -2100,6 +2371,7 @@ export type CommandeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   facture?: boolean | Prisma.Commande$factureArgs<ExtArgs>
   variant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
   pricingRule?: boolean | Prisma.PricingRuleDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type CommandeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
@@ -2107,6 +2379,7 @@ export type CommandeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   facture?: boolean | Prisma.Commande$factureArgs<ExtArgs>
   variant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
   pricingRule?: boolean | Prisma.PricingRuleDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $CommandePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2117,6 +2390,7 @@ export type $CommandePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     facture: Prisma.$FacturePayload<ExtArgs> | null
     variant: Prisma.$ProductVariantPayload<ExtArgs>
     pricingRule: Prisma.$PricingRulePayload<ExtArgs>
+    createdBy: Prisma.$UserPayload<ExtArgs>
     fichiers: Prisma.$FichierPayload<ExtArgs>[]
     notes: Prisma.$NotePayload<ExtArgs>[]
   }
@@ -2136,6 +2410,7 @@ export type $CommandePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     quantite: number
     prixUnitaire: number
     prixTotal: number
+    createdById: string
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -2538,6 +2813,7 @@ export interface Prisma__CommandeClient<T, Null = never, ExtArgs extends runtime
   facture<T extends Prisma.Commande$factureArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Commande$factureArgs<ExtArgs>>): Prisma.Prisma__FactureClient<runtime.Types.Result.GetResult<Prisma.$FacturePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   variant<T extends Prisma.ProductVariantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductVariantDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductVariantClient<runtime.Types.Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   pricingRule<T extends Prisma.PricingRuleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PricingRuleDefaultArgs<ExtArgs>>): Prisma.Prisma__PricingRuleClient<runtime.Types.Result.GetResult<Prisma.$PricingRulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   fichiers<T extends Prisma.Commande$fichiersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Commande$fichiersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FichierPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notes<T extends Prisma.Commande$notesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Commande$notesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2584,6 +2860,7 @@ export interface CommandeFieldRefs {
   readonly quantite: Prisma.FieldRef<"Commande", 'Int'>
   readonly prixUnitaire: Prisma.FieldRef<"Commande", 'Int'>
   readonly prixTotal: Prisma.FieldRef<"Commande", 'Int'>
+  readonly createdById: Prisma.FieldRef<"Commande", 'String'>
   readonly createdAt: Prisma.FieldRef<"Commande", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Commande", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Commande", 'DateTime'>

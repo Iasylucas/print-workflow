@@ -52,6 +52,11 @@ export type Client = Prisma.ClientModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model InvitationToken
+ * 
+ */
+export type InvitationToken = Prisma.InvitationTokenModel
+/**
  * Model PasswordResetToken
  * 
  */

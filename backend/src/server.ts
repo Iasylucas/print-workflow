@@ -1,12 +1,21 @@
 import { app } from "./app.js";
-import { Request, Response } from "express";
+import { env } from "./config/env.js";
+import { prisma } from "./config/prisma.js";
 
-const PORT = process.env.PORT || 5050;
+const PORT = env.PORT;
 
-app.get('/health', (req: Request, res: Response) => {
-  res.json({ status: 'OK', timestamp: new Date() });
-});
+async function bootstrap() {
+  try {
+    await prisma.$connect();
+    console.log("Database connected successfully");
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+}
+
+bootstrap();

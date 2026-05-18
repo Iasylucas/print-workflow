@@ -386,6 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Client: 'Client',
   User: 'User',
+  InvitationToken: 'InvitationToken',
   PasswordResetToken: 'PasswordResetToken',
   EntrepriseInfo: 'EntrepriseInfo',
   Devis: 'Devis',
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "client" | "user" | "passwordResetToken" | "entrepriseInfo" | "devis" | "facture" | "fichier" | "paiement" | "note" | "appSettings" | "commande" | "product" | "productVariant" | "pricingRule" | "format" | "configurationAtelier"
+    modelProps: "client" | "user" | "invitationToken" | "passwordResetToken" | "entrepriseInfo" | "devis" | "facture" | "fichier" | "paiement" | "note" | "appSettings" | "commande" | "product" | "productVariant" | "pricingRule" | "format" | "configurationAtelier"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -564,6 +565,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    InvitationToken: {
+      payload: Prisma.$InvitationTokenPayload<ExtArgs>
+      fields: Prisma.InvitationTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InvitationTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InvitationTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.InvitationTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InvitationTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationTokenPayload>
+        }
+        findMany: {
+          args: Prisma.InvitationTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationTokenPayload>[]
+        }
+        create: {
+          args: Prisma.InvitationTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationTokenPayload>
+        }
+        createMany: {
+          args: Prisma.InvitationTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InvitationTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.InvitationTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationTokenPayload>
+        }
+        update: {
+          args: Prisma.InvitationTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.InvitationTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InvitationTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InvitationTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.InvitationTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.InvitationTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInvitationToken>
+        }
+        groupBy: {
+          args: Prisma.InvitationTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvitationTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InvitationTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvitationTokenCountAggregateOutputType> | number
         }
       }
     }
@@ -1656,16 +1731,32 @@ export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof 
 
 export const UserScalarFieldEnum = {
   id: 'id',
-  username: 'username',
   email: 'email',
   password: 'password',
   role: 'role',
-  name: 'name',
+  isActif: 'isActif',
+  firstName: 'firstName',
+  lastName: 'lastName',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const InvitationTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  email: 'email',
+  role: 'role',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  usedAt: 'usedAt',
+  userId: 'userId'
+} as const
+
+export type InvitationTokenScalarFieldEnum = (typeof InvitationTokenScalarFieldEnum)[keyof typeof InvitationTokenScalarFieldEnum]
 
 
 export const PasswordResetTokenScalarFieldEnum = {
@@ -1716,6 +1807,7 @@ export const DevisScalarFieldEnum = {
   total: 'total',
   statut: 'statut',
   entrepriseInfoId: 'entrepriseInfoId',
+  createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1737,6 +1829,7 @@ export const FactureScalarFieldEnum = {
   statutPaiement: 'statutPaiement',
   entrepriseInfoId: 'entrepriseInfoId',
   devisOrigineId: 'devisOrigineId',
+  createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1807,6 +1900,7 @@ export const CommandeScalarFieldEnum = {
   quantite: 'quantite',
   prixUnitaire: 'prixUnitaire',
   prixTotal: 'prixTotal',
+  createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -1906,6 +2000,14 @@ export const QueryMode = {
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
 export const JsonNullValueFilter = {
   DbNull: DbNull,
   JsonNull: JsonNull,
@@ -1913,14 +2015,6 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -1958,6 +2052,27 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'Role'
+ */
+export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+/**
+ * Reference to a field of type 'Role[]'
+ */
+export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1968,13 +2083,6 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -2131,6 +2239,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   client?: Prisma.ClientOmit
   user?: Prisma.UserOmit
+  invitationToken?: Prisma.InvitationTokenOmit
   passwordResetToken?: Prisma.PasswordResetTokenOmit
   entrepriseInfo?: Prisma.EntrepriseInfoOmit
   devis?: Prisma.DevisOmit

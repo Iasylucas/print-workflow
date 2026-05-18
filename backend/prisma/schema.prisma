@@ -27,19 +27,46 @@ model Client {
 
 model User {
   id        String   @id
-  username  String   @unique
   email     String   @unique
-  password  String
+  password  String?
   role      String
-  name      String
+  isActif   Boolean  @default(false)
+  firstName String?
+  lastName  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   fichiers  Fichier[]
   paiements Paiement[]
   notes     Note[]
 
+  devisCrees    Devis[]    @relation("UserDevis")
+  facturesCrees Facture[]  @relation("UserFacture")
+  commandesCrees Commande[] @relation("UserCommande")
+
   resetTokens PasswordResetToken[]
+  invitations    InvitationToken[]
+}
+
+enum Role {
+  ADMIN
+  SALES
+  PRINTER
+  GRAPHIC_DESIGNER
+}
+
+model InvitationToken {
+  id        String   @id // UUIDv7
+  token     String   @unique // Le hash du token (sécurité)
+  email     String   // L'email invité
+  role      Role     // Le rôle pré-attribué
+  expiresAt DateTime // Date d'expiration (ex: 48h)
+  createdAt DateTime @default(now())
+  usedAt    DateTime? // Pour marquer s'il a déjà servi
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model PasswordResetToken {
@@ -106,6 +133,8 @@ model Devis {
   // ⬇️ Lien vers la facture (si transformé)
   factureTransformee Facture? @relation("DevisToFacture")
 
+  createdById   String
+ createdBy     User   @relation("UserDevis", fields: [createdById], references: [id])
   // ⬇️ TOUTES les commandes de CE devis
   commandes Commande[] // ← Prisma utilise devisId
 
@@ -136,6 +165,9 @@ model Facture {
   // ⬇️ Lien vers le devis original (si cette facture vient d'un devis)
   devisOrigineId Int?   @unique
   devisOrigine   Devis? @relation("DevisToFacture", fields: [devisOrigineId], references: [id])
+
+  createdById   String
+ createdBy     User   @relation("UserFacture", fields: [createdById], references: [id])
 
   // ⬇️ TOUTES les commandes de CETTE facture
   commandes Commande[] // ← Prisma utilise factureId
@@ -228,6 +260,9 @@ model Commande {
   quantite       Int
   prixUnitaire Int 
   prixTotal Int // prix total de la ligne de commande au moment de la création
+
+  createdById   String
+ createdBy     User   @relation("UserCommande", fields: [createdById], references: [id])
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
