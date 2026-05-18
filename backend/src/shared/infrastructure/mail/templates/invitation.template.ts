@@ -1,8 +1,45 @@
-export const getInvitationTemplate = (url: string, role: string) => `
-  <h1>Bienvenue chez EWA Print</h1>
-  <p>Vous avez été invité en tant que <strong>${role}</strong>.</p>
-  <p>Cliquez sur le lien ci-dessous pour finaliser votre compte (valable 48h) :</p>
-  <a href="${url}" style="padding: 10px 20px; background: #000; color: #fff; text-decoration: none;">
-    Activer mon compte
-  </a>
-`;
+export const getInvitationTemplate = (url: string, role: string) => {
+  const brandColor = "#000000"; // Noir pur pour EWA Print
+  const secondaryColor = "#666666";
+
+  return `
+    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee;">
+      <!-- Header avec Logo -->
+      <div style="padding: 20px; text-align: center; background-color: #ffffff;">
+        <img src="https://votre-domaine.com/logo.png" alt="EWA Print" style="width: 150px; height: auto;">
+      </div>
+
+      <!-- Corps du mail (Français) -->
+      <div style="padding: 40px; background-color: #ffffff;">
+        <h1 style="font-size: 20px; color: ${brandColor}; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Bienvenue chez EWA Print</h1>
+        <p style="color: ${secondaryColor}; line-height: 1.5;">Vous avez été invité à rejoindre notre plateforme ERP en tant que <strong>${role}</strong>.</p>
+        <p style="color: ${secondaryColor}; line-height: 1.5;">Cliquez sur le bouton ci-dessous pour finaliser la création de votre compte. Ce lien est valable pendant 48 heures.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${url}" style="background-color: ${brandColor}; color: #ffffff; padding: 15px 25px; text-decoration: none; font-weight: bold; border-radius: 4px; display: inline-block;">
+            ACTIVER MON COMPTE
+          </a>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+
+        <!-- Corps du mail (English) -->
+        <h1 style="font-size: 20px; color: ${brandColor}; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Welcome to EWA Print</h1>
+        <p style="color: ${secondaryColor}; line-height: 1.5;">You have been invited to join our ERP platform as a <strong>${role}</strong>.</p>
+        <p style="color: ${secondaryColor}; line-height: 1.5;">Click the button below to finalize your account registration. This link is valid for 48 hours.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${url}" style="background-color: ${brandColor}; color: #ffffff; padding: 15px 25px; text-decoration: none; font-weight: bold; border-radius: 4px; display: inline-block;">
+            ACTIVATE MY ACCOUNT
+          </a>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div style="padding: 20px; background-color: #f9f9f9; text-align: center; font-size: 12px; color: #999999;">
+        <p>© ${new Date().getFullYear()} EWA Print. Tous droits réservés / All rights reserved.</p>
+        <p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email.</p>
+      </div>
+    </div>
+  `;
+};

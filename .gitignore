@@ -4,6 +4,8 @@
 
 note
 
+api.rest
+
 # Fichiers de build
 **/dist/
 **/build/

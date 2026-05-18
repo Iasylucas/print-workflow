@@ -3,7 +3,12 @@ import { AppError } from "@/shared/error/error.js";
 import { ZodError } from "zod";
 import { env } from "@/config/env.js";
 
-export const errorMiddleware = (err: Error, req: Request, res: Response) => {
+export const errorMiddleware = (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   // error for zod validation
   if (err instanceof ZodError) {
     return res.status(400).json({
