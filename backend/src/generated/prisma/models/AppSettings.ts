@@ -28,32 +28,32 @@ export type AggregateAppSettings = {
 
 export type AppSettingsAvgAggregateOutputType = {
   id: number | null
-  maxInscriptions: number | null
+  maxRegistrations: number | null
 }
 
 export type AppSettingsSumAggregateOutputType = {
   id: number | null
-  maxInscriptions: number | null
+  maxRegistrations: number | null
 }
 
 export type AppSettingsMinAggregateOutputType = {
   id: number | null
-  maxInscriptions: number | null
-  inscriptionsOuvertes: boolean | null
+  maxRegistrations: number | null
+  registrationsOpen: boolean | null
   updatedAt: Date | null
 }
 
 export type AppSettingsMaxAggregateOutputType = {
   id: number | null
-  maxInscriptions: number | null
-  inscriptionsOuvertes: boolean | null
+  maxRegistrations: number | null
+  registrationsOpen: boolean | null
   updatedAt: Date | null
 }
 
 export type AppSettingsCountAggregateOutputType = {
   id: number
-  maxInscriptions: number
-  inscriptionsOuvertes: number
+  maxRegistrations: number
+  registrationsOpen: number
   updatedAt: number
   _all: number
 }
@@ -61,32 +61,32 @@ export type AppSettingsCountAggregateOutputType = {
 
 export type AppSettingsAvgAggregateInputType = {
   id?: true
-  maxInscriptions?: true
+  maxRegistrations?: true
 }
 
 export type AppSettingsSumAggregateInputType = {
   id?: true
-  maxInscriptions?: true
+  maxRegistrations?: true
 }
 
 export type AppSettingsMinAggregateInputType = {
   id?: true
-  maxInscriptions?: true
-  inscriptionsOuvertes?: true
+  maxRegistrations?: true
+  registrationsOpen?: true
   updatedAt?: true
 }
 
 export type AppSettingsMaxAggregateInputType = {
   id?: true
-  maxInscriptions?: true
-  inscriptionsOuvertes?: true
+  maxRegistrations?: true
+  registrationsOpen?: true
   updatedAt?: true
 }
 
 export type AppSettingsCountAggregateInputType = {
   id?: true
-  maxInscriptions?: true
-  inscriptionsOuvertes?: true
+  maxRegistrations?: true
+  registrationsOpen?: true
   updatedAt?: true
   _all?: true
 }
@@ -179,8 +179,8 @@ export type AppSettingsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 
 export type AppSettingsGroupByOutputType = {
   id: number
-  maxInscriptions: number
-  inscriptionsOuvertes: boolean
+  maxRegistrations: number
+  registrationsOpen: boolean
   updatedAt: Date
   _count: AppSettingsCountAggregateOutputType | null
   _avg: AppSettingsAvgAggregateOutputType | null
@@ -209,15 +209,15 @@ export type AppSettingsWhereInput = {
   OR?: Prisma.AppSettingsWhereInput[]
   NOT?: Prisma.AppSettingsWhereInput | Prisma.AppSettingsWhereInput[]
   id?: Prisma.IntFilter<"AppSettings"> | number
-  maxInscriptions?: Prisma.IntFilter<"AppSettings"> | number
-  inscriptionsOuvertes?: Prisma.BoolFilter<"AppSettings"> | boolean
+  maxRegistrations?: Prisma.IntFilter<"AppSettings"> | number
+  registrationsOpen?: Prisma.BoolFilter<"AppSettings"> | boolean
   updatedAt?: Prisma.DateTimeFilter<"AppSettings"> | Date | string
 }
 
 export type AppSettingsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  maxInscriptions?: Prisma.SortOrder
-  inscriptionsOuvertes?: Prisma.SortOrder
+  maxRegistrations?: Prisma.SortOrder
+  registrationsOpen?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -226,15 +226,15 @@ export type AppSettingsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.AppSettingsWhereInput | Prisma.AppSettingsWhereInput[]
   OR?: Prisma.AppSettingsWhereInput[]
   NOT?: Prisma.AppSettingsWhereInput | Prisma.AppSettingsWhereInput[]
-  maxInscriptions?: Prisma.IntFilter<"AppSettings"> | number
-  inscriptionsOuvertes?: Prisma.BoolFilter<"AppSettings"> | boolean
+  maxRegistrations?: Prisma.IntFilter<"AppSettings"> | number
+  registrationsOpen?: Prisma.BoolFilter<"AppSettings"> | boolean
   updatedAt?: Prisma.DateTimeFilter<"AppSettings"> | Date | string
 }, "id">
 
 export type AppSettingsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  maxInscriptions?: Prisma.SortOrder
-  inscriptionsOuvertes?: Prisma.SortOrder
+  maxRegistrations?: Prisma.SortOrder
+  registrationsOpen?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.AppSettingsCountOrderByAggregateInput
   _avg?: Prisma.AppSettingsAvgOrderByAggregateInput
@@ -248,130 +248,130 @@ export type AppSettingsScalarWhereWithAggregatesInput = {
   OR?: Prisma.AppSettingsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AppSettingsScalarWhereWithAggregatesInput | Prisma.AppSettingsScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"AppSettings"> | number
-  maxInscriptions?: Prisma.IntWithAggregatesFilter<"AppSettings"> | number
-  inscriptionsOuvertes?: Prisma.BoolWithAggregatesFilter<"AppSettings"> | boolean
+  maxRegistrations?: Prisma.IntWithAggregatesFilter<"AppSettings"> | number
+  registrationsOpen?: Prisma.BoolWithAggregatesFilter<"AppSettings"> | boolean
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AppSettings"> | Date | string
 }
 
 export type AppSettingsCreateInput = {
   id?: number
-  maxInscriptions?: number
-  inscriptionsOuvertes?: boolean
+  maxRegistrations?: number
+  registrationsOpen?: boolean
   updatedAt?: Date | string
 }
 
 export type AppSettingsUncheckedCreateInput = {
   id?: number
-  maxInscriptions?: number
-  inscriptionsOuvertes?: boolean
+  maxRegistrations?: number
+  registrationsOpen?: boolean
   updatedAt?: Date | string
 }
 
 export type AppSettingsUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  maxInscriptions?: Prisma.IntFieldUpdateOperationsInput | number
-  inscriptionsOuvertes?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  maxRegistrations?: Prisma.IntFieldUpdateOperationsInput | number
+  registrationsOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AppSettingsUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  maxInscriptions?: Prisma.IntFieldUpdateOperationsInput | number
-  inscriptionsOuvertes?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  maxRegistrations?: Prisma.IntFieldUpdateOperationsInput | number
+  registrationsOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AppSettingsCreateManyInput = {
   id?: number
-  maxInscriptions?: number
-  inscriptionsOuvertes?: boolean
+  maxRegistrations?: number
+  registrationsOpen?: boolean
   updatedAt?: Date | string
 }
 
 export type AppSettingsUpdateManyMutationInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  maxInscriptions?: Prisma.IntFieldUpdateOperationsInput | number
-  inscriptionsOuvertes?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  maxRegistrations?: Prisma.IntFieldUpdateOperationsInput | number
+  registrationsOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AppSettingsUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  maxInscriptions?: Prisma.IntFieldUpdateOperationsInput | number
-  inscriptionsOuvertes?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  maxRegistrations?: Prisma.IntFieldUpdateOperationsInput | number
+  registrationsOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AppSettingsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  maxInscriptions?: Prisma.SortOrder
-  inscriptionsOuvertes?: Prisma.SortOrder
+  maxRegistrations?: Prisma.SortOrder
+  registrationsOpen?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type AppSettingsAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  maxInscriptions?: Prisma.SortOrder
+  maxRegistrations?: Prisma.SortOrder
 }
 
 export type AppSettingsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  maxInscriptions?: Prisma.SortOrder
-  inscriptionsOuvertes?: Prisma.SortOrder
+  maxRegistrations?: Prisma.SortOrder
+  registrationsOpen?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type AppSettingsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  maxInscriptions?: Prisma.SortOrder
-  inscriptionsOuvertes?: Prisma.SortOrder
+  maxRegistrations?: Prisma.SortOrder
+  registrationsOpen?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type AppSettingsSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  maxInscriptions?: Prisma.SortOrder
+  maxRegistrations?: Prisma.SortOrder
 }
 
 
 
 export type AppSettingsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  maxInscriptions?: boolean
-  inscriptionsOuvertes?: boolean
+  maxRegistrations?: boolean
+  registrationsOpen?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["appSettings"]>
 
 export type AppSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  maxInscriptions?: boolean
-  inscriptionsOuvertes?: boolean
+  maxRegistrations?: boolean
+  registrationsOpen?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["appSettings"]>
 
 export type AppSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  maxInscriptions?: boolean
-  inscriptionsOuvertes?: boolean
+  maxRegistrations?: boolean
+  registrationsOpen?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["appSettings"]>
 
 export type AppSettingsSelectScalar = {
   id?: boolean
-  maxInscriptions?: boolean
-  inscriptionsOuvertes?: boolean
+  maxRegistrations?: boolean
+  registrationsOpen?: boolean
   updatedAt?: boolean
 }
 
-export type AppSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "maxInscriptions" | "inscriptionsOuvertes" | "updatedAt", ExtArgs["result"]["appSettings"]>
+export type AppSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "maxRegistrations" | "registrationsOpen" | "updatedAt", ExtArgs["result"]["appSettings"]>
 
 export type $AppSettingsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AppSettings"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    maxInscriptions: number
-    inscriptionsOuvertes: boolean
+    maxRegistrations: number
+    registrationsOpen: boolean
     updatedAt: Date
   }, ExtArgs["result"]["appSettings"]>
   composites: {}
@@ -797,8 +797,8 @@ export interface Prisma__AppSettingsClient<T, Null = never, ExtArgs extends runt
  */
 export interface AppSettingsFieldRefs {
   readonly id: Prisma.FieldRef<"AppSettings", 'Int'>
-  readonly maxInscriptions: Prisma.FieldRef<"AppSettings", 'Int'>
-  readonly inscriptionsOuvertes: Prisma.FieldRef<"AppSettings", 'Boolean'>
+  readonly maxRegistrations: Prisma.FieldRef<"AppSettings", 'Int'>
+  readonly registrationsOpen: Prisma.FieldRef<"AppSettings", 'Boolean'>
   readonly updatedAt: Prisma.FieldRef<"AppSettings", 'DateTime'>
 }
     

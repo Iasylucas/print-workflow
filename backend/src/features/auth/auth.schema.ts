@@ -1,32 +1,14 @@
 import { z } from "zod";
 import { v7 as uuidv7 } from "uuid";
+import { emailRequiredSchema, passwordSchema } from "@/shared/schemas/index.js";
 
 // 1. Roles autorisés dans ton système
 const UserRole = z.enum(["ADMIN", "SALES", "PRINTER", "GRAPHIC_DESIGNER"]);
 
-// 2. Règles strictes pour le mot de passe (réutilisable)
-const PasswordSchema = z
-  .string()
-  .min(8, "Password must be at least 8 characters long")
-  .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-  .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-  .regex(/[0-9]/, "Password must contain at least one number")
-  .regex(
-    /[^A-Za-z0-9]/,
-    "Password must contain at least one special character",
-  );
-
-// 3. Normalisation et validation de l'email (Beautiful DB)
-const emailSchema = z
-  .string()
-  .trim()
-  .toLowerCase()
-  .pipe(z.email("Invalid email address"));
-
 // input for the invitation action (by the admin)
 export const inviteUserSchema = z.object({
   id: z.uuid().default(() => uuidv7()),
-  email: emailSchema,
+  email: emailRequiredSchema,
   role: UserRole.default("SALES"),
 });
 
@@ -42,7 +24,7 @@ export const finalizeRegistrationSchema = z
       .string()
       .trim()
       .min(2, "Lastname must be at least 2 characters long"),
-    password: PasswordSchema,
+    password: passwordSchema,
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -52,6 +34,6 @@ export const finalizeRegistrationSchema = z
 
 // input for the login action (by the users)
 export const loginSchema = z.object({
-  email: emailSchema,
+  email: emailRequiredSchema,
   password: z.string().min(1, "Password is required"),
 });

@@ -143,7 +143,7 @@ export class AuthService {
       throw new ForbiddenError(AUTH_ERRORS.ACCOUNT_DELETED);
     }
 
-    if (!user.isActif) {
+    if (!user.isActive) {
       throw new UnauthorizedError(AUTH_ERRORS.NOT_ACTIVATE);
     }
 

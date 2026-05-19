@@ -25,7 +25,7 @@ export class AuthRepository {
         id: data.id,
         email: data.email,
         role: data.role,
-        isActif: false,
+        isActive: false,
       },
       select: userSafeSelect,
     });
@@ -68,7 +68,7 @@ export class AuthRepository {
           firstName: data.firstName,
           lastName: data.lastName,
           password: data.passwordHash,
-          isActif: true,
+          isActive: true,
         },
         select: userSafeSelect,
       });

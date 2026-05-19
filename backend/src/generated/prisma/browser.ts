@@ -38,30 +38,30 @@ export type InvitationToken = Prisma.InvitationTokenModel
  */
 export type PasswordResetToken = Prisma.PasswordResetTokenModel
 /**
- * Model EntrepriseInfo
+ * Model CompanyInfo
  * 
  */
-export type EntrepriseInfo = Prisma.EntrepriseInfoModel
+export type CompanyInfo = Prisma.CompanyInfoModel
 /**
- * Model Devis
+ * Model Quote
  * 
  */
-export type Devis = Prisma.DevisModel
+export type Quote = Prisma.QuoteModel
 /**
- * Model Facture
+ * Model Invoice
  * 
  */
-export type Facture = Prisma.FactureModel
+export type Invoice = Prisma.InvoiceModel
 /**
- * Model Fichier
+ * Model File
  * 
  */
-export type Fichier = Prisma.FichierModel
+export type File = Prisma.FileModel
 /**
- * Model Paiement
+ * Model Payment
  * 
  */
-export type Paiement = Prisma.PaiementModel
+export type Payment = Prisma.PaymentModel
 /**
  * Model Note
  * 
@@ -73,10 +73,10 @@ export type Note = Prisma.NoteModel
  */
 export type AppSettings = Prisma.AppSettingsModel
 /**
- * Model Commande
+ * Model Order
  * 
  */
-export type Commande = Prisma.CommandeModel
+export type Order = Prisma.OrderModel
 /**
  * Model Product
  * 
@@ -98,7 +98,7 @@ export type PricingRule = Prisma.PricingRuleModel
  */
 export type Format = Prisma.FormatModel
 /**
- * Model ConfigurationAtelier
+ * Model WorkshopConfig
  * 
  */
-export type ConfigurationAtelier = Prisma.ConfigurationAtelierModel
+export type WorkshopConfig = Prisma.WorkshopConfigModel
