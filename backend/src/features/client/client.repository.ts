@@ -90,5 +90,3 @@ export class ClientRepository {
     });
   }
 }
-
-export const clientRepository = new ClientRepository();

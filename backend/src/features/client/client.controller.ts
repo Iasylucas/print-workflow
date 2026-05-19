@@ -58,6 +58,7 @@ export const clientController = {
   },
 };
 
+// export of the controller with catchAsync for error handling in routes
 export const clientControllerWrapped = {
   create: catchAsync(clientController.create),
   list: catchAsync(clientController.list),

@@ -5,6 +5,7 @@ import {
   finalizeRegistrationSchema,
   loginSchema,
 } from "./auth.schema.js";
+import { catchAsync } from "@/utils/catchAsync.js";
 
 export const authController = {
   // actin to invite a collabolator by the admin
@@ -41,4 +42,11 @@ export const authController = {
       data: result,
     });
   },
+};
+
+// export of the controller with catchAsync for error handling in routes
+export const authControllerWrapped = {
+  invite: catchAsync(authController.invite),
+  finalize: catchAsync(authController.finalize),
+  login: catchAsync(authController.login),
 };

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authController } from "./auth.controller.js";
+import { authController, authControllerWrapped } from "./auth.controller.js";
 import { protect, restrictTo } from "@/middlewares/auth.middleware.js";
 import { catchAsync } from "@/utils/catchAsync.js";
 
@@ -10,7 +10,7 @@ const router: Router = Router();
  * @route   POST /api/auth/login
  * @access  Public
  */
-router.post("/login", catchAsync(authController.login));
+router.post("/login", authControllerWrapped.login);
 
 /**
  * @desc    Admin action: Invite a new collaborator
@@ -21,7 +21,7 @@ router.post(
   "/invite",
   protect,
   restrictTo("ADMIN"),
-  catchAsync(authController.invite),
+  authControllerWrapped.invite,
 );
 
 /**
@@ -29,6 +29,6 @@ router.post(
  * @route   POST /api/auth/finalize
  * @access  Public (Verified by token in the body)
  */
-router.post("/finalize", catchAsync(authController.finalize));
+router.post("/finalize", authControllerWrapped.finalize);
 
 export { router as authRoutes };

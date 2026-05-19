@@ -10,7 +10,7 @@ import {
 import { CLIENT_ERRORS } from "@/constants/errorMessage.js";
 
 // feature imports
-import { clientRepository } from "./client.repository.js";
+import { ClientRepository } from "./client.repository.js";
 import {
   CreateClientInput,
   UpdateClientInput,
@@ -19,15 +19,17 @@ import {
 } from "./client.types.js";
 
 export class ClientService {
+  constructor(private readonly clientRepository: ClientRepository) {}
+
   // Create a new client
   async create(data: CreateClientInput) {
     if (data.email) {
-      const existing = await clientRepository.findByEmail(data.email);
+      const existing = await this.clientRepository.findByEmail(data.email);
       if (existing) throw new ConflictError(CLIENT_ERRORS.EMAIL_EXISTS);
     }
 
     try {
-      const client = await clientRepository.create(data);
+      const client = await this.clientRepository.create(data);
       return client;
     } catch (error) {
       throw new InternalServerError(CLIENT_ERRORS.FAILED_CREATION);
@@ -36,12 +38,12 @@ export class ClientService {
 
   // List clients with pagination, search and sorting
   async list(query: ClientQuery): Promise<PaginatedClientList> {
-    return await clientRepository.findAll(query);
+    return await this.clientRepository.findAll(query);
   }
 
   // Get a client by ID
   async getById(id: string) {
-    const client = await clientRepository.findById(id);
+    const client = await this.clientRepository.findById(id);
     if (!client) throw new NotFoundError(CLIENT_ERRORS.NOT_FOUND);
     return client;
   }
@@ -55,9 +57,9 @@ export class ClientService {
     }
 
     const [client, emailExists] = await Promise.all([
-      clientRepository.findById(id),
+      this.clientRepository.findById(id),
       data.email
-        ? clientRepository.findByEmail(data.email)
+        ? this.clientRepository.findByEmail(data.email)
         : Promise.resolve(null),
     ]);
 
@@ -66,7 +68,7 @@ export class ClientService {
       throw new ConflictError(CLIENT_ERRORS.EMAIL_EXISTS);
 
     try {
-      return await clientRepository.update(id, data);
+      return await this.clientRepository.update(id, data);
     } catch (error) {
       throw new InternalServerError(CLIENT_ERRORS.FAILED_UPDATE);
     }
@@ -74,11 +76,11 @@ export class ClientService {
 
   // Soft delete a client by ID
   async remove(id: string) {
-    const client = await clientRepository.findById(id);
+    const client = await this.clientRepository.findById(id);
     if (!client) throw new NotFoundError(CLIENT_ERRORS.NOT_FOUND);
 
     try {
-      await clientRepository.delete(id);
+      await this.clientRepository.delete(id);
       return;
     } catch (error) {
       throw new InternalServerError(CLIENT_ERRORS.FAILED_DELETE);
@@ -86,4 +88,4 @@ export class ClientService {
   }
 }
 
-export const clientService = new ClientService();
+export const clientService = new ClientService(new ClientRepository());
