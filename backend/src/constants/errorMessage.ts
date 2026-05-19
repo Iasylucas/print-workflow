@@ -18,3 +18,11 @@ export const AUTH_ERRORS = {
   NO_TOKEN_PROVIDED: "No token provided",
   FORBIDDEN: "You do not have permission to perform this action",
 } as const;
+
+export const CLIENT_ERRORS = {
+  EMAIL_EXISTS: "Client email already exists",
+  NOT_FOUND: "Client not found",
+  FAILED_CREATION: "Failed to create client",
+  FAILED_UPDATE: "Failed to update client",
+  FAILED_DELETE: "Failed to delete client",
+} as const;

@@ -26,58 +26,76 @@ export type AggregateClient = {
 
 export type ClientMinAggregateOutputType = {
   id: string | null
-  nom: string | null
+  firstName: string | null
+  lastName: string | null
   email: string | null
-  telephone: string | null
-  adresse: string | null
+  phone: string | null
+  address: string | null
   createdAt: Date | null
+  updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type ClientMaxAggregateOutputType = {
   id: string | null
-  nom: string | null
+  firstName: string | null
+  lastName: string | null
   email: string | null
-  telephone: string | null
-  adresse: string | null
+  phone: string | null
+  address: string | null
   createdAt: Date | null
+  updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type ClientCountAggregateOutputType = {
   id: number
-  nom: number
+  firstName: number
+  lastName: number
   email: number
-  telephone: number
-  adresse: number
+  phone: number
+  address: number
   createdAt: number
+  updatedAt: number
+  deletedAt: number
   _all: number
 }
 
 
 export type ClientMinAggregateInputType = {
   id?: true
-  nom?: true
+  firstName?: true
+  lastName?: true
   email?: true
-  telephone?: true
-  adresse?: true
+  phone?: true
+  address?: true
   createdAt?: true
+  updatedAt?: true
+  deletedAt?: true
 }
 
 export type ClientMaxAggregateInputType = {
   id?: true
-  nom?: true
+  firstName?: true
+  lastName?: true
   email?: true
-  telephone?: true
-  adresse?: true
+  phone?: true
+  address?: true
   createdAt?: true
+  updatedAt?: true
+  deletedAt?: true
 }
 
 export type ClientCountAggregateInputType = {
   id?: true
-  nom?: true
+  firstName?: true
+  lastName?: true
   email?: true
-  telephone?: true
-  adresse?: true
+  phone?: true
+  address?: true
   createdAt?: true
+  updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -155,11 +173,14 @@ export type ClientGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type ClientGroupByOutputType = {
   id: string
-  nom: string
-  email: string
-  telephone: string
-  adresse: string
+  firstName: string | null
+  lastName: string
+  email: string | null
+  phone: string | null
+  address: string | null
   createdAt: Date
+  updatedAt: Date
+  deletedAt: Date | null
   _count: ClientCountAggregateOutputType | null
   _min: ClientMinAggregateOutputType | null
   _max: ClientMaxAggregateOutputType | null
@@ -185,50 +206,62 @@ export type ClientWhereInput = {
   OR?: Prisma.ClientWhereInput[]
   NOT?: Prisma.ClientWhereInput | Prisma.ClientWhereInput[]
   id?: Prisma.StringFilter<"Client"> | string
-  nom?: Prisma.StringFilter<"Client"> | string
-  email?: Prisma.StringFilter<"Client"> | string
-  telephone?: Prisma.StringFilter<"Client"> | string
-  adresse?: Prisma.StringFilter<"Client"> | string
+  firstName?: Prisma.StringNullableFilter<"Client"> | string | null
+  lastName?: Prisma.StringFilter<"Client"> | string
+  email?: Prisma.StringNullableFilter<"Client"> | string | null
+  phone?: Prisma.StringNullableFilter<"Client"> | string | null
+  address?: Prisma.StringNullableFilter<"Client"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Client"> | Date | string
-  commandes?: Prisma.CommandeListRelationFilter
-  factures?: Prisma.FactureListRelationFilter
-  devis?: Prisma.DevisListRelationFilter
+  updatedAt?: Prisma.DateTimeFilter<"Client"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Client"> | Date | string | null
+  orders?: Prisma.OrderListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  quotes?: Prisma.QuoteListRelationFilter
 }
 
 export type ClientOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  nom?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  telephone?: Prisma.SortOrder
-  adresse?: Prisma.SortOrder
+  firstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastName?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  commandes?: Prisma.CommandeOrderByRelationAggregateInput
-  factures?: Prisma.FactureOrderByRelationAggregateInput
-  devis?: Prisma.DevisOrderByRelationAggregateInput
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  orders?: Prisma.OrderOrderByRelationAggregateInput
+  invoices?: Prisma.InvoiceOrderByRelationAggregateInput
+  quotes?: Prisma.QuoteOrderByRelationAggregateInput
 }
 
 export type ClientWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  email?: string
   AND?: Prisma.ClientWhereInput | Prisma.ClientWhereInput[]
   OR?: Prisma.ClientWhereInput[]
   NOT?: Prisma.ClientWhereInput | Prisma.ClientWhereInput[]
-  nom?: Prisma.StringFilter<"Client"> | string
-  email?: Prisma.StringFilter<"Client"> | string
-  telephone?: Prisma.StringFilter<"Client"> | string
-  adresse?: Prisma.StringFilter<"Client"> | string
+  firstName?: Prisma.StringNullableFilter<"Client"> | string | null
+  lastName?: Prisma.StringFilter<"Client"> | string
+  phone?: Prisma.StringNullableFilter<"Client"> | string | null
+  address?: Prisma.StringNullableFilter<"Client"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Client"> | Date | string
-  commandes?: Prisma.CommandeListRelationFilter
-  factures?: Prisma.FactureListRelationFilter
-  devis?: Prisma.DevisListRelationFilter
-}, "id">
+  updatedAt?: Prisma.DateTimeFilter<"Client"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Client"> | Date | string | null
+  orders?: Prisma.OrderListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  quotes?: Prisma.QuoteListRelationFilter
+}, "id" | "email">
 
 export type ClientOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  nom?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  telephone?: Prisma.SortOrder
-  adresse?: Prisma.SortOrder
+  firstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastName?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ClientCountOrderByAggregateInput
   _max?: Prisma.ClientMaxOrderByAggregateInput
   _min?: Prisma.ClientMinOrderByAggregateInput
@@ -239,113 +272,146 @@ export type ClientScalarWhereWithAggregatesInput = {
   OR?: Prisma.ClientScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ClientScalarWhereWithAggregatesInput | Prisma.ClientScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Client"> | string
-  nom?: Prisma.StringWithAggregatesFilter<"Client"> | string
-  email?: Prisma.StringWithAggregatesFilter<"Client"> | string
-  telephone?: Prisma.StringWithAggregatesFilter<"Client"> | string
-  adresse?: Prisma.StringWithAggregatesFilter<"Client"> | string
+  firstName?: Prisma.StringNullableWithAggregatesFilter<"Client"> | string | null
+  lastName?: Prisma.StringWithAggregatesFilter<"Client"> | string
+  email?: Prisma.StringNullableWithAggregatesFilter<"Client"> | string | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"Client"> | string | null
+  address?: Prisma.StringNullableWithAggregatesFilter<"Client"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Client"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Client"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Client"> | Date | string | null
 }
 
 export type ClientCreateInput = {
   id: string
-  nom: string
-  email: string
-  telephone: string
-  adresse: string
+  firstName?: string | null
+  lastName: string
+  email?: string | null
+  phone?: string | null
+  address?: string | null
   createdAt?: Date | string
-  commandes?: Prisma.CommandeCreateNestedManyWithoutClientInput
-  factures?: Prisma.FactureCreateNestedManyWithoutClientInput
-  devis?: Prisma.DevisCreateNestedManyWithoutClientInput
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  orders?: Prisma.OrderCreateNestedManyWithoutClientInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutClientInput
+  quotes?: Prisma.QuoteCreateNestedManyWithoutClientInput
 }
 
 export type ClientUncheckedCreateInput = {
   id: string
-  nom: string
-  email: string
-  telephone: string
-  adresse: string
+  firstName?: string | null
+  lastName: string
+  email?: string | null
+  phone?: string | null
+  address?: string | null
   createdAt?: Date | string
-  commandes?: Prisma.CommandeUncheckedCreateNestedManyWithoutClientInput
-  factures?: Prisma.FactureUncheckedCreateNestedManyWithoutClientInput
-  devis?: Prisma.DevisUncheckedCreateNestedManyWithoutClientInput
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutClientInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutClientInput
+  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutClientInput
 }
 
 export type ClientUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nom?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  telephone?: Prisma.StringFieldUpdateOperationsInput | string
-  adresse?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  commandes?: Prisma.CommandeUpdateManyWithoutClientNestedInput
-  factures?: Prisma.FactureUpdateManyWithoutClientNestedInput
-  devis?: Prisma.DevisUpdateManyWithoutClientNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orders?: Prisma.OrderUpdateManyWithoutClientNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutClientNestedInput
+  quotes?: Prisma.QuoteUpdateManyWithoutClientNestedInput
 }
 
 export type ClientUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nom?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  telephone?: Prisma.StringFieldUpdateOperationsInput | string
-  adresse?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  commandes?: Prisma.CommandeUncheckedUpdateManyWithoutClientNestedInput
-  factures?: Prisma.FactureUncheckedUpdateManyWithoutClientNestedInput
-  devis?: Prisma.DevisUncheckedUpdateManyWithoutClientNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutClientNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutClientNestedInput
+  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutClientNestedInput
 }
 
 export type ClientCreateManyInput = {
   id: string
-  nom: string
-  email: string
-  telephone: string
-  adresse: string
+  firstName?: string | null
+  lastName: string
+  email?: string | null
+  phone?: string | null
+  address?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ClientUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nom?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  telephone?: Prisma.StringFieldUpdateOperationsInput | string
-  adresse?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ClientUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nom?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  telephone?: Prisma.StringFieldUpdateOperationsInput | string
-  adresse?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ClientCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  nom?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  telephone?: Prisma.SortOrder
-  adresse?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type ClientMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  nom?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  telephone?: Prisma.SortOrder
-  adresse?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type ClientMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  nom?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  telephone?: Prisma.SortOrder
-  adresse?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type ClientScalarRelationFilter = {
@@ -357,230 +423,274 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type ClientCreateNestedOneWithoutDevisInput = {
-  create?: Prisma.XOR<Prisma.ClientCreateWithoutDevisInput, Prisma.ClientUncheckedCreateWithoutDevisInput>
-  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutDevisInput
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
+export type ClientCreateNestedOneWithoutQuotesInput = {
+  create?: Prisma.XOR<Prisma.ClientCreateWithoutQuotesInput, Prisma.ClientUncheckedCreateWithoutQuotesInput>
+  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutQuotesInput
   connect?: Prisma.ClientWhereUniqueInput
 }
 
-export type ClientUpdateOneRequiredWithoutDevisNestedInput = {
-  create?: Prisma.XOR<Prisma.ClientCreateWithoutDevisInput, Prisma.ClientUncheckedCreateWithoutDevisInput>
-  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutDevisInput
-  upsert?: Prisma.ClientUpsertWithoutDevisInput
+export type ClientUpdateOneRequiredWithoutQuotesNestedInput = {
+  create?: Prisma.XOR<Prisma.ClientCreateWithoutQuotesInput, Prisma.ClientUncheckedCreateWithoutQuotesInput>
+  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutQuotesInput
+  upsert?: Prisma.ClientUpsertWithoutQuotesInput
   connect?: Prisma.ClientWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ClientUpdateToOneWithWhereWithoutDevisInput, Prisma.ClientUpdateWithoutDevisInput>, Prisma.ClientUncheckedUpdateWithoutDevisInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClientUpdateToOneWithWhereWithoutQuotesInput, Prisma.ClientUpdateWithoutQuotesInput>, Prisma.ClientUncheckedUpdateWithoutQuotesInput>
 }
 
-export type ClientCreateNestedOneWithoutFacturesInput = {
-  create?: Prisma.XOR<Prisma.ClientCreateWithoutFacturesInput, Prisma.ClientUncheckedCreateWithoutFacturesInput>
-  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutFacturesInput
-  connect?: Prisma.ClientWhereUniqueInput
-}
-
-export type ClientUpdateOneRequiredWithoutFacturesNestedInput = {
-  create?: Prisma.XOR<Prisma.ClientCreateWithoutFacturesInput, Prisma.ClientUncheckedCreateWithoutFacturesInput>
-  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutFacturesInput
-  upsert?: Prisma.ClientUpsertWithoutFacturesInput
-  connect?: Prisma.ClientWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ClientUpdateToOneWithWhereWithoutFacturesInput, Prisma.ClientUpdateWithoutFacturesInput>, Prisma.ClientUncheckedUpdateWithoutFacturesInput>
-}
-
-export type ClientCreateNestedOneWithoutCommandesInput = {
-  create?: Prisma.XOR<Prisma.ClientCreateWithoutCommandesInput, Prisma.ClientUncheckedCreateWithoutCommandesInput>
-  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutCommandesInput
+export type ClientCreateNestedOneWithoutInvoicesInput = {
+  create?: Prisma.XOR<Prisma.ClientCreateWithoutInvoicesInput, Prisma.ClientUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutInvoicesInput
   connect?: Prisma.ClientWhereUniqueInput
 }
 
-export type ClientUpdateOneRequiredWithoutCommandesNestedInput = {
-  create?: Prisma.XOR<Prisma.ClientCreateWithoutCommandesInput, Prisma.ClientUncheckedCreateWithoutCommandesInput>
-  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutCommandesInput
-  upsert?: Prisma.ClientUpsertWithoutCommandesInput
+export type ClientUpdateOneRequiredWithoutInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.ClientCreateWithoutInvoicesInput, Prisma.ClientUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutInvoicesInput
+  upsert?: Prisma.ClientUpsertWithoutInvoicesInput
   connect?: Prisma.ClientWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ClientUpdateToOneWithWhereWithoutCommandesInput, Prisma.ClientUpdateWithoutCommandesInput>, Prisma.ClientUncheckedUpdateWithoutCommandesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClientUpdateToOneWithWhereWithoutInvoicesInput, Prisma.ClientUpdateWithoutInvoicesInput>, Prisma.ClientUncheckedUpdateWithoutInvoicesInput>
 }
 
-export type ClientCreateWithoutDevisInput = {
+export type ClientCreateNestedOneWithoutOrdersInput = {
+  create?: Prisma.XOR<Prisma.ClientCreateWithoutOrdersInput, Prisma.ClientUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutOrdersInput
+  connect?: Prisma.ClientWhereUniqueInput
+}
+
+export type ClientUpdateOneRequiredWithoutOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.ClientCreateWithoutOrdersInput, Prisma.ClientUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutOrdersInput
+  upsert?: Prisma.ClientUpsertWithoutOrdersInput
+  connect?: Prisma.ClientWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClientUpdateToOneWithWhereWithoutOrdersInput, Prisma.ClientUpdateWithoutOrdersInput>, Prisma.ClientUncheckedUpdateWithoutOrdersInput>
+}
+
+export type ClientCreateWithoutQuotesInput = {
   id: string
-  nom: string
-  email: string
-  telephone: string
-  adresse: string
+  firstName?: string | null
+  lastName: string
+  email?: string | null
+  phone?: string | null
+  address?: string | null
   createdAt?: Date | string
-  commandes?: Prisma.CommandeCreateNestedManyWithoutClientInput
-  factures?: Prisma.FactureCreateNestedManyWithoutClientInput
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  orders?: Prisma.OrderCreateNestedManyWithoutClientInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutClientInput
 }
 
-export type ClientUncheckedCreateWithoutDevisInput = {
+export type ClientUncheckedCreateWithoutQuotesInput = {
   id: string
-  nom: string
-  email: string
-  telephone: string
-  adresse: string
+  firstName?: string | null
+  lastName: string
+  email?: string | null
+  phone?: string | null
+  address?: string | null
   createdAt?: Date | string
-  commandes?: Prisma.CommandeUncheckedCreateNestedManyWithoutClientInput
-  factures?: Prisma.FactureUncheckedCreateNestedManyWithoutClientInput
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutClientInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutClientInput
 }
 
-export type ClientCreateOrConnectWithoutDevisInput = {
+export type ClientCreateOrConnectWithoutQuotesInput = {
   where: Prisma.ClientWhereUniqueInput
-  create: Prisma.XOR<Prisma.ClientCreateWithoutDevisInput, Prisma.ClientUncheckedCreateWithoutDevisInput>
+  create: Prisma.XOR<Prisma.ClientCreateWithoutQuotesInput, Prisma.ClientUncheckedCreateWithoutQuotesInput>
 }
 
-export type ClientUpsertWithoutDevisInput = {
-  update: Prisma.XOR<Prisma.ClientUpdateWithoutDevisInput, Prisma.ClientUncheckedUpdateWithoutDevisInput>
-  create: Prisma.XOR<Prisma.ClientCreateWithoutDevisInput, Prisma.ClientUncheckedCreateWithoutDevisInput>
+export type ClientUpsertWithoutQuotesInput = {
+  update: Prisma.XOR<Prisma.ClientUpdateWithoutQuotesInput, Prisma.ClientUncheckedUpdateWithoutQuotesInput>
+  create: Prisma.XOR<Prisma.ClientCreateWithoutQuotesInput, Prisma.ClientUncheckedCreateWithoutQuotesInput>
   where?: Prisma.ClientWhereInput
 }
 
-export type ClientUpdateToOneWithWhereWithoutDevisInput = {
+export type ClientUpdateToOneWithWhereWithoutQuotesInput = {
   where?: Prisma.ClientWhereInput
-  data: Prisma.XOR<Prisma.ClientUpdateWithoutDevisInput, Prisma.ClientUncheckedUpdateWithoutDevisInput>
+  data: Prisma.XOR<Prisma.ClientUpdateWithoutQuotesInput, Prisma.ClientUncheckedUpdateWithoutQuotesInput>
 }
 
-export type ClientUpdateWithoutDevisInput = {
+export type ClientUpdateWithoutQuotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nom?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  telephone?: Prisma.StringFieldUpdateOperationsInput | string
-  adresse?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  commandes?: Prisma.CommandeUpdateManyWithoutClientNestedInput
-  factures?: Prisma.FactureUpdateManyWithoutClientNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orders?: Prisma.OrderUpdateManyWithoutClientNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutClientNestedInput
 }
 
-export type ClientUncheckedUpdateWithoutDevisInput = {
+export type ClientUncheckedUpdateWithoutQuotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nom?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  telephone?: Prisma.StringFieldUpdateOperationsInput | string
-  adresse?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  commandes?: Prisma.CommandeUncheckedUpdateManyWithoutClientNestedInput
-  factures?: Prisma.FactureUncheckedUpdateManyWithoutClientNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutClientNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutClientNestedInput
 }
 
-export type ClientCreateWithoutFacturesInput = {
+export type ClientCreateWithoutInvoicesInput = {
   id: string
-  nom: string
-  email: string
-  telephone: string
-  adresse: string
+  firstName?: string | null
+  lastName: string
+  email?: string | null
+  phone?: string | null
+  address?: string | null
   createdAt?: Date | string
-  commandes?: Prisma.CommandeCreateNestedManyWithoutClientInput
-  devis?: Prisma.DevisCreateNestedManyWithoutClientInput
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  orders?: Prisma.OrderCreateNestedManyWithoutClientInput
+  quotes?: Prisma.QuoteCreateNestedManyWithoutClientInput
 }
 
-export type ClientUncheckedCreateWithoutFacturesInput = {
+export type ClientUncheckedCreateWithoutInvoicesInput = {
   id: string
-  nom: string
-  email: string
-  telephone: string
-  adresse: string
+  firstName?: string | null
+  lastName: string
+  email?: string | null
+  phone?: string | null
+  address?: string | null
   createdAt?: Date | string
-  commandes?: Prisma.CommandeUncheckedCreateNestedManyWithoutClientInput
-  devis?: Prisma.DevisUncheckedCreateNestedManyWithoutClientInput
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutClientInput
+  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutClientInput
 }
 
-export type ClientCreateOrConnectWithoutFacturesInput = {
+export type ClientCreateOrConnectWithoutInvoicesInput = {
   where: Prisma.ClientWhereUniqueInput
-  create: Prisma.XOR<Prisma.ClientCreateWithoutFacturesInput, Prisma.ClientUncheckedCreateWithoutFacturesInput>
+  create: Prisma.XOR<Prisma.ClientCreateWithoutInvoicesInput, Prisma.ClientUncheckedCreateWithoutInvoicesInput>
 }
 
-export type ClientUpsertWithoutFacturesInput = {
-  update: Prisma.XOR<Prisma.ClientUpdateWithoutFacturesInput, Prisma.ClientUncheckedUpdateWithoutFacturesInput>
-  create: Prisma.XOR<Prisma.ClientCreateWithoutFacturesInput, Prisma.ClientUncheckedCreateWithoutFacturesInput>
+export type ClientUpsertWithoutInvoicesInput = {
+  update: Prisma.XOR<Prisma.ClientUpdateWithoutInvoicesInput, Prisma.ClientUncheckedUpdateWithoutInvoicesInput>
+  create: Prisma.XOR<Prisma.ClientCreateWithoutInvoicesInput, Prisma.ClientUncheckedCreateWithoutInvoicesInput>
   where?: Prisma.ClientWhereInput
 }
 
-export type ClientUpdateToOneWithWhereWithoutFacturesInput = {
+export type ClientUpdateToOneWithWhereWithoutInvoicesInput = {
   where?: Prisma.ClientWhereInput
-  data: Prisma.XOR<Prisma.ClientUpdateWithoutFacturesInput, Prisma.ClientUncheckedUpdateWithoutFacturesInput>
+  data: Prisma.XOR<Prisma.ClientUpdateWithoutInvoicesInput, Prisma.ClientUncheckedUpdateWithoutInvoicesInput>
 }
 
-export type ClientUpdateWithoutFacturesInput = {
+export type ClientUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nom?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  telephone?: Prisma.StringFieldUpdateOperationsInput | string
-  adresse?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  commandes?: Prisma.CommandeUpdateManyWithoutClientNestedInput
-  devis?: Prisma.DevisUpdateManyWithoutClientNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orders?: Prisma.OrderUpdateManyWithoutClientNestedInput
+  quotes?: Prisma.QuoteUpdateManyWithoutClientNestedInput
 }
 
-export type ClientUncheckedUpdateWithoutFacturesInput = {
+export type ClientUncheckedUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nom?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  telephone?: Prisma.StringFieldUpdateOperationsInput | string
-  adresse?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  commandes?: Prisma.CommandeUncheckedUpdateManyWithoutClientNestedInput
-  devis?: Prisma.DevisUncheckedUpdateManyWithoutClientNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutClientNestedInput
+  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutClientNestedInput
 }
 
-export type ClientCreateWithoutCommandesInput = {
+export type ClientCreateWithoutOrdersInput = {
   id: string
-  nom: string
-  email: string
-  telephone: string
-  adresse: string
+  firstName?: string | null
+  lastName: string
+  email?: string | null
+  phone?: string | null
+  address?: string | null
   createdAt?: Date | string
-  factures?: Prisma.FactureCreateNestedManyWithoutClientInput
-  devis?: Prisma.DevisCreateNestedManyWithoutClientInput
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutClientInput
+  quotes?: Prisma.QuoteCreateNestedManyWithoutClientInput
 }
 
-export type ClientUncheckedCreateWithoutCommandesInput = {
+export type ClientUncheckedCreateWithoutOrdersInput = {
   id: string
-  nom: string
-  email: string
-  telephone: string
-  adresse: string
+  firstName?: string | null
+  lastName: string
+  email?: string | null
+  phone?: string | null
+  address?: string | null
   createdAt?: Date | string
-  factures?: Prisma.FactureUncheckedCreateNestedManyWithoutClientInput
-  devis?: Prisma.DevisUncheckedCreateNestedManyWithoutClientInput
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutClientInput
+  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutClientInput
 }
 
-export type ClientCreateOrConnectWithoutCommandesInput = {
+export type ClientCreateOrConnectWithoutOrdersInput = {
   where: Prisma.ClientWhereUniqueInput
-  create: Prisma.XOR<Prisma.ClientCreateWithoutCommandesInput, Prisma.ClientUncheckedCreateWithoutCommandesInput>
+  create: Prisma.XOR<Prisma.ClientCreateWithoutOrdersInput, Prisma.ClientUncheckedCreateWithoutOrdersInput>
 }
 
-export type ClientUpsertWithoutCommandesInput = {
-  update: Prisma.XOR<Prisma.ClientUpdateWithoutCommandesInput, Prisma.ClientUncheckedUpdateWithoutCommandesInput>
-  create: Prisma.XOR<Prisma.ClientCreateWithoutCommandesInput, Prisma.ClientUncheckedCreateWithoutCommandesInput>
+export type ClientUpsertWithoutOrdersInput = {
+  update: Prisma.XOR<Prisma.ClientUpdateWithoutOrdersInput, Prisma.ClientUncheckedUpdateWithoutOrdersInput>
+  create: Prisma.XOR<Prisma.ClientCreateWithoutOrdersInput, Prisma.ClientUncheckedCreateWithoutOrdersInput>
   where?: Prisma.ClientWhereInput
 }
 
-export type ClientUpdateToOneWithWhereWithoutCommandesInput = {
+export type ClientUpdateToOneWithWhereWithoutOrdersInput = {
   where?: Prisma.ClientWhereInput
-  data: Prisma.XOR<Prisma.ClientUpdateWithoutCommandesInput, Prisma.ClientUncheckedUpdateWithoutCommandesInput>
+  data: Prisma.XOR<Prisma.ClientUpdateWithoutOrdersInput, Prisma.ClientUncheckedUpdateWithoutOrdersInput>
 }
 
-export type ClientUpdateWithoutCommandesInput = {
+export type ClientUpdateWithoutOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nom?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  telephone?: Prisma.StringFieldUpdateOperationsInput | string
-  adresse?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  factures?: Prisma.FactureUpdateManyWithoutClientNestedInput
-  devis?: Prisma.DevisUpdateManyWithoutClientNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invoices?: Prisma.InvoiceUpdateManyWithoutClientNestedInput
+  quotes?: Prisma.QuoteUpdateManyWithoutClientNestedInput
 }
 
-export type ClientUncheckedUpdateWithoutCommandesInput = {
+export type ClientUncheckedUpdateWithoutOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nom?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  telephone?: Prisma.StringFieldUpdateOperationsInput | string
-  adresse?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  factures?: Prisma.FactureUncheckedUpdateManyWithoutClientNestedInput
-  devis?: Prisma.DevisUncheckedUpdateManyWithoutClientNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutClientNestedInput
+  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutClientNestedInput
 }
 
 
@@ -589,15 +699,15 @@ export type ClientUncheckedUpdateWithoutCommandesInput = {
  */
 
 export type ClientCountOutputType = {
-  commandes: number
-  factures: number
-  devis: number
+  orders: number
+  invoices: number
+  quotes: number
 }
 
 export type ClientCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  commandes?: boolean | ClientCountOutputTypeCountCommandesArgs
-  factures?: boolean | ClientCountOutputTypeCountFacturesArgs
-  devis?: boolean | ClientCountOutputTypeCountDevisArgs
+  orders?: boolean | ClientCountOutputTypeCountOrdersArgs
+  invoices?: boolean | ClientCountOutputTypeCountInvoicesArgs
+  quotes?: boolean | ClientCountOutputTypeCountQuotesArgs
 }
 
 /**
@@ -613,70 +723,82 @@ export type ClientCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
 /**
  * ClientCountOutputType without action
  */
-export type ClientCountOutputTypeCountCommandesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CommandeWhereInput
+export type ClientCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
 }
 
 /**
  * ClientCountOutputType without action
  */
-export type ClientCountOutputTypeCountFacturesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.FactureWhereInput
+export type ClientCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceWhereInput
 }
 
 /**
  * ClientCountOutputType without action
  */
-export type ClientCountOutputTypeCountDevisArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.DevisWhereInput
+export type ClientCountOutputTypeCountQuotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.QuoteWhereInput
 }
 
 
 export type ClientSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  nom?: boolean
+  firstName?: boolean
+  lastName?: boolean
   email?: boolean
-  telephone?: boolean
-  adresse?: boolean
+  phone?: boolean
+  address?: boolean
   createdAt?: boolean
-  commandes?: boolean | Prisma.Client$commandesArgs<ExtArgs>
-  factures?: boolean | Prisma.Client$facturesArgs<ExtArgs>
-  devis?: boolean | Prisma.Client$devisArgs<ExtArgs>
+  updatedAt?: boolean
+  deletedAt?: boolean
+  orders?: boolean | Prisma.Client$ordersArgs<ExtArgs>
+  invoices?: boolean | Prisma.Client$invoicesArgs<ExtArgs>
+  quotes?: boolean | Prisma.Client$quotesArgs<ExtArgs>
   _count?: boolean | Prisma.ClientCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["client"]>
 
 export type ClientSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  nom?: boolean
+  firstName?: boolean
+  lastName?: boolean
   email?: boolean
-  telephone?: boolean
-  adresse?: boolean
+  phone?: boolean
+  address?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
 }, ExtArgs["result"]["client"]>
 
 export type ClientSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  nom?: boolean
+  firstName?: boolean
+  lastName?: boolean
   email?: boolean
-  telephone?: boolean
-  adresse?: boolean
+  phone?: boolean
+  address?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
 }, ExtArgs["result"]["client"]>
 
 export type ClientSelectScalar = {
   id?: boolean
-  nom?: boolean
+  firstName?: boolean
+  lastName?: boolean
   email?: boolean
-  telephone?: boolean
-  adresse?: boolean
+  phone?: boolean
+  address?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type ClientOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "email" | "telephone" | "adresse" | "createdAt", ExtArgs["result"]["client"]>
+export type ClientOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "phone" | "address" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["client"]>
 export type ClientInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  commandes?: boolean | Prisma.Client$commandesArgs<ExtArgs>
-  factures?: boolean | Prisma.Client$facturesArgs<ExtArgs>
-  devis?: boolean | Prisma.Client$devisArgs<ExtArgs>
+  orders?: boolean | Prisma.Client$ordersArgs<ExtArgs>
+  invoices?: boolean | Prisma.Client$invoicesArgs<ExtArgs>
+  quotes?: boolean | Prisma.Client$quotesArgs<ExtArgs>
   _count?: boolean | Prisma.ClientCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ClientIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -685,17 +807,20 @@ export type ClientIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $ClientPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Client"
   objects: {
-    commandes: Prisma.$CommandePayload<ExtArgs>[]
-    factures: Prisma.$FacturePayload<ExtArgs>[]
-    devis: Prisma.$DevisPayload<ExtArgs>[]
+    orders: Prisma.$OrderPayload<ExtArgs>[]
+    invoices: Prisma.$InvoicePayload<ExtArgs>[]
+    quotes: Prisma.$QuotePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    nom: string
-    email: string
-    telephone: string
-    adresse: string
+    firstName: string | null
+    lastName: string
+    email: string | null
+    phone: string | null
+    address: string | null
     createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["client"]>
   composites: {}
 }
@@ -1090,9 +1215,9 @@ readonly fields: ClientFieldRefs;
  */
 export interface Prisma__ClientClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  commandes<T extends Prisma.Client$commandesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Client$commandesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommandePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  factures<T extends Prisma.Client$facturesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Client$facturesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FacturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  devis<T extends Prisma.Client$devisArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Client$devisArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DevisPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  orders<T extends Prisma.Client$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Client$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invoices<T extends Prisma.Client$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Client$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  quotes<T extends Prisma.Client$quotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Client$quotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1123,11 +1248,14 @@ export interface Prisma__ClientClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface ClientFieldRefs {
   readonly id: Prisma.FieldRef<"Client", 'String'>
-  readonly nom: Prisma.FieldRef<"Client", 'String'>
+  readonly firstName: Prisma.FieldRef<"Client", 'String'>
+  readonly lastName: Prisma.FieldRef<"Client", 'String'>
   readonly email: Prisma.FieldRef<"Client", 'String'>
-  readonly telephone: Prisma.FieldRef<"Client", 'String'>
-  readonly adresse: Prisma.FieldRef<"Client", 'String'>
+  readonly phone: Prisma.FieldRef<"Client", 'String'>
+  readonly address: Prisma.FieldRef<"Client", 'String'>
   readonly createdAt: Prisma.FieldRef<"Client", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Client", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"Client", 'DateTime'>
 }
     
 
@@ -1521,75 +1649,75 @@ export type ClientDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Client.commandes
+ * Client.orders
  */
-export type Client$commandesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Client$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Commande
+   * Select specific fields to fetch from the Order
    */
-  select?: Prisma.CommandeSelect<ExtArgs> | null
+  select?: Prisma.OrderSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Commande
+   * Omit specific fields from the Order
    */
-  omit?: Prisma.CommandeOmit<ExtArgs> | null
+  omit?: Prisma.OrderOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.CommandeInclude<ExtArgs> | null
-  where?: Prisma.CommandeWhereInput
-  orderBy?: Prisma.CommandeOrderByWithRelationInput | Prisma.CommandeOrderByWithRelationInput[]
-  cursor?: Prisma.CommandeWhereUniqueInput
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.CommandeScalarFieldEnum | Prisma.CommandeScalarFieldEnum[]
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
 }
 
 /**
- * Client.factures
+ * Client.invoices
  */
-export type Client$facturesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Client$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Facture
+   * Select specific fields to fetch from the Invoice
    */
-  select?: Prisma.FactureSelect<ExtArgs> | null
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Facture
+   * Omit specific fields from the Invoice
    */
-  omit?: Prisma.FactureOmit<ExtArgs> | null
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.FactureInclude<ExtArgs> | null
-  where?: Prisma.FactureWhereInput
-  orderBy?: Prisma.FactureOrderByWithRelationInput | Prisma.FactureOrderByWithRelationInput[]
-  cursor?: Prisma.FactureWhereUniqueInput
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
+  orderBy?: Prisma.InvoiceOrderByWithRelationInput | Prisma.InvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.FactureScalarFieldEnum | Prisma.FactureScalarFieldEnum[]
+  distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
 }
 
 /**
- * Client.devis
+ * Client.quotes
  */
-export type Client$devisArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Client$quotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Devis
+   * Select specific fields to fetch from the Quote
    */
-  select?: Prisma.DevisSelect<ExtArgs> | null
+  select?: Prisma.QuoteSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Devis
+   * Omit specific fields from the Quote
    */
-  omit?: Prisma.DevisOmit<ExtArgs> | null
+  omit?: Prisma.QuoteOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.DevisInclude<ExtArgs> | null
-  where?: Prisma.DevisWhereInput
-  orderBy?: Prisma.DevisOrderByWithRelationInput | Prisma.DevisOrderByWithRelationInput[]
-  cursor?: Prisma.DevisWhereUniqueInput
+  include?: Prisma.QuoteInclude<ExtArgs> | null
+  where?: Prisma.QuoteWhereInput
+  orderBy?: Prisma.QuoteOrderByWithRelationInput | Prisma.QuoteOrderByWithRelationInput[]
+  cursor?: Prisma.QuoteWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.DevisScalarFieldEnum | Prisma.DevisScalarFieldEnum[]
+  distinct?: Prisma.QuoteScalarFieldEnum | Prisma.QuoteScalarFieldEnum[]
 }
 
 /**

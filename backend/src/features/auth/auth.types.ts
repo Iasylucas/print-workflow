@@ -18,7 +18,7 @@ export const userSafeSelect = {
 
 export const userCompleteSelect = {
   ...userSafeSelect,
-  isActif: true,
+  isActive: true,
   deletedAt: true,
   password: true,
 } satisfies Prisma.UserSelect;

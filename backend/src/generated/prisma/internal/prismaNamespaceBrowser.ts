@@ -55,19 +55,19 @@ export const ModelName = {
   User: 'User',
   InvitationToken: 'InvitationToken',
   PasswordResetToken: 'PasswordResetToken',
-  EntrepriseInfo: 'EntrepriseInfo',
-  Devis: 'Devis',
-  Facture: 'Facture',
-  Fichier: 'Fichier',
-  Paiement: 'Paiement',
+  CompanyInfo: 'CompanyInfo',
+  Quote: 'Quote',
+  Invoice: 'Invoice',
+  File: 'File',
+  Payment: 'Payment',
   Note: 'Note',
   AppSettings: 'AppSettings',
-  Commande: 'Commande',
+  Order: 'Order',
   Product: 'Product',
   ProductVariant: 'ProductVariant',
   PricingRule: 'PricingRule',
   Format: 'Format',
-  ConfigurationAtelier: 'ConfigurationAtelier'
+  WorkshopConfig: 'WorkshopConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -88,11 +88,14 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const ClientScalarFieldEnum = {
   id: 'id',
-  nom: 'nom',
+  firstName: 'firstName',
+  lastName: 'lastName',
   email: 'email',
-  telephone: 'telephone',
-  adresse: 'adresse',
-  createdAt: 'createdAt'
+  phone: 'phone',
+  address: 'address',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
@@ -103,7 +106,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   role: 'role',
-  isActif: 'isActif',
+  isActive: 'isActive',
   firstName: 'firstName',
   lastName: 'lastName',
   createdAt: 'createdAt',
@@ -139,104 +142,104 @@ export const PasswordResetTokenScalarFieldEnum = {
 export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum]
 
 
-export const EntrepriseInfoScalarFieldEnum = {
+export const CompanyInfoScalarFieldEnum = {
   id: 'id',
   version: 'version',
   nif: 'nif',
   stat: 'stat',
   rif: 'rif',
-  adressePrincipale: 'adressePrincipale',
-  adressePrincipaleDetail: 'adressePrincipaleDetail',
-  adresseAnnexe: 'adresseAnnexe',
-  adresseAnnexeDetail: 'adresseAnnexeDetail',
+  mainAddress: 'mainAddress',
+  mainAddressDetail: 'mainAddressDetail',
+  secondaryAddress: 'secondaryAddress',
+  secondaryAddressDetail: 'secondaryAddressDetail',
   logo: 'logo',
-  cachet: 'cachet',
-  actif: 'actif',
-  dateDebut: 'dateDebut',
-  dateFin: 'dateFin',
+  stamp: 'stamp',
+  isActive: 'isActive',
+  startDate: 'startDate',
+  endDate: 'endDate',
   mobileMoneyNumbers: 'mobileMoneyNumbers',
-  telephoneStandard: 'telephoneStandard',
-  emailContact: 'emailContact',
-  condition: 'condition',
-  delaisDeLivraison: 'delaisDeLivraison',
-  ribTitulaire: 'ribTitulaire',
-  ribDomiciliation: 'ribDomiciliation',
-  ribCode: 'ribCode',
-  infoRib: 'infoRib'
+  standardPhone: 'standardPhone',
+  contactEmail: 'contactEmail',
+  termsAndConditions: 'termsAndConditions',
+  deliveryLeadTime: 'deliveryLeadTime',
+  bankAccountHolder: 'bankAccountHolder',
+  bankBranch: 'bankBranch',
+  bankCode: 'bankCode',
+  ribInfo: 'ribInfo'
 } as const
 
-export type EntrepriseInfoScalarFieldEnum = (typeof EntrepriseInfoScalarFieldEnum)[keyof typeof EntrepriseInfoScalarFieldEnum]
+export type CompanyInfoScalarFieldEnum = (typeof CompanyInfoScalarFieldEnum)[keyof typeof CompanyInfoScalarFieldEnum]
 
 
-export const DevisScalarFieldEnum = {
+export const QuoteScalarFieldEnum = {
   id: 'id',
-  numero: 'numero',
+  number: 'number',
   date: 'date',
   clientId: 'clientId',
   total: 'total',
-  statut: 'statut',
-  entrepriseInfoId: 'entrepriseInfoId',
+  status: 'status',
+  companyInfoId: 'companyInfoId',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type DevisScalarFieldEnum = (typeof DevisScalarFieldEnum)[keyof typeof DevisScalarFieldEnum]
+export type QuoteScalarFieldEnum = (typeof QuoteScalarFieldEnum)[keyof typeof QuoteScalarFieldEnum]
 
 
-export const FactureScalarFieldEnum = {
+export const InvoiceScalarFieldEnum = {
   id: 'id',
-  numero: 'numero',
+  number: 'number',
   date: 'date',
   clientId: 'clientId',
   total: 'total',
-  acompte: 'acompte',
-  reste: 'reste',
-  lieuLivraison: 'lieuLivraison',
-  dateLivraisonPrevue: 'dateLivraisonPrevue',
-  estLivree: 'estLivree',
-  statutPaiement: 'statutPaiement',
-  entrepriseInfoId: 'entrepriseInfoId',
-  devisOrigineId: 'devisOrigineId',
+  deposit: 'deposit',
+  remaining: 'remaining',
+  deliveryPlace: 'deliveryPlace',
+  expectedDeliveryDate: 'expectedDeliveryDate',
+  isDelivered: 'isDelivered',
+  paymentStatus: 'paymentStatus',
+  companyInfoId: 'companyInfoId',
+  originalQuoteId: 'originalQuoteId',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type FactureScalarFieldEnum = (typeof FactureScalarFieldEnum)[keyof typeof FactureScalarFieldEnum]
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
 
 
-export const FichierScalarFieldEnum = {
+export const FileScalarFieldEnum = {
   id: 'id',
   url: 'url',
-  nom: 'nom',
+  name: 'name',
   type: 'type',
-  commandeId: 'commandeId',
+  orderId: 'orderId',
   uploadedById: 'uploadedById',
   createdAt: 'createdAt'
 } as const
 
-export type FichierScalarFieldEnum = (typeof FichierScalarFieldEnum)[keyof typeof FichierScalarFieldEnum]
+export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
 
 
-export const PaiementScalarFieldEnum = {
+export const PaymentScalarFieldEnum = {
   id: 'id',
-  factureId: 'factureId',
-  montant: 'montant',
-  mode: 'mode',
+  invoiceId: 'invoiceId',
+  amount: 'amount',
+  method: 'method',
   reference: 'reference',
   date: 'date',
-  encaisseParId: 'encaisseParId'
+  receivedById: 'receivedById'
 } as const
 
-export type PaiementScalarFieldEnum = (typeof PaiementScalarFieldEnum)[keyof typeof PaiementScalarFieldEnum]
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const NoteScalarFieldEnum = {
   id: 'id',
-  texte: 'texte',
+  text: 'text',
   userId: 'userId',
-  commandeId: 'commandeId',
+  orderId: 'orderId',
   createdAt: 'createdAt'
 } as const
 
@@ -245,37 +248,37 @@ export type NoteScalarFieldEnum = (typeof NoteScalarFieldEnum)[keyof typeof Note
 
 export const AppSettingsScalarFieldEnum = {
   id: 'id',
-  maxInscriptions: 'maxInscriptions',
-  inscriptionsOuvertes: 'inscriptionsOuvertes',
+  maxRegistrations: 'maxRegistrations',
+  registrationsOpen: 'registrationsOpen',
   updatedAt: 'updatedAt'
 } as const
 
 export type AppSettingsScalarFieldEnum = (typeof AppSettingsScalarFieldEnum)[keyof typeof AppSettingsScalarFieldEnum]
 
 
-export const CommandeScalarFieldEnum = {
+export const OrderScalarFieldEnum = {
   id: 'id',
   reference: 'reference',
   designation: 'designation',
   clientId: 'clientId',
-  devisId: 'devisId',
-  factureId: 'factureId',
+  quoteId: 'quoteId',
+  invoiceId: 'invoiceId',
   variantId: 'variantId',
   options: 'options',
   pricingRuleId: 'pricingRuleId',
-  largeurPieceCm: 'largeurPieceCm',
-  hauteurPieceCm: 'hauteurPieceCm',
-  statut: 'statut',
-  quantite: 'quantite',
-  prixUnitaire: 'prixUnitaire',
-  prixTotal: 'prixTotal',
+  widthCm: 'widthCm',
+  heightCm: 'heightCm',
+  status: 'status',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  totalPrice: 'totalPrice',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
 } as const
 
-export type CommandeScalarFieldEnum = (typeof CommandeScalarFieldEnum)[keyof typeof CommandeScalarFieldEnum]
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
 export const ProductScalarFieldEnum = {
@@ -327,15 +330,15 @@ export const FormatScalarFieldEnum = {
 export type FormatScalarFieldEnum = (typeof FormatScalarFieldEnum)[keyof typeof FormatScalarFieldEnum]
 
 
-export const ConfigurationAtelierScalarFieldEnum = {
+export const WorkshopConfigScalarFieldEnum = {
   id: 'id',
-  largeurMaxM: 'largeurMaxM',
-  margeDecoupeM: 'margeDecoupeM',
-  surfaceReferenceM2: 'surfaceReferenceM2',
-  actif: 'actif'
+  maxWidthM: 'maxWidthM',
+  cuttingMarginM: 'cuttingMarginM',
+  referenceSurfaceM2: 'referenceSurfaceM2',
+  isActive: 'isActive'
 } as const
 
-export type ConfigurationAtelierScalarFieldEnum = (typeof ConfigurationAtelierScalarFieldEnum)[keyof typeof ConfigurationAtelierScalarFieldEnum]
+export type WorkshopConfigScalarFieldEnum = (typeof WorkshopConfigScalarFieldEnum)[keyof typeof WorkshopConfigScalarFieldEnum]
 
 
 export const SortOrder = {
