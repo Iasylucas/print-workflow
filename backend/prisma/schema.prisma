@@ -86,19 +86,15 @@ model PasswordResetToken {
 
 model CompanyInfo {
   id                      Int       @id @default(autoincrement())
-  version                 Int
   nif                     String
   stat                    String
-  rif                     String
+  rif                     String?
   mainAddress             String
   mainAddressDetail       String?
-  secondaryAddress        String
+  secondaryAddress        String?
   secondaryAddressDetail  String?
   logo                    String?
   stamp                   String?
-  isActive                Boolean   @default(true)
-  startDate               DateTime  @default(now())
-  endDate                 DateTime?
 
   mobileMoneyNumbers      Json?
 
@@ -112,6 +108,8 @@ model CompanyInfo {
   bankBranch              String?
   bankCode                String?
   ribInfo                 String?
+
+  createdAt               DateTime  @default(now())
 
   invoices Invoice[]
   quotes   Quote[]

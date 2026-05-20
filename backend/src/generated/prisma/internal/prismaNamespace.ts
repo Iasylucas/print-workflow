@@ -1775,7 +1775,6 @@ export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalar
 
 export const CompanyInfoScalarFieldEnum = {
   id: 'id',
-  version: 'version',
   nif: 'nif',
   stat: 'stat',
   rif: 'rif',
@@ -1785,9 +1784,6 @@ export const CompanyInfoScalarFieldEnum = {
   secondaryAddressDetail: 'secondaryAddressDetail',
   logo: 'logo',
   stamp: 'stamp',
-  isActive: 'isActive',
-  startDate: 'startDate',
-  endDate: 'endDate',
   mobileMoneyNumbers: 'mobileMoneyNumbers',
   standardPhone: 'standardPhone',
   contactEmail: 'contactEmail',
@@ -1796,7 +1792,8 @@ export const CompanyInfoScalarFieldEnum = {
   bankAccountHolder: 'bankAccountHolder',
   bankBranch: 'bankBranch',
   bankCode: 'bankCode',
-  ribInfo: 'ribInfo'
+  ribInfo: 'ribInfo',
+  createdAt: 'createdAt'
 } as const
 
 export type CompanyInfoScalarFieldEnum = (typeof CompanyInfoScalarFieldEnum)[keyof typeof CompanyInfoScalarFieldEnum]

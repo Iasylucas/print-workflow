@@ -1,3 +1,5 @@
+import { NOTFOUND } from "node:dns";
+
 export const AUTH_ERRORS = {
   EMAIL_EXISTS: "Email already exists",
   INVALID_CREDENTIALS: "Invalid email or password",
@@ -25,4 +27,10 @@ export const CLIENT_ERRORS = {
   FAILED_CREATION: "Failed to create client",
   FAILED_UPDATE: "Failed to update client",
   FAILED_DELETE: "Failed to delete client",
+} as const;
+
+export const COMPANY_INFO_ERRORS = {
+  NOT_FOUND: "Company info not found",
+  NOTFOUND_ID: (id: number) => `Company info version with id ${id} not found`,
+  FAILED_CREATION: "Failed to create new company info version",
 } as const;
