@@ -6,7 +6,8 @@ import {
   BadRequestError,
 } from "@/shared/error/error.js";
 import { AuthRepository } from "./auth.repository.js";
-import { AuthResponse, JWTpayload, UserSafe } from "./auth.types.js";
+import { AuthResponse, JWTpayload } from "./auth.types.js";
+import { UserSafe } from "@/shared/types/user.types.js";
 import {
   InviteUserInput,
   FinalizeRegistrationInput,

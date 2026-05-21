@@ -1,12 +1,12 @@
 import { prisma } from "@/config/prisma.js";
+import { InviteUserInput, FinalizeRegistrationInput } from "./auth.types.js";
+
 import {
   userSafeSelect,
   UserSafe,
   UserComplete,
   userCompleteSelect,
-  InviteUserInput,
-  FinalizeRegistrationInput,
-} from "./auth.types.js";
+} from "@/shared/types/user.types.js";
 
 type inviteData = {
   id: string;

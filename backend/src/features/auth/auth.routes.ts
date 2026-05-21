@@ -1,7 +1,6 @@
 import { Router } from "express";
-import { authController, authControllerWrapped } from "./auth.controller.js";
+import { authControllerWrapped } from "./auth.controller.js";
 import { protect, restrictTo } from "@/middlewares/auth.middleware.js";
-import { catchAsync } from "@/utils/catchAsync.js";
 
 const router: Router = Router();
 
