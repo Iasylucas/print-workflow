@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { v7 as uuidv7 } from "uuid";
 import { emailRequiredSchema, passwordSchema } from "@/shared/schemas/index.js";
+import { imageUrlSchema } from "@/shared/schemas/image.schema.js";
 
 // 1. Roles autorisés dans ton système
 const UserRole = z.enum(["ADMIN", "SALES", "PRINTER", "GRAPHIC_DESIGNER"]);
@@ -16,6 +17,7 @@ export const inviteUserSchema = z.object({
 export const finalizeRegistrationSchema = z
   .object({
     token: z.string().min(1, "Invitation token is required"),
+    avatarUrl: imageUrlSchema,
     firstName: z
       .string()
       .trim()

@@ -115,6 +115,7 @@ export class AuthService {
       invitation.userId,
       invitation.id,
       {
+        avatarUrl: data.avatarUrl,
         firstName: data.firstName,
         lastName: data.lastName,
         passwordHash: hashedPassword,
@@ -167,6 +168,7 @@ export class AuthService {
       token,
       user: {
         id: user.id,
+        avatarUrl: user.avatarUrl,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,

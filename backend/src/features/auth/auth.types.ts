@@ -8,6 +8,7 @@ import { z } from "zod";
 
 export const userSafeSelect = {
   id: true,
+  avatarUrl: true,
   firstName: true,
   lastName: true,
   email: true,

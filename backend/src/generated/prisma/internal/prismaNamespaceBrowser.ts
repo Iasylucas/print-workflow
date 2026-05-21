@@ -103,6 +103,7 @@ export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof 
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  avatarUrl: 'avatarUrl',
   email: 'email',
   password: 'password',
   role: 'role',
