@@ -27,6 +27,7 @@ export const createClientSchema = z.object({
     .nullable()
     .optional(),
 });
+//localhost:5050/api/company-info/versions/?page=1&?sortOrder=asc
 
 // 4. Schéma de mise à jour (tous les champs optionnels)
 export const updateClientSchema = createClientSchema
