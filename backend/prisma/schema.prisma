@@ -51,6 +51,7 @@ model User {
 
   resetTokens  PasswordResetToken[]
   invitations  InvitationToken[]
+  resetEmailRequest EmailChangeRequest[]
 }
 
 enum Role {
@@ -73,11 +74,23 @@ model InvitationToken {
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model EmailChangeRequest {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  newEmail     String
+  token        String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  usedAt       DateTime?
+}
+
 model PasswordResetToken {
   id        String   @id
   tokenHash String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
+  usedAt       DateTime?
 
   userId String
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)

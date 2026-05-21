@@ -51,3 +51,14 @@ export const changePasswordSchema = z
     message: "Passwords do not match",
     path: ["confirmNewPassword"],
   });
+
+// input for the forgot password action (by the users)
+export const forgotPasswordSchema = z.object({
+  email: emailRequiredSchema,
+});
+
+// input for the reset password action (by the users)
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1, "Token is required"),
+  newPassword: passwordSchema,
+});

@@ -37,4 +37,18 @@ router.post("/finalize", authControllerWrapped.finalize);
  */
 router.post("/change-password", protect, authControllerWrapped.changePassword);
 
+/**
+ * @desc    Forgot password - Request reset link
+ * @route   POST /api/auth/forgot-password
+ * @access  Public
+ */
+router.post("/forgot-password", authControllerWrapped.forgotPassword);
+
+/**
+ * @desc    Reset password using token
+ * @route   POST /api/auth/reset-password
+ * @access  Public (Verified by token in the body)
+ */
+router.post("/reset-password", authControllerWrapped.resetPassword);
+
 export { router as authRoutes };

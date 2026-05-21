@@ -23,6 +23,7 @@ import crypto from "node:crypto";
 import { v7 as uuidv7 } from "uuid";
 import { sendEmail } from "@/shared/infrastructure/mail/mail.service.js";
 import { getInvitationTemplate } from "@/shared/infrastructure/mail/templates/invitation.template.js";
+import { getResetPasswordTemplate } from "@/shared/infrastructure/mail/templates/reset-password.template.js";
 
 // function to genrate token
 function generateToken(payload: JWTpayload): string {
@@ -203,6 +204,69 @@ export class AuthService {
 
     const hashedPassword = await argon2.hash(data.newPassword);
     await this.authRepository.updatePassword(userId, hashedPassword);
+  }
+
+  // 5. MOT DE PASSE OUBLIÉ (Action publique)
+  async forgotPassword(email: string): Promise<void> {
+    const user = await this.authRepository.findByEmail(email);
+
+    // Sécurité : réponse identique même si email n'existe pas ou compte supprimé
+    if (!user || user.deletedAt) {
+      return;
+    }
+
+    // Supprimer les anciens tokens non utilisés
+    await this.authRepository.deleteOldPasswordResetTokens(user.id);
+
+    const plainToken = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto
+      .createHash("sha256")
+      .update(plainToken)
+      .digest("hex");
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 heure
+
+    await this.authRepository.createPasswordResetToken({
+      id: uuidv7(),
+      userId: user.id,
+      tokenHash,
+      expiresAt,
+    });
+
+    const resetUrl = `${env.FRONTEND_URL}/reset-password?token=${plainToken}`;
+
+    // Template email à créer (similaire à invitation.template.js)
+    await sendEmail(
+      user.email,
+      "Réinitialisation de votre mot de passe",
+      getResetPasswordTemplate(resetUrl),
+    );
+  }
+
+  // 6. RÉINITIALISATION DU MOT DE PASSE (Action publique avec token)
+  async resetPassword(token: string, newPassword: string): Promise<void> {
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+    const tokenRecord =
+      await this.authRepository.findPasswordResetTokenByHash(tokenHash);
+
+    if (!tokenRecord) {
+      throw new BadRequestError(AUTH_ERRORS.INVALID_TOKEN);
+    }
+
+    if (tokenRecord.usedAt) {
+      throw new BadRequestError(AUTH_ERRORS.TOKEN_ALREADY_USED);
+    }
+
+    if (new Date() > tokenRecord.expiresAt) {
+      throw new BadRequestError(AUTH_ERRORS.TOKEN_EXPIRED);
+    }
+
+    const hashedPassword = await argon2.hash(newPassword);
+
+    await this.authRepository.updatePassword(
+      tokenRecord.userId,
+      hashedPassword,
+    );
+    await this.authRepository.markPasswordResetTokenAsUsed(tokenRecord.id);
   }
 }
 

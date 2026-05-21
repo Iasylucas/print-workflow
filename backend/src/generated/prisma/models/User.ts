@@ -238,6 +238,7 @@ export type UserWhereInput = {
   ordersCreated?: Prisma.OrderListRelationFilter
   resetTokens?: Prisma.PasswordResetTokenListRelationFilter
   invitations?: Prisma.InvitationTokenListRelationFilter
+  resetEmailRequest?: Prisma.EmailChangeRequestListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -260,6 +261,7 @@ export type UserOrderByWithRelationInput = {
   ordersCreated?: Prisma.OrderOrderByRelationAggregateInput
   resetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
   invitations?: Prisma.InvitationTokenOrderByRelationAggregateInput
+  resetEmailRequest?: Prisma.EmailChangeRequestOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -285,6 +287,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   ordersCreated?: Prisma.OrderListRelationFilter
   resetTokens?: Prisma.PasswordResetTokenListRelationFilter
   invitations?: Prisma.InvitationTokenListRelationFilter
+  resetEmailRequest?: Prisma.EmailChangeRequestListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -341,6 +344,7 @@ export type UserCreateInput = {
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -363,6 +367,7 @@ export type UserUncheckedCreateInput = {
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -385,6 +390,7 @@ export type UserUpdateInput = {
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -407,6 +413,7 @@ export type UserUncheckedUpdateInput = {
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -514,6 +521,20 @@ export type UserUpdateOneRequiredWithoutInvitationsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutInvitationsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvitationsInput, Prisma.UserUpdateWithoutInvitationsInput>, Prisma.UserUncheckedUpdateWithoutInvitationsInput>
+}
+
+export type UserCreateNestedOneWithoutResetEmailRequestInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutResetEmailRequestInput, Prisma.UserUncheckedCreateWithoutResetEmailRequestInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutResetEmailRequestInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutResetEmailRequestNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutResetEmailRequestInput, Prisma.UserUncheckedCreateWithoutResetEmailRequestInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutResetEmailRequestInput
+  upsert?: Prisma.UserUpsertWithoutResetEmailRequestInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutResetEmailRequestInput, Prisma.UserUpdateWithoutResetEmailRequestInput>, Prisma.UserUncheckedUpdateWithoutResetEmailRequestInput>
 }
 
 export type UserCreateNestedOneWithoutResetTokensInput = {
@@ -633,6 +654,7 @@ export type UserCreateWithoutInvitationsInput = {
   invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInvitationsInput = {
@@ -654,6 +676,7 @@ export type UserUncheckedCreateWithoutInvitationsInput = {
   invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInvitationsInput = {
@@ -691,6 +714,7 @@ export type UserUpdateWithoutInvitationsInput = {
   invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvitationsInput = {
@@ -712,6 +736,111 @@ export type UserUncheckedUpdateWithoutInvitationsInput = {
   invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutResetEmailRequestInput = {
+  id: string
+  avatarUrl?: string | null
+  email: string
+  password?: string | null
+  role: string
+  isActive?: boolean
+  firstName?: string | null
+  lastName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  files?: Prisma.FileCreateNestedManyWithoutUploadedByInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+  notes?: Prisma.NoteCreateNestedManyWithoutUserInput
+  quotesCreated?: Prisma.QuoteCreateNestedManyWithoutCreatedByInput
+  invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
+  ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
+  resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutResetEmailRequestInput = {
+  id: string
+  avatarUrl?: string | null
+  email: string
+  password?: string | null
+  role: string
+  isActive?: boolean
+  firstName?: string | null
+  lastName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  files?: Prisma.FileUncheckedCreateNestedManyWithoutUploadedByInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+  notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
+  quotesCreated?: Prisma.QuoteUncheckedCreateNestedManyWithoutCreatedByInput
+  invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
+  ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
+  resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutResetEmailRequestInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutResetEmailRequestInput, Prisma.UserUncheckedCreateWithoutResetEmailRequestInput>
+}
+
+export type UserUpsertWithoutResetEmailRequestInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutResetEmailRequestInput, Prisma.UserUncheckedUpdateWithoutResetEmailRequestInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutResetEmailRequestInput, Prisma.UserUncheckedCreateWithoutResetEmailRequestInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutResetEmailRequestInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutResetEmailRequestInput, Prisma.UserUncheckedUpdateWithoutResetEmailRequestInput>
+}
+
+export type UserUpdateWithoutResetEmailRequestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  files?: Prisma.FileUpdateManyWithoutUploadedByNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+  notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
+  quotesCreated?: Prisma.QuoteUpdateManyWithoutCreatedByNestedInput
+  invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
+  ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
+  resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutResetEmailRequestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  files?: Prisma.FileUncheckedUpdateManyWithoutUploadedByNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+  notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
+  quotesCreated?: Prisma.QuoteUncheckedUpdateManyWithoutCreatedByNestedInput
+  invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutResetTokensInput = {
@@ -733,6 +862,7 @@ export type UserCreateWithoutResetTokensInput = {
   invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
   invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutResetTokensInput = {
@@ -754,6 +884,7 @@ export type UserUncheckedCreateWithoutResetTokensInput = {
   invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
   invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutResetTokensInput = {
@@ -791,6 +922,7 @@ export type UserUpdateWithoutResetTokensInput = {
   invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
   invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResetTokensInput = {
@@ -812,6 +944,7 @@ export type UserUncheckedUpdateWithoutResetTokensInput = {
   invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
   invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutQuotesCreatedInput = {
@@ -833,6 +966,7 @@ export type UserCreateWithoutQuotesCreatedInput = {
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutQuotesCreatedInput = {
@@ -854,6 +988,7 @@ export type UserUncheckedCreateWithoutQuotesCreatedInput = {
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutQuotesCreatedInput = {
@@ -891,6 +1026,7 @@ export type UserUpdateWithoutQuotesCreatedInput = {
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutQuotesCreatedInput = {
@@ -912,6 +1048,7 @@ export type UserUncheckedUpdateWithoutQuotesCreatedInput = {
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInvoicesCreatedInput = {
@@ -933,6 +1070,7 @@ export type UserCreateWithoutInvoicesCreatedInput = {
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInvoicesCreatedInput = {
@@ -954,6 +1092,7 @@ export type UserUncheckedCreateWithoutInvoicesCreatedInput = {
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInvoicesCreatedInput = {
@@ -991,6 +1130,7 @@ export type UserUpdateWithoutInvoicesCreatedInput = {
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvoicesCreatedInput = {
@@ -1012,6 +1152,7 @@ export type UserUncheckedUpdateWithoutInvoicesCreatedInput = {
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFilesInput = {
@@ -1033,6 +1174,7 @@ export type UserCreateWithoutFilesInput = {
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFilesInput = {
@@ -1054,6 +1196,7 @@ export type UserUncheckedCreateWithoutFilesInput = {
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFilesInput = {
@@ -1091,6 +1234,7 @@ export type UserUpdateWithoutFilesInput = {
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFilesInput = {
@@ -1112,6 +1256,7 @@ export type UserUncheckedUpdateWithoutFilesInput = {
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -1133,6 +1278,7 @@ export type UserCreateWithoutPaymentsInput = {
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -1154,6 +1300,7 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -1191,6 +1338,7 @@ export type UserUpdateWithoutPaymentsInput = {
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -1212,6 +1360,7 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotesInput = {
@@ -1233,6 +1382,7 @@ export type UserCreateWithoutNotesInput = {
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotesInput = {
@@ -1254,6 +1404,7 @@ export type UserUncheckedCreateWithoutNotesInput = {
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotesInput = {
@@ -1291,6 +1442,7 @@ export type UserUpdateWithoutNotesInput = {
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotesInput = {
@@ -1312,6 +1464,7 @@ export type UserUncheckedUpdateWithoutNotesInput = {
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOrdersCreatedInput = {
@@ -1333,6 +1486,7 @@ export type UserCreateWithoutOrdersCreatedInput = {
   invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrdersCreatedInput = {
@@ -1354,6 +1508,7 @@ export type UserUncheckedCreateWithoutOrdersCreatedInput = {
   invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationTokenUncheckedCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrdersCreatedInput = {
@@ -1391,6 +1546,7 @@ export type UserUpdateWithoutOrdersCreatedInput = {
   invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersCreatedInput = {
@@ -1412,6 +1568,7 @@ export type UserUncheckedUpdateWithoutOrdersCreatedInput = {
   invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationTokenUncheckedUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1428,6 +1585,7 @@ export type UserCountOutputType = {
   ordersCreated: number
   resetTokens: number
   invitations: number
+  resetEmailRequest: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1439,6 +1597,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   ordersCreated?: boolean | UserCountOutputTypeCountOrdersCreatedArgs
   resetTokens?: boolean | UserCountOutputTypeCountResetTokensArgs
   invitations?: boolean | UserCountOutputTypeCountInvitationsArgs
+  resetEmailRequest?: boolean | UserCountOutputTypeCountResetEmailRequestArgs
 }
 
 /**
@@ -1507,6 +1666,13 @@ export type UserCountOutputTypeCountInvitationsArgs<ExtArgs extends runtime.Type
   where?: Prisma.InvitationTokenWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountResetEmailRequestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmailChangeRequestWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1528,6 +1694,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   ordersCreated?: boolean | Prisma.User$ordersCreatedArgs<ExtArgs>
   resetTokens?: boolean | Prisma.User$resetTokensArgs<ExtArgs>
   invitations?: boolean | Prisma.User$invitationsArgs<ExtArgs>
+  resetEmailRequest?: boolean | Prisma.User$resetEmailRequestArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1583,6 +1750,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   ordersCreated?: boolean | Prisma.User$ordersCreatedArgs<ExtArgs>
   resetTokens?: boolean | Prisma.User$resetTokensArgs<ExtArgs>
   invitations?: boolean | Prisma.User$invitationsArgs<ExtArgs>
+  resetEmailRequest?: boolean | Prisma.User$resetEmailRequestArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1599,6 +1767,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     ordersCreated: Prisma.$OrderPayload<ExtArgs>[]
     resetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
     invitations: Prisma.$InvitationTokenPayload<ExtArgs>[]
+    resetEmailRequest: Prisma.$EmailChangeRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2014,6 +2183,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   ordersCreated<T extends Prisma.User$ordersCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   resetTokens<T extends Prisma.User$resetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invitations<T extends Prisma.User$invitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  resetEmailRequest<T extends Prisma.User$resetEmailRequestArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resetEmailRequestArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmailChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2636,6 +2806,30 @@ export type User$invitationsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.InvitationTokenScalarFieldEnum | Prisma.InvitationTokenScalarFieldEnum[]
+}
+
+/**
+ * User.resetEmailRequest
+ */
+export type User$resetEmailRequestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EmailChangeRequest
+   */
+  select?: Prisma.EmailChangeRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EmailChangeRequest
+   */
+  omit?: Prisma.EmailChangeRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailChangeRequestInclude<ExtArgs> | null
+  where?: Prisma.EmailChangeRequestWhereInput
+  orderBy?: Prisma.EmailChangeRequestOrderByWithRelationInput | Prisma.EmailChangeRequestOrderByWithRelationInput[]
+  cursor?: Prisma.EmailChangeRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EmailChangeRequestScalarFieldEnum | Prisma.EmailChangeRequestScalarFieldEnum[]
 }
 
 /**

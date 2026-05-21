@@ -21,6 +21,8 @@ export const AUTH_ERRORS = {
   FORBIDDEN: "You do not have permission to perform this action",
   NO_PASSWORD_SET: "No password set for this account",
   INVALID_CURRENT_PASSWORD: "Current password is incorrect",
+  TOKEN_ALREADY_USED: "This token has already been used",
+  TOKEN_EXPIRED: "This token has expired",
 } as const;
 
 export const CLIENT_ERRORS = {

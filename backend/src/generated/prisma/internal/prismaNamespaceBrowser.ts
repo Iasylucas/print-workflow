@@ -54,6 +54,7 @@ export const ModelName = {
   Client: 'Client',
   User: 'User',
   InvitationToken: 'InvitationToken',
+  EmailChangeRequest: 'EmailChangeRequest',
   PasswordResetToken: 'PasswordResetToken',
   CompanyInfo: 'CompanyInfo',
   Quote: 'Quote',
@@ -132,11 +133,25 @@ export const InvitationTokenScalarFieldEnum = {
 export type InvitationTokenScalarFieldEnum = (typeof InvitationTokenScalarFieldEnum)[keyof typeof InvitationTokenScalarFieldEnum]
 
 
+export const EmailChangeRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  newEmail: 'newEmail',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  usedAt: 'usedAt'
+} as const
+
+export type EmailChangeRequestScalarFieldEnum = (typeof EmailChangeRequestScalarFieldEnum)[keyof typeof EmailChangeRequestScalarFieldEnum]
+
+
 export const PasswordResetTokenScalarFieldEnum = {
   id: 'id',
   tokenHash: 'tokenHash',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt',
+  usedAt: 'usedAt',
   userId: 'userId'
 } as const
 

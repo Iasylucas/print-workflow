@@ -44,3 +44,12 @@ export interface AuthResponse {
   token: string;
   user: UserSafe;
 }
+
+export type ForgotPasswordInput = {
+  email: string;
+};
+
+export type ResetPasswordInput = {
+  token: string;
+  newPassword: string;
+};
