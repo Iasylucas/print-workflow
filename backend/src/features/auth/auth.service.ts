@@ -4,9 +4,10 @@ import {
   InternalServerError,
   UnauthorizedError,
   BadRequestError,
+  NotFoundError,
 } from "@/shared/error/error.js";
 import { AuthRepository } from "./auth.repository.js";
-import { AuthResponse, JWTpayload } from "./auth.types.js";
+import { AuthResponse, ChangePasswordInput, JWTpayload } from "./auth.types.js";
 import { UserSafe } from "@/shared/types/user.types.js";
 import {
   InviteUserInput,
@@ -178,6 +179,30 @@ export class AuthService {
         updatedAt: user.updatedAt,
       },
     };
+  }
+
+  // 4. CHANGEMENT DE MOT DE PASSE (Action de l'utilisateur connecté)
+  async changePassword(
+    userId: string,
+    data: ChangePasswordInput,
+  ): Promise<void> {
+    const user = await this.authRepository.findById(userId);
+
+    if (!user) {
+      throw new NotFoundError(AUTH_ERRORS.USER_NOT_FOUND);
+    }
+
+    if (!user.password) {
+      throw new BadRequestError(AUTH_ERRORS.NO_PASSWORD_SET);
+    }
+
+    const isMatch = await argon2.verify(user.password, data.currentPassword);
+    if (!isMatch) {
+      throw new UnauthorizedError(AUTH_ERRORS.INVALID_CURRENT_PASSWORD);
+    }
+
+    const hashedPassword = await argon2.hash(data.newPassword);
+    await this.authRepository.updatePassword(userId, hashedPassword);
   }
 }
 

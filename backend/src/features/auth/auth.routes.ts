@@ -30,4 +30,11 @@ router.post(
  */
 router.post("/finalize", authControllerWrapped.finalize);
 
+/**
+ * @desc    Change password for logged-in users
+ * @route   POST /api/auth/change-password
+ * @access  Private (Authenticated users)
+ */
+router.post("/change-password", protect, authControllerWrapped.changePassword);
+
 export { router as authRoutes };

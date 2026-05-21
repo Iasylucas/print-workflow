@@ -4,6 +4,7 @@ import {
   inviteUserSchema,
   finalizeRegistrationSchema,
   loginSchema,
+  changePasswordSchema,
 } from "./auth.schema.js";
 import { catchAsync } from "@/utils/catchAsync.js";
 
@@ -42,6 +43,16 @@ export const authController = {
       data: result,
     });
   },
+
+  async changePassword(req: Request, res: Response) {
+    const { sub: userId } = req.user!;
+    const validated = changePasswordSchema.parse(req.body);
+    await authService.changePassword(userId, validated);
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
+    });
+  },
 };
 
 // export of the controller with catchAsync for error handling in routes
@@ -49,4 +60,5 @@ export const authControllerWrapped = {
   invite: catchAsync(authController.invite),
   finalize: catchAsync(authController.finalize),
   login: catchAsync(authController.login),
+  changePassword: catchAsync(authController.changePassword),
 };

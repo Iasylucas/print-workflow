@@ -1,5 +1,6 @@
 import { prisma } from "@/config/prisma.js";
 import { InviteUserInput, FinalizeRegistrationInput } from "./auth.types.js";
+import { findUserByEmail } from "@/utils/index.js";
 
 import {
   userSafeSelect,
@@ -83,10 +84,7 @@ export class AuthRepository {
 
   // fonction utilitaire pour la connexion classique
   async findByEmail(email: string): Promise<UserComplete | null> {
-    return await prisma.user.findUnique({
-      where: { email },
-      select: userCompleteSelect,
-    });
+    return await findUserByEmail(email);
   }
 
   async exists(email: string): Promise<boolean> {
@@ -96,9 +94,17 @@ export class AuthRepository {
     return count > 0;
   }
 
-  async findById(id: string): Promise<UserSafe | null> {
+  async findById(id: string): Promise<UserComplete | null> {
     return await prisma.user.findUnique({
       where: { id, deletedAt: null },
+      select: userCompleteSelect,
+    });
+  }
+
+  async updatePassword(userId: string, hashedPassword: string) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
     });
   }
 }

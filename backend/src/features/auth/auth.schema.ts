@@ -39,3 +39,15 @@ export const loginSchema = z.object({
   email: emailRequiredSchema,
   password: z.string().min(1, "Password is required"),
 });
+
+// input for the change password action (by the users)
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, "Current password is required"),
+    newPassword: passwordSchema,
+    confirmNewPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Passwords do not match",
+    path: ["confirmNewPassword"],
+  });

@@ -14,6 +14,11 @@ export type JWTpayload = {
   exp?: number;
 };
 
+export type ChangePasswordInput = {
+  currentPassword: string;
+  newPassword: string;
+};
+
 export type InviteUserInput = z.infer<typeof inviteUserSchema>;
 export type FinalizeRegistrationInput = z.infer<
   typeof finalizeRegistrationSchema
