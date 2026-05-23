@@ -1,15 +1,10 @@
-//shared imports
 import {
   ConflictError,
   NotFoundError,
   InternalServerError,
   BadRequestError,
 } from "@/shared/error/error.js";
-
-// constants imports
-import { CLIENT_ERRORS } from "@/constants/errorMessage.js";
-
-// feature imports
+import { CLIENT_ERRORS } from "./client.constants.js";
 import { ClientRepository } from "./client.repository.js";
 import {
   CreateClientInput,
@@ -19,6 +14,7 @@ import {
 } from "./client.types.js";
 
 export class ClientService {
+  // Injection du repository dans le service
   constructor(private readonly clientRepository: ClientRepository) {}
 
   // Create a new client

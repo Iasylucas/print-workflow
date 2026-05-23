@@ -7,14 +7,16 @@ import {
   NotFoundError,
 } from "@/shared/error/error.js";
 import { AuthRepository } from "./auth.repository.js";
-import { AuthResponse, ChangePasswordInput, JWTpayload } from "./auth.types.js";
-import { UserSafe } from "@/shared/types/user.types.js";
 import {
+  AuthResponse,
+  ChangePasswordInput,
+  JWTpayload,
   InviteUserInput,
   FinalizeRegistrationInput,
   LoginInput,
 } from "./auth.types.js";
-import { AUTH_ERRORS } from "@/constants/errorMessage.js";
+import { UserSafe } from "@/shared/types/user.types.js";
+import { AUTH_ERRORS } from "./auth.constants.js";
 import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { env } from "@/config/env.js";
@@ -23,7 +25,8 @@ import crypto from "node:crypto";
 import { v7 as uuidv7 } from "uuid";
 import { sendEmail } from "@/shared/infrastructure/mail/mail.service.js";
 import { getInvitationTemplate } from "@/shared/infrastructure/mail/templates/invitation.template.js";
-import { getResetPasswordTemplate } from "@/shared/infrastructure/mail/templates/reset-password.template.js";
+import { getResetPasswordTemplate } from "@/shared/infrastructure/mail/templates/password-reset-request.template.js";
+import { UserRepository } from "../user/user.repository.js";
 
 // function to genrate token
 function generateToken(payload: JWTpayload): string {
@@ -34,7 +37,10 @@ function generateToken(payload: JWTpayload): string {
 
 // class de service d'authentification
 export class AuthService {
-  constructor(private readonly authRepository: AuthRepository) {}
+  constructor(
+    private readonly authRepository: AuthRepository,
+    private readonly userRepository: UserRepository,
+  ) {}
   //1. INVITATION (Action de l'Admin)
   async invite(data: InviteUserInput): Promise<{ user: UserSafe }> {
     const existingUser = await this.authRepository.findByEmail(data.email);
@@ -210,12 +216,10 @@ export class AuthService {
   async forgotPassword(email: string): Promise<void> {
     const user = await this.authRepository.findByEmail(email);
 
-    // Sécurité : réponse identique même si email n'existe pas ou compte supprimé
     if (!user || user.deletedAt) {
       return;
     }
 
-    // Supprimer les anciens tokens non utilisés
     await this.authRepository.deleteOldPasswordResetTokens(user.id);
 
     const plainToken = crypto.randomBytes(32).toString("hex");
@@ -223,7 +227,7 @@ export class AuthService {
       .createHash("sha256")
       .update(plainToken)
       .digest("hex");
-    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 heure
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
 
     await this.authRepository.createPasswordResetToken({
       id: uuidv7(),
@@ -234,7 +238,6 @@ export class AuthService {
 
     const resetUrl = `${env.FRONTEND_URL}/reset-password?token=${plainToken}`;
 
-    // Template email à créer (similaire à invitation.template.js)
     await sendEmail(
       user.email,
       "Réinitialisation de votre mot de passe",
@@ -268,7 +271,33 @@ export class AuthService {
     );
     await this.authRepository.markPasswordResetTokenAsUsed(tokenRecord.id);
   }
+
+  // 7. CHANGEMENT D'EMAIL (Action initiée par l'admin, confirmée par le collaborateur)
+  async confirmEmailChange(token: string): Promise<void> {
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+    const request =
+      await this.userRepository.findEmailChangeRequestByTokenHash(tokenHash);
+
+    if (!request) {
+      throw new BadRequestError(AUTH_ERRORS.INVALID_TOKEN);
+    }
+
+    if (request.usedAt) {
+      throw new BadRequestError(AUTH_ERRORS.TOKEN_ALREADY_USED);
+    }
+
+    if (new Date() > request.expiresAt) {
+      throw new BadRequestError(AUTH_ERRORS.TOKEN_EXPIRED);
+    }
+
+    await this.userRepository.updateUserEmail(request.userId, request.newEmail);
+
+    await this.userRepository.markEmailChangeRequestAsUsed(request.id);
+  }
 }
 
 // Export d'une instance du service avec le repository injecté (DI simple)
-export const authService = new AuthService(new AuthRepository());
+export const authService = new AuthService(
+  new AuthRepository(),
+  new UserRepository(),
+);

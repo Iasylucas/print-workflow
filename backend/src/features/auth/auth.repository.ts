@@ -1,22 +1,16 @@
 import { prisma } from "@/config/prisma.js";
-import { InviteUserInput, FinalizeRegistrationInput } from "./auth.types.js";
+import {
+  InviteUserInput,
+  FinalizeRegistrationInput,
+  inviteData,
+} from "./auth.types.js";
 import { findUserByEmail } from "@/utils/index.js";
-
 import {
   userSafeSelect,
   UserSafe,
   UserComplete,
   userCompleteSelect,
 } from "@/shared/types/user.types.js";
-
-type inviteData = {
-  id: string;
-  tokenHash: string;
-  email: string;
-  role: string;
-  expiresAt: Date;
-  userId: string;
-};
 
 export class AuthRepository {
   // 1.Crée un utilisateur partiel (invité par l'admin)
@@ -31,19 +25,21 @@ export class AuthRepository {
       select: userSafeSelect,
     });
   }
+
   //  2.Enregistre le token d'invitation lié à l'utilisateur
   async createInvitationToken(inviteData: inviteData): Promise<void> {
     await prisma.invitationToken.create({
       data: {
         id: inviteData.id,
-        token: inviteData.tokenHash, // Le hash SHA-256 sécurisé
+        token: inviteData.tokenHash,
         email: inviteData.email,
-        role: inviteData.role as any, // Cast selon ton enum Prisma
+        role: inviteData.role as any,
         expiresAt: inviteData.expiresAt,
         userId: inviteData.userId,
       },
     });
   }
+
   //3.Recherche un token d'invitation pour vérification
   async findInvitationByToken(tokenHash: string) {
     return await prisma.invitationToken.findUnique({
@@ -84,7 +80,7 @@ export class AuthRepository {
 
   // fonction utilitaire pour la connexion classique
   async findByEmail(email: string): Promise<UserComplete | null> {
-    return await findUserByEmail(email);
+    return await findUserByEmail(email, userCompleteSelect);
   }
 
   // Vérifie si un utilisateur existe déjà avec cet email (pour éviter les doublons)
@@ -142,7 +138,7 @@ export class AuthRepository {
   async findPasswordResetTokenByHash(tokenHash: string) {
     return await prisma.passwordResetToken.findUnique({
       where: { tokenHash },
-      include: { user: true },
+      include: { user: { select: userSafeSelect } },
     });
   }
 

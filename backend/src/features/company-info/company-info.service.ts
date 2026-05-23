@@ -6,7 +6,7 @@ import {
   PaginatedCompanyInfoList,
   CompanyInfoSafe,
 } from "./company-info.types.js";
-import { COMPANY_INFO_ERRORS } from "@/constants/errorMessage.js";
+import { COMPANY_INFO_ERRORS } from "./company-info.constants.js";
 
 export class CompanyInfoService {
   constructor(private readonly companyInfoRepository: CompanyInfoRepository) {}
@@ -24,7 +24,7 @@ export class CompanyInfoService {
   async getVersionById(id: number): Promise<CompanyInfoSafe> {
     const version = await this.companyInfoRepository.findById(id);
     if (!version) {
-      throw new NotFoundError(COMPANY_INFO_ERRORS.NOTFOUND_ID(id));
+      throw new NotFoundError(COMPANY_INFO_ERRORS.NOT_FOUND_ID(id));
     }
     return version;
   }

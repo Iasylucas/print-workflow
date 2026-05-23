@@ -5,6 +5,7 @@ import {
   updateClientSchema,
   clientQuerySchema,
 } from "./client.schema.js";
+import { PaginatedResult } from "@/shared/types/index.js";
 
 export const clientSelect = {
   id: true,
@@ -25,16 +26,4 @@ export type CreateClientInput = z.infer<typeof createClientSchema>;
 export type UpdateClientInput = z.infer<typeof updateClientSchema>;
 export type ClientQuery = z.infer<typeof clientQuerySchema>;
 
-export type PaginatedClientList = {
-  clients: ClientSafe[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-    hasMore: boolean;
-    search?: string;
-    sortBy?: string;
-    sortOrder?: "asc" | "desc";
-  };
-};
+export type PaginatedClientList = PaginatedResult<ClientSafe>;

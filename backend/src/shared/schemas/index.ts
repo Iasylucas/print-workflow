@@ -3,3 +3,7 @@ export * from "./phone.schema.js";
 export * from "./password.schema.js";
 export * from "./id.schema.js";
 export * from "./query.schema.js";
+export * from "./name.schema.js";
+export * from "./image.schema.js";
+export * from "./user-role.schema.js";
+export * from "./token.schema.js";

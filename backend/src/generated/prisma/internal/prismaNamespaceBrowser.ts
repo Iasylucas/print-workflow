@@ -137,10 +137,10 @@ export const EmailChangeRequestScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   newEmail: 'newEmail',
-  token: 'token',
+  tokenHash: 'tokenHash',
   expiresAt: 'expiresAt',
-  createdAt: 'createdAt',
-  usedAt: 'usedAt'
+  usedAt: 'usedAt',
+  createdAt: 'createdAt'
 } as const
 
 export type EmailChangeRequestScalarFieldEnum = (typeof EmailChangeRequestScalarFieldEnum)[keyof typeof EmailChangeRequestScalarFieldEnum]

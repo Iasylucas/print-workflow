@@ -4,6 +4,7 @@ import {
   companyInfoSchema,
   companyInfoQuerySchema,
 } from "./company-info.schema.js";
+import { PaginatedResult } from "@/shared/types/index.js";
 
 // Selecteur Prisma (tous les champs)
 export const companyInfoSelect = {
@@ -34,15 +35,7 @@ export type CompanyInfoSafe = Prisma.CompanyInfoGetPayload<{
 }>;
 
 export type CreateCompanyInfoInput = z.infer<typeof companyInfoSchema>;
+
 export type CompanyInfoQuery = z.infer<typeof companyInfoQuerySchema>;
 
-export type PaginatedCompanyInfoList = {
-  data: CompanyInfoSafe[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-    hasMore: boolean;
-  };
-};
+export type PaginatedCompanyInfoList = PaginatedResult<CompanyInfoSafe>;

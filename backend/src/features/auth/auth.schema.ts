@@ -1,10 +1,14 @@
 import { z } from "zod";
 import { v7 as uuidv7 } from "uuid";
-import { emailRequiredSchema, passwordSchema } from "@/shared/schemas/index.js";
-import { imageUrlSchema } from "@/shared/schemas/image.schema.js";
-
-// 1. Roles autorisés dans ton système
-const UserRole = z.enum(["ADMIN", "SALES", "PRINTER", "GRAPHIC_DESIGNER"]);
+import {
+  emailRequiredSchema,
+  passwordSchema,
+  imageUrlSchema,
+  tokenSchema,
+  firstNameSchema,
+  lastNameSchema,
+  UserRole,
+} from "@/shared/schemas/index.js";
 
 // input for the invitation action (by the admin)
 export const inviteUserSchema = z.object({
@@ -16,16 +20,10 @@ export const inviteUserSchema = z.object({
 // input for the finalization action (by the colaborator)
 export const finalizeRegistrationSchema = z
   .object({
-    token: z.string().min(1, "Invitation token is required"),
+    token: tokenSchema,
     avatarUrl: imageUrlSchema,
-    firstName: z
-      .string()
-      .trim()
-      .min(2, "Firstname must be at least 2 characters long"),
-    lastName: z
-      .string()
-      .trim()
-      .min(2, "Lastname must be at least 2 characters long"),
+    firstName: firstNameSchema,
+    lastName: lastNameSchema,
     password: passwordSchema,
     confirmPassword: z.string(),
   })
@@ -59,6 +57,11 @@ export const forgotPasswordSchema = z.object({
 
 // input for the reset password action (by the users)
 export const resetPasswordSchema = z.object({
-  token: z.string().min(1, "Token is required"),
+  token: tokenSchema,
   newPassword: passwordSchema,
+});
+
+// input for the confirm email change action (by the users)
+export const confirmEmailChangeSchema = z.object({
+  token: tokenSchema,
 });

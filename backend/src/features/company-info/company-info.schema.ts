@@ -1,6 +1,8 @@
 import { z } from "zod";
-import { mobileMoneyNumberSchema } from "@/shared/schemas/phone.schema.js";
-import { paginationSchema } from "@/shared/schemas/query.schema.js";
+import {
+  mobileMoneyNumberSchema,
+  paginationSchema,
+} from "@/shared/schemas/index.js";
 
 // Schéma de création d'une version CompanyInfo
 export const companyInfoSchema = z.object({

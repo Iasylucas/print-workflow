@@ -28,30 +28,30 @@ export type EmailChangeRequestMinAggregateOutputType = {
   id: string | null
   userId: string | null
   newEmail: string | null
-  token: string | null
+  tokenHash: string | null
   expiresAt: Date | null
-  createdAt: Date | null
   usedAt: Date | null
+  createdAt: Date | null
 }
 
 export type EmailChangeRequestMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   newEmail: string | null
-  token: string | null
+  tokenHash: string | null
   expiresAt: Date | null
-  createdAt: Date | null
   usedAt: Date | null
+  createdAt: Date | null
 }
 
 export type EmailChangeRequestCountAggregateOutputType = {
   id: number
   userId: number
   newEmail: number
-  token: number
+  tokenHash: number
   expiresAt: number
-  createdAt: number
   usedAt: number
+  createdAt: number
   _all: number
 }
 
@@ -60,30 +60,30 @@ export type EmailChangeRequestMinAggregateInputType = {
   id?: true
   userId?: true
   newEmail?: true
-  token?: true
+  tokenHash?: true
   expiresAt?: true
-  createdAt?: true
   usedAt?: true
+  createdAt?: true
 }
 
 export type EmailChangeRequestMaxAggregateInputType = {
   id?: true
   userId?: true
   newEmail?: true
-  token?: true
+  tokenHash?: true
   expiresAt?: true
-  createdAt?: true
   usedAt?: true
+  createdAt?: true
 }
 
 export type EmailChangeRequestCountAggregateInputType = {
   id?: true
   userId?: true
   newEmail?: true
-  token?: true
+  tokenHash?: true
   expiresAt?: true
-  createdAt?: true
   usedAt?: true
+  createdAt?: true
   _all?: true
 }
 
@@ -163,10 +163,10 @@ export type EmailChangeRequestGroupByOutputType = {
   id: string
   userId: string
   newEmail: string
-  token: string
+  tokenHash: string
   expiresAt: Date
-  createdAt: Date
   usedAt: Date | null
+  createdAt: Date
   _count: EmailChangeRequestCountAggregateOutputType | null
   _min: EmailChangeRequestMinAggregateOutputType | null
   _max: EmailChangeRequestMaxAggregateOutputType | null
@@ -194,10 +194,10 @@ export type EmailChangeRequestWhereInput = {
   id?: Prisma.StringFilter<"EmailChangeRequest"> | string
   userId?: Prisma.StringFilter<"EmailChangeRequest"> | string
   newEmail?: Prisma.StringFilter<"EmailChangeRequest"> | string
-  token?: Prisma.StringFilter<"EmailChangeRequest"> | string
+  tokenHash?: Prisma.StringFilter<"EmailChangeRequest"> | string
   expiresAt?: Prisma.DateTimeFilter<"EmailChangeRequest"> | Date | string
-  createdAt?: Prisma.DateTimeFilter<"EmailChangeRequest"> | Date | string
   usedAt?: Prisma.DateTimeNullableFilter<"EmailChangeRequest"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"EmailChangeRequest"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -205,35 +205,35 @@ export type EmailChangeRequestOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   newEmail?: Prisma.SortOrder
-  token?: Prisma.SortOrder
+  tokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   usedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type EmailChangeRequestWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  token?: string
+  tokenHash?: string
   AND?: Prisma.EmailChangeRequestWhereInput | Prisma.EmailChangeRequestWhereInput[]
   OR?: Prisma.EmailChangeRequestWhereInput[]
   NOT?: Prisma.EmailChangeRequestWhereInput | Prisma.EmailChangeRequestWhereInput[]
   userId?: Prisma.StringFilter<"EmailChangeRequest"> | string
   newEmail?: Prisma.StringFilter<"EmailChangeRequest"> | string
   expiresAt?: Prisma.DateTimeFilter<"EmailChangeRequest"> | Date | string
-  createdAt?: Prisma.DateTimeFilter<"EmailChangeRequest"> | Date | string
   usedAt?: Prisma.DateTimeNullableFilter<"EmailChangeRequest"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"EmailChangeRequest"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "token">
+}, "id" | "tokenHash">
 
 export type EmailChangeRequestOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   newEmail?: Prisma.SortOrder
-  token?: Prisma.SortOrder
+  tokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   usedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   _count?: Prisma.EmailChangeRequestCountOrderByAggregateInput
   _max?: Prisma.EmailChangeRequestMaxOrderByAggregateInput
   _min?: Prisma.EmailChangeRequestMinOrderByAggregateInput
@@ -246,39 +246,39 @@ export type EmailChangeRequestScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"EmailChangeRequest"> | string
   userId?: Prisma.StringWithAggregatesFilter<"EmailChangeRequest"> | string
   newEmail?: Prisma.StringWithAggregatesFilter<"EmailChangeRequest"> | string
-  token?: Prisma.StringWithAggregatesFilter<"EmailChangeRequest"> | string
+  tokenHash?: Prisma.StringWithAggregatesFilter<"EmailChangeRequest"> | string
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"EmailChangeRequest"> | Date | string
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"EmailChangeRequest"> | Date | string
   usedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"EmailChangeRequest"> | Date | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"EmailChangeRequest"> | Date | string
 }
 
 export type EmailChangeRequestCreateInput = {
-  id?: string
+  id: string
   newEmail: string
-  token: string
+  tokenHash: string
   expiresAt: Date | string
-  createdAt?: Date | string
   usedAt?: Date | string | null
+  createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutResetEmailRequestInput
 }
 
 export type EmailChangeRequestUncheckedCreateInput = {
-  id?: string
+  id: string
   userId: string
   newEmail: string
-  token: string
+  tokenHash: string
   expiresAt: Date | string
-  createdAt?: Date | string
   usedAt?: Date | string | null
+  createdAt?: Date | string
 }
 
 export type EmailChangeRequestUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   newEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  token?: Prisma.StringFieldUpdateOperationsInput | string
+  tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutResetEmailRequestNestedInput
 }
 
@@ -286,39 +286,39 @@ export type EmailChangeRequestUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   newEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  token?: Prisma.StringFieldUpdateOperationsInput | string
+  tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EmailChangeRequestCreateManyInput = {
-  id?: string
+  id: string
   userId: string
   newEmail: string
-  token: string
+  tokenHash: string
   expiresAt: Date | string
-  createdAt?: Date | string
   usedAt?: Date | string | null
+  createdAt?: Date | string
 }
 
 export type EmailChangeRequestUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   newEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  token?: Prisma.StringFieldUpdateOperationsInput | string
+  tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EmailChangeRequestUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   newEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  token?: Prisma.StringFieldUpdateOperationsInput | string
+  tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EmailChangeRequestListRelationFilter = {
@@ -335,30 +335,30 @@ export type EmailChangeRequestCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   newEmail?: Prisma.SortOrder
-  token?: Prisma.SortOrder
+  tokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   usedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type EmailChangeRequestMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   newEmail?: Prisma.SortOrder
-  token?: Prisma.SortOrder
+  tokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   usedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type EmailChangeRequestMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   newEmail?: Prisma.SortOrder
-  token?: Prisma.SortOrder
+  tokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   usedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type EmailChangeRequestCreateNestedManyWithoutUserInput = {
@@ -404,21 +404,21 @@ export type EmailChangeRequestUncheckedUpdateManyWithoutUserNestedInput = {
 }
 
 export type EmailChangeRequestCreateWithoutUserInput = {
-  id?: string
+  id: string
   newEmail: string
-  token: string
+  tokenHash: string
   expiresAt: Date | string
-  createdAt?: Date | string
   usedAt?: Date | string | null
+  createdAt?: Date | string
 }
 
 export type EmailChangeRequestUncheckedCreateWithoutUserInput = {
-  id?: string
+  id: string
   newEmail: string
-  token: string
+  tokenHash: string
   expiresAt: Date | string
-  createdAt?: Date | string
   usedAt?: Date | string | null
+  createdAt?: Date | string
 }
 
 export type EmailChangeRequestCreateOrConnectWithoutUserInput = {
@@ -454,46 +454,46 @@ export type EmailChangeRequestScalarWhereInput = {
   id?: Prisma.StringFilter<"EmailChangeRequest"> | string
   userId?: Prisma.StringFilter<"EmailChangeRequest"> | string
   newEmail?: Prisma.StringFilter<"EmailChangeRequest"> | string
-  token?: Prisma.StringFilter<"EmailChangeRequest"> | string
+  tokenHash?: Prisma.StringFilter<"EmailChangeRequest"> | string
   expiresAt?: Prisma.DateTimeFilter<"EmailChangeRequest"> | Date | string
-  createdAt?: Prisma.DateTimeFilter<"EmailChangeRequest"> | Date | string
   usedAt?: Prisma.DateTimeNullableFilter<"EmailChangeRequest"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"EmailChangeRequest"> | Date | string
 }
 
 export type EmailChangeRequestCreateManyUserInput = {
-  id?: string
+  id: string
   newEmail: string
-  token: string
+  tokenHash: string
   expiresAt: Date | string
-  createdAt?: Date | string
   usedAt?: Date | string | null
+  createdAt?: Date | string
 }
 
 export type EmailChangeRequestUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   newEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  token?: Prisma.StringFieldUpdateOperationsInput | string
+  tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EmailChangeRequestUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   newEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  token?: Prisma.StringFieldUpdateOperationsInput | string
+  tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EmailChangeRequestUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   newEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  token?: Prisma.StringFieldUpdateOperationsInput | string
+  tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -502,10 +502,10 @@ export type EmailChangeRequestSelect<ExtArgs extends runtime.Types.Extensions.In
   id?: boolean
   userId?: boolean
   newEmail?: boolean
-  token?: boolean
+  tokenHash?: boolean
   expiresAt?: boolean
-  createdAt?: boolean
   usedAt?: boolean
+  createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["emailChangeRequest"]>
 
@@ -513,10 +513,10 @@ export type EmailChangeRequestSelectCreateManyAndReturn<ExtArgs extends runtime.
   id?: boolean
   userId?: boolean
   newEmail?: boolean
-  token?: boolean
+  tokenHash?: boolean
   expiresAt?: boolean
-  createdAt?: boolean
   usedAt?: boolean
+  createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["emailChangeRequest"]>
 
@@ -524,10 +524,10 @@ export type EmailChangeRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.
   id?: boolean
   userId?: boolean
   newEmail?: boolean
-  token?: boolean
+  tokenHash?: boolean
   expiresAt?: boolean
-  createdAt?: boolean
   usedAt?: boolean
+  createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["emailChangeRequest"]>
 
@@ -535,13 +535,13 @@ export type EmailChangeRequestSelectScalar = {
   id?: boolean
   userId?: boolean
   newEmail?: boolean
-  token?: boolean
+  tokenHash?: boolean
   expiresAt?: boolean
-  createdAt?: boolean
   usedAt?: boolean
+  createdAt?: boolean
 }
 
-export type EmailChangeRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "newEmail" | "token" | "expiresAt" | "createdAt" | "usedAt", ExtArgs["result"]["emailChangeRequest"]>
+export type EmailChangeRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "newEmail" | "tokenHash" | "expiresAt" | "usedAt" | "createdAt", ExtArgs["result"]["emailChangeRequest"]>
 export type EmailChangeRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -561,10 +561,10 @@ export type $EmailChangeRequestPayload<ExtArgs extends runtime.Types.Extensions.
     id: string
     userId: string
     newEmail: string
-    token: string
+    tokenHash: string
     expiresAt: Date
-    createdAt: Date
     usedAt: Date | null
+    createdAt: Date
   }, ExtArgs["result"]["emailChangeRequest"]>
   composites: {}
 }
@@ -992,10 +992,10 @@ export interface EmailChangeRequestFieldRefs {
   readonly id: Prisma.FieldRef<"EmailChangeRequest", 'String'>
   readonly userId: Prisma.FieldRef<"EmailChangeRequest", 'String'>
   readonly newEmail: Prisma.FieldRef<"EmailChangeRequest", 'String'>
-  readonly token: Prisma.FieldRef<"EmailChangeRequest", 'String'>
+  readonly tokenHash: Prisma.FieldRef<"EmailChangeRequest", 'String'>
   readonly expiresAt: Prisma.FieldRef<"EmailChangeRequest", 'DateTime'>
-  readonly createdAt: Prisma.FieldRef<"EmailChangeRequest", 'DateTime'>
   readonly usedAt: Prisma.FieldRef<"EmailChangeRequest", 'DateTime'>
+  readonly createdAt: Prisma.FieldRef<"EmailChangeRequest", 'DateTime'>
 }
     
 
