@@ -28,7 +28,7 @@ export const updateProfileSchema = z.object({
 // Schéma pour la requête d’historique (pagination, recherche, tri)
 export const userQuerySchema = paginationSchema.extend({
   sortBy: z
-    .enum(["createdAt", "email", "lastName", "role"])
+    .enum(["createdAt", "email", "firstName", "lastName", "role"])
     .default("createdAt"),
   search: z.string().trim().optional(),
 });

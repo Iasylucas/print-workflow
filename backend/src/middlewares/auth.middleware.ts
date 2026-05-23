@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { env } from "@/config/env.js";
 import { UnauthorizedError, ForbiddenError } from "@/shared/error/error.js";
 import { JWTpayload } from "@/features/auth/auth.types.js";
-import { AUTH_ERRORS } from "@/constants/errorMessage.js";
+import { AUTH_ERRORS } from "@/features/auth/auth.constants.js";
 
 // jwt verification middleware to protect routes
 export const protect = (req: Request, res: Response, next: NextFunction) => {
