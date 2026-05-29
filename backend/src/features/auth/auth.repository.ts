@@ -64,6 +64,8 @@ export class AuthRepository {
         data: {
           firstName: data.firstName,
           lastName: data.lastName,
+          phone: data.phone,
+          address: data.address ?? null,
           password: data.passwordHash,
           isActive: true,
         },

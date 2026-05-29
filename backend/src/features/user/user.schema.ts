@@ -6,6 +6,7 @@ import {
   lastNameSchema,
   emailRequiredSchema,
   UserRole,
+  phoneSchema,
 } from "@/shared/schemas/index.js";
 export { uuidSchema } from "@/shared/schemas/id.schema.js";
 
@@ -13,6 +14,8 @@ export { uuidSchema } from "@/shared/schemas/id.schema.js";
 export const updateUserSchema = z.object({
   firstName: firstNameSchema.optional(),
   lastName: lastNameSchema.optional(),
+  phone: phoneSchema.optional(),
+  address: z.string().optional(),
   role: UserRole.optional(),
   isActive: z.boolean().optional(),
   avatarUrl: imageUrlSchema,
@@ -22,6 +25,8 @@ export const updateUserSchema = z.object({
 export const updateProfileSchema = z.object({
   firstName: firstNameSchema.optional(),
   lastName: lastNameSchema.optional(),
+  phone: phoneSchema.optional(),
+  address: z.string().optional(),
   avatarUrl: imageUrlSchema,
 });
 

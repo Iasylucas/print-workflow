@@ -127,6 +127,8 @@ export class AuthService {
         avatarUrl: data.avatarUrl,
         firstName: data.firstName,
         lastName: data.lastName,
+        phone: data.phone,
+        address: data.address,
         passwordHash: hashedPassword,
       },
     );
@@ -180,6 +182,8 @@ export class AuthService {
         avatarUrl: user.avatarUrl,
         firstName: user.firstName,
         lastName: user.lastName,
+        phone: user.phone,
+        address: user.address,
         email: user.email,
         role: user.role,
         createdAt: user.createdAt,

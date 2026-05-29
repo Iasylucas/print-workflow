@@ -8,6 +8,7 @@ import {
   firstNameSchema,
   lastNameSchema,
   UserRole,
+  phoneSchema,
 } from "@/shared/schemas/index.js";
 
 // input for the invitation action (by the admin)
@@ -24,6 +25,8 @@ export const finalizeRegistrationSchema = z
     avatarUrl: imageUrlSchema,
     firstName: firstNameSchema,
     lastName: lastNameSchema,
+    phone: phoneSchema,
+    address: z.string().optional(),
     password: passwordSchema,
     confirmPassword: z.string(),
   })

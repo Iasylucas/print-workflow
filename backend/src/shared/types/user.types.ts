@@ -5,6 +5,8 @@ export const userSafeSelect = {
   avatarUrl: true,
   firstName: true,
   lastName: true,
+  phone: true,
+  address: true,
   email: true,
   role: true,
   createdAt: true,
