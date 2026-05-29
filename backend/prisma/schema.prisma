@@ -30,12 +30,15 @@ model Client {
 
 model User {
   id        String   @id
+  avatarUrl String?
   email     String   @unique
   password  String?
   role      String
   isActive  Boolean  @default(false)
   firstName String?
   lastName  String?
+  phone    String?
+  address   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
@@ -50,6 +53,7 @@ model User {
 
   resetTokens  PasswordResetToken[]
   invitations  InvitationToken[]
+  resetEmailRequest EmailChangeRequest[]
 }
 
 enum Role {
@@ -72,11 +76,22 @@ model InvitationToken {
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model EmailChangeRequest {
+  id        String   @id
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  newEmail  String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+}
 model PasswordResetToken {
   id        String   @id
   tokenHash String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
+  usedAt       DateTime?
 
   userId String
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -86,19 +101,15 @@ model PasswordResetToken {
 
 model CompanyInfo {
   id                      Int       @id @default(autoincrement())
-  version                 Int
   nif                     String
   stat                    String
-  rif                     String
+  rif                     String?
   mainAddress             String
   mainAddressDetail       String?
-  secondaryAddress        String
+  secondaryAddress        String?
   secondaryAddressDetail  String?
   logo                    String?
   stamp                   String?
-  isActive                Boolean   @default(true)
-  startDate               DateTime  @default(now())
-  endDate                 DateTime?
 
   mobileMoneyNumbers      Json?
 
@@ -112,6 +123,8 @@ model CompanyInfo {
   bankBranch              String?
   bankCode                String?
   ribInfo                 String?
+
+  createdAt               DateTime  @default(now())
 
   invoices Invoice[]
   quotes   Quote[]

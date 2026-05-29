@@ -57,6 +57,11 @@ export type User = Prisma.UserModel
  */
 export type InvitationToken = Prisma.InvitationTokenModel
 /**
+ * Model EmailChangeRequest
+ * 
+ */
+export type EmailChangeRequest = Prisma.EmailChangeRequestModel
+/**
  * Model PasswordResetToken
  * 
  */

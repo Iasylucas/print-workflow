@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { authController } from "./auth.controller.js";
 import { protect, restrictTo } from "@/middlewares/auth.middleware.js";
-import { catchAsync } from "@/utils/catchAsync.js";
 
 const router: Router = Router();
 
@@ -10,25 +9,48 @@ const router: Router = Router();
  * @route   POST /api/auth/login
  * @access  Public
  */
-router.post("/login", catchAsync(authController.login));
+router.post("/login", authController.login);
 
 /**
  * @desc    Admin action: Invite a new collaborator
  * @route   POST /api/auth/invite
  * @access  Private (Admin only)
  */
-router.post(
-  "/invite",
-  protect,
-  restrictTo("ADMIN"),
-  catchAsync(authController.invite),
-);
+router.post("/invite", protect, restrictTo("ADMIN"), authController.invite);
 
 /**
  * @desc    Finalisation of the registration via token
  * @route   POST /api/auth/finalize
  * @access  Public (Verified by token in the body)
  */
-router.post("/finalize", catchAsync(authController.finalize));
+router.post("/finalize", authController.finalize);
+
+/**
+ * @desc    Change password for logged-in users
+ * @route   POST /api/auth/change-password
+ * @access  Private (Authenticated users)
+ */
+router.post("/change-password", protect, authController.changePassword);
+
+/**
+ * @desc    Forgot password - Request reset link
+ * @route   POST /api/auth/forgot-password
+ * @access  Public
+ */
+router.post("/forgot-password", authController.forgotPassword);
+
+/**
+ * @desc    Reset password using token
+ * @route   POST /api/auth/reset-password
+ * @access  Public (Verified by token in the body)
+ */
+router.post("/reset-password", authController.resetPassword);
+
+/**
+ * @desc    Confirm email change using token
+ * @route   POST /api/auth/confirm-email-change
+ * @access  Public (Verified by token in the body)
+ */
+router.post("/confirm-email-change", authController.confirmEmailChange);
 
 export { router as authRoutes };

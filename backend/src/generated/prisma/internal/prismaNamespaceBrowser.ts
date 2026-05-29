@@ -54,6 +54,7 @@ export const ModelName = {
   Client: 'Client',
   User: 'User',
   InvitationToken: 'InvitationToken',
+  EmailChangeRequest: 'EmailChangeRequest',
   PasswordResetToken: 'PasswordResetToken',
   CompanyInfo: 'CompanyInfo',
   Quote: 'Quote',
@@ -103,12 +104,15 @@ export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof 
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  avatarUrl: 'avatarUrl',
   email: 'email',
   password: 'password',
   role: 'role',
   isActive: 'isActive',
   firstName: 'firstName',
   lastName: 'lastName',
+  phone: 'phone',
+  address: 'address',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -131,11 +135,25 @@ export const InvitationTokenScalarFieldEnum = {
 export type InvitationTokenScalarFieldEnum = (typeof InvitationTokenScalarFieldEnum)[keyof typeof InvitationTokenScalarFieldEnum]
 
 
+export const EmailChangeRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  newEmail: 'newEmail',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type EmailChangeRequestScalarFieldEnum = (typeof EmailChangeRequestScalarFieldEnum)[keyof typeof EmailChangeRequestScalarFieldEnum]
+
+
 export const PasswordResetTokenScalarFieldEnum = {
   id: 'id',
   tokenHash: 'tokenHash',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt',
+  usedAt: 'usedAt',
   userId: 'userId'
 } as const
 
@@ -144,7 +162,6 @@ export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalar
 
 export const CompanyInfoScalarFieldEnum = {
   id: 'id',
-  version: 'version',
   nif: 'nif',
   stat: 'stat',
   rif: 'rif',
@@ -154,9 +171,6 @@ export const CompanyInfoScalarFieldEnum = {
   secondaryAddressDetail: 'secondaryAddressDetail',
   logo: 'logo',
   stamp: 'stamp',
-  isActive: 'isActive',
-  startDate: 'startDate',
-  endDate: 'endDate',
   mobileMoneyNumbers: 'mobileMoneyNumbers',
   standardPhone: 'standardPhone',
   contactEmail: 'contactEmail',
@@ -165,7 +179,8 @@ export const CompanyInfoScalarFieldEnum = {
   bankAccountHolder: 'bankAccountHolder',
   bankBranch: 'bankBranch',
   bankCode: 'bankCode',
-  ribInfo: 'ribInfo'
+  ribInfo: 'ribInfo',
+  createdAt: 'createdAt'
 } as const
 
 export type CompanyInfoScalarFieldEnum = (typeof CompanyInfoScalarFieldEnum)[keyof typeof CompanyInfoScalarFieldEnum]

@@ -5,3 +5,7 @@ export const idParamSchema = z.object({
 });
 
 export const uuidSchema = z.uuid("Invalid UUID format");
+
+export const intIdParamSchema = z.object({
+  id: z.coerce.number().int().positive(),
+});
