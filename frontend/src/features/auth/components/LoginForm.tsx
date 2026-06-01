@@ -13,7 +13,8 @@ import {
   FieldError,
 } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
-import { loginSchema, type LoginRequest } from "../schemas/auth.schema";
+import { loginSchema } from "../schemas/auth.schema";
+import type { LoginRequest } from "../types/auth.types";
 import { useAuth } from "../hooks/useAuth";
 
 interface LoginFormProps extends React.ComponentProps<"form"> {

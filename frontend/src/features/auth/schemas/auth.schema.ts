@@ -23,7 +23,6 @@ export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, "Le mot de passe est requis"),
 });
-export type LoginRequest = z.infer<typeof loginSchema>;
 
 // ============================================
 // Register (finalisation d’invitation)
@@ -43,7 +42,6 @@ export const registerSchema = z
     message: "Les mots de passe ne correspondent pas",
     path: ["confirmPassword"],
   });
-export type RegisterRequest = z.infer<typeof registerSchema>;
 // ============================================
 // Changement de mot de passe (connecté)
 // ============================================

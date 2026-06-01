@@ -1,4 +1,3 @@
-// frontend/src/features/auth/components/RegisterForm.tsx
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
