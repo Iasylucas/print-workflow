@@ -8,7 +8,7 @@ import {
   resetPasswordSchema,
   confirmEmailChangeSchema,
   inviteUserSchema,
-} from "../schema/auth.schema";
+} from "../schemas/auth.schema";
 
 // ============================================
 // Types inférés depuis les schémas Zod
