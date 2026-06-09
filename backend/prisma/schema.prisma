@@ -109,6 +109,7 @@ model CompanyInfo {
   secondaryAddress        String?
   secondaryAddressDetail  String?
   logo                    String?
+  name                    String    @default("Ewa print")
   stamp                   String?
 
   mobileMoneyNumbers      Json?

@@ -4,15 +4,15 @@ import { companyInfoController } from "./company-info.controller.js";
 
 const router: Router = Router();
 
-router.use(protect);
-router.use(restrictTo("ADMIN"));
-
 /**
  * @desc    Get active company info
  * @route   GET /api/company-info
  * @access  Private (Admin only)
  */
 router.get("/", companyInfoController.getActive);
+
+router.use(protect);
+router.use(restrictTo("ADMIN"));
 
 /**
  * @desc    Get all company info versions

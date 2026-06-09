@@ -14,6 +14,7 @@ export const companyInfoSchema = z.object({
   secondaryAddress: z.string().optional(),
   secondaryAddressDetail: z.string().optional(),
   logo: z.url().optional(),
+  name: z.string().min(1),
   stamp: z.url().optional(),
   mobileMoneyNumbers: z.array(mobileMoneyNumberSchema).optional(),
   standardPhone: z.string().optional(),

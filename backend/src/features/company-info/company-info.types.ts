@@ -17,6 +17,7 @@ export const companyInfoSelect = {
   secondaryAddress: true,
   secondaryAddressDetail: true,
   logo: true,
+  name: true,
   stamp: true,
   mobileMoneyNumbers: true,
   standardPhone: true,

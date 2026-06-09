@@ -1,4 +1,3 @@
-// frontend/src/stores/authStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { authApi } from "@/features/auth/services/authApi";
@@ -36,7 +35,6 @@ export const useAuthStore = create<AuthState>()(
           set({ user, token, isAuthenticated: true, isLoading: false });
         } catch (error) {
           set({ isLoading: false, isAuthenticated: false });
-          // On relaie l'erreur pour que le composant puisse l'intercepter
           throw error;
         }
       },
