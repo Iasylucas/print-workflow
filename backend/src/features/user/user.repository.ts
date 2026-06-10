@@ -25,10 +25,14 @@ export class UserRepository {
 
   // Lister les utilisateurs avec pagination, recherche et tri
   async findAllPaginated(query: UserQuery): Promise<PaginatedUserList> {
-    const { page, limit, sortBy, sortOrder, search } = query;
+    const { page, limit, sortBy, sortOrder, search, isActive } = query;
     const skip = (page - 1) * limit;
 
     const where: Prisma.UserWhereInput = { deletedAt: null };
+
+    if (isActive !== undefined) {
+      where.isActive = isActive; // ← FILTRE ACTIF
+    }
 
     if (search) {
       where.OR = [
