@@ -1,4 +1,3 @@
-// src/components/layout/AppSidebar.tsx
 import { useMenuItems } from "@/hooks/useMenuItems";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import {
@@ -11,141 +10,180 @@ import {
   SidebarMenuButton,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { LogOut, User, Settings, ChevronUp, Circle } from "lucide-react";
+import { LogOut, User, Settings } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import { cn } from "@/lib/utils";
-import { Logo } from "@/components/Logo"; // ⚠️ Ce composant devra être dynamique
+import { Skeleton } from "../ui/skeleton";
+import { useCompanyStore } from "@/features/company-info/stores/companyStore";
+import { useAuthStore } from "@/features/auth/stores/authStore";
+import { Logo } from "@/features/company-info/components/Logo";
 
-/**
- * Barre latérale principale de l'application.
- * Composée de :
- * - Un en-tête (SidebarHeader) pour le logo/le nom de l'entreprise
- * - Une zone de contenu (SidebarContent) avec le menu de navigation
- * - Un pied de page (SidebarFooter) avec les informations de l'utilisateur et la déconnexion
- *
- * Le contenu du menu est généré dynamiquement en fonction du rôle de l'utilisateur
- * via le hook useMenuItems. Le pied de page affiche l'utilisateur connecté avec
- * un menu déroulant pour gérer son compte et se déconnecter.
- */
 export const AppSidebar = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, fullName, avatarInitials } = useAuth();
   const menuItems = useMenuItems();
 
-  // Génération des initiales pour l'avatar par défaut
-  const initials = user
-    ? `${user.firstName?.charAt(0) || ""}${user.lastName?.charAt(0) || ""}`.toUpperCase()
-    : "U";
+  const isCompanyLoading = useCompanyStore((state) => state.isLoading);
+  const isAuthLoading = useAuthStore((state) => state.isLoading);
+  const isLoading = isCompanyLoading || isAuthLoading;
 
-  // Nom complet de l'utilisateur
-  const fullName = user
-    ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
-    : "Utilisateur";
+  if (isLoading) {
+    return (
+      <Sidebar variant="sidebar">
+        {}
+        <SidebarHeader className="p-4">
+          <Skeleton className="h-9 w-32 rounded-lg" />
+        </SidebarHeader>
+
+        {}
+        <SidebarContent className="p-2">
+          <SidebarMenu>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SidebarMenuItem key={index} className="px-2 py-1">
+                <SidebarMenuSkeleton showIcon /> {}
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarContent>
+
+        {}
+        <SidebarFooter className="border-t p-4 flex flex-row items-center gap-3">
+          <Skeleton className="h-8 w-8 rounded-lg shrink-0" />
+          <div className="space-y-2 flex-1">
+            <Skeleton className="h-3 w-3/4" />
+            <Skeleton className="h-3 w-1/2" />
+          </div>
+        </SidebarFooter>
+      </Sidebar>
+    );
+  }
 
   return (
-    <Sidebar>
-      {/* En-tête de la sidebar : Logo et/ou nom de l'entreprise */}
+    <Sidebar variant="sidebar">
+      {}
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem className="px-0.5 max-lg:p-2">
-            {/* 
-              ⚠️ À remplacer par un composant qui utilise les informations
-              de l'entreprise stockées en base de données (CompanyInfo). 
-              Pour le MVP, on peut garder un texte simple.
-            */}
-
             <Logo variant="icon" />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
-      {/* Zone de contenu : Menu de navigation dynamique */}
+      {}
+      {}
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
-                  {/* <SidebarMenuButton asChild tooltip={item.label}>
-                    <a href={item.href}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.label}</span>
-                    </a>
-                  </SidebarMenuButton> */}
-                  <SidebarMenuButton asChild tooltip={item.label}>
-                    <NavLink
-                      to={item.href}
-                      className={({ isActive }) =>
-                        cn(
-                          "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                          isActive
-                            ? "bg-primary text-primary-foreground"
-                            : "hover:bg-muted",
-                        )
-                      }
-                    >
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.label}</span>
-                    </NavLink>
-                  </SidebarMenuButton>
+                  {}
+                  <NavLink to={item.href}>
+                    {({ isActive }) => (
+                      <SidebarMenuButton
+                        asChild
+                        tooltip={item.label}
+                        isActive={isActive}
+                      >
+                        <div>
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.label}</span>
+                        </div>
+                      </SidebarMenuButton>
+                    )}
+                  </NavLink>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {}
+        <SidebarGroup className="mt-auto">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {}
+              <SidebarMenuItem>
+                <NavLink to="/profile">
+                  {({ isActive }) => (
+                    <SidebarMenuButton
+                      asChild
+                      tooltip="Mon profil"
+                      isActive={isActive}
+                    >
+                      <div>
+                        <User className="h-4 w-4" />
+                        <span>Mon profil</span>
+                      </div>
+                    </SidebarMenuButton>
+                  )}
+                </NavLink>
+              </SidebarMenuItem>
+
+              {}
+              {user?.role === "ADMIN" && (
+                <SidebarMenuItem>
+                  <NavLink to="/settings">
+                    {({ isActive }) => (
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Paramètres"
+                        isActive={isActive}
+                      >
+                        <div>
+                          <Settings className="h-4 w-4" />
+                          <span>Paramètres</span>
+                        </div>
+                      </SidebarMenuButton>
+                    )}
+                  </NavLink>
+                </SidebarMenuItem>
+              )}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
 
-      {/* Pied de page : Informations utilisateur et déconnexion */}
-      <SidebarFooter className="border-t p-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted">
-              {/* Avatar de l'utilisateur (initiales en fallback) */}
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-primary/10 text-xs">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
-              {/* Informations utilisateur + indicateur de statut */}
-              <div className="flex flex-1 flex-col items-start text-left">
-                <span className="text-sm font-medium">{fullName}</span>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Circle className="h-2 w-2 fill-emerald-500 text-emerald-500" />
-                  <span>En ligne</span>
-                </div>
-              </div>
-              {/* Indicateur d'ouverture du menu */}
-              <ChevronUp className="ml-auto h-4 w-4 text-muted-foreground" />
-            </button>
-          </DropdownMenuTrigger>
-          {/* Menu déroulant des actions du compte utilisateur */}
-          <DropdownMenuContent align="end" side="top" className="w-56">
-            <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profil</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Paramètres</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => logout()}>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Déconnexion</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      {}
+      <SidebarFooter className="border-t p-2">
+        <div className="flex w-full items-center gap-3 px-1 py-1.5">
+          {}
+          <div className="relative">
+            <Avatar className="h-8 w-8 rounded-lg">
+              {}
+              <AvatarFallback className="bg-primary/10 text-xs font-semibold rounded-[inherit]">
+                {avatarInitials}
+              </AvatarFallback>
+            </Avatar>
+
+            {}
+            <div
+              className="absolute bottom-0 right-0 size-2
+                      rounded-full bg-emerald-500 dark:bg-emerald-400
+                      ring-sidebar ring-1"
+            ></div>
+          </div>
+
+          {}
+          <div className="flex flex-1 flex-col items-start text-left min-w-0">
+            <span className="truncate text-sm font-medium leading-none text-sidebar-foreground">
+              {fullName}
+            </span>
+            <span className="truncate text-xs text-muted-foreground mt-1">
+              {user?.email || "email@exemple.com"}
+            </span>
+          </div>
+
+          {}
+          <button
+            onClick={() => logout()}
+            className="p-2 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+            title="Déconnexion"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

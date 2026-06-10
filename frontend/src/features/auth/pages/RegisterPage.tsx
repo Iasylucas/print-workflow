@@ -1,23 +1,21 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { GalleryVerticalEnd } from "lucide-react";
 import { RegisterForm } from "../components/RegisterForm";
-import { useAuth } from "../hooks/useAuth"; // Votre hook de performance
+import { useAuth } from "../hooks/useAuth";
+import { Logo } from "@/features/company-info/components/Logo";
 
 export const RegisterPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const token = searchParams.get("token");
-  const { isAuthenticated } = useAuth(); // Récupère l'état depuis Zustand
+  const { isAuthenticated } = useAuth();
 
-  // Protection : Si l'utilisateur est déjà connecté, on le dégage vers le dashboard
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/", { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
-  // Si le token est absent de l'URL
   if (!token) {
     return (
       <div className="flex h-screen items-center justify-center bg-background p-4">
@@ -34,23 +32,17 @@ export const RegisterPage = () => {
     );
   }
 
-  // Si l'utilisateur est connecté, on bloque le rendu le temps que le useEffect redirige
   if (isAuthenticated) return null;
 
   const handleSuccess = () => {
-    navigate("/", { replace: true }); // Redirection vers la racine (votre dashboard)
+    navigate("/", { replace: true });
   };
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
-          <a href="/" className="flex items-center gap-2 font-medium">
-            <div className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <GalleryVerticalEnd className="size-4" />
-            </div>
-            EWA Print
-          </a>
+          <Logo variant="icon" />
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-md">

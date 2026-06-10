@@ -26,7 +26,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       token: null,
       isAuthenticated: false,
-      isLoading: true,
+      isLoading: true, // Reste à true pendant la lecture initiale du localStorage
 
       login: async (data: LoginRequest) => {
         set({ isLoading: true });
@@ -64,7 +64,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       clearError: () => {
-        // réservé pour un éventuel champ error, pas utilisé ici
+        // Réservé pour un éventuel champ error, pas utilisé ici
       },
     }),
     {
@@ -74,10 +74,16 @@ export const useAuthStore = create<AuthState>()(
         user: state.user,
         isAuthenticated: state.isAuthenticated,
       }),
-      onRehydrateStorage: () => (state) => {
-        if (state) {
-          state.isLoading = false;
-        }
+
+      onRehydrateStorage: () => {
+        return (state, error) => {
+          if (state) {
+            state.isLoading = false;
+          }
+          if (error) {
+            console.error("Erreur de réhydratation du store auth:", error);
+          }
+        };
       },
     },
   ),
