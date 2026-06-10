@@ -26,7 +26,7 @@ export const finalizeRegistrationSchema = z
     firstName: firstNameSchema,
     lastName: lastNameSchema,
     phone: phoneSchema,
-    address: z.string().optional(),
+    address: z.string().trim().optional(),
     password: passwordSchema,
     confirmPassword: z.string(),
   })

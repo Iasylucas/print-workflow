@@ -44,6 +44,7 @@ export type CompanyInfoMinAggregateOutputType = {
   secondaryAddress: string | null
   secondaryAddressDetail: string | null
   logo: string | null
+  name: string | null
   stamp: string | null
   standardPhone: string | null
   contactEmail: string | null
@@ -66,6 +67,7 @@ export type CompanyInfoMaxAggregateOutputType = {
   secondaryAddress: string | null
   secondaryAddressDetail: string | null
   logo: string | null
+  name: string | null
   stamp: string | null
   standardPhone: string | null
   contactEmail: string | null
@@ -88,6 +90,7 @@ export type CompanyInfoCountAggregateOutputType = {
   secondaryAddress: number
   secondaryAddressDetail: number
   logo: number
+  name: number
   stamp: number
   mobileMoneyNumbers: number
   standardPhone: number
@@ -121,6 +124,7 @@ export type CompanyInfoMinAggregateInputType = {
   secondaryAddress?: true
   secondaryAddressDetail?: true
   logo?: true
+  name?: true
   stamp?: true
   standardPhone?: true
   contactEmail?: true
@@ -143,6 +147,7 @@ export type CompanyInfoMaxAggregateInputType = {
   secondaryAddress?: true
   secondaryAddressDetail?: true
   logo?: true
+  name?: true
   stamp?: true
   standardPhone?: true
   contactEmail?: true
@@ -165,6 +170,7 @@ export type CompanyInfoCountAggregateInputType = {
   secondaryAddress?: true
   secondaryAddressDetail?: true
   logo?: true
+  name?: true
   stamp?: true
   mobileMoneyNumbers?: true
   standardPhone?: true
@@ -275,6 +281,7 @@ export type CompanyInfoGroupByOutputType = {
   secondaryAddress: string | null
   secondaryAddressDetail: string | null
   logo: string | null
+  name: string
   stamp: string | null
   mobileMoneyNumbers: runtime.JsonValue | null
   standardPhone: string | null
@@ -321,6 +328,7 @@ export type CompanyInfoWhereInput = {
   secondaryAddress?: Prisma.StringNullableFilter<"CompanyInfo"> | string | null
   secondaryAddressDetail?: Prisma.StringNullableFilter<"CompanyInfo"> | string | null
   logo?: Prisma.StringNullableFilter<"CompanyInfo"> | string | null
+  name?: Prisma.StringFilter<"CompanyInfo"> | string
   stamp?: Prisma.StringNullableFilter<"CompanyInfo"> | string | null
   mobileMoneyNumbers?: Prisma.JsonNullableFilter<"CompanyInfo">
   standardPhone?: Prisma.StringNullableFilter<"CompanyInfo"> | string | null
@@ -346,6 +354,7 @@ export type CompanyInfoOrderByWithRelationInput = {
   secondaryAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   secondaryAddressDetail?: Prisma.SortOrderInput | Prisma.SortOrder
   logo?: Prisma.SortOrderInput | Prisma.SortOrder
+  name?: Prisma.SortOrder
   stamp?: Prisma.SortOrderInput | Prisma.SortOrder
   mobileMoneyNumbers?: Prisma.SortOrderInput | Prisma.SortOrder
   standardPhone?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -374,6 +383,7 @@ export type CompanyInfoWhereUniqueInput = Prisma.AtLeast<{
   secondaryAddress?: Prisma.StringNullableFilter<"CompanyInfo"> | string | null
   secondaryAddressDetail?: Prisma.StringNullableFilter<"CompanyInfo"> | string | null
   logo?: Prisma.StringNullableFilter<"CompanyInfo"> | string | null
+  name?: Prisma.StringFilter<"CompanyInfo"> | string
   stamp?: Prisma.StringNullableFilter<"CompanyInfo"> | string | null
   mobileMoneyNumbers?: Prisma.JsonNullableFilter<"CompanyInfo">
   standardPhone?: Prisma.StringNullableFilter<"CompanyInfo"> | string | null
@@ -399,6 +409,7 @@ export type CompanyInfoOrderByWithAggregationInput = {
   secondaryAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   secondaryAddressDetail?: Prisma.SortOrderInput | Prisma.SortOrder
   logo?: Prisma.SortOrderInput | Prisma.SortOrder
+  name?: Prisma.SortOrder
   stamp?: Prisma.SortOrderInput | Prisma.SortOrder
   mobileMoneyNumbers?: Prisma.SortOrderInput | Prisma.SortOrder
   standardPhone?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -430,6 +441,7 @@ export type CompanyInfoScalarWhereWithAggregatesInput = {
   secondaryAddress?: Prisma.StringNullableWithAggregatesFilter<"CompanyInfo"> | string | null
   secondaryAddressDetail?: Prisma.StringNullableWithAggregatesFilter<"CompanyInfo"> | string | null
   logo?: Prisma.StringNullableWithAggregatesFilter<"CompanyInfo"> | string | null
+  name?: Prisma.StringWithAggregatesFilter<"CompanyInfo"> | string
   stamp?: Prisma.StringNullableWithAggregatesFilter<"CompanyInfo"> | string | null
   mobileMoneyNumbers?: Prisma.JsonNullableWithAggregatesFilter<"CompanyInfo">
   standardPhone?: Prisma.StringNullableWithAggregatesFilter<"CompanyInfo"> | string | null
@@ -452,6 +464,7 @@ export type CompanyInfoCreateInput = {
   secondaryAddress?: string | null
   secondaryAddressDetail?: string | null
   logo?: string | null
+  name?: string
   stamp?: string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: string | null
@@ -477,6 +490,7 @@ export type CompanyInfoUncheckedCreateInput = {
   secondaryAddress?: string | null
   secondaryAddressDetail?: string | null
   logo?: string | null
+  name?: string
   stamp?: string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: string | null
@@ -501,6 +515,7 @@ export type CompanyInfoUpdateInput = {
   secondaryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secondaryAddressDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   stamp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -526,6 +541,7 @@ export type CompanyInfoUncheckedUpdateInput = {
   secondaryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secondaryAddressDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   stamp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -551,6 +567,7 @@ export type CompanyInfoCreateManyInput = {
   secondaryAddress?: string | null
   secondaryAddressDetail?: string | null
   logo?: string | null
+  name?: string
   stamp?: string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: string | null
@@ -573,6 +590,7 @@ export type CompanyInfoUpdateManyMutationInput = {
   secondaryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secondaryAddressDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   stamp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -596,6 +614,7 @@ export type CompanyInfoUncheckedUpdateManyInput = {
   secondaryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secondaryAddressDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   stamp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -619,6 +638,7 @@ export type CompanyInfoCountOrderByAggregateInput = {
   secondaryAddress?: Prisma.SortOrder
   secondaryAddressDetail?: Prisma.SortOrder
   logo?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   stamp?: Prisma.SortOrder
   mobileMoneyNumbers?: Prisma.SortOrder
   standardPhone?: Prisma.SortOrder
@@ -646,6 +666,7 @@ export type CompanyInfoMaxOrderByAggregateInput = {
   secondaryAddress?: Prisma.SortOrder
   secondaryAddressDetail?: Prisma.SortOrder
   logo?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   stamp?: Prisma.SortOrder
   standardPhone?: Prisma.SortOrder
   contactEmail?: Prisma.SortOrder
@@ -668,6 +689,7 @@ export type CompanyInfoMinOrderByAggregateInput = {
   secondaryAddress?: Prisma.SortOrder
   secondaryAddressDetail?: Prisma.SortOrder
   logo?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   stamp?: Prisma.SortOrder
   standardPhone?: Prisma.SortOrder
   contactEmail?: Prisma.SortOrder
@@ -734,6 +756,7 @@ export type CompanyInfoCreateWithoutQuotesInput = {
   secondaryAddress?: string | null
   secondaryAddressDetail?: string | null
   logo?: string | null
+  name?: string
   stamp?: string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: string | null
@@ -758,6 +781,7 @@ export type CompanyInfoUncheckedCreateWithoutQuotesInput = {
   secondaryAddress?: string | null
   secondaryAddressDetail?: string | null
   logo?: string | null
+  name?: string
   stamp?: string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: string | null
@@ -797,6 +821,7 @@ export type CompanyInfoUpdateWithoutQuotesInput = {
   secondaryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secondaryAddressDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   stamp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -821,6 +846,7 @@ export type CompanyInfoUncheckedUpdateWithoutQuotesInput = {
   secondaryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secondaryAddressDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   stamp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -844,6 +870,7 @@ export type CompanyInfoCreateWithoutInvoicesInput = {
   secondaryAddress?: string | null
   secondaryAddressDetail?: string | null
   logo?: string | null
+  name?: string
   stamp?: string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: string | null
@@ -868,6 +895,7 @@ export type CompanyInfoUncheckedCreateWithoutInvoicesInput = {
   secondaryAddress?: string | null
   secondaryAddressDetail?: string | null
   logo?: string | null
+  name?: string
   stamp?: string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: string | null
@@ -907,6 +935,7 @@ export type CompanyInfoUpdateWithoutInvoicesInput = {
   secondaryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secondaryAddressDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   stamp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -931,6 +960,7 @@ export type CompanyInfoUncheckedUpdateWithoutInvoicesInput = {
   secondaryAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secondaryAddressDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   stamp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobileMoneyNumbers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   standardPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -995,6 +1025,7 @@ export type CompanyInfoSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   secondaryAddress?: boolean
   secondaryAddressDetail?: boolean
   logo?: boolean
+  name?: boolean
   stamp?: boolean
   mobileMoneyNumbers?: boolean
   standardPhone?: boolean
@@ -1021,6 +1052,7 @@ export type CompanyInfoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   secondaryAddress?: boolean
   secondaryAddressDetail?: boolean
   logo?: boolean
+  name?: boolean
   stamp?: boolean
   mobileMoneyNumbers?: boolean
   standardPhone?: boolean
@@ -1044,6 +1076,7 @@ export type CompanyInfoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   secondaryAddress?: boolean
   secondaryAddressDetail?: boolean
   logo?: boolean
+  name?: boolean
   stamp?: boolean
   mobileMoneyNumbers?: boolean
   standardPhone?: boolean
@@ -1067,6 +1100,7 @@ export type CompanyInfoSelectScalar = {
   secondaryAddress?: boolean
   secondaryAddressDetail?: boolean
   logo?: boolean
+  name?: boolean
   stamp?: boolean
   mobileMoneyNumbers?: boolean
   standardPhone?: boolean
@@ -1080,7 +1114,7 @@ export type CompanyInfoSelectScalar = {
   createdAt?: boolean
 }
 
-export type CompanyInfoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nif" | "stat" | "rif" | "mainAddress" | "mainAddressDetail" | "secondaryAddress" | "secondaryAddressDetail" | "logo" | "stamp" | "mobileMoneyNumbers" | "standardPhone" | "contactEmail" | "termsAndConditions" | "deliveryLeadTime" | "bankAccountHolder" | "bankBranch" | "bankCode" | "ribInfo" | "createdAt", ExtArgs["result"]["companyInfo"]>
+export type CompanyInfoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nif" | "stat" | "rif" | "mainAddress" | "mainAddressDetail" | "secondaryAddress" | "secondaryAddressDetail" | "logo" | "name" | "stamp" | "mobileMoneyNumbers" | "standardPhone" | "contactEmail" | "termsAndConditions" | "deliveryLeadTime" | "bankAccountHolder" | "bankBranch" | "bankCode" | "ribInfo" | "createdAt", ExtArgs["result"]["companyInfo"]>
 export type CompanyInfoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   invoices?: boolean | Prisma.CompanyInfo$invoicesArgs<ExtArgs>
   quotes?: boolean | Prisma.CompanyInfo$quotesArgs<ExtArgs>
@@ -1105,6 +1139,7 @@ export type $CompanyInfoPayload<ExtArgs extends runtime.Types.Extensions.Interna
     secondaryAddress: string | null
     secondaryAddressDetail: string | null
     logo: string | null
+    name: string
     stamp: string | null
     mobileMoneyNumbers: runtime.JsonValue | null
     standardPhone: string | null
@@ -1550,6 +1585,7 @@ export interface CompanyInfoFieldRefs {
   readonly secondaryAddress: Prisma.FieldRef<"CompanyInfo", 'String'>
   readonly secondaryAddressDetail: Prisma.FieldRef<"CompanyInfo", 'String'>
   readonly logo: Prisma.FieldRef<"CompanyInfo", 'String'>
+  readonly name: Prisma.FieldRef<"CompanyInfo", 'String'>
   readonly stamp: Prisma.FieldRef<"CompanyInfo", 'String'>
   readonly mobileMoneyNumbers: Prisma.FieldRef<"CompanyInfo", 'Json'>
   readonly standardPhone: Prisma.FieldRef<"CompanyInfo", 'String'>

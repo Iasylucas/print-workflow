@@ -170,6 +170,7 @@ export const CompanyInfoScalarFieldEnum = {
   secondaryAddress: 'secondaryAddress',
   secondaryAddressDetail: 'secondaryAddressDetail',
   logo: 'logo',
+  name: 'name',
   stamp: 'stamp',
   mobileMoneyNumbers: 'mobileMoneyNumbers',
   standardPhone: 'standardPhone',

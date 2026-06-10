@@ -1,0 +1,23 @@
+export type CompanyInfo = {
+  id: number;
+  nif: string;
+  stat: string;
+  rif: string | null;
+  mainAddress: string;
+  mainAddressDetail: string | null;
+  secondaryAddress: string | null;
+  secondaryAddressDetail: string | null;
+  logo: string | null;
+  name: string;
+  stamp: string | null;
+  mobileMoneyNumbers: Array<{ numero: string; nom?: string }> | null;
+  standardPhone: string | null;
+  contactEmail: string | null;
+  termsAndConditions: string | null;
+  deliveryLeadTime: string | null;
+  bankAccountHolder: string | null;
+  bankBranch: string | null;
+  bankCode: string | null;
+  ribInfo: string | null;
+  createdAt: string;
+};

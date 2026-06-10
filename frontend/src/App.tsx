@@ -1,10 +1,20 @@
-import { Button } from "@/components/ui/button";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes";
+import { useCompanyStore } from "./features/company-info/stores/companyStore";
+import { useEffect } from "react";
 
 function App() {
+  const fetchCompany = useCompanyStore((state) => state.fetchCompany);
+
+  useEffect(() => {
+    fetchCompany();
+  }, [fetchCompany]);
+
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center">
-      <Button>Click me</Button>
-    </div>
+    <ThemeProvider storageKey="vite-ui-theme">
+      <RouterProvider router={router} />
+    </ThemeProvider>
   );
 }
 
