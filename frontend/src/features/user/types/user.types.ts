@@ -1,10 +1,12 @@
+import type { UserRole } from "@/shared/types";
+
 export type User = {
   avatarUrl: string | undefined;
   id: string;
   email: string;
   firstName: string | null;
   lastName: string | null;
-  role: "ADMIN" | "SALES" | "PRINTER" | "GRAPHIC_DESIGNER";
+  role: UserRole;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -14,6 +16,7 @@ export type UsersQueryParams = {
   page?: number;
   limit?: number;
   search?: string;
+  role?: UserRole;
   sortBy?: "createdAt" | "email" | "firstName" | "lastName" | "role";
   sortOrder?: "asc" | "desc";
   isActive?: boolean;

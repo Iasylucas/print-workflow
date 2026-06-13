@@ -36,7 +36,12 @@ export const userQuerySchema = paginationSchema.extend({
     .enum(["createdAt", "email", "firstName", "lastName", "role"])
     .default("createdAt"),
   search: z.string().trim().optional(),
-  isActive: z.boolean().optional(),
+  role: UserRole.optional(),
+  isActive: z.preprocess((val) => {
+    if (val === "true") return true;
+    if (val === "false") return false;
+    return undefined;
+  }, z.boolean().optional()),
 });
 
 // Admin modifie un utilisateur – avec newEmail

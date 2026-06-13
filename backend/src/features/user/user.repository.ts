@@ -25,7 +25,7 @@ export class UserRepository {
 
   // Lister les utilisateurs avec pagination, recherche et tri
   async findAllPaginated(query: UserQuery): Promise<PaginatedUserList> {
-    const { page, limit, sortBy, sortOrder, search, isActive } = query;
+    const { page, limit, sortBy, sortOrder, search, isActive, role } = query;
     const skip = (page - 1) * limit;
 
     const where: Prisma.UserWhereInput = { deletedAt: null };
@@ -40,6 +40,10 @@ export class UserRepository {
         { lastName: { contains: search, mode: "insensitive" } },
         { email: { contains: search, mode: "insensitive" } },
       ];
+    }
+
+    if (role) {
+      where.role = role;
     }
 
     const [data, total] = await Promise.all([
