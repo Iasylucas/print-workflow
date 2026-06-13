@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/features/auth/store/authStore";
 import axios, { type AxiosRequestConfig } from "axios";
 
 export const api = axios.create({
@@ -9,7 +10,7 @@ export const api = axios.create({
 const requestTimestamps = new Map<string, number>();
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = useAuthStore.getState().token;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -52,9 +53,17 @@ api.interceptors.response.use(
     return response;
   },
   async (error) => {
-    // Utilisation de la garde de type officielle d'Axios pour un typage strict
     if (axios.isAxiosError(error)) {
       await handleDelay(error.config);
+    }
+
+    // 💡 LA BARRIÈRE ANTI-401 : Si le token a expiré ou est falsifié
+    if (error.response?.status === 401) {
+      console.warn("Session expirée ou invalide. Nettoyage...");
+
+      useAuthStore.getState().logout();
+
+      // window.location.href = "/login";
     }
 
     const serverData = error.response?.data as
@@ -70,3 +79,28 @@ api.interceptors.response.use(
     return Promise.reject(new Error(friendlyMessage));
   },
 );
+
+// api.interceptors.response.use(
+//   async (response) => {
+//     await handleDelay(response.config);
+//     return response;
+//   },
+//   async (error) => {
+//     // Utilisation de la garde de type officielle d'Axios pour un typage strict
+//     if (axios.isAxiosError(error)) {
+//       await handleDelay(error.config);
+//     }
+
+//     const serverData = error.response?.data as
+//       | { error?: string; message?: string }
+//       | undefined;
+
+//     const friendlyMessage =
+//       serverData?.error ||
+//       serverData?.message ||
+//       error.message ||
+//       "Une erreur est survenue";
+
+//     return Promise.reject(new Error(friendlyMessage));
+//   },
+// );

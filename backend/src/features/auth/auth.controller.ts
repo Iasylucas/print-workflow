@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { authService } from "./auth.service.js";
 import {
   inviteUserSchema,
@@ -98,4 +98,15 @@ export const authController = {
       });
     },
   ),
+
+  // get me
+  getMe: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user.sub;
+
+    const result = await authService.getMe(userId);
+    return res.status(200).json({
+      success: true,
+      ...result,
+    });
+  }),
 };

@@ -31,7 +31,7 @@ export class UserRepository {
     const where: Prisma.UserWhereInput = { deletedAt: null };
 
     if (isActive !== undefined) {
-      where.isActive = isActive; // ← FILTRE ACTIF
+      where.isActive = isActive;
     }
 
     if (search) {

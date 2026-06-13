@@ -182,6 +182,7 @@ export class AuthService {
         avatarUrl: user.avatarUrl,
         firstName: user.firstName,
         lastName: user.lastName,
+        isActive: user.isActive,
         phone: user.phone,
         address: user.address,
         email: user.email,
@@ -297,6 +298,19 @@ export class AuthService {
     await this.userRepository.updateUserEmail(request.userId, request.newEmail);
 
     await this.userRepository.markEmailChangeRequestAsUsed(request.id);
+  }
+
+  // 8. RÉCUPÉRER SON PROFIL (Action de l'utilisateur connecté)
+  async getMe(userId: string): Promise<{ user: any }> {
+    const user = await this.userRepository.findById(userId);
+
+    if (!user) {
+      throw new NotFoundError(AUTH_ERRORS.USER_NOT_FOUND);
+    }
+    if (!user.isActive) {
+      throw new UnauthorizedError(AUTH_ERRORS.NOT_ACTIVATE);
+    }
+    return { user };
   }
 }
 

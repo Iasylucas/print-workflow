@@ -14,7 +14,7 @@ export const userController = {
   listUsers: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const query = userQuerySchema.parse(req.query);
     const result = await userService.listUsers(query);
-    res.status(200).json({ success: true, ...result });
+    res.status(200).json({ success: true, data: result });
   }),
 
   // Récupérer un utilisateur par ID (admin)
