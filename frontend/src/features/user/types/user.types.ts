@@ -14,27 +14,29 @@ export type User = {
 
 export type UsersQueryParams = {
   page?: number;
-  limit?: number;
+  limit: number;
   search?: string;
   role?: UserRole;
-  sortBy?: "createdAt" | "email" | "firstName" | "lastName" | "role";
+  sortBy: "createdAt" | "email" | "firstName" | "lastName" | "role";
+  sortOrder: "asc" | "desc";
+  isActive?: boolean;
+};
+
+export type meta = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasMore: boolean;
+  search?: string;
+  sortBy?: string;
   sortOrder?: "asc" | "desc";
   isActive?: boolean;
 };
 
 export type PaginatedUsersResponse = {
   data: User[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-    hasMore: boolean;
-    search?: string;
-    sortBy?: string;
-    sortOrder?: "asc" | "desc";
-    isActive?: boolean;
-  };
+  meta: meta;
 };
 
 export type InviteUserRequest = {

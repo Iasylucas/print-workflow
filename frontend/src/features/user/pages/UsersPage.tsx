@@ -2,35 +2,8 @@ import { useState } from "react";
 import { useUsers, useUserMutations } from "../hooks/useUsers";
 import type { UsersQueryParams, User } from "../types/user.types";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  MoreHorizontal,
-  UserPlus,
-  Pencil,
-  Trash2,
-  ChevronUp,
-  ChevronDown,
-  RefreshCw,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+import { UserPlus, RefreshCw } from "lucide-react";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserFilters } from "../components/UserFilters";
 import {
   Select,
@@ -40,7 +13,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { UserTable } from "../components/UserTable";
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,13 +23,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { FailedTable } from "@/components/shared/FailedTable";
 
 interface ConfirmActionState {
   isOpen: boolean;
   title: string;
   description: string;
   onConfirm: () => void;
-  isDestructive?: boolean; // Pour mettre le bouton de confirmation en rouge si c'est une suppression
+  isDestructive?: boolean;
 }
 
 export const UsersPage = () => {
@@ -82,6 +55,10 @@ export const UsersPage = () => {
   // Données et mutations
   const { data, isLoading, isError, refetch } = useUsers(queryParams);
   const { deleteMutation, updateMutation } = useUserMutations();
+
+  const [inviteModalOpen, setInviteModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const handleDelete = (userId: string) => {
     setConfirmAction({
@@ -141,17 +118,7 @@ export const UsersPage = () => {
   };
 
   if (isError) {
-    return (
-      <div className="flex flex-col items-center justify-center h-96 gap-4">
-        <p className="text-destructive">
-          Erreur lors du chargement des utilisateurs.
-        </p>
-        <Button variant="outline" onClick={() => refetch()}>
-          <RefreshCw className="mr-2 h-4 w-4" />
-          Réessayer
-        </Button>
-      </div>
-    );
+    return <FailedTable refetch={refetch} sujet="utilisateurs" />;
   }
 
   return (
@@ -283,6 +250,3 @@ export const UsersPage = () => {
         user={selectedUser}
       /> */
 }
-// const [inviteModalOpen, setInviteModalOpen] = useState(false);
-// const [editModalOpen, setEditModalOpen] = useState(false);
-// const [selectedUser, setSelectedUser] = useState<User | null>(null);
