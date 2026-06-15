@@ -9,14 +9,9 @@ export const RootLayout = () => {
   useSessionGuard();
   return (
     <TooltipProvider>
-      {/* On place le provider au sommet pour nourrir le Header et la Sidebar */}
       <SidebarProvider className="flex flex-col min-h-screen w-full bg-background">
-        {/* Le Header global, fixe et calé tout en haut */}
-
-        {}
         <Header />
 
-        {/* Le conteneur horizontal pour la Sidebar et le contenu des pages */}
         <div className="flex flex-1 w-full min-h-0 relative">
           <AppSidebar />
 

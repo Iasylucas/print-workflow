@@ -29,8 +29,9 @@ export const userController = {
   // Mettre à jour un utilisateur (admin)
   updateUser: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const id = uuidSchema.parse(req.params.id);
+    const currentUserId = req.user!.sub;
     const validated = updateUserSchema.parse(req.body);
-    const updated = await userService.updateUser(id, validated);
+    const updated = await userService.updateUser(id, currentUserId, validated);
     res.status(200).json({
       success: true,
       message: "User updated successfully",
@@ -41,7 +42,8 @@ export const userController = {
   // Soft delete d’un utilisateur (admin)
   deleteUser: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const id = uuidSchema.parse(req.params.id);
-    await userService.deleteUser(id);
+    const currentUserId = req.user!.sub;
+    await userService.deleteUser(id, currentUserId);
     res
       .status(200)
       .json({ success: true, message: "User deleted successfully" });

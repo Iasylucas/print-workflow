@@ -5,6 +5,7 @@ import type {
   EditUserRequest,
   InviteUserRequest,
 } from "../types/user.types";
+import { toast } from "sonner";
 
 const USERS_QUERY_KEY = "users";
 
@@ -37,7 +38,13 @@ export const useUserMutations = () => {
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => userApi.deleteUser(id),
-    onSuccess: invalidateUsers,
+    onSuccess: () => {
+      toast.success("Utilisateur supprimé avec succès");
+      invalidateUsers();
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Échec de la suppression");
+    },
   });
 
   return { inviteMutation, updateMutation, deleteMutation };

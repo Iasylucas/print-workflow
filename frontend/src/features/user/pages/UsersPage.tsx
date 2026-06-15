@@ -2,28 +2,14 @@ import { useState } from "react";
 import { useUsers, useUserMutations } from "../hooks/useUsers";
 import type { UsersQueryParams, User } from "../types/user.types";
 import { Button } from "@/components/ui/button";
-import { UserPlus, RefreshCw } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { UserFilters } from "../components/UserFilters";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { UserTable } from "../components/UserTable";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { AlertDialog } from "@/components/ui/alert-dialog";
 import { FailedTable } from "@/components/shared/FailedTable";
+import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
+import { TableStatusBar } from "@/components/shared/TableStatusBar";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -123,12 +109,10 @@ export const UsersPage = () => {
 
   return (
     <div className="w-full space-y-6 animate-in fade-in duration-300">
-      {/* En-tête de page principal */}
       <PageHeader
         title="Utilisateurs"
         subtitle="Gérez les comptes des collaborateurs, leurs rôles et leur statut."
       >
-        {/* Tu places UNIQUEMENT ton bouton métier ici */}
         <Button
           onClick={() => setInviteModalOpen(true)}
           className="font-medium shadow-sm"
@@ -139,59 +123,20 @@ export const UsersPage = () => {
       </PageHeader>
 
       <div className="space-y-4">
-        {/* Filtres (à décommenter quand UserFilters sera créé) */}
         <UserFilters filters={queryParams} onFilterChange={handleFilter} />
-        {/* 💡 BARRE D'ÉTAT INTERMÉDIAIRE : Entre les filtres et le tableau */}
-        <div className="flex flex-row  justify-between items-center sm:items-center gap-2 text-xs text-muted-foreground px-1 py-1">
-          {/* Zone Gauche : Compteur Total Dynamique */}
-          <div className="font-medium font-sans">
-            {isLoading ? (
-              <span className="opacity-50">Calcul des collaborateurs...</span>
-            ) : (
-              <>
-                Total :{" "}
-                <span className="text-foreground font-semibold">
-                  {data?.meta.total || 0}
-                </span>{" "}
-                utilisateur{(data?.meta.total || 0) > 1 ? "s" : ""}
-              </>
-            )}
-          </div>
+        <TableStatusBar
+          totalCount={data?.meta.total || 0}
+          limit={queryParams.limit}
+          isLoading={isLoading}
+          onLimitChange={(val) => {
+            setQueryParams((prev) => ({
+              ...prev,
+              limit: Number(val),
+              page: 1,
+            }));
+          }}
+        />
 
-          {/* Zone Droite : Sélecteur de Lignes par Page (Rows per page) */}
-          <div className="flex items-center gap-2 ml-auto sm:ml-0">
-            <span className="font-sans">Lignes par page :</span>
-            <Select
-              value={String(queryParams.limit)}
-              onValueChange={(val) => {
-                setQueryParams((prev) => ({
-                  ...prev,
-                  limit: Number(val),
-                  page: 1, // 💡 REGLE UX : Toujours forcer le retour à la page 1 si on change la taille du tableau !
-                }));
-              }}
-            >
-              <SelectTrigger className="h-7 w-[70px] bg-background/50 border-input rounded-md text-xs focus:ring-0">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="rounded-lg shadow-md font-sans">
-                <SelectItem value="10" className="text-xs">
-                  10
-                </SelectItem>
-                <SelectItem value="20" className="text-xs">
-                  20
-                </SelectItem>
-                <SelectItem value="50" className="text-xs">
-                  50
-                </SelectItem>
-                <SelectItem value="100" className="text-xs">
-                  100
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        {/* Tableau des utilisateurs */}
         <UserTable
           data={data}
           isLoading={isLoading}
@@ -209,29 +154,12 @@ export const UsersPage = () => {
           setConfirmAction((prev) => ({ ...prev, isOpen: open }))
         }
       >
-        <AlertDialogContent className="rounded-lg shadow-md font-sans max-w-md animate-in fade-in zoom-in-95 duration-200">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-lg font-semibold tracking-tight">
-              {confirmAction.title}
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-sm text-muted-foreground/90 leading-relaxed mt-1">
-              {confirmAction.description}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="mt-4 gap-2">
-            <AlertDialogCancel className="rounded-lg h-9 text-xs font-medium">
-              Annuler
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={confirmAction.onConfirm}
-              // 💡 SOLUTION PRO : On passe la variante destructive native de Shadcn si isDestructive est vrai
-              variant={confirmAction.isDestructive ? "destructive" : "default"}
-              className="rounded-lg h-9 text-xs font-medium shadow-xs"
-            >
-              Confirmer
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
+        <ConfirmationDialog
+          state={confirmAction}
+          onOpenChange={(open) =>
+            setConfirmAction((prev) => ({ ...prev, isOpen: open }))
+          }
+        />
       </AlertDialog>
     </div>
   );

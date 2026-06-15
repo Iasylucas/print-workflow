@@ -37,7 +37,23 @@ export class UserService {
   }
 
   // Mettre à jour un utilisateur (admin) – sans email
-  async updateUser(id: string, data: UpdateUserInput): Promise<UserSafe> {
+  async updateUser(
+    id: string,
+    currentUserId: string,
+    data: UpdateUserInput,
+  ): Promise<UserSafe> {
+    if (id === currentUserId) {
+      if (data.isActive === false) {
+        throw new ConflictError(USER_ERRORS.CANNOT_DEACTIVATE_OWN_ACCOUNT);
+      }
+      if (
+        data.role &&
+        data.role !== (await this.userRepository.findById(id))?.role
+      ) {
+        throw new ConflictError(USER_ERRORS.CANNOT_UPDATE_OWN_ROLE);
+      }
+    }
+
     const existing = await this.userRepository.findById(id);
     if (!existing) {
       throw new NotFoundError(USER_ERRORS.NOT_FOUND);
@@ -52,7 +68,11 @@ export class UserService {
   }
 
   // Soft delete d’un utilisateur (admin)
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(id: string, currentUserId: string): Promise<void> {
+    if (id === currentUserId) {
+      throw new ConflictError(USER_ERRORS.CANNOT_DELETE_OWN_ACCOUNT);
+    }
+
     const existing = await this.userRepository.findById(id);
     if (!existing) {
       throw new NotFoundError(USER_ERRORS.NOT_FOUND);
