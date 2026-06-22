@@ -33,7 +33,13 @@ export const useUserMutations = () => {
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: EditUserRequest }) =>
       userApi.updateUser(id, data),
-    onSuccess: invalidateUsers,
+    onSuccess: () => {
+      toast.success("Utilisateur Modifié avec succès");
+      invalidateUsers();
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Échec de la modication");
+    },
   });
 
   const deleteMutation = useMutation({

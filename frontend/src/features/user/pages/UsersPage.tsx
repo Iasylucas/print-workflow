@@ -10,6 +10,7 @@ import { AlertDialog } from "@/components/ui/alert-dialog";
 import { FailedTable } from "@/components/shared/FailedTable";
 import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
+import { EditUserModal } from "../components/EditUserModal";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -161,6 +162,11 @@ export const UsersPage = () => {
           }
         />
       </AlertDialog>
+      <EditUserModal
+        isOpen={editModalOpen}
+        onOpenChange={setEditModalOpen}
+        user={selectedUser}
+      />
     </div>
   );
 };
