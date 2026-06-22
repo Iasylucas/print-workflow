@@ -1,59 +1,47 @@
 import { Request, Response } from "express";
 import { v2 as cloudinary } from "cloudinary";
 import { catchAsync } from "@/utils/catchAsync.js";
+import { env } from "@/config/env.js";
+import { generateSignatureSchema } from "./cloudinary.schema.js";
+import { SignatureResponse } from "./cloudinary.types.js";
 
 cloudinary.config({
-  cloud_name: "dywspzxiw",
-  api_key: "495278689116199",
-  api_secret: "CeSCFhDpX1Xglm20Wc6vYDDovg0",
+  cloud_name: env.CLOUDINARY_CLOUD_NAME,
+  api_key: env.CLOUDINARY_API_KEY,
+  api_secret: env.CLOUDINARY_API_SECRET,
 });
 
 export const cloudinaryController = {
-  generateSignature: catchAsync(async (req: Request, res: Response) => {
-    const timestamp = Math.floor(Date.now() / 1000);
+  generateSignature: catchAsync(
+    async (req: Request, res: Response): Promise<void> => {
+      const validated = generateSignatureSchema.parse(req.body);
 
-    const folder = req.body.folder || "avatars";
-    const publicId = req.body.publicId;
+      const timestamp = Math.floor(Date.now() / 1000);
 
-    // const paramsToSign: Record<string, string | number> = {
-    //   folder,
-    //   timestamp,
-    // };
-    const paramsToSign = {
-      folder: folder,
-      public_id: publicId,
-      timestamp: timestamp,
-    };
+      const paramsToSign: Record<string, any> = {
+        folder: validated.folder,
+        timestamp,
+      };
 
-    if (publicId) {
-      paramsToSign.public_id = publicId;
-    }
+      if (validated.publicId) {
+        paramsToSign.public_id = validated.publicId;
+      }
 
-    // 🔴 LOG 1 : ce que Cloudinary signe
-    console.log("=== PARAMS TO SIGN ===");
-    console.log(paramsToSign);
+      const signature = cloudinary.utils.api_sign_request(
+        paramsToSign,
+        env.CLOUDINARY_API_SECRET,
+      );
 
-    const secret = "CeSCFhDpX1Xglm20Wc6vYDDovg0";
+      const signData: SignatureResponse = {
+        timestamp,
+        folder: validated.folder,
+        public_id: validated.publicId,
+        signature,
+        apiKey: env.CLOUDINARY_API_KEY,
+        cloudName: env.CLOUDINARY_CLOUD_NAME,
+      };
 
-    // 🔴 LOG 2 : vérification du secret
-    console.log("=== SECRET DEBUG ===");
-    console.log("length:", secret.length);
-    console.log("value:", "[" + secret + "]");
-
-    const signature = cloudinary.utils.api_sign_request(
-      paramsToSign,
-      "CeSCFhDpX1Xglm20Wc6vYDDovg0",
-    );
-
-    // 🔴 LOG 3 : signature générée
-    console.log("=== GENERATED SIGNATURE ===");
-    console.log(signature);
-
-    return res.json({
-      timestamp,
-      folder,
-      public_id: publicId,
-      signature,
-    });
-  }),
+      res.status(200).json(signData);
+    },
+  ),
 };
