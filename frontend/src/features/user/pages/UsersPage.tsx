@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { useUsers, useUserMutations } from "../hooks/useUsers";
-import type { UsersQueryParams, User } from "../types/user.types";
+import { useUsers, useUserMutations, useInvitations } from "../hooks/useUsers";
+import type {
+  UsersQueryParams,
+  User,
+  InvitationsQueryParams,
+} from "../types/user.types";
 import { Button } from "@/components/ui/button";
 import { UserPlus } from "lucide-react";
 import { PageHeader } from "@/components/shared/PageHeader";
@@ -12,6 +16,9 @@ import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
 import { EditUserModal } from "../components/EditUserModal";
 import { InviteUserModal } from "../components/InviteUserModal";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { InvitationFilters } from "../components/InvitationFilters";
+import { InvitationTable } from "../components/InvitationTable";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -22,7 +29,51 @@ interface ConfirmActionState {
 }
 
 export const UsersPage = () => {
-  // États locaux pour les filtres et la pagination
+  // Invitation state
+  const [activeTab, setActiveTab] = useState<"users" | "invitations">("users");
+  const [invitationParams, setInvitationParams] =
+    useState<InvitationsQueryParams>({
+      page: 1,
+      limit: 20,
+      sortBy: "createdAt",
+      sortOrder: "desc",
+      search: "",
+      role: undefined,
+    });
+  const { data: invitationsData, isLoading: isInvitationsLoading } =
+    useInvitations(invitationParams);
+  const { cancelInvitationMutation } = useUserMutations();
+  const handleDeleteInvitation = (invitationId: string) => {
+    setConfirmAction({
+      isOpen: true,
+      title: "Annuler l'invitation ?",
+      description:
+        "Ce lien d'invitation sera définitivement désactivé. Le destinataire ne pourra plus utiliser ce jeton pour s'inscrire.",
+      isDestructive: true,
+      onConfirm: () => {
+        cancelInvitationMutation.mutate(invitationId);
+        setConfirmAction((prev) => ({ ...prev, isOpen: false }));
+      },
+    });
+  };
+
+  const goToInvitationPage = (page: number) => {
+    setInvitationParams((prev) => ({ ...prev, page }));
+  };
+
+  const handleInvitationSort = (sortBy: InvitationsQueryParams["sortBy"]) => {
+    setInvitationParams((prev) => ({
+      ...prev,
+      sortBy,
+      sortOrder:
+        prev.sortBy === sortBy && prev.sortOrder === "asc" ? "desc" : "asc",
+    }));
+  };
+  const handleInvitationFilter = (filters: Partial<InvitationsQueryParams>) => {
+    // Correction du type ici
+    setInvitationParams((prev) => ({ ...prev, ...filters, page: 1 })); // Correction ici
+  };
+  // User State
   const [queryParams, setQueryParams] = useState<UsersQueryParams>({
     page: 1,
     limit: 20,
@@ -123,55 +174,98 @@ export const UsersPage = () => {
           Inviter un utilisateur
         </Button>
       </PageHeader>
-
-      <div className="space-y-4">
-        <UserFilters filters={queryParams} onFilterChange={handleFilter} />
-        <TableStatusBar
-          totalCount={data?.meta.total || 0}
-          limit={queryParams.limit}
-          isLoading={isLoading}
-          onLimitChange={(val) => {
-            setQueryParams((prev) => ({
-              ...prev,
-              limit: Number(val),
-              page: 1,
-            }));
-          }}
-        />
-
-        <UserTable
-          data={data}
-          isLoading={isLoading}
-          queryParams={queryParams}
-          goToPage={goToPage}
-          handleSort={handleSort}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-          handleStatusToggle={handleStatusToggle}
-        />
-      </div>
-      <AlertDialog
-        open={confirmAction.isOpen}
-        onOpenChange={(open) =>
-          setConfirmAction((prev) => ({ ...prev, isOpen: open }))
-        }
+      <Tabs
+        value={activeTab}
+        onValueChange={(val) => setActiveTab(val as "users" | "invitations")}
+        className="w-full"
       >
-        <ConfirmationDialog
-          state={confirmAction}
+        <TabsList className="mb-2 bg-muted/60">
+          <TabsTrigger value="users" className="text-xs font-medium">
+            Collaborateurs
+          </TabsTrigger>
+          <TabsTrigger value="invitations" className="text-xs font-medium">
+            Invitations en attente
+          </TabsTrigger>
+        </TabsList>
+
+        <div className="space-y-2">
+          <TabsContent value="users" className="space-y-4">
+            <UserFilters filters={queryParams} onFilterChange={handleFilter} />
+            <TableStatusBar
+              totalCount={data?.meta.total || 0}
+              limit={queryParams.limit}
+              isLoading={isLoading}
+              onLimitChange={(val) => {
+                setQueryParams((prev) => ({
+                  ...prev,
+                  limit: Number(val),
+                  page: 1,
+                }));
+              }}
+            />
+
+            <UserTable
+              data={data}
+              isLoading={isLoading}
+              queryParams={queryParams}
+              goToPage={goToPage}
+              handleSort={handleSort}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+              handleStatusToggle={handleStatusToggle}
+            />
+          </TabsContent>
+          <TabsContent value="invitations" className="space-y-4">
+            <InvitationFilters
+              filters={invitationParams}
+              onFilterChange={handleInvitationFilter}
+            />
+            <TableStatusBar
+              totalCount={invitationsData?.meta.total || 0}
+              limit={invitationParams.limit} // Correction ici pour lire la limite de l'invitation
+              isLoading={isInvitationsLoading}
+              onLimitChange={(val) => {
+                setInvitationParams((prev) => ({
+                  // Correction ici pour mettre à jour l'invitation
+                  ...prev,
+                  limit: Number(val),
+                  page: 1,
+                }));
+              }}
+            />
+            <InvitationTable
+              data={invitationsData}
+              isLoading={isInvitationsLoading}
+              queryParams={invitationParams}
+              goToPage={goToInvitationPage}
+              handleSort={handleInvitationSort}
+              handleDeleteInvitation={handleDeleteInvitation}
+            />
+          </TabsContent>
+        </div>
+        <AlertDialog
+          open={confirmAction.isOpen}
           onOpenChange={(open) =>
             setConfirmAction((prev) => ({ ...prev, isOpen: open }))
           }
+        >
+          <ConfirmationDialog
+            state={confirmAction}
+            onOpenChange={(open) =>
+              setConfirmAction((prev) => ({ ...prev, isOpen: open }))
+            }
+          />
+        </AlertDialog>
+        <InviteUserModal
+          isOpen={inviteModalOpen}
+          onOpenChange={setInviteModalOpen}
         />
-      </AlertDialog>
-      <InviteUserModal
-        isOpen={inviteModalOpen}
-        onOpenChange={setInviteModalOpen}
-      />
-      <EditUserModal
-        isOpen={editModalOpen}
-        onOpenChange={setEditModalOpen}
-        user={selectedUser}
-      />
+        <EditUserModal
+          isOpen={editModalOpen}
+          onOpenChange={setEditModalOpen}
+          user={selectedUser}
+        />
+      </Tabs>
     </div>
   );
 };

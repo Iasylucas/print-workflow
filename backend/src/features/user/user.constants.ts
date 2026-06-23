@@ -18,3 +18,12 @@ export const USER_ERRORS = {
   CANNOT_DEACTIVATE_OWN_ACCOUNT:
     "Vous ne pouvez pas désactiver votre propre compte",
 } as const;
+
+export const INVITATION_ERRORS = {
+  NOT_FOUND: "Invitation non trouvée",
+
+  FAILED_FETCHING: "Échec de la récupération des invitations",
+  FAILED_DELETE: "Échec de la suppression de l'invitation",
+  CANNOT_DELETE_OWN_INVITATION:
+    "Vous ne pouvez pas supprimer votre propre invitation",
+} as const;

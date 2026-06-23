@@ -8,6 +8,8 @@ import type {
   InviteUserRequest,
   EditUserRequest,
   UpdateProfileRequest,
+  InvitationsQueryParams,
+  PaginatedInvitationsResponse,
 } from "../types/user.types";
 
 export const userApi = {
@@ -32,4 +34,16 @@ export const userApi = {
 
   updateMyProfile: (data: UpdateProfileRequest) =>
     api.patch<ApiResponse<User>>("/me", data).then(unwrap),
+
+  getInvitations: (params?: InvitationsQueryParams) =>
+    api
+      .get<
+        ApiResponse<PaginatedInvitationsResponse>
+      >("/users/invitations", { params })
+      .then(unwrap),
+
+  deleteInvitation: (id: string) =>
+    api
+      .delete<SimpleApiResponse>(`/users/invitations/${id}`)
+      .then((res) => res.data),
 };

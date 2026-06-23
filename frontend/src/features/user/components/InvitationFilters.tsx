@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { Search, X, ShieldAlert, RotateCcw } from "lucide-react";
+import type { InvitationsQueryParams } from "../types/user.types";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,26 +10,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RotateCcw, X } from "lucide-react";
-import type { UsersQueryParams } from "../types/user.types";
-import type { UserRole } from "@/shared/schemas";
-import { Search, ShieldAlert, ToggleLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { UserRole } from "@/shared/schemas";
 
-interface UserFiltersProps {
-  filters: UsersQueryParams;
-  onFilterChange: (newFilters: Partial<UsersQueryParams>) => void;
+interface InvitationFiltersProps {
+  filters: InvitationsQueryParams;
+  onFilterChange: (newFilters: Partial<InvitationsQueryParams>) => void;
 }
 
-export const UserFilters = ({ filters, onFilterChange }: UserFiltersProps) => {
+export const InvitationFilters = ({
+  filters,
+  onFilterChange,
+}: InvitationFiltersProps) => {
   const [localSearch, setLocalSearch] = useState(filters.search || "");
   const [prevSearch, setPrevSearch] = useState(filters.search || "");
 
+  // Synchronisation sécurisée si le filtre de recherche change depuis l'extérieur (ex: reset)
   if (filters.search !== prevSearch) {
     setLocalSearch(filters.search || "");
     setPrevSearch(filters.search || "");
   }
 
+  // Effet de Debounce (300ms) pour éviter de surcharger l'API Postgres à chaque frappe de touche
   useEffect(() => {
     const timer = setTimeout(() => {
       if (localSearch !== (filters.search || "")) {
@@ -39,32 +43,23 @@ export const UserFilters = ({ filters, onFilterChange }: UserFiltersProps) => {
   }, [localSearch, onFilterChange, filters.search]);
 
   const currentRoleValue = filters.role || "ALL";
-  const currentStatusValue =
-    filters.isActive === undefined
-      ? "ALL"
-      : filters.isActive
-        ? "ACTIVE"
-        : "INACTIVE";
 
+  // Action de réinitialisation complète des filtres de l'onglet
   const handleReset = () => {
     setLocalSearch("");
     setPrevSearch("");
     onFilterChange({
       search: "",
       role: undefined,
-      isActive: undefined,
       page: 1,
     });
   };
 
-  const hasActiveFilters = !!(
-    filters.search ||
-    filters.role ||
-    filters.isActive !== undefined
-  );
+  const hasActiveFilters = !!(filters.search || filters.role);
 
   return (
     <div className="flex flex-col sm:flex-row items-end sm:items-center justify-between gap-3 w-full pb-0">
+      {/* Partie Gauche : Recherche animée rétractable */}
       <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
         <div
           onClick={(e) => {
@@ -81,7 +76,7 @@ export const UserFilters = ({ filters, onFilterChange }: UserFiltersProps) => {
           <Search className="h-4 w-4 text-muted-foreground/70 stroke-[2.5] shrink-0 pointer-events-none" />
 
           <Input
-            placeholder="Rechercher..."
+            placeholder="Rechercher un e-mail..."
             value={localSearch}
             onChange={(e) => setLocalSearch(e.target.value)}
             className={cn(
@@ -106,7 +101,9 @@ export const UserFilters = ({ filters, onFilterChange }: UserFiltersProps) => {
         </div>
       </div>
 
+      {/* Partie Droite : Sélections et actions */}
       <div className="flex items-center gap-2 w-full sm:w-auto justify-start sm:justify-end">
+        {/* Filtre par Rôle assigné */}
         <Select
           value={currentRoleValue}
           onValueChange={(val) =>
@@ -139,32 +136,7 @@ export const UserFilters = ({ filters, onFilterChange }: UserFiltersProps) => {
           </SelectContent>
         </Select>
 
-        <Select
-          value={currentStatusValue}
-          onValueChange={(val) => {
-            onFilterChange({
-              isActive: val === "ALL" ? undefined : val === "ACTIVE",
-              page: 1,
-            });
-          }}
-        >
-          <SelectTrigger className="h-9 min-w-[120px] bg-background/50 text-xs font-medium border-input rounded-lg hover:bg-muted/50 transition-colors gap-2 focus:ring-0">
-            <ToggleLeft className="h-3.5 w-3.5 text-muted-foreground/70 stroke-[2.5]" />
-            <SelectValue placeholder="Statut" />
-          </SelectTrigger>
-          <SelectContent className="rounded-lg shadow-md font-sans">
-            <SelectItem value="ALL" className="text-xs">
-              Tous les statuts
-            </SelectItem>
-            <SelectItem value="ACTIVE" className="text-xs">
-              Activé
-            </SelectItem>
-            <SelectItem value="INACTIVE" className="text-xs">
-              Désactivé
-            </SelectItem>
-          </SelectContent>
-        </Select>
-
+        {/* Bouton de remise à zéro dynamique */}
         {hasActiveFilters && (
           <Button
             variant="outline"
@@ -174,7 +146,7 @@ export const UserFilters = ({ filters, onFilterChange }: UserFiltersProps) => {
               "h-9 w-9 min-w-9 text-muted-foreground hover:text-primary hover:bg-primary/5 border-input rounded-lg shadow-xs",
               "animate-in fade-in zoom-in-95 duration-200",
             )}
-            title="Réinitialiser tous les filtres"
+            title="Réinitialiser tous les filtres d'invitations"
           >
             <RotateCcw className="h-3.5 w-3.5 stroke-[2.5]" />
           </Button>

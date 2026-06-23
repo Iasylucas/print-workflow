@@ -7,6 +7,7 @@ import {
   userQuerySchema,
   uuidSchema,
   updateUserWithEmailSchema,
+  invitationQuerySchema,
 } from "./user.schema.js";
 
 export const userController = {
@@ -81,6 +82,33 @@ export const userController = {
       res.status(200).json({
         success: true,
         message: "Email change request sent to the user's new address",
+      });
+    },
+  ),
+
+  // lister les invitations (admin)
+  listInvitations: catchAsync(
+    async (req: Request, res: Response): Promise<void> => {
+      const query = invitationQuerySchema.parse(req.query);
+      const result = await userService.listInvitations(query);
+
+      res.status(200).json({
+        success: true,
+        data: result,
+      });
+    },
+  ),
+
+  // Supprimer/Annuler une invitation (admin)
+  cancelInvitation: catchAsync(
+    async (req: Request, res: Response): Promise<void> => {
+      const id = uuidSchema.parse(req.params.id);
+
+      await userService.cancelInvitation(id);
+
+      res.status(200).json({
+        success: true,
+        message: "L'invitation a été annulée avec succès.",
       });
     },
   ),

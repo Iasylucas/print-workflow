@@ -53,3 +53,11 @@ export const updateUserWithEmailSchema = updateUserSchema.extend({
 export const confirmEmailChangeSchema = z.object({
   token: z.string().min(1, "Token is required"),
 });
+
+export const invitationQuerySchema = paginationSchema.extend({
+  sortBy: z.enum(["createdAt", "email", "expiresAt"]).default("createdAt"),
+  search: z.string().trim().optional(),
+  role: UserRole.optional(),
+});
+
+export type InvitationQueryInput = z.infer<typeof invitationQuerySchema>;

@@ -24,6 +24,23 @@ router.patch("/me", userController.updateMyProfile);
 
 // ROUTES RESERVE A L ADMIN (gestion des utilisateurs)
 /**
+ * @desc    List active invitations
+ * @route   GET /api/users/invitations
+ * @access  Private (Admin users)
+ */
+router.get("/invitations", restrictTo("ADMIN"), userController.listInvitations);
+
+/**
+ * @desc    Cancel an invitation
+ * @route   DELETE /api/users/invitations/:id
+ * @access  Private (Admin users)
+ */
+router.delete(
+  "/invitations/:id",
+  restrictTo("ADMIN"),
+  userController.cancelInvitation,
+);
+/**
  * @desc    List users
  * @route   GET /api/users
  * @access  Private (Admin users)

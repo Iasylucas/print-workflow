@@ -9,9 +9,11 @@ import {
   UpdateUserInput,
   UpdateProfileInput,
   UserQuery,
+  InvitationQuery,
+  PaginatedInvitationList,
 } from "./user.types.js";
 import { UserSafe } from "@/shared/types/user.types.js";
-import { USER_ERRORS } from "./user.constants.js";
+import { INVITATION_ERRORS, USER_ERRORS } from "./user.constants.js";
 import { v7 as uuidv7 } from "uuid";
 import { env } from "@/config/env.js";
 import { sendEmail } from "@/shared/infrastructure/mail/mail.service.js";
@@ -79,7 +81,7 @@ export class UserService {
     }
 
     try {
-      await this.userRepository.softDelete(id);
+      await this.userRepository.hardDelete(id);
     } catch (error) {
       throw new InternalServerError(USER_ERRORS.FAILED_DELETE);
     }
@@ -156,6 +158,31 @@ export class UserService {
       "Confirmation de changement d'email",
       getEmailChangeRequestTemplate(confirmUrl, user.email),
     );
+  }
+
+  // Lister les invitations en cours (admin)
+  async listInvitations(
+    query: InvitationQuery,
+  ): Promise<PaginatedInvitationList> {
+    try {
+      return await this.userRepository.findAllInvitationsPaginated(query);
+    } catch (error) {
+      throw new InternalServerError(INVITATION_ERRORS.FAILED_FETCHING);
+    }
+  }
+
+  // Supprimer/Annuler une invitation (admin)
+  async cancelInvitation(id: string): Promise<void> {
+    const invitation = await this.userRepository.findInvitationById(id);
+    if (!invitation) {
+      throw new NotFoundError(INVITATION_ERRORS.NOT_FOUND);
+    }
+
+    try {
+      await this.userRepository.deleteInvitation(id);
+    } catch (error) {
+      throw new InternalServerError(INVITATION_ERRORS.FAILED_DELETE);
+    }
   }
 }
 

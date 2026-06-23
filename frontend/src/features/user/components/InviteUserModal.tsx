@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail } from "lucide-react";
-import { toast } from "sonner";
-
 import { FormDialog } from "@/components/shared/FormDialog";
 import { Input } from "@/components/ui/input";
 import {
@@ -59,7 +57,6 @@ export function InviteUserModal({
     try {
       await inviteMutation.mutateAsync(data);
 
-      toast.success("Invitation envoyée avec succès au collaborateur");
       handleClose();
     } catch (error: unknown) {
       const errorMessage =

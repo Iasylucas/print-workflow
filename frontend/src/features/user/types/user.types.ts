@@ -56,3 +56,37 @@ export type UpdateProfileRequest = {
   lastName?: string | null;
   avatarUrl?: string | undefined;
 };
+
+export interface InvitationsQueryParams {
+  page: number;
+  limit: number;
+  sortBy: "createdAt" | "email" | "expiresAt";
+  sortOrder: "asc" | "desc";
+  search?: string;
+  role?: UserRole;
+}
+
+export interface Invitation {
+  id: string;
+  token: string;
+  email: string;
+  role: UserRole;
+  expiresAt: string; // Transmis en ISOString par le JSON du back
+  createdAt: string;
+  usedAt: string | null;
+  isExpired: boolean;
+}
+
+export interface PaginatedInvitationsResponse {
+  data: Invitation[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    hasMore: boolean;
+    search?: string;
+    sortBy: string;
+    sortOrder: "asc" | "desc";
+  };
+}
