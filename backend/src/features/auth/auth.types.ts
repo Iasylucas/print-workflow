@@ -46,10 +46,14 @@ export type inviteData = {
   email: string;
   role: string;
   expiresAt: Date;
-  userId: string;
+  // userId: string;
 };
 
 export interface AuthResponse {
   token: string;
   user: UserSafe;
+}
+
+export interface InvitationResponse {
+  data: InviteUserInput;
 }

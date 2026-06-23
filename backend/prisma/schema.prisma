@@ -52,7 +52,6 @@ model User {
   ordersCreated    Order[]    @relation("UserOrder")
 
   resetTokens  PasswordResetToken[]
-  invitations  InvitationToken[]
   resetEmailRequest EmailChangeRequest[]
 }
 
@@ -71,9 +70,6 @@ model InvitationToken {
   expiresAt DateTime // expiration date (e.g. 48h)
   createdAt DateTime @default(now())
   usedAt    DateTime? // marks if already used
-
-  userId String
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model EmailChangeRequest {

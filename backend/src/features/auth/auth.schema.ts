@@ -21,6 +21,7 @@ export const inviteUserSchema = z.object({
 // input for the finalization action (by the colaborator)
 export const finalizeRegistrationSchema = z
   .object({
+    id: z.uuid().default(() => uuidv7()),
     token: tokenSchema,
     avatarUrl: imageUrlSchema,
     firstName: firstNameSchema,

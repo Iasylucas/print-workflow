@@ -1833,8 +1833,7 @@ export const InvitationTokenScalarFieldEnum = {
   role: 'role',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt',
-  usedAt: 'usedAt',
-  userId: 'userId'
+  usedAt: 'usedAt'
 } as const
 
 export type InvitationTokenScalarFieldEnum = (typeof InvitationTokenScalarFieldEnum)[keyof typeof InvitationTokenScalarFieldEnum]

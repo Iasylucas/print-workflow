@@ -56,7 +56,7 @@ export const FormDialog: React.FC<FormDialogProps> = ({
         <form onSubmit={onSubmit} className="space-y-6 pt-2">
           {children}
 
-          <DialogFooter className="gap-2 sm:gap-0 pt-2 border-t border-border/40">
+          <DialogFooter className="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:justify-end pt-2 border-t border-border/40">
             <Button
               type="button"
               variant="outline"

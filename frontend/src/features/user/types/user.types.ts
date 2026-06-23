@@ -1,4 +1,6 @@
+import { z } from "zod";
 import type { UserRole } from "@/shared/types";
+import type { inviteUserSchema } from "../schema/user.schema";
 
 export type User = {
   avatarUrl: string | undefined;
@@ -39,10 +41,7 @@ export type PaginatedUsersResponse = {
   meta: meta;
 };
 
-export type InviteUserRequest = {
-  email: string;
-  role: User["role"];
-};
+export type InviteUserRequest = z.infer<typeof inviteUserSchema>;
 
 export type EditUserRequest = {
   avatarUrl?: string | undefined;

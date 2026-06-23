@@ -11,6 +11,7 @@ import { FailedTable } from "@/components/shared/FailedTable";
 import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
 import { EditUserModal } from "../components/EditUserModal";
+import { InviteUserModal } from "../components/InviteUserModal";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -162,6 +163,10 @@ export const UsersPage = () => {
           }
         />
       </AlertDialog>
+      <InviteUserModal
+        isOpen={inviteModalOpen}
+        onOpenChange={setInviteModalOpen}
+      />
       <EditUserModal
         isOpen={editModalOpen}
         onOpenChange={setEditModalOpen}
@@ -170,17 +175,3 @@ export const UsersPage = () => {
     </div>
   );
 };
-{
-  /* Modals (à décommenter quand les composants seront créés) */
-}
-{
-  /* <InviteUserModal
-        open={inviteModalOpen}
-        onOpenChange={setInviteModalOpen}
-      />
-      <EditUserModal
-        open={editModalOpen}
-        onOpenChange={setEditModalOpen}
-        user={selectedUser}
-      /> */
-}
