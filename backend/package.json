@@ -8,7 +8,8 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "seed": "tsx src/seedclient.ts"
+    "seedclient": "tsx src/src/seedclient.ts",
+    "seedproduct": "tsx src/seed/seedproduct.ts"
   },
   "keywords": [],
   "author": "",

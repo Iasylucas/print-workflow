@@ -122,11 +122,6 @@ export type ProductVariant = Prisma.ProductVariantModel
  */
 export type PricingRule = Prisma.PricingRuleModel
 /**
- * Model Format
- * 
- */
-export type Format = Prisma.FormatModel
-/**
  * Model WorkshopConfig
  * 
  */
