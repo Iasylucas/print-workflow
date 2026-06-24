@@ -36,6 +36,12 @@ export const userQuerySchema = paginationSchema.extend({
     .enum(["createdAt", "email", "firstName", "lastName", "role"])
     .default("createdAt"),
   search: z.string().trim().optional(),
+  role: UserRole.optional(),
+  isActive: z.preprocess((val) => {
+    if (val === "true") return true;
+    if (val === "false") return false;
+    return undefined;
+  }, z.boolean().optional()),
 });
 
 // Admin modifie un utilisateur – avec newEmail
@@ -47,3 +53,11 @@ export const updateUserWithEmailSchema = updateUserSchema.extend({
 export const confirmEmailChangeSchema = z.object({
   token: z.string().min(1, "Token is required"),
 });
+
+export const invitationQuerySchema = paginationSchema.extend({
+  sortBy: z.enum(["createdAt", "email", "expiresAt"]).default("createdAt"),
+  search: z.string().trim().optional(),
+  role: UserRole.optional(),
+});
+
+export type InvitationQueryInput = z.infer<typeof invitationQuerySchema>;

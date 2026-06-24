@@ -30,6 +30,8 @@ export type OrderAvgAggregateOutputType = {
   id: number | null
   quoteId: number | null
   invoiceId: number | null
+  variantId: number | null
+  pricingRuleId: number | null
   widthCm: number | null
   heightCm: number | null
   quantity: number | null
@@ -41,6 +43,8 @@ export type OrderSumAggregateOutputType = {
   id: number | null
   quoteId: number | null
   invoiceId: number | null
+  variantId: number | null
+  pricingRuleId: number | null
   widthCm: number | null
   heightCm: number | null
   quantity: number | null
@@ -55,8 +59,8 @@ export type OrderMinAggregateOutputType = {
   clientId: string | null
   quoteId: number | null
   invoiceId: number | null
-  variantId: string | null
-  pricingRuleId: string | null
+  variantId: number | null
+  pricingRuleId: number | null
   widthCm: number | null
   heightCm: number | null
   status: string | null
@@ -76,8 +80,8 @@ export type OrderMaxAggregateOutputType = {
   clientId: string | null
   quoteId: number | null
   invoiceId: number | null
-  variantId: string | null
-  pricingRuleId: string | null
+  variantId: number | null
+  pricingRuleId: number | null
   widthCm: number | null
   heightCm: number | null
   status: string | null
@@ -118,6 +122,8 @@ export type OrderAvgAggregateInputType = {
   id?: true
   quoteId?: true
   invoiceId?: true
+  variantId?: true
+  pricingRuleId?: true
   widthCm?: true
   heightCm?: true
   quantity?: true
@@ -129,6 +135,8 @@ export type OrderSumAggregateInputType = {
   id?: true
   quoteId?: true
   invoiceId?: true
+  variantId?: true
+  pricingRuleId?: true
   widthCm?: true
   heightCm?: true
   quantity?: true
@@ -294,9 +302,9 @@ export type OrderGroupByOutputType = {
   clientId: string
   quoteId: number | null
   invoiceId: number | null
-  variantId: string
+  variantId: number
   options: runtime.JsonValue | null
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm: number | null
   heightCm: number | null
   status: string
@@ -339,9 +347,9 @@ export type OrderWhereInput = {
   clientId?: Prisma.StringFilter<"Order"> | string
   quoteId?: Prisma.IntNullableFilter<"Order"> | number | null
   invoiceId?: Prisma.IntNullableFilter<"Order"> | number | null
-  variantId?: Prisma.StringFilter<"Order"> | string
+  variantId?: Prisma.IntFilter<"Order"> | number
   options?: Prisma.JsonNullableFilter<"Order">
-  pricingRuleId?: Prisma.StringFilter<"Order"> | string
+  pricingRuleId?: Prisma.IntFilter<"Order"> | number
   widthCm?: Prisma.FloatNullableFilter<"Order"> | number | null
   heightCm?: Prisma.FloatNullableFilter<"Order"> | number | null
   status?: Prisma.StringFilter<"Order"> | string
@@ -402,9 +410,9 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   clientId?: Prisma.StringFilter<"Order"> | string
   quoteId?: Prisma.IntNullableFilter<"Order"> | number | null
   invoiceId?: Prisma.IntNullableFilter<"Order"> | number | null
-  variantId?: Prisma.StringFilter<"Order"> | string
+  variantId?: Prisma.IntFilter<"Order"> | number
   options?: Prisma.JsonNullableFilter<"Order">
-  pricingRuleId?: Prisma.StringFilter<"Order"> | string
+  pricingRuleId?: Prisma.IntFilter<"Order"> | number
   widthCm?: Prisma.FloatNullableFilter<"Order"> | number | null
   heightCm?: Prisma.FloatNullableFilter<"Order"> | number | null
   status?: Prisma.StringFilter<"Order"> | string
@@ -462,9 +470,9 @@ export type OrderScalarWhereWithAggregatesInput = {
   clientId?: Prisma.StringWithAggregatesFilter<"Order"> | string
   quoteId?: Prisma.IntNullableWithAggregatesFilter<"Order"> | number | null
   invoiceId?: Prisma.IntNullableWithAggregatesFilter<"Order"> | number | null
-  variantId?: Prisma.StringWithAggregatesFilter<"Order"> | string
+  variantId?: Prisma.IntWithAggregatesFilter<"Order"> | number
   options?: Prisma.JsonNullableWithAggregatesFilter<"Order">
-  pricingRuleId?: Prisma.StringWithAggregatesFilter<"Order"> | string
+  pricingRuleId?: Prisma.IntWithAggregatesFilter<"Order"> | number
   widthCm?: Prisma.FloatNullableWithAggregatesFilter<"Order"> | number | null
   heightCm?: Prisma.FloatNullableWithAggregatesFilter<"Order"> | number | null
   status?: Prisma.StringWithAggregatesFilter<"Order"> | string
@@ -507,9 +515,9 @@ export type OrderUncheckedCreateInput = {
   clientId: string
   quoteId?: number | null
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -554,9 +562,9 @@ export type OrderUncheckedUpdateInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -578,9 +586,9 @@ export type OrderCreateManyInput = {
   clientId: string
   quoteId?: number | null
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -615,9 +623,9 @@ export type OrderUncheckedUpdateManyInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -671,6 +679,8 @@ export type OrderAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   quoteId?: Prisma.SortOrder
   invoiceId?: Prisma.SortOrder
+  variantId?: Prisma.SortOrder
+  pricingRuleId?: Prisma.SortOrder
   widthCm?: Prisma.SortOrder
   heightCm?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
@@ -724,6 +734,8 @@ export type OrderSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   quoteId?: Prisma.SortOrder
   invoiceId?: Prisma.SortOrder
+  variantId?: Prisma.SortOrder
+  pricingRuleId?: Prisma.SortOrder
   widthCm?: Prisma.SortOrder
   heightCm?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
@@ -1047,9 +1059,9 @@ export type OrderUncheckedCreateWithoutClientInput = {
   designation: string
   quoteId?: number | null
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -1100,9 +1112,9 @@ export type OrderScalarWhereInput = {
   clientId?: Prisma.StringFilter<"Order"> | string
   quoteId?: Prisma.IntNullableFilter<"Order"> | number | null
   invoiceId?: Prisma.IntNullableFilter<"Order"> | number | null
-  variantId?: Prisma.StringFilter<"Order"> | string
+  variantId?: Prisma.IntFilter<"Order"> | number
   options?: Prisma.JsonNullableFilter<"Order">
-  pricingRuleId?: Prisma.StringFilter<"Order"> | string
+  pricingRuleId?: Prisma.IntFilter<"Order"> | number
   widthCm?: Prisma.FloatNullableFilter<"Order"> | number | null
   heightCm?: Prisma.FloatNullableFilter<"Order"> | number | null
   status?: Prisma.StringFilter<"Order"> | string
@@ -1144,9 +1156,9 @@ export type OrderUncheckedCreateWithoutCreatedByInput = {
   clientId: string
   quoteId?: number | null
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -1214,9 +1226,9 @@ export type OrderUncheckedCreateWithoutQuoteInput = {
   designation: string
   clientId: string
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -1285,9 +1297,9 @@ export type OrderUncheckedCreateWithoutInvoiceInput = {
   designation: string
   clientId: string
   quoteId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -1357,9 +1369,9 @@ export type OrderUncheckedCreateWithoutFilesInput = {
   clientId: string
   quoteId?: number | null
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -1418,9 +1430,9 @@ export type OrderUncheckedUpdateWithoutFilesInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1463,9 +1475,9 @@ export type OrderUncheckedCreateWithoutNotesInput = {
   clientId: string
   quoteId?: number | null
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -1524,9 +1536,9 @@ export type OrderUncheckedUpdateWithoutNotesInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1570,7 +1582,7 @@ export type OrderUncheckedCreateWithoutVariantInput = {
   quoteId?: number | null
   invoiceId?: number | null
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -1640,7 +1652,7 @@ export type OrderUncheckedCreateWithoutPricingRuleInput = {
   clientId: string
   quoteId?: number | null
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   widthCm?: number | null
   heightCm?: number | null
@@ -1688,9 +1700,9 @@ export type OrderCreateManyClientInput = {
   designation: string
   quoteId?: number | null
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -1731,9 +1743,9 @@ export type OrderUncheckedUpdateWithoutClientInput = {
   designation?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1754,9 +1766,9 @@ export type OrderUncheckedUpdateManyWithoutClientInput = {
   designation?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1776,9 +1788,9 @@ export type OrderCreateManyCreatedByInput = {
   clientId: string
   quoteId?: number | null
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -1819,9 +1831,9 @@ export type OrderUncheckedUpdateWithoutCreatedByInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1842,9 +1854,9 @@ export type OrderUncheckedUpdateManyWithoutCreatedByInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1862,9 +1874,9 @@ export type OrderCreateManyQuoteInput = {
   designation: string
   clientId: string
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -1905,9 +1917,9 @@ export type OrderUncheckedUpdateWithoutQuoteInput = {
   designation?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1928,9 +1940,9 @@ export type OrderUncheckedUpdateManyWithoutQuoteInput = {
   designation?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1949,9 +1961,9 @@ export type OrderCreateManyInvoiceInput = {
   designation: string
   clientId: string
   quoteId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -1992,9 +2004,9 @@ export type OrderUncheckedUpdateWithoutInvoiceInput = {
   designation?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2015,9 +2027,9 @@ export type OrderUncheckedUpdateManyWithoutInvoiceInput = {
   designation?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2038,7 +2050,7 @@ export type OrderCreateManyVariantInput = {
   quoteId?: number | null
   invoiceId?: number | null
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId: string
+  pricingRuleId: number
   widthCm?: number | null
   heightCm?: number | null
   status?: string
@@ -2081,7 +2093,7 @@ export type OrderUncheckedUpdateWithoutVariantInput = {
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2104,7 +2116,7 @@ export type OrderUncheckedUpdateManyWithoutVariantInput = {
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  pricingRuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  pricingRuleId?: Prisma.IntFieldUpdateOperationsInput | number
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2124,7 +2136,7 @@ export type OrderCreateManyPricingRuleInput = {
   clientId: string
   quoteId?: number | null
   invoiceId?: number | null
-  variantId: string
+  variantId: number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   widthCm?: number | null
   heightCm?: number | null
@@ -2167,7 +2179,7 @@ export type OrderUncheckedUpdateWithoutPricingRuleInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2190,7 +2202,7 @@ export type OrderUncheckedUpdateManyWithoutPricingRuleInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.IntFieldUpdateOperationsInput | number
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2401,9 +2413,9 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     clientId: string
     quoteId: number | null
     invoiceId: number | null
-    variantId: string
+    variantId: number
     options: runtime.JsonValue | null
-    pricingRuleId: string
+    pricingRuleId: number
     widthCm: number | null
     heightCm: number | null
     status: string
@@ -2851,9 +2863,9 @@ export interface OrderFieldRefs {
   readonly clientId: Prisma.FieldRef<"Order", 'String'>
   readonly quoteId: Prisma.FieldRef<"Order", 'Int'>
   readonly invoiceId: Prisma.FieldRef<"Order", 'Int'>
-  readonly variantId: Prisma.FieldRef<"Order", 'String'>
+  readonly variantId: Prisma.FieldRef<"Order", 'Int'>
   readonly options: Prisma.FieldRef<"Order", 'Json'>
-  readonly pricingRuleId: Prisma.FieldRef<"Order", 'String'>
+  readonly pricingRuleId: Prisma.FieldRef<"Order", 'Int'>
   readonly widthCm: Prisma.FieldRef<"Order", 'Float'>
   readonly heightCm: Prisma.FieldRef<"Order", 'Float'>
   readonly status: Prisma.FieldRef<"Order", 'String'>

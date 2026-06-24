@@ -11,20 +11,21 @@ import {
   UserComplete,
   userCompleteSelect,
 } from "@/shared/types/user.types.js";
+import { uuidv7 } from "zod";
 
 export class AuthRepository {
   // 1.Crée un utilisateur partiel (invité par l'admin)
-  async createInvitedUser(data: InviteUserInput): Promise<UserSafe> {
-    return await prisma.user.create({
-      data: {
-        id: data.id,
-        email: data.email,
-        role: data.role,
-        isActive: false,
-      },
-      select: userSafeSelect,
-    });
-  }
+  // async createInvitedUser(data: InviteUserInput): Promise<UserSafe> {
+  //   return await prisma.user.create({
+  //     data: {
+  //       id: data.id,
+  //       email: data.email,
+  //       role: data.role,
+  //       isActive: false,
+  //     },
+  //     select: userSafeSelect,
+  //   });
+  // }
 
   //  2.Enregistre le token d'invitation lié à l'utilisateur
   async createInvitationToken(inviteData: inviteData): Promise<void> {
@@ -35,7 +36,6 @@ export class AuthRepository {
         email: inviteData.email,
         role: inviteData.role as any,
         expiresAt: inviteData.expiresAt,
-        userId: inviteData.userId,
       },
     });
   }
@@ -49,7 +49,6 @@ export class AuthRepository {
 
   //  4.Finalise l'inscription (Transaction Atomique)
   async finalizeUserRegistration(
-    userId: string,
     tokenId: string,
     data: Omit<
       FinalizeRegistrationInput,
@@ -59,9 +58,19 @@ export class AuthRepository {
     },
   ): Promise<UserSafe> {
     return await prisma.$transaction(async (tx) => {
-      const updatedUser = await tx.user.update({
-        where: { id: userId },
+      const invitation = await tx.invitationToken.findUnique({
+        where: { id: tokenId },
+      });
+
+      if (!invitation) {
+        throw new Error("Invitation introuvable dans la transaction.");
+      }
+
+      const createdUser = await tx.user.create({
         data: {
+          id: data.id,
+          email: invitation.email,
+          role: invitation.role,
           firstName: data.firstName,
           lastName: data.lastName,
           phone: data.phone,
@@ -71,12 +80,13 @@ export class AuthRepository {
         },
         select: userSafeSelect,
       });
+
       await tx.invitationToken.update({
         where: { id: tokenId },
         data: { usedAt: new Date() },
       });
 
-      return updatedUser;
+      return createdUser;
     });
   }
 

@@ -34,7 +34,12 @@ export const useAuthStore = create<AuthState>()(
           const { token, user } = await authApi.login(data);
           set({ user, token, isAuthenticated: true, isLoading: false });
         } catch (error) {
-          set({ isLoading: false, isAuthenticated: false });
+          set({
+            isLoading: false,
+            isAuthenticated: false,
+            user: null,
+            token: null,
+          });
           throw error;
         }
       },
@@ -45,7 +50,12 @@ export const useAuthStore = create<AuthState>()(
           const { token, user } = await authApi.finalize(data);
           set({ user, token, isAuthenticated: true, isLoading: false });
         } catch (error) {
-          set({ isLoading: false });
+          set({
+            isLoading: false,
+            isAuthenticated: false,
+            user: null,
+            token: null,
+          });
           throw error;
         }
       },

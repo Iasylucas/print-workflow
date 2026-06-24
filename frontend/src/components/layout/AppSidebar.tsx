@@ -12,12 +12,12 @@ import {
   SidebarGroupContent,
   SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User, Settings } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { Skeleton } from "../ui/skeleton";
 import { useCompanyStore } from "@/features/company-info/stores/companyStore";
-import { useAuthStore } from "@/features/auth/stores/authStore";
+import { useAuthStore } from "@/features/auth/store/authStore";
 import { Logo } from "@/features/company-info/components/Logo";
 
 export const AppSidebar = () => {
@@ -151,7 +151,7 @@ export const AppSidebar = () => {
           {}
           <div className="relative">
             <Avatar className="h-8 w-8 rounded-lg">
-              {}
+              <AvatarImage src={user?.avatarUrl ?? undefined} alt={fullName} />
               <AvatarFallback className="bg-primary/10 text-xs font-semibold rounded-[inherit]">
                 {avatarInitials}
               </AvatarFallback>

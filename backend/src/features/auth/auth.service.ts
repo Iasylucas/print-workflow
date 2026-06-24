@@ -14,6 +14,7 @@ import {
   InviteUserInput,
   FinalizeRegistrationInput,
   LoginInput,
+  InvitationResponse,
 } from "./auth.types.js";
 import { UserSafe } from "@/shared/types/user.types.js";
 import { AUTH_ERRORS } from "./auth.constants.js";
@@ -42,7 +43,7 @@ export class AuthService {
     private readonly userRepository: UserRepository,
   ) {}
   //1. INVITATION (Action de l'Admin)
-  async invite(data: InviteUserInput): Promise<{ user: UserSafe }> {
+  async invite(data: InviteUserInput): Promise<InvitationResponse> {
     const existingUser = await this.authRepository.findByEmail(data.email);
 
     if (existingUser) {
@@ -62,7 +63,7 @@ export class AuthService {
     const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
 
     try {
-      const user = await this.authRepository.createInvitedUser(data);
+      // const user = await this.authRepository.createInvitedUser(data);
 
       await this.authRepository.createInvitationToken({
         id: uuidv7(),
@@ -70,18 +71,18 @@ export class AuthService {
         email: data.email,
         role: data.role,
         expiresAt,
-        userId: user.id,
+        // userId: user.id,
       });
 
       const activationUrl = `${env.FRONTEND_URL}/finalize?token=${plainToken}`;
 
       await sendEmail(
-        user.email,
+        data.email,
         "Invitation à rejoindre l'ERP EWA Print",
-        getInvitationTemplate(activationUrl, user.role),
+        getInvitationTemplate(activationUrl, data.role),
       );
 
-      return { user };
+      return { data };
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -121,9 +122,9 @@ export class AuthService {
 
     // Déclenchement de la transaction atomique (Mise à jour User + Clôture Token)
     const user = await this.authRepository.finalizeUserRegistration(
-      invitation.userId,
       invitation.id,
       {
+        id: data.id,
         avatarUrl: data.avatarUrl,
         firstName: data.firstName,
         lastName: data.lastName,
@@ -182,6 +183,7 @@ export class AuthService {
         avatarUrl: user.avatarUrl,
         firstName: user.firstName,
         lastName: user.lastName,
+        isActive: user.isActive,
         phone: user.phone,
         address: user.address,
         email: user.email,
@@ -297,6 +299,19 @@ export class AuthService {
     await this.userRepository.updateUserEmail(request.userId, request.newEmail);
 
     await this.userRepository.markEmailChangeRequestAsUsed(request.id);
+  }
+
+  // 8. RÉCUPÉRER SON PROFIL (Action de l'utilisateur connecté)
+  async getMe(userId: string): Promise<{ user: any }> {
+    const user = await this.userRepository.findById(userId);
+
+    if (!user) {
+      throw new NotFoundError(AUTH_ERRORS.USER_NOT_FOUND);
+    }
+    if (!user.isActive) {
+      throw new UnauthorizedError(AUTH_ERRORS.NOT_ACTIVATE);
+    }
+    return { user };
   }
 }
 

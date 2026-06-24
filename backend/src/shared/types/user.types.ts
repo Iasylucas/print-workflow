@@ -9,6 +9,7 @@ export const userSafeSelect = {
   address: true,
   email: true,
   role: true,
+  isActive: true,
   createdAt: true,
   updatedAt: true,
 } satisfies Prisma.UserSelect;

@@ -8,7 +8,8 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "seed": "tsx src/seedclient.ts"
+    "seedclient": "tsx src/src/seedclient.ts",
+    "seedproduct": "tsx src/seed/seedproduct.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "@prisma/client": "^7.8.0",
     "argon2": "^0.44.0",
     "bcrypt": "^6.0.0",
+    "cloudinary": "^2.10.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",

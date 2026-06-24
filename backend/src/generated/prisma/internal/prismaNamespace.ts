@@ -400,7 +400,6 @@ export const ModelName = {
   Product: 'Product',
   ProductVariant: 'ProductVariant',
   PricingRule: 'PricingRule',
-  Format: 'Format',
   WorkshopConfig: 'WorkshopConfig'
 } as const
 
@@ -417,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "client" | "user" | "invitationToken" | "emailChangeRequest" | "passwordResetToken" | "companyInfo" | "quote" | "invoice" | "file" | "payment" | "note" | "appSettings" | "order" | "product" | "productVariant" | "pricingRule" | "format" | "workshopConfig"
+    modelProps: "client" | "user" | "invitationToken" | "emailChangeRequest" | "passwordResetToken" | "companyInfo" | "quote" | "invoice" | "file" | "payment" | "note" | "appSettings" | "order" | "product" | "productVariant" | "pricingRule" | "workshopConfig"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1605,80 +1604,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Format: {
-      payload: Prisma.$FormatPayload<ExtArgs>
-      fields: Prisma.FormatFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.FormatFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormatPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.FormatFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormatPayload>
-        }
-        findFirst: {
-          args: Prisma.FormatFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormatPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.FormatFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormatPayload>
-        }
-        findMany: {
-          args: Prisma.FormatFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormatPayload>[]
-        }
-        create: {
-          args: Prisma.FormatCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormatPayload>
-        }
-        createMany: {
-          args: Prisma.FormatCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.FormatCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormatPayload>[]
-        }
-        delete: {
-          args: Prisma.FormatDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormatPayload>
-        }
-        update: {
-          args: Prisma.FormatUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormatPayload>
-        }
-        deleteMany: {
-          args: Prisma.FormatDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.FormatUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.FormatUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormatPayload>[]
-        }
-        upsert: {
-          args: Prisma.FormatUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormatPayload>
-        }
-        aggregate: {
-          args: Prisma.FormatAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateFormat>
-        }
-        groupBy: {
-          args: Prisma.FormatGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.FormatGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.FormatCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.FormatCountAggregateOutputType> | number
-        }
-      }
-    }
     WorkshopConfig: {
       payload: Prisma.$WorkshopConfigPayload<ExtArgs>
       fields: Prisma.WorkshopConfigFieldRefs
@@ -1833,8 +1758,7 @@ export const InvitationTokenScalarFieldEnum = {
   role: 'role',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt',
-  usedAt: 'usedAt',
-  userId: 'userId'
+  usedAt: 'usedAt'
 } as const
 
 export type InvitationTokenScalarFieldEnum = (typeof InvitationTokenScalarFieldEnum)[keyof typeof InvitationTokenScalarFieldEnum]
@@ -2006,7 +1930,6 @@ export const ProductScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
-  category: 'category',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2018,7 +1941,6 @@ export const ProductVariantScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
   name: 'name',
-  active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2030,25 +1952,12 @@ export const PricingRuleScalarFieldEnum = {
   id: 'id',
   variantId: 'variantId',
   pricingMode: 'pricingMode',
-  label: 'label',
   config: 'config',
-  priority: 'priority',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type PricingRuleScalarFieldEnum = (typeof PricingRuleScalarFieldEnum)[keyof typeof PricingRuleScalarFieldEnum]
-
-
-export const FormatScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  widthMm: 'widthMm',
-  heightMm: 'heightMm',
-  createdAt: 'createdAt'
-} as const
-
-export type FormatScalarFieldEnum = (typeof FormatScalarFieldEnum)[keyof typeof FormatScalarFieldEnum]
 
 
 export const WorkshopConfigScalarFieldEnum = {
@@ -2346,7 +2255,6 @@ export type GlobalOmitConfig = {
   product?: Prisma.ProductOmit
   productVariant?: Prisma.ProductVariantOmit
   pricingRule?: Prisma.PricingRuleOmit
-  format?: Prisma.FormatOmit
   workshopConfig?: Prisma.WorkshopConfigOmit
 }
 

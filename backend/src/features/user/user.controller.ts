@@ -7,6 +7,7 @@ import {
   userQuerySchema,
   uuidSchema,
   updateUserWithEmailSchema,
+  invitationQuerySchema,
 } from "./user.schema.js";
 
 export const userController = {
@@ -14,7 +15,7 @@ export const userController = {
   listUsers: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const query = userQuerySchema.parse(req.query);
     const result = await userService.listUsers(query);
-    res.status(200).json({ success: true, ...result });
+    res.status(200).json({ success: true, data: result });
   }),
 
   // Récupérer un utilisateur par ID (admin)
@@ -29,8 +30,9 @@ export const userController = {
   // Mettre à jour un utilisateur (admin)
   updateUser: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const id = uuidSchema.parse(req.params.id);
+    const currentUserId = req.user!.sub;
     const validated = updateUserSchema.parse(req.body);
-    const updated = await userService.updateUser(id, validated);
+    const updated = await userService.updateUser(id, currentUserId, validated);
     res.status(200).json({
       success: true,
       message: "User updated successfully",
@@ -41,7 +43,8 @@ export const userController = {
   // Soft delete d’un utilisateur (admin)
   deleteUser: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const id = uuidSchema.parse(req.params.id);
-    await userService.deleteUser(id);
+    const currentUserId = req.user!.sub;
+    await userService.deleteUser(id, currentUserId);
     res
       .status(200)
       .json({ success: true, message: "User deleted successfully" });
@@ -79,6 +82,33 @@ export const userController = {
       res.status(200).json({
         success: true,
         message: "Email change request sent to the user's new address",
+      });
+    },
+  ),
+
+  // lister les invitations (admin)
+  listInvitations: catchAsync(
+    async (req: Request, res: Response): Promise<void> => {
+      const query = invitationQuerySchema.parse(req.query);
+      const result = await userService.listInvitations(query);
+
+      res.status(200).json({
+        success: true,
+        data: result,
+      });
+    },
+  ),
+
+  // Supprimer/Annuler une invitation (admin)
+  cancelInvitation: catchAsync(
+    async (req: Request, res: Response): Promise<void> => {
+      const id = uuidSchema.parse(req.params.id);
+
+      await userService.cancelInvitation(id);
+
+      res.status(200).json({
+        success: true,
+        message: "L'invitation a été annulée avec succès.",
       });
     },
   ),

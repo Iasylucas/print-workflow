@@ -14,6 +14,9 @@ const envSchema = z.object({
   MAIL_USER: z.email(),
   MAIL_PASS: z.string(),
   FRONTEND_URL: z.url(),
+  CLOUDINARY_CLOUD_NAME: z.string(),
+  CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
 });
 
 export const env = envSchema.parse(process.env);

@@ -12,6 +12,13 @@ const router: Router = Router();
 router.post("/login", authController.login);
 
 /**
+ * @desc    Get current user profile (Session validation)
+ * @route   GET /api/auth/me
+ * @access  Private (Authenticated users)
+ */
+router.get("/me", protect, authController.getMe);
+
+/**
  * @desc    Admin action: Invite a new collaborator
  * @route   POST /api/auth/invite
  * @access  Private (Admin only)

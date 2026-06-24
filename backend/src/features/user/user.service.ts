@@ -9,9 +9,11 @@ import {
   UpdateUserInput,
   UpdateProfileInput,
   UserQuery,
+  InvitationQuery,
+  PaginatedInvitationList,
 } from "./user.types.js";
 import { UserSafe } from "@/shared/types/user.types.js";
-import { USER_ERRORS } from "./user.constants.js";
+import { INVITATION_ERRORS, USER_ERRORS } from "./user.constants.js";
 import { v7 as uuidv7 } from "uuid";
 import { env } from "@/config/env.js";
 import { sendEmail } from "@/shared/infrastructure/mail/mail.service.js";
@@ -37,7 +39,23 @@ export class UserService {
   }
 
   // Mettre à jour un utilisateur (admin) – sans email
-  async updateUser(id: string, data: UpdateUserInput): Promise<UserSafe> {
+  async updateUser(
+    id: string,
+    currentUserId: string,
+    data: UpdateUserInput,
+  ): Promise<UserSafe> {
+    if (id === currentUserId) {
+      if (data.isActive === false) {
+        throw new ConflictError(USER_ERRORS.CANNOT_DEACTIVATE_OWN_ACCOUNT);
+      }
+      if (
+        data.role &&
+        data.role !== (await this.userRepository.findById(id))?.role
+      ) {
+        throw new ConflictError(USER_ERRORS.CANNOT_UPDATE_OWN_ROLE);
+      }
+    }
+
     const existing = await this.userRepository.findById(id);
     if (!existing) {
       throw new NotFoundError(USER_ERRORS.NOT_FOUND);
@@ -52,14 +70,18 @@ export class UserService {
   }
 
   // Soft delete d’un utilisateur (admin)
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(id: string, currentUserId: string): Promise<void> {
+    if (id === currentUserId) {
+      throw new ConflictError(USER_ERRORS.CANNOT_DELETE_OWN_ACCOUNT);
+    }
+
     const existing = await this.userRepository.findById(id);
     if (!existing) {
       throw new NotFoundError(USER_ERRORS.NOT_FOUND);
     }
 
     try {
-      await this.userRepository.softDelete(id);
+      await this.userRepository.hardDelete(id);
     } catch (error) {
       throw new InternalServerError(USER_ERRORS.FAILED_DELETE);
     }
@@ -136,6 +158,31 @@ export class UserService {
       "Confirmation de changement d'email",
       getEmailChangeRequestTemplate(confirmUrl, user.email),
     );
+  }
+
+  // Lister les invitations en cours (admin)
+  async listInvitations(
+    query: InvitationQuery,
+  ): Promise<PaginatedInvitationList> {
+    try {
+      return await this.userRepository.findAllInvitationsPaginated(query);
+    } catch (error) {
+      throw new InternalServerError(INVITATION_ERRORS.FAILED_FETCHING);
+    }
+  }
+
+  // Supprimer/Annuler une invitation (admin)
+  async cancelInvitation(id: string): Promise<void> {
+    const invitation = await this.userRepository.findInvitationById(id);
+    if (!invitation) {
+      throw new NotFoundError(INVITATION_ERRORS.NOT_FOUND);
+    }
+
+    try {
+      await this.userRepository.deleteInvitation(id);
+    } catch (error) {
+      throw new InternalServerError(INVITATION_ERRORS.FAILED_DELETE);
+    }
   }
 }
 

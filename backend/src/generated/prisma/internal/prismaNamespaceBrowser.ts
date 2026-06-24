@@ -67,7 +67,6 @@ export const ModelName = {
   Product: 'Product',
   ProductVariant: 'ProductVariant',
   PricingRule: 'PricingRule',
-  Format: 'Format',
   WorkshopConfig: 'WorkshopConfig'
 } as const
 
@@ -128,8 +127,7 @@ export const InvitationTokenScalarFieldEnum = {
   role: 'role',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt',
-  usedAt: 'usedAt',
-  userId: 'userId'
+  usedAt: 'usedAt'
 } as const
 
 export type InvitationTokenScalarFieldEnum = (typeof InvitationTokenScalarFieldEnum)[keyof typeof InvitationTokenScalarFieldEnum]
@@ -301,7 +299,6 @@ export const ProductScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
-  category: 'category',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -313,7 +310,6 @@ export const ProductVariantScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
   name: 'name',
-  active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -325,25 +321,12 @@ export const PricingRuleScalarFieldEnum = {
   id: 'id',
   variantId: 'variantId',
   pricingMode: 'pricingMode',
-  label: 'label',
   config: 'config',
-  priority: 'priority',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type PricingRuleScalarFieldEnum = (typeof PricingRuleScalarFieldEnum)[keyof typeof PricingRuleScalarFieldEnum]
-
-
-export const FormatScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  widthMm: 'widthMm',
-  heightMm: 'heightMm',
-  createdAt: 'createdAt'
-} as const
-
-export type FormatScalarFieldEnum = (typeof FormatScalarFieldEnum)[keyof typeof FormatScalarFieldEnum]
 
 
 export const WorkshopConfigScalarFieldEnum = {

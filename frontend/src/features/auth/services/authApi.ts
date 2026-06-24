@@ -34,4 +34,6 @@ export const authApi = {
 
   confirmEmailChange: (data: ConfirmEmailChangeRequest) =>
     api.post<void>("/auth/confirm-email-change", data).then((res) => res.data),
+
+  getMe: () => api.get<LoginResponse>("/auth/me").then((res) => res.data.data),
 };

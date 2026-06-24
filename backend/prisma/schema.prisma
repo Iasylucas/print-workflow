@@ -52,7 +52,6 @@ model User {
   ordersCreated    Order[]    @relation("UserOrder")
 
   resetTokens  PasswordResetToken[]
-  invitations  InvitationToken[]
   resetEmailRequest EmailChangeRequest[]
 }
 
@@ -71,9 +70,6 @@ model InvitationToken {
   expiresAt DateTime // expiration date (e.g. 48h)
   createdAt DateTime @default(now())
   usedAt    DateTime? // marks if already used
-
-  userId String
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model EmailChangeRequest {
@@ -260,12 +256,12 @@ model Order {
   invoice Invoice? @relation(fields: [invoiceId], references: [id])
 
   // chosen variant (e.g. Pre-cut vinyl)
-  variantId String
+  variantId Int
   variant   ProductVariant @relation(fields: [variantId], references: [id])
 
   options Json? // e.g. { "format": "A4", "doubleSided": false }
 
-  pricingRuleId String
+  pricingRuleId Int
   pricingRule   PricingRule @relation(fields: [pricingRuleId], references: [id])
 
   widthCm  Float?
@@ -288,43 +284,43 @@ model Order {
 }
 
 model Product {
-  id        String   @id @default(cuid())
+  id        Int   @id @default(autoincrement())
   name      String
-  slug      String   @unique
-  category  String?  // "print", "signage", "textile", etc.
+  slug      String  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  variants ProductVariant[]
+  variants  ProductVariant[]
 }
 
+
 model ProductVariant {
-  id        String   @id @default(cuid())
-  productId String
+  id        Int   @id @default(autoincrement())
+  productId Int
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  name      String   // "Pre-cut", "Without cut", "Recto", "Recto verso", "Standard", "Luxury"
-  active    Boolean  @default(true)
+  name      String   // "Prédécoupé", "Sans découpe", "Recto Verso"
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orders Order[]
+  orders       Order[]
   pricingRules PricingRule[]
 }
 
+
 model PricingRule {
-  id          String      @id @default(cuid())
-  variantId   String
+  id          Int      @id @default(autoincrement())
+  variantId   Int
   variant     ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  pricingMode PricingMode
-  label       String?     // "Price per m²", "Price per A4", "Standard price", etc.
-  config      Json        // Structure validated by Zod according to pricingMode
-  priority    Int         @default(0) // display order
+  pricingMode PricingMode // L'enum (PER_M2, FORMAT, PER_UNIT, etc.)
+  config      Json        // Votre structure flexible validée par Zod
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
   orders Order[]
   @@index([variantId])
 }
+
+
 
 enum PricingMode {
   FIXED           // fixed price (mug, t‑shirt)
@@ -337,13 +333,6 @@ enum PricingMode {
   COMPOSITE       // combination of several rules (pre‑cut: m² + A4)
 }
 
-model Format {
-  id        String   @id @default(cuid())
-  name      String   @unique // "A4", "A3", "A2", "A1", "A0"
-  widthMm   Int      // width in mm
-  heightMm  Int      // height in mm
-  createdAt DateTime @default(now())
-}
 
 // Workshop configuration (only one active row)
 model WorkshopConfig {

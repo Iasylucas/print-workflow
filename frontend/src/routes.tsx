@@ -5,7 +5,7 @@ import { LoginPage } from "@/features/auth/pages/LoginPage";
 import { DashboardPage } from "@/features/dashboard/pages/DashboardPage";
 import { RegisterPage } from "@/features/auth/pages/RegisterPage";
 import { UnauthorizedPage } from "@/pages/UnauthorizedPage";
-// import { UsersPage } from "@/features/user/pages/UsersPage";
+import { UsersPage } from "@/features/user/pages/UsersPage";
 
 export const router = createBrowserRouter([
   // Routes publiques
@@ -30,9 +30,7 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <RootLayout />,
-        children: [
-          // { path: "/users", element: <UsersPage /> },
-        ],
+        children: [{ path: "/users", element: <UsersPage /> }],
       },
     ],
   },

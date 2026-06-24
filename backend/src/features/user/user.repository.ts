@@ -3,6 +3,9 @@ import { Prisma } from "@/generated/prisma/client.js";
 import { userSafeSelect } from "@/shared/types/user.types.js";
 import {
   CreateEmailChangeRequestInput,
+  InvitationData,
+  InvitationQuery,
+  PaginatedInvitationList,
   PaginatedUserList,
   UpdateUserInput,
   UserQuery,
@@ -25,10 +28,14 @@ export class UserRepository {
 
   // Lister les utilisateurs avec pagination, recherche et tri
   async findAllPaginated(query: UserQuery): Promise<PaginatedUserList> {
-    const { page, limit, sortBy, sortOrder, search } = query;
+    const { page, limit, sortBy, sortOrder, search, isActive, role } = query;
     const skip = (page - 1) * limit;
 
     const where: Prisma.UserWhereInput = { deletedAt: null };
+
+    if (isActive !== undefined) {
+      where.isActive = isActive;
+    }
 
     if (search) {
       where.OR = [
@@ -36,6 +43,10 @@ export class UserRepository {
         { lastName: { contains: search, mode: "insensitive" } },
         { email: { contains: search, mode: "insensitive" } },
       ];
+    }
+
+    if (role) {
+      where.role = role;
     }
 
     const [data, total] = await Promise.all([
@@ -85,6 +96,14 @@ export class UserRepository {
     });
   }
 
+  // hard delete d’un utilisateur
+  async hardDelete(id: string) {
+    return await prisma.user.delete({
+      where: { id, deletedAt: null },
+      select: userSafeSelect,
+    });
+  }
+
   // Supprimer les anciennes demandes de changement d’email non utilisées
   async deleteOldEmailChangeRequests(userId: string) {
     await prisma.emailChangeRequest.deleteMany({
@@ -129,6 +148,72 @@ export class UserRepository {
     await prisma.user.update({
       where: { id: userId },
       data: { email: newEmail },
+    });
+  }
+
+  // Lister les invitations avec pagination, recherche et filtrage par rôle
+  async findAllInvitationsPaginated(
+    query: InvitationQuery,
+  ): Promise<PaginatedInvitationList> {
+    const { page, limit, sortBy, sortOrder, search, role } = query;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.InvitationTokenWhereInput = { usedAt: null };
+
+    if (search) {
+      where.email = { contains: search, mode: "insensitive" };
+    }
+
+    if (role) {
+      where.role = role;
+    }
+
+    const [rawInvitations, total] = await Promise.all([
+      prisma.invitationToken.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { [sortBy]: sortOrder },
+      }),
+      prisma.invitationToken.count({ where }),
+    ]);
+
+    const now = new Date();
+
+    const data: InvitationData[] = rawInvitations.map((inv) => ({
+      ...inv,
+      isExpired: inv.expiresAt < now,
+    }));
+
+    const totalPages = Math.ceil(total / limit);
+    const hasMore = page < totalPages;
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages,
+        hasMore,
+        search,
+        sortBy,
+        sortOrder,
+      },
+    };
+  }
+
+  // Trouver une invitation unique par ID (Utile pour vérification dans le service avant suppression)
+  async findInvitationById(id: string) {
+    return await prisma.invitationToken.findFirst({
+      where: { id, usedAt: null },
+    });
+  }
+
+  // Hard delete d'une invitation (Annulation par l'administrateur)
+  async deleteInvitation(id: string): Promise<void> {
+    await prisma.invitationToken.delete({
+      where: { id },
     });
   }
 }
