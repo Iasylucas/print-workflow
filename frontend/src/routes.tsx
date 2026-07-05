@@ -6,6 +6,7 @@ import { DashboardPage } from "@/features/dashboard/pages/DashboardPage";
 import { RegisterPage } from "@/features/auth/pages/RegisterPage";
 import { UnauthorizedPage } from "@/pages/UnauthorizedPage";
 import { UsersPage } from "@/features/user/pages/UsersPage";
+import { OrdersPage } from "./features/order";
 
 export const router = createBrowserRouter([
   // Routes publiques
@@ -31,6 +32,15 @@ export const router = createBrowserRouter([
       {
         element: <RootLayout />,
         children: [{ path: "/users", element: <UsersPage /> }],
+      },
+    ],
+  },
+  {
+    element: <ProtectedRoute allowedRoles={["ADMIN", "SALES"]} />,
+    children: [
+      {
+        element: <RootLayout />,
+        children: [{ path: "/pos", element: <OrdersPage /> }],
       },
     ],
   },

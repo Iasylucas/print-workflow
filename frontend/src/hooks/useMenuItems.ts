@@ -22,6 +22,7 @@ const MENU_CONFIG: Record<string, MenuItem[]> = {
     { href: "/users", label: "Utilisateurs", icon: Users },
     { href: "/clients", label: "Clients", icon: Building2 },
     { href: "/products", label: "Produits", icon: Package },
+    { href: "/pos", label: "Prise de commanes", icon: Receipt },
     { href: "/orders", label: "Commandes", icon: FileText },
     { href: "/quotes", label: "Devis", icon: FileCheck },
     { href: "/invoices", label: "Factures", icon: Receipt },

@@ -11,7 +11,7 @@ export const RootLayout = () => {
     <TooltipProvider>
       <SidebarProvider className="flex flex-col min-h-screen w-full bg-background">
         <Header />
-
+        ReceiptText
         <div className="flex flex-1 w-full min-h-0 relative">
           <AppSidebar />
 
