@@ -97,8 +97,3 @@ export type ProductVariant = Prisma.ProductVariantModel
  * 
  */
 export type PricingRule = Prisma.PricingRuleModel
-/**
- * Model WorkshopConfig
- * 
- */
-export type WorkshopConfig = Prisma.WorkshopConfigModel

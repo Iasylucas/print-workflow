@@ -192,8 +192,7 @@ model Invoice {
 model File {
   id   String @id
   url  String
-  name String
-  type String
+  category String
 
   orderId Int
   order   Order @relation(fields: [orderId], references: [id])
@@ -242,45 +241,35 @@ model AppSettings {
 }
 
 model Order {
-  id          Int    @id @default(autoincrement())
-  reference   String @unique
+  id          Int      @id @default(autoincrement())
   designation String
+  label       String? 
+  dimensions  String? 
 
   clientId String
   client   Client @relation(fields: [clientId], references: [id])
 
-  quoteId   Int?
-  invoiceId Int?
+  productId   Int?            // ← optionnel (si le produit existe dans le catalogue)
+  product     Product?        @relation(fields: [productId], references: [id])
 
-  quote   Quote?   @relation(fields: [quoteId], references: [id])
-  invoice Invoice? @relation(fields: [invoiceId], references: [id])
+  unitPrice  Int
+  quantity   Int
 
-  // chosen variant (e.g. Pre-cut vinyl)
-  variantId Int
-  variant   ProductVariant @relation(fields: [variantId], references: [id])
-
-  options Json? // e.g. { "format": "A4", "doubleSided": false }
-
-  pricingRuleId Int
-  pricingRule   PricingRule @relation(fields: [pricingRuleId], references: [id])
-
-  widthCm  Float?
-  heightCm Float?
-
-  status   String @default("waiting_for_file")
-  quantity Int
-  unitPrice Int
-  totalPrice Int // total price of the order line at creation time
-
-  createdById String
-  createdBy   User @relation("UserOrder", fields: [createdById], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime?
-
+  status String @default("waiting_for_file")
   files File[]
   notes Note[]
+
+  invoiceId Int?
+  invoice   Invoice? @relation(fields: [invoiceId], references: [id])
+  quoteId   Int?
+  quote     Quote?   @relation(fields: [quoteId], references: [id])
+
+  // 👇 Audit
+  createdById String
+  createdBy   User @relation("UserOrder", fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
 }
 
 model Product {
@@ -290,6 +279,7 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  orders    Order[] 
   variants  ProductVariant[]
 }
 
@@ -302,7 +292,6 @@ model ProductVariant {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orders       Order[]
   pricingRules PricingRule[]
 }
 
@@ -316,7 +305,6 @@ model PricingRule {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
-  orders Order[]
   @@index([variantId])
 }
 
@@ -334,11 +322,11 @@ enum PricingMode {
 }
 
 
-// Workshop configuration (only one active row)
-model WorkshopConfig {
-  id              String @id @default(cuid())
-  maxWidthM       Float  @default(1.5)
-  cuttingMarginM  Float  @default(0.02)
-  referenceSurfaceM2 Json @default("{\"width\":1.5,\"height\":0.7}")
-  isActive        Boolean @default(true)
-}
+// // Workshop configuration (only one active row)
+// model WorkshopConfig {
+//   id              String @id @default(cuid())
+//   maxWidthM       Float  @default(1.5)
+//   cuttingMarginM  Float  @default(0.02)
+//   referenceSurfaceM2 Json @default("{\"width\":1.5,\"height\":0.7}")
+//   isActive        Boolean @default(true)
+// }

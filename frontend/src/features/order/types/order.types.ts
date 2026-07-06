@@ -2,14 +2,11 @@ export type OrderOptionValue = string | number | boolean;
 
 export interface PosCartLine {
   designation: string;
-  variantId: number;
-  pricingRuleId: number;
-  widthCm?: number | null;
-  heightCm?: number | null;
-  options?: Record<string, OrderOptionValue> | null;
+  productId?: number | null;
+  dimensions?: string | null;
+  label?: string | null;
   quantity: number;
   unitPrice: number;
-  totalPrice: number;
   atelierNote?: string | null;
 }
 
@@ -19,6 +16,7 @@ export interface CreateBulkOrderRequest {
   deposit: number;
   deliveryPlace?: string | null;
   expectedDeliveryDate?: string | null;
+  paymentMethod?: string;
   lines: PosCartLine[];
 }
 

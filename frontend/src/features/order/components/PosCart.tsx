@@ -3,34 +3,109 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Trash2, User, ReceiptText, Receipt } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  ShoppingCart,
+  ReceiptText,
+  Receipt,
+  Plus,
+  X,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 import type { PosCartLine } from "../types/order.types";
+import type { Client } from "@/features/client/types/client.types";
+import type { Product } from "@/features/product/types/product.types";
 
+// ============================================================
+// 1. TYPES PROPS
+// ============================================================
 interface PosCartProps {
   cartLines: PosCartLine[];
+  clients: Client[];
+  products: Product[];
+  isLoadingClients: boolean;
+  // isLoadingProducts: boolean;
+  onAddLine: (line: PosCartLine) => void;
   onRemoveLine: (index: number) => void;
+  onUpdateLine: (index: number, field: keyof PosCartLine, value: any) => void;
   onValidateOrder: (payload: {
     documentType: "INVOICE" | "QUOTE";
     deposit: number;
     clientId: string;
+    deliveryPlace?: string | null;
+    expectedDeliveryDate?: string | null;
+    paymentMethod?: string;
   }) => void;
   isSubmitting: boolean;
+  selectedClientId: string;
+  setSelectedClientId: (value: string) => void;
+  deposit: number;
+  setDeposit: (value: number) => void;
+  documentType: "INVOICE" | "QUOTE";
+  setDocumentType: (value: "INVOICE" | "QUOTE") => void;
+  deliveryPlace: string;
+  setDeliveryPlace: (value: string) => void;
+  expectedDeliveryDate: string;
+  setExpectedDeliveryDate: (value: string) => void;
+  paymentMethod: string;
+  setPaymentMethod: (value: string) => void;
+  onReset: () => void;
 }
 
+// ============================================================
+// 2. COMPOSANT PRINCIPAL
+// ============================================================
 export const PosCart = ({
   cartLines,
+  clients,
+  products,
+  isLoadingClients,
+  onAddLine,
   onRemoveLine,
+  onUpdateLine,
   onValidateOrder,
   isSubmitting,
-}: PosCartProps) => {
-  // 💡 Note : Simulé ici avec un ID temporaire fixe, la recherche asynchrone dynamique
-  // sera câblée lors de l'assemblage final dans le conteneur principal PosLayout
-  const [selectedClientId] = useState<string>("client-id-standard-1");
-  const [deposit, setDeposit] = useState<number>(0);
 
-  // Calcul du montant cumulé total en Ariary
+  selectedClientId,
+  setSelectedClientId,
+  deposit,
+  setDeposit,
+  documentType,
+  setDocumentType,
+  deliveryPlace,
+  setDeliveryPlace,
+  expectedDeliveryDate,
+  setExpectedDeliveryDate,
+  paymentMethod,
+  setPaymentMethod,
+  onReset,
+}: PosCartProps) => {
+  // État local
+  // const [selectedClientId, setSelectedClientId] = useState<string>("");
+  // const [deposit, setDeposit] = useState<number>(0);
+  // const [documentType, setDocumentType] = useState<"INVOICE" | "QUOTE">(
+  //   "INVOICE",
+  // );
+  // const [deliveryPlace, setDeliveryPlace] = useState<string>("");
+  // const [expectedDeliveryDate, setExpectedDeliveryDate] = useState<string>("");
+  // const [paymentMethod, setPaymentMethod] = useState<string>("CASH");
+  const [expandedNotes, setExpandedNotes] = useState<number[]>([]);
+
+  // Calcul des totaux
   const subTotal = useMemo(() => {
-    return cartLines.reduce((acc, line) => acc + line.totalPrice, 0);
+    return cartLines.reduce((acc, line) => {
+      const qty = line.quantity || 0;
+      const price = line.unitPrice || 0;
+      return acc + qty * price;
+    }, 0);
   }, [cartLines]);
 
   const remaining = useMemo(() => {
@@ -38,155 +113,407 @@ export const PosCart = ({
     return res < 0 ? 0 : res;
   }, [subTotal, deposit]);
 
+  const isValid = selectedClientId && cartLines.length > 0;
+
+  const toggleNote = (index: number) => {
+    setExpandedNotes((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
+    );
+  };
+
+  const handleValidate = () => {
+    if (!isValid) return;
+    onValidateOrder({
+      documentType,
+      deposit,
+      clientId: selectedClientId,
+      deliveryPlace: deliveryPlace || null,
+      expectedDeliveryDate: expectedDeliveryDate || null,
+      paymentMethod,
+    });
+    onReset();
+  };
+
+  const getLineTotal = (line: PosCartLine) => {
+    const qty = line.quantity || 0;
+    const price = line.unitPrice || 0;
+    return qty * price;
+  };
+
   return (
-    <div className="rounded-xl border border-border bg-background p-4 shadow-sm h-full flex flex-col justify-between font-sans text-xs min-h-[500px]">
-      {/* SECTION SUPÉRIEURE : EN-TÊTE DU PANIER */}
-      <div className="space-y-4 flex-1">
-        <div className="flex items-center gap-2 pb-2 border-b border-border">
+    <div className="rounded-xl border border-border bg-background p-4 shadow-sm h-full flex flex-col font-sans text-xs min-h-[500px]">
+      {/* ============================================================
+          EN-TÊTE
+          ============================================================ */}
+      <div className="flex items-center justify-between pb-3 border-b border-border">
+        <div className="flex items-center gap-2">
           <ShoppingCart className="h-4 w-4 text-primary stroke-[2.5]" />
-          <h3 className="font-bold text-foreground text-sm">
-            Panier de Fabrication
-          </h3>
-          <Badge
-            variant="secondary"
-            className="ml-auto text-[10px] px-1.5 py-0.5"
-          >
+          <h3 className="font-bold text-foreground text-sm">Panier</h3>
+          <Badge variant="secondary" className="text-[10px] px-1.5 py-0.5">
             {cartLines.length} {cartLines.length > 1 ? "lignes" : "ligne"}
           </Badge>
         </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onAddLine}
+          className="h-7 gap-1 text-[10px] font-medium"
+        >
+          <Plus size={13} />
+          Ajouter ligne
+        </Button>
+      </div>
 
-        {/* Sélection Client (Simulée pour l'instant) */}
-        <div className="p-2.5 rounded-lg border border-border bg-muted/30 flex items-center gap-2.5">
-          <div className="h-7 w-7 rounded-md bg-primary/10 text-primary flex items-center justify-center shrink-0">
-            <User size={14} className="stroke-[2.5]" />
-          </div>
-          <div className="flex flex-col min-w-0">
-            <span className="text-[10px] font-medium text-muted-foreground">
-              Client associé
-            </span>
-            <span className="font-semibold text-foreground truncate">
-              Client Comptoir (Ewa Print)
-            </span>
-          </div>
+      {/* ============================================================
+          SÉLECTION CLIENT + TYPE DOCUMENT + LIVRAISON (en haut)
+          ============================================================ */}
+      <div className="mt-3 grid grid-cols-2 gap-3">
+        <div className="space-y-1.5">
+          <Label className="text-[11px] font-semibold text-muted-foreground">
+            Client *
+          </Label>
+          <Select
+            value={selectedClientId}
+            onValueChange={setSelectedClientId}
+            disabled={isLoadingClients}
+          >
+            <SelectTrigger className="h-8 text-xs">
+              <SelectValue
+                placeholder={
+                  isLoadingClients ? "Chargement..." : "Sélectionner un client"
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {clients.map((client) => (
+                <SelectItem key={client.id} value={client.id}>
+                  {client.firstName} {client.lastName}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
+        <div className="space-y-1.5">
+          <Label className="text-[11px] font-semibold text-muted-foreground">
+            Type de document
+          </Label>
+          <Select
+            value={documentType}
+            onValueChange={(val) => setDocumentType(val as "INVOICE" | "QUOTE")}
+          >
+            <SelectTrigger className="h-8 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="INVOICE">Facture</SelectItem>
+              <SelectItem value="QUOTE">Devis</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
 
-        {/* LISTE DES LIGNES COMPACTE (Façon POS de caisse) */}
-        <div className="space-y-2 max-h-[250px] overflow-y-auto pr-1">
+      {/* Livraison + Date livraison (en haut aussi) */}
+      <div className="mt-2 grid grid-cols-2 gap-3">
+        <div className="space-y-1.5">
+          <Label className="text-[11px] font-medium text-muted-foreground">
+            Livraison (optionnel)
+          </Label>
+          <Input
+            type="text"
+            value={deliveryPlace}
+            onChange={(e) => setDeliveryPlace(e.target.value)}
+            className="h-8 text-xs"
+            placeholder="Adresse"
+          />
+        </div>
+        <div className="space-y-1.5">
+          <Label className="text-[11px] font-medium text-muted-foreground">
+            Date livraison prévue (optionnel)
+          </Label>
+          <Input
+            type="date"
+            value={expectedDeliveryDate}
+            onChange={(e) => setExpectedDeliveryDate(e.target.value)}
+            className="h-8 text-xs"
+          />
+        </div>
+      </div>
+
+      {/* ============================================================
+          TABLEUR DES LIGNES
+          ============================================================ */}
+      <div className="mt-4 flex-1 overflow-auto">
+        <div className="border border-border rounded-md overflow-hidden">
+          {/* En-tête du tableau */}
+          <div className="grid grid-cols-12 bg-muted/50 p-2 border-b border-border font-semibold text-muted-foreground text-[10px] uppercase tracking-wider gap-1">
+            <div className="col-span-1 text-center">#</div>
+            <div className="col-span-2">Produit</div>
+            <div className="col-span-2">Désignation</div>
+            <div className="col-span-2">Dimensions</div>
+            <div className="col-span-1">Label</div>
+            <div className="col-span-1 text-center">Qté</div>
+            <div className="col-span-1 text-right">Prix U.</div>
+            <div className="col-span-1 text-right">Total</div>
+            <div className="col-span-1 text-center">🗑️</div>
+          </div>
+
+          {/* Corps du tableau */}
           {cartLines.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground/60 italic">
-              Le panier est vide. Calculez un prix à gauche pour commencer.
+              Aucune ligne. Cliquez sur "Ajouter ligne".
             </div>
           ) : (
-            cartLines.map((line, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between p-2 rounded-lg border border-border/80 bg-background hover:bg-muted/10 transition-colors gap-2"
-              >
-                <div className="flex flex-col min-w-0 flex-1">
-                  <span className="font-semibold text-foreground truncate">
-                    {line.designation}
-                  </span>
-                  <span className="text-[10px] text-muted-foreground mt-0.5">
-                    {line.unitPrice.toLocaleString()} Ar × {line.quantity}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-foreground whitespace-nowrap">
-                    {line.totalPrice.toLocaleString()} Ar
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => onRemoveLine(index)}
-                    className="h-7 w-7 text-muted-foreground/70 hover:text-destructive hover:bg-destructive/10 transition-colors"
+            cartLines.map((line, index) => {
+              const isNoteExpanded = expandedNotes.includes(index);
+              const lineTotal = getLineTotal(line);
+              return (
+                <div key={index}>
+                  <div
+                    className={`grid grid-cols-12 items-center p-1.5 border-b border-border/60 gap-1 hover:bg-muted/5 transition-colors ${
+                      isNoteExpanded ? "bg-muted/10" : ""
+                    }`}
                   >
-                    <Trash2 size={13} className="stroke-[2.2]" />
-                  </Button>
+                    <div className="col-span-1 text-center text-muted-foreground text-[10px]">
+                      {index + 1}
+                    </div>
+                    <div className="col-span-2">
+                      <Select
+                        value={line.productId?.toString() || ""}
+                        onValueChange={(val) => {
+                          const product = products.find(
+                            (p) => p.id === parseInt(val),
+                          );
+                          onUpdateLine(index, "productId", product?.id || null);
+                          if (product) {
+                            onUpdateLine(index, "designation", product.name);
+                          }
+                        }}
+                        // disabled={isLoadingProducts}
+                      >
+                        <SelectTrigger className="h-7 text-xs w-full">
+                          <SelectValue placeholder="Produit" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {products.map((product) => (
+                            <SelectItem
+                              key={product.id}
+                              value={product.id.toString()}
+                            >
+                              {product.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="col-span-2">
+                      <Input
+                        type="text"
+                        value={line.designation}
+                        onChange={(e) =>
+                          onUpdateLine(index, "designation", e.target.value)
+                        }
+                        className="h-7 text-xs px-1.5"
+                        placeholder="Désignation"
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <Input
+                        type="text"
+                        value={line.dimensions || ""}
+                        onChange={(e) =>
+                          onUpdateLine(index, "dimensions", e.target.value)
+                        }
+                        className="h-7 text-xs px-1.5"
+                        placeholder="A4 / 20x30cm"
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <Input
+                        type="text"
+                        value={line.label || ""}
+                        onChange={(e) =>
+                          onUpdateLine(index, "label", e.target.value)
+                        }
+                        className="h-7 text-xs px-1.5"
+                        placeholder="Étiquette"
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <Input
+                        type="number"
+                        min={1}
+                        value={line.quantity || 1}
+                        onChange={(e) =>
+                          onUpdateLine(
+                            index,
+                            "quantity",
+                            parseInt(e.target.value) || 1,
+                          )
+                        }
+                        className="h-7 text-xs text-center px-1"
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <Input
+                        type="number"
+                        min={0}
+                        value={line.unitPrice || 0}
+                        onChange={(e) =>
+                          onUpdateLine(
+                            index,
+                            "unitPrice",
+                            parseInt(e.target.value) || 0,
+                          )
+                        }
+                        className="h-7 text-xs text-right px-1.5 font-medium"
+                      />
+                    </div>
+                    <div className="col-span-1 text-right font-semibold text-foreground">
+                      {lineTotal.toLocaleString()} Ar
+                    </div>
+                    <div className="col-span-1 flex items-center justify-center gap-0.5">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => toggleNote(index)}
+                        className="h-6 w-6 text-muted-foreground/50 hover:text-muted-foreground"
+                      >
+                        {isNoteExpanded ? (
+                          <ChevronDown size={13} />
+                        ) : (
+                          <ChevronRight size={13} />
+                        )}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => onRemoveLine(index)}
+                        className="h-6 w-6 text-muted-foreground/70 hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <X size={13} />
+                      </Button>
+                    </div>
+                  </div>
+                  {isNoteExpanded && (
+                    <div className="grid grid-cols-12 items-start p-1.5 bg-muted/5 border-b border-border/40 gap-1">
+                      <div className="col-span-1" />
+                      <div className="col-span-10">
+                        <Textarea
+                          value={line.atelierNote || ""}
+                          onChange={(e) =>
+                            onUpdateLine(index, "atelierNote", e.target.value)
+                          }
+                          className="h-16 text-xs px-2 resize-y"
+                          placeholder="Note pour l'atelier"
+                        />
+                      </div>
+                      <div className="col-span-1" />
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>
 
-      {/* SECTION INFÉRIEURE : TOTAL ET VALIDATION */}
-      <div className="pt-4 border-t border-border bg-linear-to-t from-muted/10 to-transparent space-y-4 mt-4">
-        {/* Saisie Acompte direct sur le POS */}
-        {subTotal > 0 && (
-          <div className="space-y-1.5 p-2 rounded-lg bg-muted/40 border border-border/60">
-            <Label className="text-[11px] font-medium text-muted-foreground">
-              Enregistrer un acompte reçu (Ariary)
-            </Label>
-            <Input
-              type="number"
-              min={0}
-              max={subTotal}
-              value={deposit || ""}
-              onChange={(e) => setDeposit(Number(e.target.value))}
-              className="h-8 text-xs font-semibold focus-visible:ring-0 text-foreground bg-background"
-              placeholder="Ex: 50000"
-            />
-          </div>
-        )}
-
-        {/* Tableau Récapitulatif Comptable */}
-        <div className="space-y-1.5 px-1">
-          <div className="flex justify-between text-muted-foreground font-medium">
-            <span>Sous-Total Général</span>
-            <span>{subTotal.toLocaleString()} Ar</span>
-          </div>
-          <div className="flex justify-between text-muted-foreground font-medium">
-            <span>Acompte Versé</span>
-            <span className="text-emerald-600 font-semibold">
-              -{deposit.toLocaleString()} Ar
+      {/* ============================================================
+          SECTION FINANCIÈRE (layout style facture : labels à gauche, valeurs à droite)
+          ============================================================ */}
+      <div className="pt-3 mt-3 border-t border-border">
+        <div className="space-y-2">
+          {/* Sous-total */}
+          <div className="flex justify-between items-center py-1 border-b border-dashed border-border/50">
+            <span className="font-medium text-muted-foreground">
+              Sous-total
+            </span>
+            <span className="font-semibold text-foreground">
+              {subTotal.toLocaleString()} Ar
             </span>
           </div>
-          <div className="flex justify-between items-baseline pt-1.5 border-t border-dashed border-border">
+
+          {/* Acompte */}
+          <div className="flex justify-between items-center py-1 border-b border-dashed border-border/50">
+            <span className="font-medium text-muted-foreground">
+              Acompte versé
+            </span>
+            <div className="flex items-center gap-2">
+              <Input
+                type="number"
+                min={0}
+                max={subTotal}
+                value={deposit || ""}
+                onChange={(e) => setDeposit(Number(e.target.value))}
+                className="h-7 w-32 text-xs text-right font-semibold"
+                placeholder="0"
+              />
+              <span className="text-xs text-muted-foreground">Ar</span>
+            </div>
+          </div>
+
+          {/* Reste à payer (en évidence) */}
+          <div className="flex justify-between items-center py-2">
             <span className="font-bold text-foreground text-sm">
               Reste à payer
             </span>
-            <span className="text-base font-black text-primary tracking-tight">
-              {remaining.toLocaleString()}{" "}
-              <span className="text-xs font-bold">Ar</span>
+            <span className="text-lg font-black text-primary">
+              {isNaN(remaining) ? "0" : remaining.toLocaleString()} Ar
             </span>
+          </div>
+
+          {/* Méthode de paiement */}
+          <div className="flex justify-between items-center py-1 border-t border-border pt-2">
+            <span className="font-medium text-muted-foreground">
+              Mode de paiement
+            </span>
+            <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+              <SelectTrigger className="h-7 w-40 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="CASH">Espèces</SelectItem>
+                <SelectItem value="MOBILE_MONEY">Mobile Money</SelectItem>
+                <SelectItem value="BANK_TRANSFER">Virement bancaire</SelectItem>
+                <SelectItem value="CHECK">Chèque</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
-        {/* Boutons de validation à double choix (Facture vs Devis) */}
-        <div className="grid grid-cols-2 gap-2">
+        {/* Boutons validation */}
+        <div className="grid grid-cols-2 gap-2 pt-3">
           <Button
             type="button"
             variant="outline"
-            disabled={cartLines.length === 0 || isSubmitting}
-            onClick={() =>
-              onValidateOrder({
-                documentType: "QUOTE",
-                deposit: 0,
-                clientId: selectedClientId,
-              })
-            }
-            className="h-9 font-semibold text-xs border-input bg-background text-foreground shadow-xs gap-1.5 hover:bg-muted/50"
+            disabled={!isValid || isSubmitting}
+            onClick={() => {
+              setDocumentType("QUOTE");
+              handleValidate();
+            }}
+            className="h-9 font-semibold text-xs border-input bg-background shadow-xs gap-1.5 hover:bg-muted/50"
           >
-            <Receipt size={14} className="stroke-[2.2] text-muted-foreground" />
-            Générer Devis
+            <Receipt size={14} />
+            Devis
           </Button>
-
           <Button
             type="button"
-            disabled={cartLines.length === 0 || isSubmitting}
-            onClick={() =>
-              onValidateOrder({
-                documentType: "INVOICE",
-                deposit,
-                clientId: selectedClientId,
-              })
-            }
-            className="h-9 font-semibold text-xs shadow-sm gap-1.5 bg-primary hover:bg-primary/90 text-background transition-all"
+            disabled={!isValid || isSubmitting}
+            onClick={() => {
+              setDocumentType("INVOICE");
+              handleValidate();
+            }}
+            className="h-9 font-semibold text-xs shadow-sm gap-1.5 bg-primary hover:bg-primary/90 text-background"
           >
-            <ReceiptText size={14} className="stroke-[2.5]" />
-            Émettre Facture
+            <ReceiptText size={14} />
+            Facture
           </Button>
         </div>
+
+        {!isValid && (
+          <p className="text-[10px] text-destructive text-center pt-2">
+            Veuillez sélectionner un client et ajouter au moins une ligne.
+          </p>
+        )}
       </div>
     </div>
   );

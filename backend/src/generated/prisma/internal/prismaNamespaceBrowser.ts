@@ -66,8 +66,7 @@ export const ModelName = {
   Order: 'Order',
   Product: 'Product',
   ProductVariant: 'ProductVariant',
-  PricingRule: 'PricingRule',
-  WorkshopConfig: 'WorkshopConfig'
+  PricingRule: 'PricingRule'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -226,8 +225,7 @@ export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeo
 export const FileScalarFieldEnum = {
   id: 'id',
   url: 'url',
-  name: 'name',
-  type: 'type',
+  category: 'category',
   orderId: 'orderId',
   uploadedById: 'uploadedById',
   createdAt: 'createdAt'
@@ -272,20 +270,16 @@ export type AppSettingsScalarFieldEnum = (typeof AppSettingsScalarFieldEnum)[key
 
 export const OrderScalarFieldEnum = {
   id: 'id',
-  reference: 'reference',
   designation: 'designation',
+  label: 'label',
+  dimensions: 'dimensions',
   clientId: 'clientId',
-  quoteId: 'quoteId',
-  invoiceId: 'invoiceId',
-  variantId: 'variantId',
-  options: 'options',
-  pricingRuleId: 'pricingRuleId',
-  widthCm: 'widthCm',
-  heightCm: 'heightCm',
-  status: 'status',
-  quantity: 'quantity',
+  productId: 'productId',
   unitPrice: 'unitPrice',
-  totalPrice: 'totalPrice',
+  quantity: 'quantity',
+  status: 'status',
+  invoiceId: 'invoiceId',
+  quoteId: 'quoteId',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -327,17 +321,6 @@ export const PricingRuleScalarFieldEnum = {
 } as const
 
 export type PricingRuleScalarFieldEnum = (typeof PricingRuleScalarFieldEnum)[keyof typeof PricingRuleScalarFieldEnum]
-
-
-export const WorkshopConfigScalarFieldEnum = {
-  id: 'id',
-  maxWidthM: 'maxWidthM',
-  cuttingMarginM: 'cuttingMarginM',
-  referenceSurfaceM2: 'referenceSurfaceM2',
-  isActive: 'isActive'
-} as const
-
-export type WorkshopConfigScalarFieldEnum = (typeof WorkshopConfigScalarFieldEnum)[keyof typeof WorkshopConfigScalarFieldEnum]
 
 
 export const SortOrder = {

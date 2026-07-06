@@ -7,9 +7,7 @@ import type {
 } from "./order.types.js";
 
 export class OrderRepository {
-  // 1. Compter le nombre de factures (Invoices) créées pour un mois et une année spécifiques
   async countInvoicesByMonth(year: number, month: number): Promise<number> {
-    // Définition de la plage de recherche (Du 1er au dernier jour du mois)
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0, 23, 59, 59, 999);
 
@@ -23,7 +21,6 @@ export class OrderRepository {
     });
   }
 
-  // 2. Compter le nombre de devis (Quotes) créés pour un mois et une année spécifiques
   async countQuotesByMonth(year: number, month: number): Promise<number> {
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0, 23, 59, 59, 999);
@@ -38,11 +35,9 @@ export class OrderRepository {
     });
   }
 
-  // 3. Insérer le panier complet du POS en une seule transaction SQL isolée
   async createBulk(
     data: CreateBulkOrderInput,
     generatedNumber: string,
-    referenceUnique: string,
     currentUserId: string,
     companyInfoId: number,
     calculatedTotal: number,
@@ -51,7 +46,6 @@ export class OrderRepository {
       let createdInvoiceId: number | null = null;
       let createdQuoteId: number | null = null;
 
-      // 📜 CRÉATION DU DOCUMENT FINANCIER GLOBAL
       if (data.documentType === "INVOICE") {
         const invoice = await tx.invoice.create({
           data: {
@@ -74,13 +68,12 @@ export class OrderRepository {
         });
         createdInvoiceId = invoice.id;
 
-        // Si un acompte direct est versé au POS, on enregistre immédiatement la ligne de paiement
         if (data.deposit > 0) {
           await tx.payment.create({
             data: {
               invoiceId: invoice.id,
               amount: data.deposit,
-              method: "CASH", // Méthode par défaut du POS au comptoir (modifiable)
+              method: data.paymentMethod || "CASH",
               reference: `Acompte POS ${generatedNumber}`,
               receivedById: currentUserId,
             },
@@ -100,34 +93,25 @@ export class OrderRepository {
         createdQuoteId = quote.id;
       }
 
-      // 🛠️ Remplacement de la boucle classique par un for...of
       let lineIndex = 0;
 
       for (const line of data.lines) {
-        // Génération de la sous-référence unique (ex: CMD-202606-A1-0)
-        const itemReference = `${referenceUnique}-${lineIndex}`;
-
         const createdOrder = await tx.order.create({
           data: {
-            reference: itemReference,
             designation: line.designation,
             clientId: data.clientId,
             invoiceId: createdInvoiceId,
             quoteId: createdQuoteId,
-            variantId: line.variantId,
-            pricingRuleId: line.pricingRuleId,
-            options: line.options as Prisma.InputJsonValue,
-            widthCm: line.widthCm,
-            heightCm: line.heightCm,
+            productId: line.productId,
+            dimensions: line.dimensions,
+            label: line.label,
             quantity: line.quantity,
             unitPrice: line.unitPrice,
-            totalPrice: line.totalPrice,
             createdById: currentUserId,
             status: "waiting_for_file",
           },
         });
 
-        // Gestion des notes de production
         if (line.atelierNote && line.atelierNote.trim() !== "") {
           await tx.note.create({
             data: {
@@ -138,11 +122,9 @@ export class OrderRepository {
           });
         }
 
-        // Incrémentation pour la ligne suivante du panier
         lineIndex++;
       }
 
-      // On renvoie le statut du type de document généré pour le contrôleur
       return {
         documentType: data.documentType,
         documentNumber: generatedNumber,

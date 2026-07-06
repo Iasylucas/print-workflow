@@ -399,8 +399,7 @@ export const ModelName = {
   Order: 'Order',
   Product: 'Product',
   ProductVariant: 'ProductVariant',
-  PricingRule: 'PricingRule',
-  WorkshopConfig: 'WorkshopConfig'
+  PricingRule: 'PricingRule'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -416,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "client" | "user" | "invitationToken" | "emailChangeRequest" | "passwordResetToken" | "companyInfo" | "quote" | "invoice" | "file" | "payment" | "note" | "appSettings" | "order" | "product" | "productVariant" | "pricingRule" | "workshopConfig"
+    modelProps: "client" | "user" | "invitationToken" | "emailChangeRequest" | "passwordResetToken" | "companyInfo" | "quote" | "invoice" | "file" | "payment" | "note" | "appSettings" | "order" | "product" | "productVariant" | "pricingRule"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1604,80 +1603,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    WorkshopConfig: {
-      payload: Prisma.$WorkshopConfigPayload<ExtArgs>
-      fields: Prisma.WorkshopConfigFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.WorkshopConfigFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkshopConfigPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.WorkshopConfigFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkshopConfigPayload>
-        }
-        findFirst: {
-          args: Prisma.WorkshopConfigFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkshopConfigPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.WorkshopConfigFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkshopConfigPayload>
-        }
-        findMany: {
-          args: Prisma.WorkshopConfigFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkshopConfigPayload>[]
-        }
-        create: {
-          args: Prisma.WorkshopConfigCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkshopConfigPayload>
-        }
-        createMany: {
-          args: Prisma.WorkshopConfigCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.WorkshopConfigCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkshopConfigPayload>[]
-        }
-        delete: {
-          args: Prisma.WorkshopConfigDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkshopConfigPayload>
-        }
-        update: {
-          args: Prisma.WorkshopConfigUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkshopConfigPayload>
-        }
-        deleteMany: {
-          args: Prisma.WorkshopConfigDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.WorkshopConfigUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.WorkshopConfigUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkshopConfigPayload>[]
-        }
-        upsert: {
-          args: Prisma.WorkshopConfigUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkshopConfigPayload>
-        }
-        aggregate: {
-          args: Prisma.WorkshopConfigAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateWorkshopConfig>
-        }
-        groupBy: {
-          args: Prisma.WorkshopConfigGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WorkshopConfigGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.WorkshopConfigCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WorkshopConfigCountAggregateOutputType> | number
-        }
-      }
-    }
   }
 } & {
   other: {
@@ -1857,8 +1782,7 @@ export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeo
 export const FileScalarFieldEnum = {
   id: 'id',
   url: 'url',
-  name: 'name',
-  type: 'type',
+  category: 'category',
   orderId: 'orderId',
   uploadedById: 'uploadedById',
   createdAt: 'createdAt'
@@ -1903,20 +1827,16 @@ export type AppSettingsScalarFieldEnum = (typeof AppSettingsScalarFieldEnum)[key
 
 export const OrderScalarFieldEnum = {
   id: 'id',
-  reference: 'reference',
   designation: 'designation',
+  label: 'label',
+  dimensions: 'dimensions',
   clientId: 'clientId',
-  quoteId: 'quoteId',
-  invoiceId: 'invoiceId',
-  variantId: 'variantId',
-  options: 'options',
-  pricingRuleId: 'pricingRuleId',
-  widthCm: 'widthCm',
-  heightCm: 'heightCm',
-  status: 'status',
-  quantity: 'quantity',
+  productId: 'productId',
   unitPrice: 'unitPrice',
-  totalPrice: 'totalPrice',
+  quantity: 'quantity',
+  status: 'status',
+  invoiceId: 'invoiceId',
+  quoteId: 'quoteId',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -1958,17 +1878,6 @@ export const PricingRuleScalarFieldEnum = {
 } as const
 
 export type PricingRuleScalarFieldEnum = (typeof PricingRuleScalarFieldEnum)[keyof typeof PricingRuleScalarFieldEnum]
-
-
-export const WorkshopConfigScalarFieldEnum = {
-  id: 'id',
-  maxWidthM: 'maxWidthM',
-  cuttingMarginM: 'cuttingMarginM',
-  referenceSurfaceM2: 'referenceSurfaceM2',
-  isActive: 'isActive'
-} as const
-
-export type WorkshopConfigScalarFieldEnum = (typeof WorkshopConfigScalarFieldEnum)[keyof typeof WorkshopConfigScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2103,20 +2012,6 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
  * Reference to a field of type 'PricingMode'
  */
 export type EnumPricingModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PricingMode'>
@@ -2127,6 +2022,20 @@ export type EnumPricingModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'PricingMode[]'
  */
 export type ListEnumPricingModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PricingMode[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -2255,7 +2164,6 @@ export type GlobalOmitConfig = {
   product?: Prisma.ProductOmit
   productVariant?: Prisma.ProductVariantOmit
   pricingRule?: Prisma.PricingRuleOmit
-  workshopConfig?: Prisma.WorkshopConfigOmit
 }
 
 /* Types for Logging */

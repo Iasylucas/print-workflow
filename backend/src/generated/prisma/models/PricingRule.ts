@@ -225,7 +225,6 @@ export type PricingRuleWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"PricingRule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PricingRule"> | Date | string
   variant?: Prisma.XOR<Prisma.ProductVariantScalarRelationFilter, Prisma.ProductVariantWhereInput>
-  orders?: Prisma.OrderListRelationFilter
 }
 
 export type PricingRuleOrderByWithRelationInput = {
@@ -236,7 +235,6 @@ export type PricingRuleOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   variant?: Prisma.ProductVariantOrderByWithRelationInput
-  orders?: Prisma.OrderOrderByRelationAggregateInput
 }
 
 export type PricingRuleWhereUniqueInput = Prisma.AtLeast<{
@@ -250,7 +248,6 @@ export type PricingRuleWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"PricingRule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PricingRule"> | Date | string
   variant?: Prisma.XOR<Prisma.ProductVariantScalarRelationFilter, Prisma.ProductVariantWhereInput>
-  orders?: Prisma.OrderListRelationFilter
 }, "id">
 
 export type PricingRuleOrderByWithAggregationInput = {
@@ -285,7 +282,6 @@ export type PricingRuleCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   variant: Prisma.ProductVariantCreateNestedOneWithoutPricingRulesInput
-  orders?: Prisma.OrderCreateNestedManyWithoutPricingRuleInput
 }
 
 export type PricingRuleUncheckedCreateInput = {
@@ -295,7 +291,6 @@ export type PricingRuleUncheckedCreateInput = {
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPricingRuleInput
 }
 
 export type PricingRuleUpdateInput = {
@@ -304,7 +299,6 @@ export type PricingRuleUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   variant?: Prisma.ProductVariantUpdateOneRequiredWithoutPricingRulesNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutPricingRuleNestedInput
 }
 
 export type PricingRuleUncheckedUpdateInput = {
@@ -314,7 +308,6 @@ export type PricingRuleUncheckedUpdateInput = {
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutPricingRuleNestedInput
 }
 
 export type PricingRuleCreateManyInput = {
@@ -340,11 +333,6 @@ export type PricingRuleUncheckedUpdateManyInput = {
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type PricingRuleScalarRelationFilter = {
-  is?: Prisma.PricingRuleWhereInput
-  isNot?: Prisma.PricingRuleWhereInput
 }
 
 export type PricingRuleListRelationFilter = {
@@ -390,20 +378,6 @@ export type PricingRuleMinOrderByAggregateInput = {
 export type PricingRuleSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   variantId?: Prisma.SortOrder
-}
-
-export type PricingRuleCreateNestedOneWithoutOrdersInput = {
-  create?: Prisma.XOR<Prisma.PricingRuleCreateWithoutOrdersInput, Prisma.PricingRuleUncheckedCreateWithoutOrdersInput>
-  connectOrCreate?: Prisma.PricingRuleCreateOrConnectWithoutOrdersInput
-  connect?: Prisma.PricingRuleWhereUniqueInput
-}
-
-export type PricingRuleUpdateOneRequiredWithoutOrdersNestedInput = {
-  create?: Prisma.XOR<Prisma.PricingRuleCreateWithoutOrdersInput, Prisma.PricingRuleUncheckedCreateWithoutOrdersInput>
-  connectOrCreate?: Prisma.PricingRuleCreateOrConnectWithoutOrdersInput
-  upsert?: Prisma.PricingRuleUpsertWithoutOrdersInput
-  connect?: Prisma.PricingRuleWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PricingRuleUpdateToOneWithWhereWithoutOrdersInput, Prisma.PricingRuleUpdateWithoutOrdersInput>, Prisma.PricingRuleUncheckedUpdateWithoutOrdersInput>
 }
 
 export type PricingRuleCreateNestedManyWithoutVariantInput = {
@@ -452,62 +426,11 @@ export type EnumPricingModeFieldUpdateOperationsInput = {
   set?: $Enums.PricingMode
 }
 
-export type PricingRuleCreateWithoutOrdersInput = {
-  pricingMode: $Enums.PricingMode
-  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  variant: Prisma.ProductVariantCreateNestedOneWithoutPricingRulesInput
-}
-
-export type PricingRuleUncheckedCreateWithoutOrdersInput = {
-  id?: number
-  variantId: number
-  pricingMode: $Enums.PricingMode
-  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type PricingRuleCreateOrConnectWithoutOrdersInput = {
-  where: Prisma.PricingRuleWhereUniqueInput
-  create: Prisma.XOR<Prisma.PricingRuleCreateWithoutOrdersInput, Prisma.PricingRuleUncheckedCreateWithoutOrdersInput>
-}
-
-export type PricingRuleUpsertWithoutOrdersInput = {
-  update: Prisma.XOR<Prisma.PricingRuleUpdateWithoutOrdersInput, Prisma.PricingRuleUncheckedUpdateWithoutOrdersInput>
-  create: Prisma.XOR<Prisma.PricingRuleCreateWithoutOrdersInput, Prisma.PricingRuleUncheckedCreateWithoutOrdersInput>
-  where?: Prisma.PricingRuleWhereInput
-}
-
-export type PricingRuleUpdateToOneWithWhereWithoutOrdersInput = {
-  where?: Prisma.PricingRuleWhereInput
-  data: Prisma.XOR<Prisma.PricingRuleUpdateWithoutOrdersInput, Prisma.PricingRuleUncheckedUpdateWithoutOrdersInput>
-}
-
-export type PricingRuleUpdateWithoutOrdersInput = {
-  pricingMode?: Prisma.EnumPricingModeFieldUpdateOperationsInput | $Enums.PricingMode
-  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  variant?: Prisma.ProductVariantUpdateOneRequiredWithoutPricingRulesNestedInput
-}
-
-export type PricingRuleUncheckedUpdateWithoutOrdersInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  variantId?: Prisma.IntFieldUpdateOperationsInput | number
-  pricingMode?: Prisma.EnumPricingModeFieldUpdateOperationsInput | $Enums.PricingMode
-  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
 export type PricingRuleCreateWithoutVariantInput = {
   pricingMode: $Enums.PricingMode
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  orders?: Prisma.OrderCreateNestedManyWithoutPricingRuleInput
 }
 
 export type PricingRuleUncheckedCreateWithoutVariantInput = {
@@ -516,7 +439,6 @@ export type PricingRuleUncheckedCreateWithoutVariantInput = {
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPricingRuleInput
 }
 
 export type PricingRuleCreateOrConnectWithoutVariantInput = {
@@ -570,7 +492,6 @@ export type PricingRuleUpdateWithoutVariantInput = {
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  orders?: Prisma.OrderUpdateManyWithoutPricingRuleNestedInput
 }
 
 export type PricingRuleUncheckedUpdateWithoutVariantInput = {
@@ -579,7 +500,6 @@ export type PricingRuleUncheckedUpdateWithoutVariantInput = {
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutPricingRuleNestedInput
 }
 
 export type PricingRuleUncheckedUpdateManyWithoutVariantInput = {
@@ -591,35 +511,6 @@ export type PricingRuleUncheckedUpdateManyWithoutVariantInput = {
 }
 
 
-/**
- * Count Type PricingRuleCountOutputType
- */
-
-export type PricingRuleCountOutputType = {
-  orders: number
-}
-
-export type PricingRuleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  orders?: boolean | PricingRuleCountOutputTypeCountOrdersArgs
-}
-
-/**
- * PricingRuleCountOutputType without action
- */
-export type PricingRuleCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PricingRuleCountOutputType
-   */
-  select?: Prisma.PricingRuleCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * PricingRuleCountOutputType without action
- */
-export type PricingRuleCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OrderWhereInput
-}
-
 
 export type PricingRuleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -629,8 +520,6 @@ export type PricingRuleSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   createdAt?: boolean
   updatedAt?: boolean
   variant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
-  orders?: boolean | Prisma.PricingRule$ordersArgs<ExtArgs>
-  _count?: boolean | Prisma.PricingRuleCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pricingRule"]>
 
 export type PricingRuleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -665,8 +554,6 @@ export type PricingRuleSelectScalar = {
 export type PricingRuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "variantId" | "pricingMode" | "config" | "createdAt" | "updatedAt", ExtArgs["result"]["pricingRule"]>
 export type PricingRuleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   variant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
-  orders?: boolean | Prisma.PricingRule$ordersArgs<ExtArgs>
-  _count?: boolean | Prisma.PricingRuleCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PricingRuleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   variant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
@@ -679,7 +566,6 @@ export type $PricingRulePayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "PricingRule"
   objects: {
     variant: Prisma.$ProductVariantPayload<ExtArgs>
-    orders: Prisma.$OrderPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1083,7 +969,6 @@ readonly fields: PricingRuleFieldRefs;
 export interface Prisma__PricingRuleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   variant<T extends Prisma.ProductVariantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductVariantDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductVariantClient<runtime.Types.Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  orders<T extends Prisma.PricingRule$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PricingRule$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1517,30 +1402,6 @@ export type PricingRuleDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many PricingRules to delete.
    */
   limit?: number
-}
-
-/**
- * PricingRule.orders
- */
-export type PricingRule$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Order
-   */
-  select?: Prisma.OrderSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Order
-   */
-  omit?: Prisma.OrderOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.OrderInclude<ExtArgs> | null
-  where?: Prisma.OrderWhereInput
-  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
-  cursor?: Prisma.OrderWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
 }
 
 /**

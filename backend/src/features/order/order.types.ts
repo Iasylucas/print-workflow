@@ -18,24 +18,19 @@ export type CreateBulkOrderInput = z.infer<typeof createBulkOrderSchema>;
 // Déclaration de la sélection stricte pour récupérer une commande avec ses dépendances
 export const orderFullSelect = {
   id: true,
-  reference: true,
   designation: true,
+  label: true,
+  dimensions: true,
   clientId: true,
   quoteId: true,
   invoiceId: true,
-  variantId: true,
-  pricingRuleId: true,
-  options: true,
-  widthCm: true,
-  heightCm: true,
+  productId: true,
   status: true,
   quantity: true,
   unitPrice: true,
-  totalPrice: true,
   createdById: true,
   createdAt: true,
   updatedAt: true,
-  // Inclusion automatique de la liste des maquettes graphiques et des consignes d'atelier
   files: true,
   notes: true,
 } as const;
