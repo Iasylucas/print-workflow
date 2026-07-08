@@ -4,13 +4,83 @@ import { BadRequestError, InternalServerError } from "@/shared/error/error.js"; 
 
 export class OrderService {
   constructor(private readonly orderRepository: OrderRepository) {}
-
+  // backend/src/features/order/order.service.ts
+  private generateOrderReference(prefix: string, index: number): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const seq = String(index + 1).padStart(3, "0");
+    return `${prefix}-${year}${month}${day}-${seq}`;
+  }
   // 1. Fonction privée pour formater les numéros avec des zéros initiaux (ex: 1 -> "001")
   private padNumber(num: number, size: number = 3): string {
     let s = num.toString();
     while (s.length < size) s = "0" + s;
     return s;
   }
+  // async createBulkOrder(data: CreateBulkOrderInput, currentUserId: string) {
+  //   const now = new Date();
+  //   const currentYear = now.getFullYear();
+  //   const currentMonth = this.padNumber(now.getMonth() + 1, 2);
+
+  //   let generatedNumber = "";
+
+  //   // B. Récupération et incrémentation automatique du compteur mensuel
+  //   try {
+  //     if (data.documentType === "INVOICE") {
+  //       const currentCount = await this.orderRepository.countInvoicesByMonth(
+  //         currentYear,
+  //         now.getMonth() + 1,
+  //       );
+  //       const nextSequence = this.padNumber(currentCount + 1, 3);
+  //       generatedNumber = `F-${currentYear}-${currentMonth}-${nextSequence}`;
+  //     } else {
+  //       const currentCount = await this.orderRepository.countQuotesByMonth(
+  //         currentYear,
+  //         now.getMonth() + 1,
+  //       );
+  //       const nextSequence = this.padNumber(currentCount + 1, 3);
+  //       generatedNumber = `D-${currentYear}-${currentMonth}-${nextSequence}`;
+  //     }
+  //   } catch (error) {
+  //     throw new InternalServerError(
+  //       "Échec du calcul du compteur de numérotation séquentielle.",
+  //     );
+  //   }
+
+  //   // C. Recalcul sécurisé du total (sans totalPrice envoyé par le front)
+  //   let calculatedTotal = 0;
+
+  //   for (const line of data.lines) {
+  //     calculatedTotal += line.unitPrice * line.quantity;
+  //   }
+
+  //   // Sécurité : L'acompte ne peut pas être strictement supérieur au montant global facturé
+  //   if (data.documentType === "INVOICE" && data.deposit > calculatedTotal) {
+  //     throw new BadRequestError(
+  //       "Le montant de l'acompte ne peut pas excéder le montant total de la facture.",
+  //     );
+  //   }
+
+  //   const companyInfoId = 1;
+
+  //   try {
+  //     const result = await this.orderRepository.createBulk(
+  //       data,
+  //       generatedNumber,
+  //       currentUserId,
+  //       companyInfoId,
+  //       calculatedTotal,
+  //     );
+  //     return result;
+  //   } catch (error) {
+  //     throw new InternalServerError(
+  //       "Une erreur technique est survenue lors de la validation finale du panier.",
+  //     );
+  //   }
+  // }
+
   async createBulkOrder(data: CreateBulkOrderInput, currentUserId: string) {
     const now = new Date();
     const currentYear = now.getFullYear();
@@ -18,7 +88,6 @@ export class OrderService {
 
     let generatedNumber = "";
 
-    // B. Récupération et incrémentation automatique du compteur mensuel
     try {
       if (data.documentType === "INVOICE") {
         const currentCount = await this.orderRepository.countInvoicesByMonth(
@@ -41,14 +110,11 @@ export class OrderService {
       );
     }
 
-    // C. Recalcul sécurisé du total (sans totalPrice envoyé par le front)
     let calculatedTotal = 0;
-
     for (const line of data.lines) {
       calculatedTotal += line.unitPrice * line.quantity;
     }
 
-    // Sécurité : L'acompte ne peut pas être strictement supérieur au montant global facturé
     if (data.documentType === "INVOICE" && data.deposit > calculatedTotal) {
       throw new BadRequestError(
         "Le montant de l'acompte ne peut pas excéder le montant total de la facture.",
@@ -57,10 +123,16 @@ export class OrderService {
 
     const companyInfoId = 1;
 
+    // ✅ GÉNÉRER LES RÉFÉRENCES ICI
+    const orderReferences = data.lines.map((_, index) =>
+      this.generateOrderReference(index),
+    );
+
     try {
       const result = await this.orderRepository.createBulk(
         data,
         generatedNumber,
+        orderReferences, // ← NOUVEAU PARAMÈTRE
         currentUserId,
         companyInfoId,
         calculatedTotal,

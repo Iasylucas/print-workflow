@@ -38,6 +38,7 @@ export class OrderRepository {
   async createBulk(
     data: CreateBulkOrderInput,
     generatedNumber: string,
+    orderReferences: string[],
     currentUserId: string,
     companyInfoId: number,
     calculatedTotal: number,
@@ -96,8 +97,13 @@ export class OrderRepository {
       let lineIndex = 0;
 
       for (const line of data.lines) {
+        const reference = orderReferences[lineIndex];
+        if (!reference) {
+          throw new Error(`Référence manquante pour la ligne ${lineIndex}`);
+        }
         const createdOrder = await tx.order.create({
           data: {
+            reference,
             designation: line.designation,
             clientId: data.clientId,
             invoiceId: createdInvoiceId,

@@ -6,7 +6,9 @@ import { DashboardPage } from "@/features/dashboard/pages/DashboardPage";
 import { RegisterPage } from "@/features/auth/pages/RegisterPage";
 import { UnauthorizedPage } from "@/pages/UnauthorizedPage";
 import { UsersPage } from "@/features/user/pages/UsersPage";
-import { OrdersPage } from "./features/order";
+import { PosPage } from "./features/order";
+import { ClientsPage } from "./features/client/pages/ClientsPage";
+import { OrdersPage } from "./features/orders/pages/OrdersPage";
 
 export const router = createBrowserRouter([
   // Routes publiques
@@ -33,6 +35,10 @@ export const router = createBrowserRouter([
         element: <RootLayout />,
         children: [{ path: "/users", element: <UsersPage /> }],
       },
+      {
+        element: <RootLayout />,
+        children: [{ path: "/orders", element: <OrdersPage /> }],
+      },
     ],
   },
   {
@@ -40,7 +46,11 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <RootLayout />,
-        children: [{ path: "/pos", element: <OrdersPage /> }],
+        children: [{ path: "/pos", element: <PosPage /> }],
+      },
+      {
+        element: <RootLayout />,
+        children: [{ path: "/clients", element: <ClientsPage /> }],
       },
     ],
   },

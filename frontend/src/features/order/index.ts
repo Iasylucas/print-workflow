@@ -1,1 +1,1 @@
-export { PosLayout as OrdersPage } from "./components/PosLayout.js";
+export { PosLayout as PosPage } from "./components/PosLayout.js";

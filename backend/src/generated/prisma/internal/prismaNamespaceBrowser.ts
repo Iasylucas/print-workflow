@@ -270,6 +270,7 @@ export type AppSettingsScalarFieldEnum = (typeof AppSettingsScalarFieldEnum)[key
 
 export const OrderScalarFieldEnum = {
   id: 'id',
+  reference: 'reference',
   designation: 'designation',
   label: 'label',
   dimensions: 'dimensions',

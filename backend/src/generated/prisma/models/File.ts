@@ -27,15 +27,17 @@ export type AggregateFile = {
 }
 
 export type FileAvgAggregateOutputType = {
+  id: number | null
   orderId: number | null
 }
 
 export type FileSumAggregateOutputType = {
+  id: number | null
   orderId: number | null
 }
 
 export type FileMinAggregateOutputType = {
-  id: string | null
+  id: number | null
   url: string | null
   category: string | null
   orderId: number | null
@@ -44,7 +46,7 @@ export type FileMinAggregateOutputType = {
 }
 
 export type FileMaxAggregateOutputType = {
-  id: string | null
+  id: number | null
   url: string | null
   category: string | null
   orderId: number | null
@@ -64,10 +66,12 @@ export type FileCountAggregateOutputType = {
 
 
 export type FileAvgAggregateInputType = {
+  id?: true
   orderId?: true
 }
 
 export type FileSumAggregateInputType = {
+  id?: true
   orderId?: true
 }
 
@@ -186,7 +190,7 @@ export type FileGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 }
 
 export type FileGroupByOutputType = {
-  id: string
+  id: number
   url: string
   category: string
   orderId: number
@@ -218,7 +222,7 @@ export type FileWhereInput = {
   AND?: Prisma.FileWhereInput | Prisma.FileWhereInput[]
   OR?: Prisma.FileWhereInput[]
   NOT?: Prisma.FileWhereInput | Prisma.FileWhereInput[]
-  id?: Prisma.StringFilter<"File"> | string
+  id?: Prisma.IntFilter<"File"> | number
   url?: Prisma.StringFilter<"File"> | string
   category?: Prisma.StringFilter<"File"> | string
   orderId?: Prisma.IntFilter<"File"> | number
@@ -240,7 +244,7 @@ export type FileOrderByWithRelationInput = {
 }
 
 export type FileWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   AND?: Prisma.FileWhereInput | Prisma.FileWhereInput[]
   OR?: Prisma.FileWhereInput[]
   NOT?: Prisma.FileWhereInput | Prisma.FileWhereInput[]
@@ -271,7 +275,7 @@ export type FileScalarWhereWithAggregatesInput = {
   AND?: Prisma.FileScalarWhereWithAggregatesInput | Prisma.FileScalarWhereWithAggregatesInput[]
   OR?: Prisma.FileScalarWhereWithAggregatesInput[]
   NOT?: Prisma.FileScalarWhereWithAggregatesInput | Prisma.FileScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"File"> | string
+  id?: Prisma.IntWithAggregatesFilter<"File"> | number
   url?: Prisma.StringWithAggregatesFilter<"File"> | string
   category?: Prisma.StringWithAggregatesFilter<"File"> | string
   orderId?: Prisma.IntWithAggregatesFilter<"File"> | number
@@ -280,7 +284,6 @@ export type FileScalarWhereWithAggregatesInput = {
 }
 
 export type FileCreateInput = {
-  id: string
   url: string
   category: string
   createdAt?: Date | string
@@ -289,7 +292,7 @@ export type FileCreateInput = {
 }
 
 export type FileUncheckedCreateInput = {
-  id: string
+  id?: number
   url: string
   category: string
   orderId: number
@@ -298,7 +301,6 @@ export type FileUncheckedCreateInput = {
 }
 
 export type FileUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -307,7 +309,7 @@ export type FileUpdateInput = {
 }
 
 export type FileUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   url?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   orderId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -316,7 +318,7 @@ export type FileUncheckedUpdateInput = {
 }
 
 export type FileCreateManyInput = {
-  id: string
+  id?: number
   url: string
   category: string
   orderId: number
@@ -325,14 +327,13 @@ export type FileCreateManyInput = {
 }
 
 export type FileUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type FileUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   url?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   orderId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -360,6 +361,7 @@ export type FileCountOrderByAggregateInput = {
 }
 
 export type FileAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
 }
 
@@ -382,6 +384,7 @@ export type FileMinOrderByAggregateInput = {
 }
 
 export type FileSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
 }
 
@@ -470,7 +473,6 @@ export type FileUncheckedUpdateManyWithoutOrderNestedInput = {
 }
 
 export type FileCreateWithoutUploadedByInput = {
-  id: string
   url: string
   category: string
   createdAt?: Date | string
@@ -478,7 +480,7 @@ export type FileCreateWithoutUploadedByInput = {
 }
 
 export type FileUncheckedCreateWithoutUploadedByInput = {
-  id: string
+  id?: number
   url: string
   category: string
   orderId: number
@@ -515,7 +517,7 @@ export type FileScalarWhereInput = {
   AND?: Prisma.FileScalarWhereInput | Prisma.FileScalarWhereInput[]
   OR?: Prisma.FileScalarWhereInput[]
   NOT?: Prisma.FileScalarWhereInput | Prisma.FileScalarWhereInput[]
-  id?: Prisma.StringFilter<"File"> | string
+  id?: Prisma.IntFilter<"File"> | number
   url?: Prisma.StringFilter<"File"> | string
   category?: Prisma.StringFilter<"File"> | string
   orderId?: Prisma.IntFilter<"File"> | number
@@ -524,7 +526,6 @@ export type FileScalarWhereInput = {
 }
 
 export type FileCreateWithoutOrderInput = {
-  id: string
   url: string
   category: string
   createdAt?: Date | string
@@ -532,7 +533,7 @@ export type FileCreateWithoutOrderInput = {
 }
 
 export type FileUncheckedCreateWithoutOrderInput = {
-  id: string
+  id?: number
   url: string
   category: string
   uploadedById: string
@@ -566,7 +567,7 @@ export type FileUpdateManyWithWhereWithoutOrderInput = {
 }
 
 export type FileCreateManyUploadedByInput = {
-  id: string
+  id?: number
   url: string
   category: string
   orderId: number
@@ -574,7 +575,6 @@ export type FileCreateManyUploadedByInput = {
 }
 
 export type FileUpdateWithoutUploadedByInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -582,7 +582,7 @@ export type FileUpdateWithoutUploadedByInput = {
 }
 
 export type FileUncheckedUpdateWithoutUploadedByInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   url?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   orderId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -590,7 +590,7 @@ export type FileUncheckedUpdateWithoutUploadedByInput = {
 }
 
 export type FileUncheckedUpdateManyWithoutUploadedByInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   url?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   orderId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -598,7 +598,7 @@ export type FileUncheckedUpdateManyWithoutUploadedByInput = {
 }
 
 export type FileCreateManyOrderInput = {
-  id: string
+  id?: number
   url: string
   category: string
   uploadedById: string
@@ -606,7 +606,6 @@ export type FileCreateManyOrderInput = {
 }
 
 export type FileUpdateWithoutOrderInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -614,7 +613,7 @@ export type FileUpdateWithoutOrderInput = {
 }
 
 export type FileUncheckedUpdateWithoutOrderInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   url?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.StringFieldUpdateOperationsInput | string
@@ -622,7 +621,7 @@ export type FileUncheckedUpdateWithoutOrderInput = {
 }
 
 export type FileUncheckedUpdateManyWithoutOrderInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   url?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.StringFieldUpdateOperationsInput | string
@@ -694,7 +693,7 @@ export type $FilePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     uploadedBy: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
+    id: number
     url: string
     category: string
     orderId: number
@@ -1125,7 +1124,7 @@ export interface Prisma__FileClient<T, Null = never, ExtArgs extends runtime.Typ
  * Fields of the File model
  */
 export interface FileFieldRefs {
-  readonly id: Prisma.FieldRef<"File", 'String'>
+  readonly id: Prisma.FieldRef<"File", 'Int'>
   readonly url: Prisma.FieldRef<"File", 'String'>
   readonly category: Prisma.FieldRef<"File", 'String'>
   readonly orderId: Prisma.FieldRef<"File", 'Int'>
