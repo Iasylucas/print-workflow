@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@/utils/catchAsync.js"; // Adaptez selon votre chemin exact de catchAsync
-import { createBulkOrderSchema } from "./order.schema.js";
+import {
+  createBulkOrderSchema,
+  updateOrderFromPosSchema,
+} from "./order.schema.js";
 import { OrderService } from "./order.service.js";
 import { OrderRepository } from "./order.repository.js";
-
-// Instanciation locale décentralisée propre selon vos règles d'architecture (pas dans l'index)
-const orderRepository = new OrderRepository();
-const orderService = new OrderService(orderRepository);
+import { orderIdParamSchema } from "../orders/orders.schema.js";
+import { invoiceIdParamSchema } from "../invoices/invoices.schema.js";
+import { orderService } from "./order.service.js";
 
 export const orderController = {
   /**
@@ -39,4 +41,26 @@ export const orderController = {
       });
     },
   ),
+
+  // order.controller.ts
+  getOrderForPos: catchAsync(async (req: Request, res: Response) => {
+    const { id } = orderIdParamSchema.parse(req.params);
+    const order = await orderService.getOrderForPos(id);
+    res.status(200).json({ success: true, data: order });
+  }),
+
+  // order.controller.ts
+  updateOrderFromPos: catchAsync(async (req: Request, res: Response) => {
+    const { id } = invoiceIdParamSchema.parse(req.params);
+    const userId = req.user!.sub;
+    const data = updateOrderFromPosSchema.parse(req.body);
+
+    const result = await orderService.updateOrderFromPos(id, data, userId);
+
+    res.status(200).json({
+      success: true,
+      message: "Commande mise à jour avec succès",
+      data: result,
+    });
+  }),
 };

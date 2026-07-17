@@ -9,6 +9,7 @@ import { UsersPage } from "@/features/user/pages/UsersPage";
 import { PosPage } from "./features/order";
 import { ClientsPage } from "./features/client/pages/ClientsPage";
 import { OrdersPage } from "./features/orders/pages/OrdersPage";
+import { InvoicesPage } from "./features/invoices/pages/InvoicesPage";
 
 export const router = createBrowserRouter([
   // Routes publiques
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         element: <RootLayout />,
         children: [{ path: "/orders", element: <OrdersPage /> }],
+      },
+      {
+        element: <RootLayout />,
+        children: [{ path: "/invoices", element: <InvoicesPage /> }],
       },
     ],
   },

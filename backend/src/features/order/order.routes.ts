@@ -15,4 +15,9 @@ router.post(
   orderController.createBulkOrder,
 );
 
+// order.routes.ts
+router.get("/:id/pos", orderController.getOrderForPos);
+// order.routes.ts
+router.patch("/:id/pos", orderController.updateOrderFromPos);
+
 export default router;

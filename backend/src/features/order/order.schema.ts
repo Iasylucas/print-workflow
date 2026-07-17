@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { addPaymentSchema } from "../invoices/invoices.schema.js";
 
 // Schéma pour valider une ligne de commande unique du panier POS
 export const createSingleOrderLineSchema = z.object({
@@ -58,4 +59,30 @@ export const createBulkOrderSchema = z.object({
     .array(createSingleOrderLineSchema)
     .min(1, "Le panier doit contenir au moins une ligne de commande"),
   paymentMethod: z.string().default("CASH"),
+});
+
+// order.schema.ts
+export const updateOrderFromPosSchema = z.object({
+  // Mise à jour de la facture
+  deposit: z.number().int().nonnegative().optional(),
+  deliveryPlace: z.string().trim().optional().nullable(),
+  expectedDeliveryDate: z.coerce.date().optional().nullable(),
+
+  // Mise à jour des lignes de commande
+  lines: z
+    .array(
+      z.object({
+        orderId: z.number().int().positive(),
+        designation: z.string().trim().min(1),
+        label: z.string().trim().optional().nullable(),
+        dimensions: z.string().trim().optional().nullable(),
+        quantity: z.number().int().positive(),
+        unitPrice: z.number().int().nonnegative(),
+        atelierNote: z.string().trim().optional().nullable(),
+      }),
+    )
+    .optional(),
+
+  // Nouveau paiement (si ajouté)
+  newPayment: addPaymentSchema.optional(),
 });

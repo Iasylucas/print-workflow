@@ -151,6 +151,8 @@ model Quote {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
 }
 
 model Invoice {
@@ -184,9 +186,11 @@ model Invoice {
   orders Order[]
 
   payments Payment[]
-
+  deletedAt   DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
 }
 
 model File {
@@ -271,6 +275,8 @@ model Order {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   deletedAt   DateTime?
+
+  @@index([createdAt])
 }
 
 model Product {

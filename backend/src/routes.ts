@@ -7,6 +7,7 @@ import { cloudinaryRoutes } from "./features/cloudinary/cloudinary.routes.js";
 import { productRoutes } from "./features/product/index.js";
 import { orderRoutes } from "./features/order/index.js";
 import { ordersRoutes } from "./features/orders/index.js";
+import { invoicesRoutes } from "./features/invoices/invoices.routes.js";
 
 const router: Router = Router();
 
@@ -18,5 +19,6 @@ router.use("/cloudinary", cloudinaryRoutes);
 router.use("/products", productRoutes);
 router.use("/orders", orderRoutes);
 router.use("/orders", ordersRoutes);
+router.use("/invoices", invoicesRoutes);
 
 export default router;

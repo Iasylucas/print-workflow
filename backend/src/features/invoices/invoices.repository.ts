@@ -1,0 +1,288 @@
+// backend/src/features/invoices/invoices.repository.ts
+import { prisma } from "@/config/prisma.js";
+import { Prisma } from "@/generated/prisma/client.js";
+import {
+  invoiceListSelect,
+  invoiceDetailSelect,
+  InvoicesQuery,
+  UpdateInvoiceInput,
+  AddPaymentInput,
+  UpdatePaymentInput,
+  PaginatedInvoicesList,
+} from "./invoices.types.js";
+
+export class InvoicesRepository {
+  // ============================================================
+  // LISTE PAGINÉE DES FACTURES
+  // ============================================================
+  async findAll(query: InvoicesQuery): Promise<PaginatedInvoicesList> {
+    const {
+      page,
+      limit,
+      search,
+      status,
+      clientId,
+      isDelivered,
+      sortBy,
+      sortOrder,
+      startDate,
+      endDate,
+    } = query;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.InvoiceWhereInput = { deletedAt: null };
+
+    if (status) where.paymentStatus = status;
+    if (clientId) where.clientId = clientId;
+    if (isDelivered !== undefined) where.isDelivered = isDelivered;
+
+    // Filtre par plage de dates
+    if (startDate || endDate) {
+      where.createdAt = {};
+      if (startDate) where.createdAt.gte = new Date(startDate);
+      if (endDate) where.createdAt.lte = new Date(endDate);
+    }
+
+    // Recherche textuelle
+    if (search) {
+      where.OR = [
+        { number: { contains: search, mode: "insensitive" } },
+        { client: { firstName: { contains: search, mode: "insensitive" } } },
+        { client: { lastName: { contains: search, mode: "insensitive" } } },
+      ];
+    }
+
+    const [data, total] = await Promise.all([
+      prisma.invoice.findMany({
+        where,
+        select: invoiceListSelect,
+        skip,
+        take: limit,
+        orderBy: { [sortBy]: sortOrder },
+      }),
+      prisma.invoice.count({ where }),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+    const hasMore = page < totalPages;
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages,
+        hasMore,
+        search,
+        status,
+        clientId,
+        isDelivered,
+        sortBy,
+        sortOrder,
+      },
+    };
+  }
+
+  // ============================================================
+  // DÉTAIL D'UNE FACTURE (avec commandes et paiements)
+  // ============================================================
+  async findById(id: number) {
+    return await prisma.invoice.findUnique({
+      where: { id, deletedAt: null },
+      select: invoiceDetailSelect,
+    });
+  }
+
+  // ============================================================
+  // MISE À JOUR PARTIELLE D'UNE FACTURE
+  // ============================================================
+  async update(id: number, data: UpdateInvoiceInput) {
+    // Recalculer le remaining si deposit change
+    const updateData: any = { ...data };
+
+    if (data.deposit !== undefined) {
+      // Récupérer la facture actuelle pour connaître le total
+      const current = await prisma.invoice.findUnique({
+        where: { id },
+        select: { total: true, deposit: true },
+      });
+
+      if (current) {
+        const newDeposit = data.deposit;
+        updateData.remaining = current.total - newDeposit;
+        updateData.paymentStatus =
+          newDeposit >= current.total
+            ? "paid"
+            : newDeposit > 0
+              ? "partial"
+              : "unpaid";
+      }
+    }
+
+    return await prisma.invoice.update({
+      where: { id, deletedAt: null },
+      data: updateData,
+      select: invoiceDetailSelect,
+    });
+  }
+
+  // ============================================================
+  // MARQUER COMME LIVRÉE (avec propagation aux commandes)
+  // ============================================================
+  async markAsDelivered(id: number) {
+    // Récupérer les commandes liées pour les mettre à jour
+    const invoice = await prisma.invoice.findUnique({
+      where: { id },
+      select: {
+        orders: {
+          select: { id: true },
+        },
+      },
+    });
+
+    if (!invoice) throw new Error("Facture introuvable");
+
+    // Mettre à jour toutes les commandes en "delivered"
+    const orderIds = invoice.orders.map((o) => o.id);
+
+    if (orderIds.length > 0) {
+      await prisma.order.updateMany({
+        where: { id: { in: orderIds } },
+        data: { status: "delivered" },
+      });
+    }
+
+    return await prisma.invoice.update({
+      where: { id },
+      data: { isDelivered: true },
+      select: invoiceDetailSelect,
+    });
+  }
+
+  // ============================================================
+  // AJOUT D'UN PAIEMENT
+  // ============================================================
+  async addPayment(invoiceId: number, userId: string, data: AddPaymentInput) {
+    // Récupérer la facture pour calculer le nouveau remaining
+    const invoice = await prisma.invoice.findUnique({
+      where: { id: invoiceId },
+      select: { total: true, deposit: true, remaining: true },
+    });
+
+    if (!invoice) throw new Error("Facture introuvable");
+
+    const newDeposit = invoice.deposit + data.amount;
+    const newRemaining = invoice.total - newDeposit;
+
+    // Créer le paiement
+    const payment = await prisma.payment.create({
+      data: {
+        invoiceId,
+        amount: data.amount,
+        method: data.method,
+        reference: data.reference || null,
+        receivedById: userId,
+      },
+      select: {
+        id: true,
+        amount: true,
+        method: true,
+        reference: true,
+        date: true,
+        receivedById: true,
+        receivedBy: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    // Mettre à jour la facture
+    await prisma.invoice.update({
+      where: { id: invoiceId },
+      data: {
+        deposit: newDeposit,
+        remaining: newRemaining,
+        paymentStatus:
+          newDeposit >= invoice.total
+            ? "paid"
+            : newDeposit > 0
+              ? "partial"
+              : "unpaid",
+      },
+    });
+
+    return payment;
+  }
+
+  // ============================================================
+  // SUPPRESSION D'UN PAIEMENT
+  // ============================================================
+  async deletePayment(paymentId: number) {
+    // Récupérer le paiement et la facture associée
+    const payment = await prisma.payment.findUnique({
+      where: { id: paymentId },
+      select: {
+        invoiceId: true,
+        amount: true,
+        invoice: {
+          select: {
+            total: true,
+            deposit: true,
+          },
+        },
+      },
+    });
+
+    if (!payment) throw new Error("Paiement introuvable");
+
+    const newDeposit = payment.invoice.deposit - payment.amount;
+    const newRemaining = payment.invoice.total - newDeposit;
+
+    // Supprimer le paiement
+    await prisma.payment.delete({
+      where: { id: paymentId },
+    });
+
+    // Mettre à jour la facture
+    await prisma.invoice.update({
+      where: { id: payment.invoiceId },
+      data: {
+        deposit: newDeposit,
+        remaining: newRemaining,
+        paymentStatus:
+          newDeposit >= payment.invoice.total
+            ? "paid"
+            : newDeposit > 0
+              ? "partial"
+              : "unpaid",
+      },
+    });
+  }
+
+  // ============================================================
+  // SOFT DELETE D'UNE FACTURE
+  // ============================================================
+  async softDelete(id: number) {
+    return await prisma.invoice.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+      select: invoiceDetailSelect,
+    });
+  }
+
+  // ============================================================
+  // RESTAURER UNE FACTURE SOFT DELETE
+  // ============================================================
+  async restore(id: number) {
+    return await prisma.invoice.update({
+      where: { id },
+      data: { deletedAt: null },
+      select: invoiceDetailSelect,
+    });
+  }
+}

@@ -298,6 +298,7 @@ export const OrderDetailDrawer = ({
                   <Dialog
                     open={isNoteDialogOpen}
                     onOpenChange={setIsNoteDialogOpen}
+                    modal={false}
                   >
                     <DialogTrigger asChild>
                       <Button size="sm" variant="outline">
@@ -460,6 +461,7 @@ export const OrderDetailDrawer = ({
                   <Dialog
                     open={isFileDialogOpen}
                     onOpenChange={setIsFileDialogOpen}
+                    modal={false}
                   >
                     <DialogTrigger asChild>
                       <Button size="sm" variant="outline">
