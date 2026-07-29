@@ -50,6 +50,34 @@ export class OrderRepository {
     });
   }
 
+  // order.repository.ts
+  async create(data: {
+    invoiceId: number;
+    clientId: string;
+    designation: string;
+    label?: string | null;
+    dimensions?: string | null;
+    quantity: number;
+    unitPrice: number;
+    createdById: string;
+    status: string;
+  }) {
+    return await prisma.order.create({
+      data: {
+        reference: `CMD-${Date.now()}`,
+        invoiceId: data.invoiceId,
+        clientId: data.clientId,
+        designation: data.designation,
+        label: data.label,
+        dimensions: data.dimensions,
+        quantity: data.quantity,
+        unitPrice: data.unitPrice,
+        createdById: data.createdById,
+        status: data.status,
+      },
+    });
+  }
+
   async createBulk(
     data: CreateBulkOrderInput,
     generatedNumber: string,
@@ -240,6 +268,163 @@ export class OrderRepository {
   }
 
   // order.repository.ts
+  async findInvoiceWithFirstNote(invoiceId: number) {
+    return await prisma.invoice.findUnique({
+      where: { id: invoiceId, deletedAt: null },
+      select: {
+        id: true,
+        number: true,
+        date: true,
+        clientId: true,
+        client: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+        total: true,
+        deposit: true,
+        remaining: true,
+        deliveryPlace: true,
+        expectedDeliveryDate: true,
+        isDelivered: true,
+        paymentStatus: true,
+        companyInfoId: true,
+        companyInfo: {
+          select: {
+            nif: true,
+            stat: true,
+            mainAddress: true,
+            secondaryAddress: true,
+            logo: true,
+            stamp: true,
+            mobileMoneyNumbers: true,
+            standardPhone: true,
+            contactEmail: true,
+            termsAndConditions: true,
+            deliveryLeadTime: true,
+            bankAccountHolder: true,
+            bankBranch: true,
+            bankCode: true,
+            ribInfo: true,
+          },
+        },
+        createdById: true,
+        createdBy: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+        createdAt: true,
+        updatedAt: true,
+        _count: {
+          select: {
+            orders: true,
+            payments: true,
+          },
+        },
+        orders: {
+          select: {
+            id: true,
+            reference: true,
+            designation: true,
+            label: true,
+            dimensions: true,
+            quantity: true,
+            unitPrice: true,
+            status: true,
+            clientId: true,
+            client: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+              },
+            },
+            product: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            files: {
+              select: {
+                id: true,
+                url: true,
+                category: true,
+              },
+            },
+            notes: {
+              take: 1,
+              orderBy: { createdAt: "asc" },
+              select: {
+                id: true,
+                text: true,
+                userId: true,
+                user: {
+                  select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                  },
+                },
+                createdAt: true,
+              },
+            },
+          },
+        },
+        payments: {
+          select: {
+            id: true,
+            amount: true,
+            method: true,
+            reference: true,
+            date: true,
+            receivedById: true,
+            receivedBy: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+          orderBy: { date: "desc" },
+        },
+      },
+    });
+  }
+
+  async findInvoicePayments(invoiceId: number) {
+    return await prisma.invoice.findUnique({
+      where: { id: invoiceId, deletedAt: null },
+      select: {
+        payments: {
+          select: {
+            id: true,
+            amount: true,
+            method: true,
+            reference: true,
+            date: true,
+            receivedById: true,
+            receivedBy: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+          orderBy: { date: "desc" },
+        },
+      },
+    });
+  }
+
+  // order.repository.ts
   async updateOrderFromPos(
     invoiceId: number,
     data: {
@@ -312,6 +497,131 @@ export class OrderRepository {
         },
         createdAt: true,
       },
+    });
+  }
+
+  // order.repository.ts
+  async updateOrderFromPosTransaction(
+    invoiceId: number,
+    data: {
+      deposit?: number;
+      deliveryPlace?: string | null;
+      expectedDeliveryDate?: Date | null;
+      lines?: any[];
+      // newPayment?: any;
+    },
+    userId: string,
+    clientId: string,
+  ) {
+    return await prisma.$transaction(async (tx) => {
+      // 1. Mettre à jour la facture
+      if (
+        data.deposit !== undefined ||
+        data.deliveryPlace !== undefined ||
+        data.expectedDeliveryDate !== undefined
+      ) {
+        await tx.invoice.update({
+          where: { id: invoiceId },
+          data: {
+            deposit: data.deposit,
+            deliveryPlace: data.deliveryPlace,
+            expectedDeliveryDate: data.expectedDeliveryDate,
+          },
+        });
+      }
+
+      // 2. Mettre à jour / créer les lignes de commande
+      if (data.lines && data.lines.length > 0) {
+        for (const line of data.lines) {
+          if (line.orderId) {
+            // Mettre à jour une commande existante
+            await tx.order.update({
+              where: { id: line.orderId, deletedAt: null },
+              data: {
+                productId: line.productId,
+                designation: line.designation,
+                label: line.label,
+                dimensions: line.dimensions,
+                quantity: line.quantity,
+                unitPrice: line.unitPrice,
+              },
+            });
+          } else {
+            // Créer une nouvelle commande
+            await tx.order.create({
+              data: {
+                reference: `CMD-${Date.now()}`,
+                invoiceId,
+                clientId,
+                designation: line.designation,
+                productId: line.productId,
+                label: line.label,
+                dimensions: line.dimensions,
+                quantity: line.quantity,
+                unitPrice: line.unitPrice,
+                createdById: userId,
+                status: "waiting_for_file",
+              },
+            });
+          }
+        }
+      }
+
+      // 3. Ajouter un paiement si nouveau paiement
+      // if (data.newPayment && data.newPayment.amount > 0) {
+      //   await tx.payment.create({
+      //     data: {
+      //       invoiceId,
+      //       amount: data.newPayment.amount,
+      //       method: data.newPayment.method || "CASH",
+      //       reference: `Paiement POS ${new Date().toISOString()}`,
+      //       receivedById: userId,
+      //     },
+      //   });
+      // }
+
+      // 4. Gérer la note (première ligne)
+      if (data.lines && data.lines.length > 0) {
+        const firstLine = data.lines[0];
+        if (firstLine.atelierNote && firstLine.orderId) {
+          const existingNote = await tx.note.findFirst({
+            where: { orderId: firstLine.orderId },
+            orderBy: { createdAt: "asc" },
+          });
+
+          if (existingNote) {
+            await tx.note.update({
+              where: { id: existingNote.id },
+              data: { text: firstLine.atelierNote },
+            });
+          } else {
+            await tx.note.create({
+              data: {
+                text: firstLine.atelierNote,
+                userId,
+                orderId: firstLine.orderId,
+              },
+            });
+          }
+        }
+      }
+
+      // 5. Retourner la facture mise à jour
+      return await tx.invoice.findUnique({
+        where: { id: invoiceId },
+        select: {
+          id: true,
+          number: true,
+          total: true,
+          deposit: true,
+          remaining: true,
+          paymentStatus: true,
+          isDelivered: true,
+          clientId: true,
+          orders: true,
+          payments: true,
+        },
+      });
     });
   }
 }

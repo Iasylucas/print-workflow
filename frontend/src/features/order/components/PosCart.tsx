@@ -23,16 +23,13 @@ import { Textarea } from "@/components/ui/textarea";
 import type { PosCartLine } from "../types/order.types";
 import type { Client } from "@/features/client/types/client.types";
 import type { Product } from "@/features/product/types/product.types";
+import { ClientSearchCombobox } from "./ClientSearchCombobox";
 
-// ============================================================
-// 1. TYPES PROPS
-// ============================================================
 interface PosCartProps {
   cartLines: PosCartLine[];
   clients: Client[];
   products: Product[];
   isLoadingClients: boolean;
-  // isLoadingProducts: boolean;
   onAddLine: (line: PosCartLine) => void;
   onRemoveLine: (index: number) => void;
   onUpdateLine: (index: number, field: keyof PosCartLine, value: any) => void;
@@ -58,11 +55,14 @@ interface PosCartProps {
   paymentMethod: string;
   setPaymentMethod: (value: string) => void;
   onReset: () => void;
+  isEditing?: boolean;
+  payments?: any[];
+  newPaymentAmount?: number;
+  setNewPaymentAmount?: (value: number) => void;
+  onAddPayment?: () => void;
+  onDeletePayment?: (paymentId: number) => void;
 }
 
-// ============================================================
-// 2. COMPOSANT PRINCIPAL
-// ============================================================
 export const PosCart = ({
   cartLines,
   clients,
@@ -73,7 +73,11 @@ export const PosCart = ({
   onUpdateLine,
   onValidateOrder,
   isSubmitting,
-
+  isEditing = false,
+  payments = [],
+  newPaymentAmount = 0,
+  setNewPaymentAmount,
+  onAddPayment,
   selectedClientId,
   setSelectedClientId,
   deposit,
@@ -87,19 +91,10 @@ export const PosCart = ({
   paymentMethod,
   setPaymentMethod,
   onReset,
+  onDeletePayment,
 }: PosCartProps) => {
-  // État local
-  // const [selectedClientId, setSelectedClientId] = useState<string>("");
-  // const [deposit, setDeposit] = useState<number>(0);
-  // const [documentType, setDocumentType] = useState<"INVOICE" | "QUOTE">(
-  //   "INVOICE",
-  // );
-  // const [deliveryPlace, setDeliveryPlace] = useState<string>("");
-  // const [expectedDeliveryDate, setExpectedDeliveryDate] = useState<string>("");
-  // const [paymentMethod, setPaymentMethod] = useState<string>("CASH");
   const [expandedNotes, setExpandedNotes] = useState<number[]>([]);
 
-  // Calcul des totaux
   const subTotal = useMemo(() => {
     return cartLines.reduce((acc, line) => {
       const qty = line.quantity || 0;
@@ -140,11 +135,12 @@ export const PosCart = ({
     return qty * price;
   };
 
+  const totalPayments = payments.reduce((sum, p) => sum + p.amount, 0);
+  const remainingAfterPayments = subTotal - totalPayments;
+
   return (
     <div className="rounded-xl border border-border bg-background p-4 shadow-sm h-full flex flex-col font-sans text-xs min-h-[500px]">
-      {/* ============================================================
-          EN-TÊTE
-          ============================================================ */}
+      {/* EN-TÊTE */}
       <div className="flex items-center justify-between pb-3 border-b border-border">
         <div className="flex items-center gap-2">
           <ShoppingCart className="h-4 w-4 text-primary stroke-[2.5]" />
@@ -164,34 +160,20 @@ export const PosCart = ({
         </Button>
       </div>
 
-      {/* ============================================================
-          SÉLECTION CLIENT + TYPE DOCUMENT + LIVRAISON (en haut)
-          ============================================================ */}
+      {/* CLIENT + TYPE + LIVRAISON */}
       <div className="mt-3 grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
           <Label className="text-[11px] font-semibold text-muted-foreground">
             Client *
           </Label>
-          <Select
+          <ClientSearchCombobox
             value={selectedClientId}
-            onValueChange={setSelectedClientId}
+            onChange={setSelectedClientId}
             disabled={isLoadingClients}
-          >
-            <SelectTrigger className="h-8 text-xs">
-              <SelectValue
-                placeholder={
-                  isLoadingClients ? "Chargement..." : "Sélectionner un client"
-                }
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {clients.map((client) => (
-                <SelectItem key={client.id} value={client.id}>
-                  {client.firstName} {client.lastName}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            placeholder={
+              isLoadingClients ? "Chargement..." : "Sélectionner un client..."
+            }
+          />
         </div>
         <div className="space-y-1.5">
           <Label className="text-[11px] font-semibold text-muted-foreground">
@@ -212,7 +194,7 @@ export const PosCart = ({
         </div>
       </div>
 
-      {/* Livraison + Date livraison (en haut aussi) */}
+      {/* LIVRAISON + DATE */}
       <div className="mt-2 grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
           <Label className="text-[11px] font-medium text-muted-foreground">
@@ -239,12 +221,9 @@ export const PosCart = ({
         </div>
       </div>
 
-      {/* ============================================================
-          TABLEUR DES LIGNES
-          ============================================================ */}
+      {/* TABLEUR */}
       <div className="mt-4 flex-1 overflow-auto">
         <div className="border border-border rounded-md overflow-hidden">
-          {/* En-tête du tableau */}
           <div className="grid grid-cols-12 bg-muted/50 p-2 border-b border-border font-semibold text-muted-foreground text-[10px] uppercase tracking-wider gap-1">
             <div className="col-span-1 text-center">#</div>
             <div className="col-span-2">Produit</div>
@@ -257,7 +236,6 @@ export const PosCart = ({
             <div className="col-span-1 text-center">🗑️</div>
           </div>
 
-          {/* Corps du tableau */}
           {cartLines.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground/60 italic">
               Aucune ligne. Cliquez sur "Ajouter ligne".
@@ -269,9 +247,7 @@ export const PosCart = ({
               return (
                 <div key={index}>
                   <div
-                    className={`grid grid-cols-12 items-center p-1.5 border-b border-border/60 gap-1 hover:bg-muted/5 transition-colors ${
-                      isNoteExpanded ? "bg-muted/10" : ""
-                    }`}
+                    className={`grid grid-cols-12 items-center p-1.5 border-b border-border/60 gap-1 hover:bg-muted/5 transition-colors ${isNoteExpanded ? "bg-muted/10" : ""}`}
                   >
                     <div className="col-span-1 text-center text-muted-foreground text-[10px]">
                       {index + 1}
@@ -284,11 +260,9 @@ export const PosCart = ({
                             (p) => p.id === parseInt(val),
                           );
                           onUpdateLine(index, "productId", product?.id || null);
-                          if (product) {
+                          if (product)
                             onUpdateLine(index, "designation", product.name);
-                          }
                         }}
-                        // disabled={isLoadingProducts}
                       >
                         <SelectTrigger className="h-7 text-xs w-full">
                           <SelectValue placeholder="Produit" />
@@ -417,9 +391,7 @@ export const PosCart = ({
         </div>
       </div>
 
-      {/* ============================================================
-          SECTION FINANCIÈRE (layout style facture : labels à gauche, valeurs à droite)
-          ============================================================ */}
+      {/* SECTION FINANCIÈRE + PAIEMENTS */}
       <div className="pt-3 mt-3 border-t border-border">
         <div className="space-y-2">
           {/* Sous-total */}
@@ -432,34 +404,135 @@ export const PosCart = ({
             </span>
           </div>
 
-          {/* Acompte */}
-          <div className="flex justify-between items-center py-1 border-b border-dashed border-border/50">
-            <span className="font-medium text-muted-foreground">
-              Acompte versé
-            </span>
-            <div className="flex items-center gap-2">
-              <Input
-                type="number"
-                min={0}
-                max={subTotal}
-                value={deposit || ""}
-                onChange={(e) => setDeposit(Number(e.target.value))}
-                className="h-7 w-32 text-xs text-right font-semibold"
-                placeholder="0"
-              />
-              <span className="text-xs text-muted-foreground">Ar</span>
+          {/* Acompte / Nouveau paiement */}
+          {isEditing ? (
+            <div className="flex items-center justify-between py-1 border-b border-dashed border-border/50">
+              <span className="font-medium text-muted-foreground">
+                Nouveau paiement
+              </span>
+              <div className="flex items-center gap-2">
+                <Input
+                  type="number"
+                  min={0}
+                  max={remainingAfterPayments}
+                  value={newPaymentAmount || ""}
+                  onChange={(e) =>
+                    setNewPaymentAmount?.(Number(e.target.value))
+                  }
+                  className="h-7 w-32 text-xs text-right font-semibold"
+                  placeholder="0"
+                />
+                <Button
+                  size="sm"
+                  onClick={onAddPayment}
+                  disabled={
+                    !newPaymentAmount || newPaymentAmount <= 0 || isSubmitting
+                  }
+                  className="h-7 text-xs"
+                >
+                  Ajouter
+                </Button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex justify-between items-center py-1 border-b border-dashed border-border/50">
+              <span className="font-medium text-muted-foreground">
+                Acompte versé
+              </span>
+              <div className="flex items-center gap-2">
+                <Input
+                  type="number"
+                  min={0}
+                  max={subTotal}
+                  value={deposit || ""}
+                  onChange={(e) => setDeposit(Number(e.target.value))}
+                  className="h-7 w-32 text-xs text-right font-semibold"
+                  placeholder="0"
+                />
+                <span className="text-xs text-muted-foreground">Ar</span>
+              </div>
+            </div>
+          )}
 
-          {/* Reste à payer (en évidence) */}
+          {/* Reste à payer */}
           <div className="flex justify-between items-center py-2">
             <span className="font-bold text-foreground text-sm">
               Reste à payer
             </span>
             <span className="text-lg font-black text-primary">
-              {isNaN(remaining) ? "0" : remaining.toLocaleString()} Ar
+              {isEditing
+                ? remainingAfterPayments.toLocaleString()
+                : isNaN(remaining)
+                  ? "0"
+                  : remaining.toLocaleString()}{" "}
+              Ar
             </span>
           </div>
+
+          {/* Historique des paiements (mode édition) */}
+          {/* {isEditing && payments.length > 0 && (
+            <div className="mt-2 p-2 bg-muted/20 rounded-md">
+              <p className="text-xs font-semibold text-muted-foreground">
+                Historique des paiements
+              </p>
+              <div className="space-y-1 mt-1">
+                {payments.map((p, i) => (
+                  <div key={i} className="flex justify-between text-xs">
+                    <span>{p.amount.toLocaleString()} Ar</span>
+                    <span className="text-muted-foreground">
+                      {new Date(p.date).toLocaleDateString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-2 text-xs text-muted-foreground">
+                Total payé :{" "}
+                <span className="font-semibold">
+                  {totalPayments.toLocaleString()} Ar
+                </span>
+              </div>
+            </div>
+          )} */}
+
+          {isEditing && payments.length > 0 && (
+            <div className="mt-2 p-2 bg-muted/20 rounded-md">
+              <p className="text-xs font-semibold text-muted-foreground">
+                Historique des paiements
+              </p>
+              <div className="space-y-1 mt-1">
+                {payments.map((p, i) => (
+                  <div
+                    key={i}
+                    className="flex justify-between text-xs items-center gap-2"
+                  >
+                    <span className="text-muted-foreground w-20 flex-shrink-0">
+                      {new Date(p.date).toLocaleDateString()}
+                    </span>
+                    <span className="text-muted-foreground w-24 flex-shrink-0">
+                      {p.method}
+                    </span>
+                    <span className="flex-1 text-right font-medium">
+                      {p.amount.toLocaleString()} Ar
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => onDeletePayment?.(p.id)}
+                      className="h-5 w-5 text-muted-foreground/50 hover:text-destructive flex-shrink-0"
+                    >
+                      <X size={12} />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-2 text-xs text-muted-foreground flex justify-between">
+                <span>Total payé</span>
+                <span className="font-semibold">
+                  {totalPayments.toLocaleString()} Ar
+                </span>
+              </div>
+            </div>
+          )}
 
           {/* Méthode de paiement */}
           <div className="flex justify-between items-center py-1 border-t border-border pt-2">
@@ -492,8 +565,7 @@ export const PosCart = ({
             }}
             className="h-9 font-semibold text-xs border-input bg-background shadow-xs gap-1.5 hover:bg-muted/50"
           >
-            <Receipt size={14} />
-            Devis
+            <Receipt size={14} /> Devis
           </Button>
           <Button
             type="button"
@@ -505,7 +577,7 @@ export const PosCart = ({
             className="h-9 font-semibold text-xs shadow-sm gap-1.5 bg-primary hover:bg-primary/90 text-background"
           >
             <ReceiptText size={14} />
-            Facture
+            {isEditing ? "Mettre à jour" : "Émettre Facture"}
           </Button>
         </div>
 

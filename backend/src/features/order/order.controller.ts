@@ -63,4 +63,16 @@ export const orderController = {
       data: result,
     });
   }),
+
+  getInvoiceForPos: catchAsync(async (req: Request, res: Response) => {
+    const { id } = invoiceIdParamSchema.parse(req.params);
+    const invoice = await orderService.getInvoiceForPos(id);
+    res.json({ success: true, data: invoice });
+  }),
+
+  getInvoicePaymentsForPos: catchAsync(async (req: Request, res: Response) => {
+    const { id } = invoiceIdParamSchema.parse(req.params);
+    const invoice = await orderService.getInvoicePaymentsForPos(id);
+    res.json({ success: true, data: invoice });
+  }),
 };

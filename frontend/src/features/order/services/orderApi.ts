@@ -9,9 +9,16 @@ import type {
 export const orderApi = {
   createBulkOrder: (data: CreateBulkOrderRequest) =>
     api.post<ApiResponse<BulkOrderResponse>>("/orders/bulk", data).then(unwrap),
-  // À ajouter dans l'objet orderApi existant :
-  getProductsCatalog: () =>
-    api
-      .get<ApiResponse<any>>("/products") // Cible votre route backend
-      .then(unwrap),
+
+  getProductsCatalog: () => api.get<ApiResponse<any>>("/products").then(unwrap),
+
+  updateOrderFromPos: (invoiceId: number, data: any) =>
+    api.patch(`/pos/${invoiceId}/`, data).then(unwrap),
+
+  getOrderForPos: (orderId: number) =>
+    api.get<ApiResponse<any>>(`/pos/invoice/${orderId}/`).then(unwrap),
+
+  // orderApi.ts
+  getInvoicePayments: (invoiceId: number) =>
+    api.get(`/pos/invoice/${invoiceId}/payments`).then(unwrap),
 };

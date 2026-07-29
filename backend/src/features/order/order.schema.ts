@@ -72,7 +72,8 @@ export const updateOrderFromPosSchema = z.object({
   lines: z
     .array(
       z.object({
-        orderId: z.number().int().positive(),
+        orderId: z.number().int().positive().nullable().optional(),
+        productId: z.number().int().positive().nullable().optional(),
         designation: z.string().trim().min(1),
         label: z.string().trim().optional().nullable(),
         dimensions: z.string().trim().optional().nullable(),

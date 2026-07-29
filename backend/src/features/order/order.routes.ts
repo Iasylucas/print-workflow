@@ -16,8 +16,13 @@ router.post(
 );
 
 // order.routes.ts
-router.get("/:id/pos", orderController.getOrderForPos);
+router.get("/:id/", orderController.getOrderForPos);
+
 // order.routes.ts
-router.patch("/:id/pos", orderController.updateOrderFromPos);
+router.patch("/:id/", orderController.updateOrderFromPos);
+
+router.get("/invoice/:id", orderController.getInvoiceForPos);
+
+router.get("/invoice/:id/payments", orderController.getInvoicePaymentsForPos);
 
 export default router;

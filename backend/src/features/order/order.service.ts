@@ -112,6 +112,7 @@ export class OrderService {
   }
 
   // order.service.ts
+  // order.service.ts
   async updateOrderFromPos(
     invoiceId: number,
     data: z.infer<typeof updateOrderFromPosSchema>,
@@ -120,68 +121,21 @@ export class OrderService {
     const invoice = await this.invoiceRepository.findById(invoiceId);
     if (!invoice) throw new NotFoundError("Facture introuvable");
 
-    // 1. Mettre à jour la facture
-    if (
-      data.deposit !== undefined ||
-      data.deliveryPlace !== undefined ||
-      data.expectedDeliveryDate !== undefined
-    ) {
-      await this.orderRepository.updateOrderFromPos(invoiceId, {
-        deposit: data.deposit,
-        deliveryPlace: data.deliveryPlace,
-        expectedDeliveryDate: data.expectedDeliveryDate,
-      });
-    }
+    // ✅ TOUT EN TRANSACTION
+    return await this.orderRepository.updateOrderFromPosTransaction(
+      invoiceId,
+      data,
+      userId,
+      invoice.clientId,
+    );
+  }
 
-    // 2. Mettre à jour les lignes de commande
-    if (data.lines && data.lines.length > 0) {
-      const lineUpdates = data.lines.map((line) => ({
-        orderId: line.orderId,
-        data: {
-          designation: line.designation,
-          label: line.label,
-          dimensions: line.dimensions,
-          quantity: line.quantity,
-          unitPrice: line.unitPrice,
-        },
-      }));
-      await this.orderRepository.updateOrderLines(lineUpdates);
-    }
+  async getInvoiceForPos(invoiceId: number) {
+    return await this.orderRepository.findInvoiceWithFirstNote(invoiceId);
+  }
 
-    // 3. Ajouter un paiement si un nouveau dépôt est effectué
-    if (data.newPayment && data.newPayment.amount > 0) {
-      await this.invoiceRepository.addPayment(
-        invoiceId,
-        userId,
-        data.newPayment,
-      );
-    }
-
-    // 4. Ajouter une note si fournie (pour la première ligne)
-    // order.service.ts – updateOrderFromPos
-    if (data.lines && data.lines.length > 0) {
-      const firstLine = data.lines[0];
-      if (firstLine.atelierNote) {
-        // 1. Récupérer la première note de cette commande
-        const existingNote = await this.orderRepository.getFirstNoteByOrderId(
-          firstLine.orderId,
-        );
-
-        if (existingNote) {
-          // 2. Mettre à jour la note existante
-          await this.orderRepository.updateNote(existingNote.id, {
-            text: firstLine.atelierNote,
-          });
-        } else {
-          // 3. Créer une nouvelle note
-          await this.orderRepository.addNote(firstLine.orderId, userId, {
-            text: firstLine.atelierNote,
-          });
-        }
-      }
-    }
-
-    return await this.invoiceRepository.findById(invoiceId);
+  async getInvoicePaymentsForPos(invoiceId: number) {
+    return await this.orderRepository.findInvoicePayments(invoiceId);
   }
 }
 

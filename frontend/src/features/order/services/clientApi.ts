@@ -2,8 +2,9 @@
 import { api } from "@/lib/axios";
 import { unwrap } from "@/lib/apiUtils";
 import type { ApiResponse } from "@/shared/types/";
-import type { Client } from "../types/clientTypes";
+import type { Client, ClientsQueryParams } from "../types/client.types";
 
 export const clientApi = {
-  getClients: () => api.get<ApiResponse<Client[]>>("/clients").then(unwrap),
+  getClients: (params?: ClientsQueryParams) =>
+    api.get<ApiResponse<Client[]>>("/clients", { params }).then(unwrap),
 };

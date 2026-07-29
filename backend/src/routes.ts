@@ -17,7 +17,7 @@ router.use("/company-info", companyInfoRoutes);
 router.use("/users", userRoutes);
 router.use("/cloudinary", cloudinaryRoutes);
 router.use("/products", productRoutes);
-router.use("/orders", orderRoutes);
+router.use("/pos", orderRoutes);
 router.use("/orders", ordersRoutes);
 router.use("/invoices", invoicesRoutes);
 
