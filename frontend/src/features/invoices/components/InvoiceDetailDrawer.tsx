@@ -87,9 +87,15 @@ export const InvoiceDetailDrawer = ({
 
   if (!invoiceId) return null;
 
+  if (!selectedInvoice) {
+    return null;
+  }
+  const invoiceRemain = selectedInvoice.total - selectedInvoice.deposit;
+  console.log(invoiceRemain);
+
   const handleDeliverToggle = async (checked: boolean) => {
     if (!selectedInvoice) return;
-    if (selectedInvoice.remaining > 0 && checked) {
+    if (invoiceRemain > 0 && checked) {
       toast.error(
         "Impossible de marquer livrée : le solde n'est pas entièrement payé.",
       );
@@ -195,7 +201,7 @@ export const InvoiceDetailDrawer = ({
                       id="delivered-toggle"
                       checked={isDelivered}
                       onCheckedChange={handleDeliverToggle}
-                      disabled={selectedInvoice.remaining > 0}
+                      disabled={invoiceRemain > 0}
                     />
                   </div>
                 </div>
@@ -221,7 +227,7 @@ export const InvoiceDetailDrawer = ({
                     <div>
                       <p className="text-xs text-muted-foreground">Reste</p>
                       <p className="font-bold text-sm text-destructive">
-                        {selectedInvoice.remaining.toLocaleString()} Ar
+                        {invoiceRemain.toLocaleString()} Ar
                       </p>
                     </div>
                   </div>

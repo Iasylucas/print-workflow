@@ -27,7 +27,7 @@ export const invoiceListSelect = {
   },
   total: true,
   deposit: true,
-  remaining: true,
+  // remaining: true,
   deliveryPlace: true,
   expectedDeliveryDate: true,
   isDelivered: true,

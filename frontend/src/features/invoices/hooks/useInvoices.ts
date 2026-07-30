@@ -90,6 +90,7 @@ export const useInvoiceMutations = () => {
       queryClient.invalidateQueries({
         queryKey: [INVOICES_QUERY_KEY, "detail", id],
       });
+      invalidateInvoices();
     },
     onError: (error: Error) => {
       toast.error(error.message || "Échec de l'ajout du paiement");

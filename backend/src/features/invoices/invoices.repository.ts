@@ -98,7 +98,6 @@ export class InvoicesRepository {
   // MISE À JOUR PARTIELLE D'UNE FACTURE
   // ============================================================
   async update(id: number, data: UpdateInvoiceInput) {
-    // Recalculer le remaining si deposit change
     const updateData: any = { ...data };
 
     if (data.deposit !== undefined) {
@@ -110,7 +109,6 @@ export class InvoicesRepository {
 
       if (current) {
         const newDeposit = data.deposit;
-        updateData.remaining = current.total - newDeposit;
         updateData.paymentStatus =
           newDeposit >= current.total
             ? "paid"
@@ -164,16 +162,14 @@ export class InvoicesRepository {
   // AJOUT D'UN PAIEMENT
   // ============================================================
   async addPayment(invoiceId: number, userId: string, data: AddPaymentInput) {
-    // Récupérer la facture pour calculer le nouveau remaining
     const invoice = await prisma.invoice.findUnique({
       where: { id: invoiceId },
-      select: { total: true, deposit: true, remaining: true },
+      select: { total: true, deposit: true },
     });
 
     if (!invoice) throw new Error("Facture introuvable");
 
     const newDeposit = invoice.deposit + data.amount;
-    const newRemaining = invoice.total - newDeposit;
 
     // Créer le paiement
     const payment = await prisma.payment.create({
@@ -206,7 +202,6 @@ export class InvoicesRepository {
       where: { id: invoiceId },
       data: {
         deposit: newDeposit,
-        remaining: newRemaining,
         paymentStatus:
           newDeposit >= invoice.total
             ? "paid"
@@ -241,7 +236,6 @@ export class InvoicesRepository {
     if (!payment) throw new Error("Paiement introuvable");
 
     const newDeposit = payment.invoice.deposit - payment.amount;
-    const newRemaining = payment.invoice.total - newDeposit;
 
     // Supprimer le paiement
     await prisma.payment.delete({
@@ -253,7 +247,6 @@ export class InvoicesRepository {
       where: { id: payment.invoiceId },
       data: {
         deposit: newDeposit,
-        remaining: newRemaining,
         paymentStatus:
           newDeposit >= payment.invoice.total
             ? "paid"

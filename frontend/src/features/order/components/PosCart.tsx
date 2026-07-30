@@ -1,8 +1,18 @@
-import { useState, useMemo } from "react";
+import { useState, useCallback, useMemo } from "react";
+import {
+  ShoppingCart,
+  Plus,
+  X,
+  ChevronDown,
+  ChevronRight,
+  Receipt,
+  ReceiptText,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -10,134 +20,90 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  ShoppingCart,
-  ReceiptText,
-  Receipt,
-  Plus,
-  X,
-  ChevronDown,
-  ChevronRight,
-} from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import type { PosCartLine } from "../types/order.types";
-import type { Client } from "@/features/client/types/client.types";
-import type { Product } from "@/features/product/types/product.types";
 import { ClientSearchCombobox } from "./ClientSearchCombobox";
+import type { PosCartLine, PosFormState } from "./usePosCart";
 
 interface PosCartProps {
-  cartLines: PosCartLine[];
-  clients: Client[];
-  products: Product[];
+  formState: PosFormState;
+  clients: any[];
+  products: any[];
   isLoadingClients: boolean;
-  onAddLine: (line: PosCartLine) => void;
+  isEditing: boolean;
+  payments: any[];
+  isSubmitting: boolean;
+  isValid: boolean;
+  subTotal: number;
+  remaining: number;
+  totalPayments: number;
+  remainingAfterPayments: number;
+  newPaymentAmount: number;
+  onAddLine: () => void;
   onRemoveLine: (index: number) => void;
   onUpdateLine: (index: number, field: keyof PosCartLine, value: any) => void;
-  onValidateOrder: (payload: {
-    documentType: "INVOICE" | "QUOTE";
-    deposit: number;
-    clientId: string;
-    deliveryPlace?: string | null;
-    expectedDeliveryDate?: string | null;
-    paymentMethod?: string;
-  }) => void;
-  isSubmitting: boolean;
-  selectedClientId: string;
-  setSelectedClientId: (value: string) => void;
-  deposit: number;
-  setDeposit: (value: number) => void;
-  documentType: "INVOICE" | "QUOTE";
-  setDocumentType: (value: "INVOICE" | "QUOTE") => void;
-  deliveryPlace: string;
-  setDeliveryPlace: (value: string) => void;
-  expectedDeliveryDate: string;
-  setExpectedDeliveryDate: (value: string) => void;
-  paymentMethod: string;
-  setPaymentMethod: (value: string) => void;
-  onReset: () => void;
-  isEditing?: boolean;
-  payments?: any[];
-  newPaymentAmount?: number;
-  setNewPaymentAmount?: (value: number) => void;
-  onAddPayment?: () => void;
-  onDeletePayment?: (paymentId: number) => void;
+  onUpdateFormField: <K extends keyof PosFormState>(
+    field: K,
+    value: PosFormState[K],
+  ) => void;
+  onValidateOrder: (documentType: "INVOICE" | "QUOTE") => void;
+  onAddPayment: () => void;
+  onDeletePayment: (paymentId: number) => void;
+  onSetNewPaymentAmount: (value: number) => void;
 }
 
+const getLineTotal = (line: PosCartLine) =>
+  (line.quantity || 0) * (line.unitPrice || 0);
+
 export const PosCart = ({
-  cartLines,
+  formState,
   clients,
   products,
   isLoadingClients,
+  isEditing,
+  payments,
+  isSubmitting,
+  isValid,
+  subTotal,
+  remaining,
+  totalPayments,
+  remainingAfterPayments,
+  newPaymentAmount,
   onAddLine,
   onRemoveLine,
   onUpdateLine,
+  onUpdateFormField,
   onValidateOrder,
-  isSubmitting,
-  isEditing = false,
-  payments = [],
-  newPaymentAmount = 0,
-  setNewPaymentAmount,
   onAddPayment,
-  selectedClientId,
-  setSelectedClientId,
-  deposit,
-  setDeposit,
-  documentType,
-  setDocumentType,
-  deliveryPlace,
-  setDeliveryPlace,
-  expectedDeliveryDate,
-  setExpectedDeliveryDate,
-  paymentMethod,
-  setPaymentMethod,
-  onReset,
   onDeletePayment,
+  onSetNewPaymentAmount,
 }: PosCartProps) => {
+  // ─── STATE LOCAL (UI uniquement) ───
   const [expandedNotes, setExpandedNotes] = useState<number[]>([]);
 
-  const subTotal = useMemo(() => {
-    return cartLines.reduce((acc, line) => {
-      const qty = line.quantity || 0;
-      const price = line.unitPrice || 0;
-      return acc + qty * price;
-    }, 0);
-  }, [cartLines]);
-
-  const remaining = useMemo(() => {
-    const res = subTotal - deposit;
-    return res < 0 ? 0 : res;
-  }, [subTotal, deposit]);
-
-  const isValid = selectedClientId && cartLines.length > 0;
-
-  const toggleNote = (index: number) => {
+  const toggleNote = useCallback((index: number) => {
     setExpandedNotes((prev) =>
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
-  };
+  }, []);
 
-  const handleValidate = () => {
-    if (!isValid) return;
-    onValidateOrder({
-      documentType,
-      deposit,
-      clientId: selectedClientId,
-      deliveryPlace: deliveryPlace || null,
-      expectedDeliveryDate: expectedDeliveryDate || null,
-      paymentMethod,
-    });
-    onReset();
-  };
+  // ─── HANDLERS ───
+  const handleProductChange = useCallback(
+    (index: number, val: string) => {
+      const product = products.find((p) => p.id === parseInt(val));
+      onUpdateLine(index, "productId", product?.id || null);
+      if (product) onUpdateLine(index, "designation", product.name);
+    },
+    [products, onUpdateLine],
+  );
 
-  const getLineTotal = (line: PosCartLine) => {
-    const qty = line.quantity || 0;
-    const price = line.unitPrice || 0;
-    return qty * price;
-  };
+  const handleValidate = useCallback(
+    (type: "INVOICE" | "QUOTE") => {
+      if (!isValid) return;
+      onValidateOrder(type);
+    },
+    [isValid, onValidateOrder],
+  );
 
-  const totalPayments = payments.reduce((sum, p) => sum + p.amount, 0);
-  const remainingAfterPayments = subTotal - totalPayments;
-
+  // ─── RENDER ───
   return (
     <div className="rounded-xl border border-border bg-background p-4 shadow-sm h-full flex flex-col font-sans text-xs min-h-[500px]">
       {/* EN-TÊTE */}
@@ -146,7 +112,8 @@ export const PosCart = ({
           <ShoppingCart className="h-4 w-4 text-primary stroke-[2.5]" />
           <h3 className="font-bold text-foreground text-sm">Panier</h3>
           <Badge variant="secondary" className="text-[10px] px-1.5 py-0.5">
-            {cartLines.length} {cartLines.length > 1 ? "lignes" : "ligne"}
+            {formState.cartLines.length}{" "}
+            {formState.cartLines.length > 1 ? "lignes" : "ligne"}
           </Badge>
         </div>
         <Button
@@ -160,15 +127,15 @@ export const PosCart = ({
         </Button>
       </div>
 
-      {/* CLIENT + TYPE + LIVRAISON */}
+      {/* CLIENT + TYPE */}
       <div className="mt-3 grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
           <Label className="text-[11px] font-semibold text-muted-foreground">
-            Client *
+            Client
           </Label>
           <ClientSearchCombobox
-            value={selectedClientId}
-            onChange={setSelectedClientId}
+            value={formState.selectedClientId}
+            onChange={(v) => onUpdateFormField("selectedClientId", v)}
             disabled={isLoadingClients}
             placeholder={
               isLoadingClients ? "Chargement..." : "Sélectionner un client..."
@@ -180,8 +147,10 @@ export const PosCart = ({
             Type de document
           </Label>
           <Select
-            value={documentType}
-            onValueChange={(val) => setDocumentType(val as "INVOICE" | "QUOTE")}
+            value={formState.documentType}
+            onValueChange={(v) =>
+              onUpdateFormField("documentType", v as "INVOICE" | "QUOTE")
+            }
           >
             <SelectTrigger className="h-8 text-xs">
               <SelectValue />
@@ -202,8 +171,8 @@ export const PosCart = ({
           </Label>
           <Input
             type="text"
-            value={deliveryPlace}
-            onChange={(e) => setDeliveryPlace(e.target.value)}
+            value={formState.deliveryPlace}
+            onChange={(e) => onUpdateFormField("deliveryPlace", e.target.value)}
             className="h-8 text-xs"
             placeholder="Adresse"
           />
@@ -214,8 +183,10 @@ export const PosCart = ({
           </Label>
           <Input
             type="date"
-            value={expectedDeliveryDate}
-            onChange={(e) => setExpectedDeliveryDate(e.target.value)}
+            value={formState.expectedDeliveryDate}
+            onChange={(e) =>
+              onUpdateFormField("expectedDeliveryDate", e.target.value)
+            }
             className="h-8 text-xs"
           />
         </div>
@@ -236,18 +207,21 @@ export const PosCart = ({
             <div className="col-span-1 text-center">🗑️</div>
           </div>
 
-          {cartLines.length === 0 ? (
+          {formState.cartLines.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground/60 italic">
               Aucune ligne. Cliquez sur "Ajouter ligne".
             </div>
           ) : (
-            cartLines.map((line, index) => {
+            formState.cartLines.map((line, index) => {
               const isNoteExpanded = expandedNotes.includes(index);
               const lineTotal = getLineTotal(line);
+
               return (
                 <div key={index}>
                   <div
-                    className={`grid grid-cols-12 items-center p-1.5 border-b border-border/60 gap-1 hover:bg-muted/5 transition-colors ${isNoteExpanded ? "bg-muted/10" : ""}`}
+                    className={`grid grid-cols-12 items-center p-1.5 border-b border-border/60 gap-1 hover:bg-muted/5 transition-colors ${
+                      isNoteExpanded ? "bg-muted/10" : ""
+                    }`}
                   >
                     <div className="col-span-1 text-center text-muted-foreground text-[10px]">
                       {index + 1}
@@ -255,14 +229,7 @@ export const PosCart = ({
                     <div className="col-span-2">
                       <Select
                         value={line.productId?.toString() || ""}
-                        onValueChange={(val) => {
-                          const product = products.find(
-                            (p) => p.id === parseInt(val),
-                          );
-                          onUpdateLine(index, "productId", product?.id || null);
-                          if (product)
-                            onUpdateLine(index, "designation", product.name);
-                        }}
+                        onValueChange={(v) => handleProductChange(index, v)}
                       >
                         <SelectTrigger className="h-7 text-xs w-full">
                           <SelectValue placeholder="Produit" />
@@ -368,6 +335,7 @@ export const PosCart = ({
                       </Button>
                     </div>
                   </div>
+
                   {isNoteExpanded && (
                     <div className="grid grid-cols-12 items-start p-1.5 bg-muted/5 border-b border-border/40 gap-1">
                       <div className="col-span-1" />
@@ -391,7 +359,7 @@ export const PosCart = ({
         </div>
       </div>
 
-      {/* SECTION FINANCIÈRE + PAIEMENTS */}
+      {/* SECTION FINANCIÈRE */}
       <div className="pt-3 mt-3 border-t border-border">
         <div className="space-y-2">
           {/* Sous-total */}
@@ -417,7 +385,7 @@ export const PosCart = ({
                   max={remainingAfterPayments}
                   value={newPaymentAmount || ""}
                   onChange={(e) =>
-                    setNewPaymentAmount?.(Number(e.target.value))
+                    onSetNewPaymentAmount(Number(e.target.value))
                   }
                   className="h-7 w-32 text-xs text-right font-semibold"
                   placeholder="0"
@@ -444,8 +412,10 @@ export const PosCart = ({
                   type="number"
                   min={0}
                   max={subTotal}
-                  value={deposit || ""}
-                  onChange={(e) => setDeposit(Number(e.target.value))}
+                  value={formState.deposit || ""}
+                  onChange={(e) =>
+                    onUpdateFormField("deposit", Number(e.target.value))
+                  }
                   className="h-7 w-32 text-xs text-right font-semibold"
                   placeholder="0"
                 />
@@ -469,31 +439,7 @@ export const PosCart = ({
             </span>
           </div>
 
-          {/* Historique des paiements (mode édition) */}
-          {/* {isEditing && payments.length > 0 && (
-            <div className="mt-2 p-2 bg-muted/20 rounded-md">
-              <p className="text-xs font-semibold text-muted-foreground">
-                Historique des paiements
-              </p>
-              <div className="space-y-1 mt-1">
-                {payments.map((p, i) => (
-                  <div key={i} className="flex justify-between text-xs">
-                    <span>{p.amount.toLocaleString()} Ar</span>
-                    <span className="text-muted-foreground">
-                      {new Date(p.date).toLocaleDateString()}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-2 text-xs text-muted-foreground">
-                Total payé :{" "}
-                <span className="font-semibold">
-                  {totalPayments.toLocaleString()} Ar
-                </span>
-              </div>
-            </div>
-          )} */}
-
+          {/* Historique paiements */}
           {isEditing && payments.length > 0 && (
             <div className="mt-2 p-2 bg-muted/20 rounded-md">
               <p className="text-xs font-semibold text-muted-foreground">
@@ -517,7 +463,7 @@ export const PosCart = ({
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => onDeletePayment?.(p.id)}
+                      onClick={() => onDeletePayment(p.id)}
                       className="h-5 w-5 text-muted-foreground/50 hover:text-destructive flex-shrink-0"
                     >
                       <X size={12} />
@@ -539,7 +485,10 @@ export const PosCart = ({
             <span className="font-medium text-muted-foreground">
               Mode de paiement
             </span>
-            <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+            <Select
+              value={formState.paymentMethod}
+              onValueChange={(v) => onUpdateFormField("paymentMethod", v)}
+            >
               <SelectTrigger className="h-7 w-40 text-xs">
                 <SelectValue />
               </SelectTrigger>
@@ -559,10 +508,7 @@ export const PosCart = ({
             type="button"
             variant="outline"
             disabled={!isValid || isSubmitting}
-            onClick={() => {
-              setDocumentType("QUOTE");
-              handleValidate();
-            }}
+            onClick={() => handleValidate("QUOTE")}
             className="h-9 font-semibold text-xs border-input bg-background shadow-xs gap-1.5 hover:bg-muted/50"
           >
             <Receipt size={14} /> Devis
@@ -570,10 +516,7 @@ export const PosCart = ({
           <Button
             type="button"
             disabled={!isValid || isSubmitting}
-            onClick={() => {
-              setDocumentType("INVOICE");
-              handleValidate();
-            }}
+            onClick={() => handleValidate("INVOICE")}
             className="h-9 font-semibold text-xs shadow-sm gap-1.5 bg-primary hover:bg-primary/90 text-background"
           >
             <ReceiptText size={14} />

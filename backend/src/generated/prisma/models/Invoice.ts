@@ -30,7 +30,6 @@ export type InvoiceAvgAggregateOutputType = {
   id: number | null
   total: number | null
   deposit: number | null
-  remaining: number | null
   companyInfoId: number | null
   originalQuoteId: number | null
 }
@@ -39,7 +38,6 @@ export type InvoiceSumAggregateOutputType = {
   id: number | null
   total: number | null
   deposit: number | null
-  remaining: number | null
   companyInfoId: number | null
   originalQuoteId: number | null
 }
@@ -51,7 +49,6 @@ export type InvoiceMinAggregateOutputType = {
   clientId: string | null
   total: number | null
   deposit: number | null
-  remaining: number | null
   deliveryPlace: string | null
   expectedDeliveryDate: Date | null
   isDelivered: boolean | null
@@ -71,7 +68,6 @@ export type InvoiceMaxAggregateOutputType = {
   clientId: string | null
   total: number | null
   deposit: number | null
-  remaining: number | null
   deliveryPlace: string | null
   expectedDeliveryDate: Date | null
   isDelivered: boolean | null
@@ -91,7 +87,6 @@ export type InvoiceCountAggregateOutputType = {
   clientId: number
   total: number
   deposit: number
-  remaining: number
   deliveryPlace: number
   expectedDeliveryDate: number
   isDelivered: number
@@ -110,7 +105,6 @@ export type InvoiceAvgAggregateInputType = {
   id?: true
   total?: true
   deposit?: true
-  remaining?: true
   companyInfoId?: true
   originalQuoteId?: true
 }
@@ -119,7 +113,6 @@ export type InvoiceSumAggregateInputType = {
   id?: true
   total?: true
   deposit?: true
-  remaining?: true
   companyInfoId?: true
   originalQuoteId?: true
 }
@@ -131,7 +124,6 @@ export type InvoiceMinAggregateInputType = {
   clientId?: true
   total?: true
   deposit?: true
-  remaining?: true
   deliveryPlace?: true
   expectedDeliveryDate?: true
   isDelivered?: true
@@ -151,7 +143,6 @@ export type InvoiceMaxAggregateInputType = {
   clientId?: true
   total?: true
   deposit?: true
-  remaining?: true
   deliveryPlace?: true
   expectedDeliveryDate?: true
   isDelivered?: true
@@ -171,7 +162,6 @@ export type InvoiceCountAggregateInputType = {
   clientId?: true
   total?: true
   deposit?: true
-  remaining?: true
   deliveryPlace?: true
   expectedDeliveryDate?: true
   isDelivered?: true
@@ -278,7 +268,6 @@ export type InvoiceGroupByOutputType = {
   clientId: string
   total: number
   deposit: number
-  remaining: number
   deliveryPlace: string | null
   expectedDeliveryDate: Date | null
   isDelivered: boolean
@@ -321,7 +310,6 @@ export type InvoiceWhereInput = {
   clientId?: Prisma.StringFilter<"Invoice"> | string
   total?: Prisma.IntFilter<"Invoice"> | number
   deposit?: Prisma.IntFilter<"Invoice"> | number
-  remaining?: Prisma.IntFilter<"Invoice"> | number
   deliveryPlace?: Prisma.StringNullableFilter<"Invoice"> | string | null
   expectedDeliveryDate?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   isDelivered?: Prisma.BoolFilter<"Invoice"> | boolean
@@ -347,7 +335,6 @@ export type InvoiceOrderByWithRelationInput = {
   clientId?: Prisma.SortOrder
   total?: Prisma.SortOrder
   deposit?: Prisma.SortOrder
-  remaining?: Prisma.SortOrder
   deliveryPlace?: Prisma.SortOrderInput | Prisma.SortOrder
   expectedDeliveryDate?: Prisma.SortOrderInput | Prisma.SortOrder
   isDelivered?: Prisma.SortOrder
@@ -377,7 +364,6 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   clientId?: Prisma.StringFilter<"Invoice"> | string
   total?: Prisma.IntFilter<"Invoice"> | number
   deposit?: Prisma.IntFilter<"Invoice"> | number
-  remaining?: Prisma.IntFilter<"Invoice"> | number
   deliveryPlace?: Prisma.StringNullableFilter<"Invoice"> | string | null
   expectedDeliveryDate?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   isDelivered?: Prisma.BoolFilter<"Invoice"> | boolean
@@ -402,7 +388,6 @@ export type InvoiceOrderByWithAggregationInput = {
   clientId?: Prisma.SortOrder
   total?: Prisma.SortOrder
   deposit?: Prisma.SortOrder
-  remaining?: Prisma.SortOrder
   deliveryPlace?: Prisma.SortOrderInput | Prisma.SortOrder
   expectedDeliveryDate?: Prisma.SortOrderInput | Prisma.SortOrder
   isDelivered?: Prisma.SortOrder
@@ -430,7 +415,6 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   clientId?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   total?: Prisma.IntWithAggregatesFilter<"Invoice"> | number
   deposit?: Prisma.IntWithAggregatesFilter<"Invoice"> | number
-  remaining?: Prisma.IntWithAggregatesFilter<"Invoice"> | number
   deliveryPlace?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   expectedDeliveryDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
   isDelivered?: Prisma.BoolWithAggregatesFilter<"Invoice"> | boolean
@@ -448,7 +432,6 @@ export type InvoiceCreateInput = {
   date?: Date | string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -471,7 +454,6 @@ export type InvoiceUncheckedCreateInput = {
   clientId: string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -491,7 +473,6 @@ export type InvoiceUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -514,7 +495,6 @@ export type InvoiceUncheckedUpdateInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -536,7 +516,6 @@ export type InvoiceCreateManyInput = {
   clientId: string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -554,7 +533,6 @@ export type InvoiceUpdateManyMutationInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -571,7 +549,6 @@ export type InvoiceUncheckedUpdateManyInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -606,7 +583,6 @@ export type InvoiceCountOrderByAggregateInput = {
   clientId?: Prisma.SortOrder
   total?: Prisma.SortOrder
   deposit?: Prisma.SortOrder
-  remaining?: Prisma.SortOrder
   deliveryPlace?: Prisma.SortOrder
   expectedDeliveryDate?: Prisma.SortOrder
   isDelivered?: Prisma.SortOrder
@@ -623,7 +599,6 @@ export type InvoiceAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   total?: Prisma.SortOrder
   deposit?: Prisma.SortOrder
-  remaining?: Prisma.SortOrder
   companyInfoId?: Prisma.SortOrder
   originalQuoteId?: Prisma.SortOrder
 }
@@ -635,7 +610,6 @@ export type InvoiceMaxOrderByAggregateInput = {
   clientId?: Prisma.SortOrder
   total?: Prisma.SortOrder
   deposit?: Prisma.SortOrder
-  remaining?: Prisma.SortOrder
   deliveryPlace?: Prisma.SortOrder
   expectedDeliveryDate?: Prisma.SortOrder
   isDelivered?: Prisma.SortOrder
@@ -655,7 +629,6 @@ export type InvoiceMinOrderByAggregateInput = {
   clientId?: Prisma.SortOrder
   total?: Prisma.SortOrder
   deposit?: Prisma.SortOrder
-  remaining?: Prisma.SortOrder
   deliveryPlace?: Prisma.SortOrder
   expectedDeliveryDate?: Prisma.SortOrder
   isDelivered?: Prisma.SortOrder
@@ -672,7 +645,6 @@ export type InvoiceSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   total?: Prisma.SortOrder
   deposit?: Prisma.SortOrder
-  remaining?: Prisma.SortOrder
   companyInfoId?: Prisma.SortOrder
   originalQuoteId?: Prisma.SortOrder
 }
@@ -883,7 +855,6 @@ export type InvoiceCreateWithoutClientInput = {
   date?: Date | string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -904,7 +875,6 @@ export type InvoiceUncheckedCreateWithoutClientInput = {
   date?: Date | string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -955,7 +925,6 @@ export type InvoiceScalarWhereInput = {
   clientId?: Prisma.StringFilter<"Invoice"> | string
   total?: Prisma.IntFilter<"Invoice"> | number
   deposit?: Prisma.IntFilter<"Invoice"> | number
-  remaining?: Prisma.IntFilter<"Invoice"> | number
   deliveryPlace?: Prisma.StringNullableFilter<"Invoice"> | string | null
   expectedDeliveryDate?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   isDelivered?: Prisma.BoolFilter<"Invoice"> | boolean
@@ -973,7 +942,6 @@ export type InvoiceCreateWithoutCreatedByInput = {
   date?: Date | string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -995,7 +963,6 @@ export type InvoiceUncheckedCreateWithoutCreatedByInput = {
   clientId: string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1040,7 +1007,6 @@ export type InvoiceCreateWithoutCompanyInfoInput = {
   date?: Date | string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1062,7 +1028,6 @@ export type InvoiceUncheckedCreateWithoutCompanyInfoInput = {
   clientId: string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1107,7 +1072,6 @@ export type InvoiceCreateWithoutOriginalQuoteInput = {
   date?: Date | string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1129,7 +1093,6 @@ export type InvoiceUncheckedCreateWithoutOriginalQuoteInput = {
   clientId: string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1164,7 +1127,6 @@ export type InvoiceUpdateWithoutOriginalQuoteInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1186,7 +1148,6 @@ export type InvoiceUncheckedUpdateWithoutOriginalQuoteInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1205,7 +1166,6 @@ export type InvoiceCreateWithoutPaymentsInput = {
   date?: Date | string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1227,7 +1187,6 @@ export type InvoiceUncheckedCreateWithoutPaymentsInput = {
   clientId: string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1262,7 +1221,6 @@ export type InvoiceUpdateWithoutPaymentsInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1284,7 +1242,6 @@ export type InvoiceUncheckedUpdateWithoutPaymentsInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1303,7 +1260,6 @@ export type InvoiceCreateWithoutOrdersInput = {
   date?: Date | string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1325,7 +1281,6 @@ export type InvoiceUncheckedCreateWithoutOrdersInput = {
   clientId: string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1360,7 +1315,6 @@ export type InvoiceUpdateWithoutOrdersInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1382,7 +1336,6 @@ export type InvoiceUncheckedUpdateWithoutOrdersInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1402,7 +1355,6 @@ export type InvoiceCreateManyClientInput = {
   date?: Date | string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1420,7 +1372,6 @@ export type InvoiceUpdateWithoutClientInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1441,7 +1392,6 @@ export type InvoiceUncheckedUpdateWithoutClientInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1462,7 +1412,6 @@ export type InvoiceUncheckedUpdateManyWithoutClientInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1482,7 +1431,6 @@ export type InvoiceCreateManyCreatedByInput = {
   clientId: string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1499,7 +1447,6 @@ export type InvoiceUpdateWithoutCreatedByInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1521,7 +1468,6 @@ export type InvoiceUncheckedUpdateWithoutCreatedByInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1542,7 +1488,6 @@ export type InvoiceUncheckedUpdateManyWithoutCreatedByInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1561,7 +1506,6 @@ export type InvoiceCreateManyCompanyInfoInput = {
   clientId: string
   total: number
   deposit?: number
-  remaining: number
   deliveryPlace?: string | null
   expectedDeliveryDate?: Date | string | null
   isDelivered?: boolean
@@ -1578,7 +1522,6 @@ export type InvoiceUpdateWithoutCompanyInfoInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1600,7 +1543,6 @@ export type InvoiceUncheckedUpdateWithoutCompanyInfoInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1621,7 +1563,6 @@ export type InvoiceUncheckedUpdateManyWithoutCompanyInfoInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   deposit?: Prisma.IntFieldUpdateOperationsInput | number
-  remaining?: Prisma.IntFieldUpdateOperationsInput | number
   deliveryPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expectedDeliveryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isDelivered?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1680,7 +1621,6 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   clientId?: boolean
   total?: boolean
   deposit?: boolean
-  remaining?: boolean
   deliveryPlace?: boolean
   expectedDeliveryDate?: boolean
   isDelivered?: boolean
@@ -1707,7 +1647,6 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   clientId?: boolean
   total?: boolean
   deposit?: boolean
-  remaining?: boolean
   deliveryPlace?: boolean
   expectedDeliveryDate?: boolean
   isDelivered?: boolean
@@ -1731,7 +1670,6 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   clientId?: boolean
   total?: boolean
   deposit?: boolean
-  remaining?: boolean
   deliveryPlace?: boolean
   expectedDeliveryDate?: boolean
   isDelivered?: boolean
@@ -1755,7 +1693,6 @@ export type InvoiceSelectScalar = {
   clientId?: boolean
   total?: boolean
   deposit?: boolean
-  remaining?: boolean
   deliveryPlace?: boolean
   expectedDeliveryDate?: boolean
   isDelivered?: boolean
@@ -1768,7 +1705,7 @@ export type InvoiceSelectScalar = {
   updatedAt?: boolean
 }
 
-export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "number" | "date" | "clientId" | "total" | "deposit" | "remaining" | "deliveryPlace" | "expectedDeliveryDate" | "isDelivered" | "paymentStatus" | "companyInfoId" | "originalQuoteId" | "createdById" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
+export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "number" | "date" | "clientId" | "total" | "deposit" | "deliveryPlace" | "expectedDeliveryDate" | "isDelivered" | "paymentStatus" | "companyInfoId" | "originalQuoteId" | "createdById" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
 export type InvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   companyInfo?: boolean | Prisma.CompanyInfoDefaultArgs<ExtArgs>
@@ -1808,7 +1745,6 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     clientId: string
     total: number
     deposit: number
-    remaining: number
     deliveryPlace: string | null
     expectedDeliveryDate: Date | null
     isDelivered: boolean
@@ -2254,7 +2190,6 @@ export interface InvoiceFieldRefs {
   readonly clientId: Prisma.FieldRef<"Invoice", 'String'>
   readonly total: Prisma.FieldRef<"Invoice", 'Int'>
   readonly deposit: Prisma.FieldRef<"Invoice", 'Int'>
-  readonly remaining: Prisma.FieldRef<"Invoice", 'Int'>
   readonly deliveryPlace: Prisma.FieldRef<"Invoice", 'String'>
   readonly expectedDeliveryDate: Prisma.FieldRef<"Invoice", 'DateTime'>
   readonly isDelivered: Prisma.FieldRef<"Invoice", 'Boolean'>

@@ -8,7 +8,7 @@ import type {
 
 export const orderApi = {
   createBulkOrder: (data: CreateBulkOrderRequest) =>
-    api.post<ApiResponse<BulkOrderResponse>>("/orders/bulk", data).then(unwrap),
+    api.post<ApiResponse<BulkOrderResponse>>("/pos/bulk", data).then(unwrap),
 
   getProductsCatalog: () => api.get<ApiResponse<any>>("/products").then(unwrap),
 

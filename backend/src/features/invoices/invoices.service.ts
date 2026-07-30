@@ -77,12 +77,12 @@ export class InvoicesService {
   // ============================================================
   async addPayment(invoiceId: number, userId: string, data: AddPaymentInput) {
     const invoice = await this.getInvoiceById(invoiceId);
-
+    const invoiceRemaining = invoice.total - invoice.deposit;
     if (invoice.paymentStatus === "paid") {
       throw new BadRequestError(INVOICE_ERRORS.ALREADY_PAID);
     }
 
-    if (data.amount > invoice.remaining) {
+    if (data.amount > invoiceRemaining) {
       throw new BadRequestError(INVOICE_ERRORS.PAYMENT_EXCEEDS_REMAINING);
     }
 

@@ -99,7 +99,7 @@ export class OrderRepository {
             createdById: currentUserId,
             total: calculatedTotal,
             deposit: data.deposit,
-            remaining: calculatedTotal - data.deposit,
+            // remaining: calculatedTotal - data.deposit,
             deliveryPlace: data.deliveryPlace,
             expectedDeliveryDate: data.expectedDeliveryDate,
             paymentStatus:
@@ -215,7 +215,7 @@ export class OrderRepository {
             number: true,
             total: true,
             deposit: true,
-            remaining: true,
+            // remaining: true,
             paymentStatus: true,
             isDelivered: true,
             payments: {
@@ -285,7 +285,7 @@ export class OrderRepository {
         },
         total: true,
         deposit: true,
-        remaining: true,
+        // remaining: true,
         deliveryPlace: true,
         expectedDeliveryDate: true,
         isDelivered: true,
@@ -445,7 +445,7 @@ export class OrderRepository {
         number: true,
         total: true,
         deposit: true,
-        remaining: true,
+        // remaining: true,
         paymentStatus: true,
       },
     });
@@ -523,7 +523,6 @@ export class OrderRepository {
         await tx.invoice.update({
           where: { id: invoiceId },
           data: {
-            deposit: data.deposit,
             deliveryPlace: data.deliveryPlace,
             expectedDeliveryDate: data.expectedDeliveryDate,
           },
@@ -614,7 +613,7 @@ export class OrderRepository {
           number: true,
           total: true,
           deposit: true,
-          remaining: true,
+          // remaining: true,
           paymentStatus: true,
           isDelivered: true,
           clientId: true,

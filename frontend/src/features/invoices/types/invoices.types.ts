@@ -22,7 +22,7 @@ export type Invoice = {
   };
   total: number;
   deposit: number;
-  remaining: number;
+  // remaining: number;
   deliveryPlace: string | null;
   expectedDeliveryDate: string | null;
   isDelivered: boolean;

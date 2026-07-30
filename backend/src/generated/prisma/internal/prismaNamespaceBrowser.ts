@@ -207,7 +207,6 @@ export const InvoiceScalarFieldEnum = {
   clientId: 'clientId',
   total: 'total',
   deposit: 'deposit',
-  remaining: 'remaining',
   deliveryPlace: 'deliveryPlace',
   expectedDeliveryDate: 'expectedDeliveryDate',
   isDelivered: 'isDelivered',

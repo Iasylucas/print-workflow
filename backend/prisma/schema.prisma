@@ -164,7 +164,7 @@ model Invoice {
 
   total     Int
   deposit   Int @default(0)
-  remaining Int
+  // remaining Int
 
   deliveryPlace       String?
   expectedDeliveryDate DateTime?

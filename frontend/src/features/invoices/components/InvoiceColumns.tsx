@@ -65,7 +65,10 @@ export const createInvoiceColumns = ({
   {
     accessorKey: "remaining",
     header: "Reste (Ar)",
-    cell: ({ row }) => row.original.remaining.toLocaleString(),
+    cell: ({ row }) => {
+      const remaining = row.original.total - row.original.deposit;
+      return remaining;
+    },
   },
   {
     accessorKey: "paymentStatus",
