@@ -34,8 +34,9 @@ export const InvoiceSearchModal = ({
     limit,
     search: search || undefined,
     isDelivered: false,
+    sortBy: "createdAt",
+    sortOrder: "desc",
   });
-
   const invoices = data?.data || [];
   const totalPages = data?.meta.totalPages || 1;
   const currentPage = data?.meta.page || 1;
@@ -122,7 +123,7 @@ export const InvoiceSearchModal = ({
                 totalPages={totalPages}
                 limit={limit}
                 goToPage={setPage}
-                onRowClick={(row) => handleView(row.original)}
+                onRowClick={(row) => handleView(row)}
               />
             </div>
           )}

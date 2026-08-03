@@ -41,7 +41,8 @@ export const ClientsPage = () => {
   });
 
   // Données et mutations
-  const { data, isLoading, isError, refetch } = useClients(queryParams);
+  // const { data, isLoading, isError, refetch } = useClients(queryParams);
+  const { data, isLoading } = useClients(queryParams);
   const { deleteMutation } = useClientMutations();
 
   // Gestion des filtres

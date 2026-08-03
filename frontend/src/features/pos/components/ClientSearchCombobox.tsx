@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronsUpDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Client } from "@/features/client/types/client.types";
 
 interface ClientSearchComboboxProps {
   value: string;
@@ -34,7 +35,7 @@ export const ClientSearchCombobox = ({
   const [open, setOpen] = useState(false);
   const [localSearch, setLocalSearch] = useState("");
   const [prevSearch, setPrevSearch] = useState("");
-  const [selectedClient, setSelectedClient] = useState(null);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
 
   // Debounce
   useEffect(() => {
@@ -45,8 +46,11 @@ export const ClientSearchCombobox = ({
   }, [localSearch, prevSearch]);
 
   const { data: clientsData, isLoading } = useClients({
-    search: prevSearch || undefined,
+    page: 1,
     limit: 20,
+    search: prevSearch || "",
+    sortBy: "createdAt",
+    sortOrder: "desc",
   });
   const clients = useMemo(() => clientsData?.data || [], [clientsData]);
 

@@ -1,5 +1,5 @@
-import type z from "zod";
-import type { createClientSchema } from "../schema/client.schema";
+// import type z from "zod";
+// import type { createClientSchema } from "../schema/client.schema";
 
 // types exportés pour le frontend (simplifiés, sans Prisma)
 export type Client = {
@@ -14,11 +14,11 @@ export type Client = {
 };
 
 export type ClientsQueryParams = {
-  page?: number;
-  limit?: number;
-  search?: string;
-  sortBy?: "createdAt" | "lastName" | "firstName";
-  sortOrder?: "asc" | "desc";
+  page: number;
+  limit: number;
+  search: string;
+  sortBy: "createdAt" | "lastName" | "firstName";
+  sortOrder: "asc" | "desc";
 };
 
 export type PaginatedClientsResponse = {
@@ -35,5 +35,11 @@ export type PaginatedClientsResponse = {
   };
 };
 
-export type CreateClientRequest = z.infer<typeof createClientSchema>;
+export type CreateClientRequest = {
+  firstName: string;
+  lastName?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+};
 export type UpdateClientRequest = Partial<CreateClientRequest>;

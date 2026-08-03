@@ -5,10 +5,11 @@ import { firstNameSchema } from "@/shared/schemas";
 export const createClientSchema = z.object({
   firstName: firstNameSchema, // ✅ requis (grace à firstNameSchema)
   lastName: z.string().trim().optional().nullable(),
-  email: z.preprocess(
-    (val) => (val === "" ? undefined : val),
-    z.email("Email invalide").optional().nullable(),
-  ),
+  email: z
+    .email("Email invalide")
+    .optional()
+    .nullable()
+    .transform((val) => (val === "" ? undefined : val)),
   phone: z.string().trim().optional().nullable(),
   address: z.string().trim().optional().nullable(),
 });
