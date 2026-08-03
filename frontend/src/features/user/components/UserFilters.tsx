@@ -27,7 +27,6 @@ export const UserFilters = ({ filters, onFilterChange }: UserFiltersProps) => {
     setLocalSearch(filters.search || "");
     setPrevSearch(filters.search || "");
   }
-
   useEffect(() => {
     const timer = setTimeout(() => {
       if (localSearch !== (filters.search || "")) {

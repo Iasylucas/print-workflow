@@ -11,12 +11,11 @@ export const RootLayout = () => {
     <TooltipProvider>
       <SidebarProvider className="flex flex-col min-h-screen w-full bg-background">
         <Header />
-
         <div className="flex flex-1 w-full min-h-0 relative">
           <AppSidebar />
 
           <SidebarInset className="p-4 sm:p-6 lg:p-10 lg:pt-12 transition-all duration-300 bg-background">
-            <main className="flex-1 w-full max-w-[1600px] mx-auto">
+            <main className="flex-1 w-full max-w-[1700px] mx-auto">
               <Outlet />
             </main>
           </SidebarInset>

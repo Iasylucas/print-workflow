@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/pagination";
 import { TableSkeleton } from "./TableSkeleton";
 import { EmptyState } from "./EmptyState";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData> {
   table: TanStackTable<TData>;
@@ -30,6 +31,7 @@ interface DataTableProps<TData> {
   totalPages: number;
   limit: number;
   goToPage: (page: number) => void;
+  onRowClick?: (row: TData) => void;
 }
 
 export const DataTable = <TData,>({
@@ -42,6 +44,7 @@ export const DataTable = <TData,>({
   totalPages,
   limit,
   goToPage,
+  onRowClick,
 }: DataTableProps<TData>) => {
   const columnsCount = table.getAllColumns().length;
   const rows = table.getRowModel().rows;
@@ -84,7 +87,14 @@ export const DataTable = <TData,>({
             rows.map((row) => (
               <TableRow
                 key={row.id}
-                className="hover:bg-muted/30 transition-colors"
+                onClick={() => onRowClick?.(row.original)}
+                className={
+                  (cn(
+                    onRowClick &&
+                      "cursor-pointer hover:bg-muted/50 transition-colors",
+                  ),
+                  "hover:bg-muted/30 transition-colors")
+                }
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="py-2.5 align-middle">

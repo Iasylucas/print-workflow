@@ -5,3 +5,4 @@ export * from "./phone.schema.js";
 export * from "./token.schema.js";
 export * from "./image.schema.js";
 export * from "./userRole.schema.js";
+export * from "./address.schema.js";

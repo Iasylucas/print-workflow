@@ -11,16 +11,14 @@ import {
 // 3. Schéma de création d'un client
 export const createClientSchema = z.object({
   id: z.uuid().default(() => uuidv7()),
-  firstName: firstNameSchema,
-  lastName: lastNameSchema,
-  email: emailOptionalSchema,
-  phone: phoneOptionalSchema,
-  address: z
-    .string()
-    .trim()
-    .min(5, "Address must be at least 5 characters")
-    .nullable()
-    .optional(),
+  firstName: firstNameSchema, // ✅ requis (grace à firstNameSchema)
+  lastName: z.string().trim().optional().nullable(),
+  email: z.preprocess(
+    (val) => (val === "" ? undefined : val),
+    z.email("Email invalide").optional().nullable(),
+  ),
+  phone: z.string().trim().optional().nullable(),
+  address: z.string().trim().optional().nullable(),
 });
 
 // 4. Schéma de mise à jour (tous les champs optionnels)
@@ -32,6 +30,6 @@ export const updateClientSchema = createClientSchema
 export const clientQuerySchema = paginationSchema.extend({
   email: emailOptionalSchema,
   id: z.uuid().optional(),
-  search: z.string().trim().min(1).optional(),
+  search: z.string().trim().optional(),
   sortBy: z.enum(["createdAt", "lastName", "firstName"]).default("createdAt"),
 });
