@@ -64,7 +64,7 @@ export const createBulkOrderSchema = z.object({
 // order.schema.ts
 export const updateOrderFromPosSchema = z.object({
   // Mise à jour de la facture
-  deposit: z.number().int().nonnegative().optional(),
+  // deposit: z.number().int().nonnegative().optional(),
   deliveryPlace: z.string().trim().optional().nullable(),
   expectedDeliveryDate: z.coerce.date().optional().nullable(),
 

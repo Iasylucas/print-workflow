@@ -1,6 +1,6 @@
 // frontend/src/features/orders/components/OrderStatusBadge.tsx
 import { Badge } from "@/components/ui/badge";
-import type { OrderStatus } from "../types/orders.types";
+import type { OrderStatus } from "../schema/orders.schema";
 
 interface OrderStatusBadgeProps {
   status: OrderStatus;

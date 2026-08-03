@@ -1,3 +1,4 @@
+import type z from "zod";
 import type { createClientSchema } from "../schema/client.schema";
 
 // types exportés pour le frontend (simplifiés, sans Prisma)

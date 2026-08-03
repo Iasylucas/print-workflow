@@ -1,41 +1,22 @@
-import { useState, useCallback, useMemo, useRef } from "react";
-import { useProductsCatalog } from "../hooks/useOrders";
-import { useClients } from "../hooks/useClient";
-import { useInvoiceForPos } from "../hooks/useOrders";
-import { useOrderMutations, useInvoicePayments } from "../hooks/useOrders";
+import { useState, useCallback, useMemo, useRef, useEffect } from "react";
+import { useProductsCatalog } from "./usePos";
+import { useClients } from "@/features/client/hooks/useClients";
+import { useInvoiceForPos } from "./usePos";
+import { useOrderMutations, useInvoicePayments } from "./usePos";
 import { useInvoiceMutations } from "@/features/invoices/hooks/useInvoices";
-
-export interface PosCartLine {
-  id?: number;
-  designation: string;
-  productId: number | null;
-  dimensions: string;
-  label: string;
-  quantity: number;
-  unitPrice: number;
-  atelierNote: string;
-}
-
-export interface PosFormState {
-  selectedClientId: string;
-  deposit: number;
-  documentType: "INVOICE" | "QUOTE";
-  deliveryPlace: string;
-  expectedDeliveryDate: string;
-  paymentMethod: string;
-  cartLines: PosCartLine[];
-}
-
-export type PendingAction =
-  | { type: "newOrder" }
-  | { type: "cancelEdit" }
-  | { type: "deletePayment"; paymentId: number };
+import type {
+  PendingAction,
+  PosCartLine,
+  PosFormState,
+} from "../types/pos.types";
+import type { Invoice } from "@/features/invoices/types/invoices.types";
 
 export const usePosCart = () => {
   // ─── MODE / NAVIGATION ───
   const [isEditing, setIsEditing] = useState(false);
   const [editingInvoiceId, setEditingInvoiceId] = useState<number | null>(null);
   const [loadingInvoiceId, setLoadingInvoiceId] = useState<number | null>(null);
+  const [lastLoadedId, setLastLoadedId] = useState<number | null>(null);
 
   const currentInvoiceId = loadingInvoiceId || editingInvoiceId;
 
@@ -48,10 +29,9 @@ export const usePosCart = () => {
   const { data: paymentsData, refetch: refetchPayments } = useInvoicePayments(
     isEditing ? editingInvoiceId : null,
   );
-
   const clients = clientsData?.data || [];
   const products = catalogData?.data || [];
-  const payments = paymentsData?.payments || [];
+  const payments = useMemo(() => paymentsData?.payments || [], [paymentsData]);
 
   // ─── FORM STATE (centralisé) ───
   const [formState, setFormState] = useState<PosFormState>({
@@ -73,10 +53,9 @@ export const usePosCart = () => {
   const [pendingAction, setPendingAction] = useState<PendingAction | null>(
     null,
   );
-  const confirmActionRef = useRef<(() => void) | null>(null);
 
   // ─── MUTATIONS ───
-  const { createBulkOrderMutation, updateOrderFromPosMutation } =
+  const { createBulkOrderMutation, updateInvoiceFromPosMutation } =
     useOrderMutations();
   const { addPaymentMutation, deletePaymentMutation } = useInvoiceMutations();
 
@@ -111,7 +90,7 @@ export const usePosCart = () => {
 
   const isSubmitting =
     createBulkOrderMutation.isPending ||
-    updateOrderFromPosMutation.isPending ||
+    updateInvoiceFromPosMutation.isPending ||
     addPaymentMutation.isPending;
 
   // ─── HELPERS ───
@@ -124,7 +103,11 @@ export const usePosCart = () => {
   );
 
   const updateCartLine = useCallback(
-    (index: number, field: keyof PosCartLine, value: any) => {
+    (
+      index: number,
+      field: keyof PosCartLine,
+      value: PosCartLine[keyof PosCartLine],
+    ) => {
       setFormState((prev) => {
         const next = [...prev.cartLines];
         next[index] = { ...next[index], [field]: value };
@@ -150,20 +133,21 @@ export const usePosCart = () => {
     setLoadingInvoiceId(null);
     setNewPaymentAmount(0);
     setHasUnsavedChanges(false);
-    initializedRef.current = null;
+    setLastLoadedId(null);
   }, []);
 
-  // ─── CHARGEMENT FACTURE (init unique, pas de sync auto) ───
-  const initializedRef = useRef<number | null>(null);
+  // ─── CHARGEMENT FACTURE (init unique via useEffect, sans ref) ───
+  const lastLoadedIdRef = useRef(lastLoadedId);
 
-  if (
-    loadingInvoiceId &&
-    orderDetail &&
-    initializedRef.current !== loadingInvoiceId
-  ) {
-    initializedRef.current = loadingInvoiceId;
+  useEffect(() => {
+    lastLoadedIdRef.current = lastLoadedId;
+  }, [lastLoadedId]);
 
-    const lines: PosCartLine[] = orderDetail.orders.map((order: any) => ({
+  useEffect(() => {
+    if (!loadingInvoiceId || !orderDetail) return;
+    if (lastLoadedIdRef.current === loadingInvoiceId) return;
+
+    const lines: PosCartLine[] = orderDetail.orders.map((order) => ({
       id: order.id,
       designation: order.designation,
       productId: order.product?.id || null,
@@ -177,20 +161,21 @@ export const usePosCart = () => {
     setFormState({
       selectedClientId: String(orderDetail.clientId ?? ""),
       deposit: orderDetail.deposit ?? 0,
-      documentType: orderDetail.documentType ?? "INVOICE",
+      documentType: "INVOICE",
       deliveryPlace: orderDetail.deliveryPlace ?? "",
       expectedDeliveryDate: orderDetail.expectedDeliveryDate
         ? new Date(orderDetail.expectedDeliveryDate).toISOString().split("T")[0]
         : "",
-      paymentMethod: orderDetail.paymentMethod ?? "CASH",
+      paymentMethod: "CASH",
       cartLines: lines,
     });
 
+    setLastLoadedId(loadingInvoiceId);
     setIsEditing(true);
     setEditingInvoiceId(orderDetail.id);
     setLoadingInvoiceId(null);
     setHasUnsavedChanges(false);
-  }
+  }, [orderDetail, loadingInvoiceId]);
 
   // ─── DIALOG HELPERS ───
   const openConfirm = useCallback((action: PendingAction) => {
@@ -207,7 +192,7 @@ export const usePosCart = () => {
         break;
       case "cancelEdit":
         if (editingInvoiceId) {
-          initializedRef.current = null;
+          setLastLoadedId(null);
           setLoadingInvoiceId(editingInvoiceId);
         }
         break;
@@ -241,8 +226,8 @@ export const usePosCart = () => {
     if (editingInvoiceId) openConfirm({ type: "cancelEdit" });
   }, [editingInvoiceId, openConfirm]);
 
-  const handleLoadInvoice = useCallback((invoice: any) => {
-    initializedRef.current = null;
+  const handleLoadInvoice = useCallback((invoice: Invoice) => {
+    setLastLoadedId(null);
     setLoadingInvoiceId(invoice.id);
     setIsInvoiceModalOpen(false);
   }, []);
@@ -319,7 +304,7 @@ export const usePosCart = () => {
       };
 
       if (isEditing && editingInvoiceId) {
-        updateOrderFromPosMutation.mutate(
+        updateInvoiceFromPosMutation.mutate(
           { invoiceId: editingInvoiceId, data: payload },
           { onSuccess: () => setHasUnsavedChanges(false) },
         );
@@ -333,12 +318,11 @@ export const usePosCart = () => {
       formState,
       isEditing,
       editingInvoiceId,
-      updateOrderFromPosMutation,
+      updateInvoiceFromPosMutation,
       createBulkOrderMutation,
       clearAll,
     ],
   );
-
   return {
     // raw state
     isEditing,

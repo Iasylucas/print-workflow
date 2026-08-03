@@ -31,7 +31,7 @@ interface DataTableProps<TData> {
   totalPages: number;
   limit: number;
   goToPage: (page: number) => void;
-  onRowClick?: (row: any) => void;
+  onRowClick?: (row: TData) => void;
 }
 
 export const DataTable = <TData,>({
@@ -87,7 +87,7 @@ export const DataTable = <TData,>({
             rows.map((row) => (
               <TableRow
                 key={row.id}
-                onClick={() => onRowClick?.(row)}
+                onClick={() => onRowClick?.(row.original)}
                 className={
                   (cn(
                     onRowClick &&

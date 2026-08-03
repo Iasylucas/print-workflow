@@ -69,14 +69,14 @@ export const InvoiceSearchModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[70vw] max-h-[80vh]">
+      <DialogContent className="sm:max-w-[70vw] max-h-[80vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>Charger une facture</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="flex-1 min-h-0 flex flex-col space-y-4 overflow-hidden">
           {/* Barre de recherche */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -105,7 +105,7 @@ export const InvoiceSearchModal = ({
               <Loader2 className="h-6 w-6 animate-spin" />
             </div>
           ) : (
-            <div className="border rounded-md overflow-hidden">
+            <div className="flex-1 min-h-0 overflow-auto border rounded-md">
               <DataTable
                 table={table}
                 columnsWidths={[

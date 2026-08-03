@@ -76,6 +76,7 @@ export const invoiceDetailSelect = {
     },
   },
   orders: {
+    where: { deletedAt: null },
     select: {
       id: true,
       reference: true,

@@ -7,7 +7,7 @@ import {
   Pencil,
   Trash2,
   CheckCircle,
-  Receipt,
+  // Receipt,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -34,7 +34,7 @@ export const createInvoiceColumns = ({
   onEdit,
   onDeliver,
   onDelete,
-  onAddPayment,
+  // onAddPayment,
 }: InvoiceColumnsProps): ColumnDef<Invoice>[] => [
   {
     accessorKey: "number",

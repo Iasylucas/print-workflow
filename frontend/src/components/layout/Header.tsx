@@ -9,15 +9,11 @@ export const Header = () => {
 
   return (
     <header className="lg:hidden z-50 flex h-14 w-full shrink-0 items-center justify-between px-6 border-b bg-sidebar text-sidebar-foreground transition-all">
-      {}
       <Logo variant="icon" />
 
-      {}
       <div className="flex items-center gap-2">
-        {}
         <ThemeToggle />
 
-        {}
         <Button
           variant="ghost"
           size="icon"

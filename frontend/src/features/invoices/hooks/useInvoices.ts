@@ -30,7 +30,7 @@ export const useInvoiceDetail = (id: number | null) => {
     queryKey: [INVOICES_QUERY_KEY, "detail", id],
     queryFn: () => invoicesApi.getInvoiceById(id!),
     enabled: !!id,
-    staleTime: 1000 * 60 * 2,
+    staleTime: 0,
   });
 };
 

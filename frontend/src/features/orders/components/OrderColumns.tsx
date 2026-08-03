@@ -1,29 +1,8 @@
-// frontend/src/features/orders/components/OrderColumns.tsx
 import type { ColumnDef } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Pencil, Eye, Trash2, FileText } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { OrderStatusBadge } from "./OrderStatusBadge";
-import type { Order } from "../types/orders.types";
+import type { OrderDetail } from "../types/orders.types";
 
-interface OrderColumnsProps {
-  onView: (order: Order) => void;
-  onEdit: (order: Order) => void;
-  onDelete?: (order: Order) => void;
-}
-
-export const createOrderColumns = ({
-  onView,
-  onEdit,
-  onDelete,
-}: OrderColumnsProps): ColumnDef<Order>[] => [
+export const createOrderColumns = (): ColumnDef<OrderDetail>[] => [
   {
     accessorKey: "invoice",
     header: "Facture",
@@ -98,50 +77,5 @@ export const createOrderColumns = ({
     accessorKey: "createdAt",
     header: "Créé le",
     cell: ({ row }) => new Date(row.original.createdAt).toLocaleDateString(),
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => {
-      const order = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => onView(order)}>
-              <Eye className="mr-2 h-4 w-4" />
-              Détail
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onEdit(order)}>
-              <Pencil className="mr-2 h-4 w-4" />
-              Modifier
-            </DropdownMenuItem>
-            {order.invoiceId && (
-              <DropdownMenuItem>
-                <FileText className="mr-2 h-4 w-4" />
-                Voir facture
-              </DropdownMenuItem>
-            )}
-            {onDelete && (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="text-destructive"
-                  onClick={() => onDelete(order)}
-                >
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  Supprimer
-                </DropdownMenuItem>
-              </>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
   },
 ];

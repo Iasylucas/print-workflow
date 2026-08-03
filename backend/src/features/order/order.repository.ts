@@ -5,6 +5,7 @@ import type {
   CreateBulkOrderInput,
   CreateSingleOrderLineInput,
 } from "./order.types.js";
+import { InvoicesRepository } from "../invoices/invoices.repository.js";
 
 export class OrderRepository {
   async countInvoicesByMonth(year: number, month: number): Promise<number> {
@@ -285,7 +286,6 @@ export class OrderRepository {
         },
         total: true,
         deposit: true,
-        // remaining: true,
         deliveryPlace: true,
         expectedDeliveryDate: true,
         isDelivered: true,
@@ -327,6 +327,7 @@ export class OrderRepository {
           },
         },
         orders: {
+          where: { deletedAt: null },
           select: {
             id: true,
             reference: true,
@@ -425,31 +426,31 @@ export class OrderRepository {
   }
 
   // order.repository.ts
-  async updateOrderFromPos(
-    invoiceId: number,
-    data: {
-      deposit?: number;
-      deliveryPlace?: string | null;
-      expectedDeliveryDate?: Date | null;
-    },
-  ) {
-    return await prisma.invoice.update({
-      where: { id: invoiceId },
-      data: {
-        deposit: data.deposit,
-        deliveryPlace: data.deliveryPlace,
-        expectedDeliveryDate: data.expectedDeliveryDate,
-      },
-      select: {
-        id: true,
-        number: true,
-        total: true,
-        deposit: true,
-        // remaining: true,
-        paymentStatus: true,
-      },
-    });
-  }
+  // async updateOrderFromPos(
+  //   invoiceId: number,
+  //   data: {
+  //     // deposit?: number;
+  //     deliveryPlace?: string | null;
+  //     expectedDeliveryDate?: Date | null;
+  //   },
+  // ) {
+  //   return await prisma.invoice.update({
+  //     where: { id: invoiceId },
+  //     data: {
+  //       // deposit: data.deposit,
+  //       deliveryPlace: data.deliveryPlace,
+  //       expectedDeliveryDate: data.expectedDeliveryDate,
+  //     },
+  //     select: {
+  //       id: true,
+  //       number: true,
+  //       total: true,
+  //       deposit: true,
+  //       // remaining: true,
+  //       paymentStatus: true,
+  //     },
+  //   });
+  // }
 
   async updateOrderLines(lines: { orderId: number; data: any }[]) {
     const updates = lines.map(({ orderId, data }) =>
@@ -503,35 +504,75 @@ export class OrderRepository {
   // order.repository.ts
   async updateOrderFromPosTransaction(
     invoiceId: number,
+    newTotal: number,
     data: {
-      deposit?: number;
       deliveryPlace?: string | null;
       expectedDeliveryDate?: Date | null;
       lines?: any[];
-      // newPayment?: any;
     },
     userId: string,
     clientId: string,
   ) {
     return await prisma.$transaction(async (tx) => {
-      // 1. Mettre à jour la facture
-      if (
-        data.deposit !== undefined ||
-        data.deliveryPlace !== undefined ||
-        data.expectedDeliveryDate !== undefined
-      ) {
-        await tx.invoice.update({
-          where: { id: invoiceId },
-          data: {
-            deliveryPlace: data.deliveryPlace,
-            expectedDeliveryDate: data.expectedDeliveryDate,
-          },
-        });
+      // ============================================================
+      // 1. METTRE À JOUR LA FACTURE
+      // ============================================================
+      // 1. Récupérer la facture actuelle avec deposit
+      const currentInvoice = await tx.invoice.findUnique({
+        where: { id: invoiceId, deletedAt: null },
+        select: { deposit: true, paymentStatus: true },
+      });
+
+      // 2. Calculer le nouveau statut de paiement
+      let newPaymentStatus = currentInvoice?.paymentStatus;
+
+      if (newTotal !== undefined && currentInvoice) {
+        if (newTotal === currentInvoice.deposit) {
+          newPaymentStatus = "paid";
+        } else if (newTotal > currentInvoice.deposit) {
+          newPaymentStatus = "partial";
+        } else {
+          newPaymentStatus = "unpaid";
+        }
       }
 
-      // 2. Mettre à jour / créer les lignes de commande
+      // 3. Mettre à jour
+      await tx.invoice.update({
+        where: { id: invoiceId },
+        data: {
+          total: newTotal,
+          deliveryPlace: data.deliveryPlace,
+          expectedDeliveryDate: data.expectedDeliveryDate,
+          paymentStatus: newPaymentStatus, // ← Ajouté
+        },
+      });
+
+      // ============================================================
+      // 2. GÉRER LES LIGNES DE COMMANDE
+      // ============================================================
+      const createdOrderIds: { [key: number]: number } = {};
+
       if (data.lines && data.lines.length > 0) {
-        for (const line of data.lines) {
+        // 2a. Supprimer les commandes qui ne sont plus dans le payload
+        const currentOrderIds = data.lines
+          .map((line) => line.orderId)
+          .filter((id) => id !== undefined && id !== null);
+
+        if (currentOrderIds.length > 0) {
+          await tx.order.updateMany({
+            where: {
+              invoiceId,
+              id: { notIn: currentOrderIds },
+              deletedAt: null,
+            },
+            data: { deletedAt: new Date() },
+          });
+        }
+
+        // 2b. Mettre à jour ou créer les lignes
+        for (let i = 0; i < data.lines.length; i++) {
+          const line = data.lines[i];
+
           if (line.orderId) {
             // Mettre à jour une commande existante
             await tx.order.update({
@@ -545,11 +586,13 @@ export class OrderRepository {
                 unitPrice: line.unitPrice,
               },
             });
+            // Stocker l'ID existant
+            createdOrderIds[i] = line.orderId;
           } else {
             // Créer une nouvelle commande
-            await tx.order.create({
+            const created = await tx.order.create({
               data: {
-                reference: `CMD-${Date.now()}`,
+                reference: `CMD-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
                 invoiceId,
                 clientId,
                 designation: line.designation,
@@ -562,50 +605,59 @@ export class OrderRepository {
                 status: "waiting_for_file",
               },
             });
+            // Stocker le nouvel ID
+            createdOrderIds[i] = created.id;
           }
         }
       }
 
-      // 3. Ajouter un paiement si nouveau paiement
-      // if (data.newPayment && data.newPayment.amount > 0) {
-      //   await tx.payment.create({
-      //     data: {
-      //       invoiceId,
-      //       amount: data.newPayment.amount,
-      //       method: data.newPayment.method || "CASH",
-      //       reference: `Paiement POS ${new Date().toISOString()}`,
-      //       receivedById: userId,
-      //     },
-      //   });
-      // }
-
-      // 4. Gérer la note (première ligne)
+      // ============================================================
+      // 3. GÉRER LES NOTES (UNE PAR COMMANDE, UNIQUEMENT LA PREMIÈRE)
+      // ============================================================
       if (data.lines && data.lines.length > 0) {
-        const firstLine = data.lines[0];
-        if (firstLine.atelierNote && firstLine.orderId) {
-          const existingNote = await tx.note.findFirst({
-            where: { orderId: firstLine.orderId },
-            orderBy: { createdAt: "asc" },
-          });
+        for (let i = 0; i < data.lines.length; i++) {
+          const line = data.lines[i];
+          const orderId = createdOrderIds[i];
 
-          if (existingNote) {
-            await tx.note.update({
-              where: { id: existingNote.id },
-              data: { text: firstLine.atelierNote },
+          if (orderId) {
+            // Récupérer la première note existante
+            const existingNote = await tx.note.findFirst({
+              where: { orderId },
+              orderBy: { createdAt: "asc" },
             });
-          } else {
-            await tx.note.create({
-              data: {
-                text: firstLine.atelierNote,
-                userId,
-                orderId: firstLine.orderId,
-              },
-            });
+
+            if (line.atelierNote && line.atelierNote.trim() !== "") {
+              // ✅ Note non vide → créer ou mettre à jour
+              if (existingNote) {
+                await tx.note.update({
+                  where: { id: existingNote.id },
+                  data: { text: line.atelierNote.trim() },
+                });
+              } else {
+                await tx.note.create({
+                  data: {
+                    text: line.atelierNote.trim(),
+                    userId,
+                    orderId,
+                  },
+                });
+              }
+            } else {
+              // ✅ Note vide → supprimer si elle existe
+              if (existingNote) {
+                await tx.note.delete({
+                  where: { id: existingNote.id },
+                });
+              }
+              // Si pas de note et pas de texte → rien à faire
+            }
           }
         }
       }
 
-      // 5. Retourner la facture mise à jour
+      // ============================================================
+      // 4. RETOURNER LA FACTURE MIS À JOUR
+      // ============================================================
       return await tx.invoice.findUnique({
         where: { id: invoiceId },
         select: {
@@ -613,7 +665,6 @@ export class OrderRepository {
           number: true,
           total: true,
           deposit: true,
-          // remaining: true,
           paymentStatus: true,
           isDelivered: true,
           clientId: true,

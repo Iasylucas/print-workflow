@@ -73,7 +73,7 @@ export const ClientSearchCombobox = ({
           role="combobox"
           aria-expanded={open}
           disabled={disabled || isLoading}
-          className="w-full justify-between h-8 text-xs font-normal"
+          className="w-full justify-between h-8 text-xs font-normal flex-1"
         >
           {displayClient ? (
             <span className="truncate">

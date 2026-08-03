@@ -1,16 +1,10 @@
 // frontend/src/features/invoices/components/InvoiceDetailDrawer.tsx
-import { useEffect, useState } from "react";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
+import { useState } from "react";
+import { Drawer, DrawerContent, DrawerHeader } from "@/components/ui/drawer";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogOverlay,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -18,34 +12,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import {
-  Loader2,
-  X,
-  CreditCard,
-  Receipt,
-  Package,
-  Plus,
-  Trash2,
-  Eye,
-} from "lucide-react";
+import { X, CreditCard, Package, Plus, Trash2, Eye } from "lucide-react";
 import { toast } from "sonner";
 import { InvoiceStatusBadge } from "./InvoiceStatusBadge";
 import { useInvoiceDetail, useInvoiceMutations } from "../hooks/useInvoices";
-import { INVOICE_PAYMENT_STATUSES } from "../schema/invoices.schema";
-import type {
-  InvoiceDetail,
-  InvoicePaymentStatus,
-} from "../types/invoices.types";
+// import type { InvoiceDetail } from "../types/invoices.types";
 import { AddPaymentModal } from "./AddPaymentModal";
+// import type { InvoicePaymentStatus } from "../schema/invoices.schema";
 
 interface InvoiceDetailDrawerProps {
   isOpen: boolean;
@@ -53,11 +28,11 @@ interface InvoiceDetailDrawerProps {
   invoiceId: number | null;
 }
 
-const statusLabels: Record<InvoicePaymentStatus, string> = {
-  unpaid: "Non payée",
-  partial: "Partiellement payée",
-  paid: "Payée",
-};
+// const statusLabels: Record<InvoicePaymentStatus, string> = {
+//   unpaid: "Non payée",
+//   partial: "Partiellement payée",
+//   paid: "Payée",
+// };
 
 export const InvoiceDetailDrawer = ({
   isOpen,
@@ -66,35 +41,24 @@ export const InvoiceDetailDrawer = ({
 }: InvoiceDetailDrawerProps) => {
   const { data: invoice, isLoading, refetch } = useInvoiceDetail(invoiceId);
   const {
-    updateInvoiceMutation,
+    // updateInvoiceMutation,
     deletePaymentMutation,
     markDeliveredMutation,
   } = useInvoiceMutations();
 
-  const [selectedInvoice, setSelectedInvoice] = useState<InvoiceDetail | null>(
-    null,
-  );
   const [addPaymentModalOpen, setAddPaymentModalOpen] = useState(false);
   const [ordersModalOpen, setOrdersModalOpen] = useState(false);
-  const [isDelivered, setIsDelivered] = useState(false);
-
-  useEffect(() => {
-    if (invoice) {
-      setSelectedInvoice(invoice);
-      setIsDelivered(invoice.isDelivered);
-    }
-  }, [invoice]);
 
   if (!invoiceId) return null;
 
-  if (!selectedInvoice) {
+  if (!invoice) {
     return null;
   }
-  const invoiceRemain = selectedInvoice.total - selectedInvoice.deposit;
+  const invoiceRemain = invoice.total - invoice.deposit;
   console.log(invoiceRemain);
 
   const handleDeliverToggle = async (checked: boolean) => {
-    if (!selectedInvoice) return;
+    if (!invoice) return;
     if (invoiceRemain > 0 && checked) {
       toast.error(
         "Impossible de marquer livrée : le solde n'est pas entièrement payé.",
@@ -102,7 +66,7 @@ export const InvoiceDetailDrawer = ({
       return;
     }
     await markDeliveredMutation.mutateAsync({
-      id: selectedInvoice.id,
+      id: invoice.id,
       data: { isDelivered: checked },
     });
     refetch();
@@ -155,7 +119,7 @@ export const InvoiceDetailDrawer = ({
                 <Skeleton className="h-32 w-full" />
                 <Skeleton className="h-20 w-full" />
               </div>
-            ) : selectedInvoice ? (
+            ) : invoice ? (
               <div className="space-y-6">
                 {/* Informations principales */}
                 <div className="grid grid-cols-2 gap-4">
@@ -163,32 +127,27 @@ export const InvoiceDetailDrawer = ({
                     <p className="text-sm font-medium text-muted-foreground">
                       Numéro
                     </p>
-                    <p className="font-mono">{selectedInvoice.number}</p>
+                    <p className="font-mono">{invoice.number}</p>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">
                       Client
                     </p>
                     <p>
-                      {selectedInvoice.client.firstName}{" "}
-                      {selectedInvoice.client.lastName}
+                      {invoice.client.firstName} {invoice.client.lastName}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">
                       Créée le
                     </p>
-                    <p>
-                      {new Date(selectedInvoice.createdAt).toLocaleDateString()}
-                    </p>
+                    <p>{new Date(invoice.createdAt).toLocaleDateString()}</p>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">
                       Statut paiement
                     </p>
-                    <InvoiceStatusBadge
-                      status={selectedInvoice.paymentStatus}
-                    />
+                    <InvoiceStatusBadge status={invoice.paymentStatus} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label
@@ -199,7 +158,7 @@ export const InvoiceDetailDrawer = ({
                     </Label>
                     <Switch
                       id="delivered-toggle"
-                      checked={isDelivered}
+                      checked={invoice.isDelivered}
                       onCheckedChange={handleDeliverToggle}
                       disabled={invoiceRemain > 0}
                     />
@@ -215,13 +174,13 @@ export const InvoiceDetailDrawer = ({
                     <div>
                       <p className="text-xs text-muted-foreground">Total</p>
                       <p className="font-bold text-sm">
-                        {selectedInvoice.total.toLocaleString()} Ar
+                        {invoice.total.toLocaleString()} Ar
                       </p>
                     </div>
                     <div>
                       <p className="text-xs text-muted-foreground">Acompte</p>
                       <p className="font-bold text-sm text-emerald-500">
-                        {selectedInvoice.deposit.toLocaleString()} Ar
+                        {invoice.deposit.toLocaleString()} Ar
                       </p>
                     </div>
                     <div>
@@ -239,7 +198,7 @@ export const InvoiceDetailDrawer = ({
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold">
-                      Paiements ({selectedInvoice.payments.length})
+                      Paiements ({invoice.payments.length})
                     </h3>
                     <Button
                       size="sm"
@@ -250,13 +209,13 @@ export const InvoiceDetailDrawer = ({
                       Ajouter
                     </Button>
                   </div>
-                  {selectedInvoice.payments.length === 0 ? (
+                  {invoice.payments.length === 0 ? (
                     <p className="text-sm text-muted-foreground">
                       Aucun paiement
                     </p>
                   ) : (
                     <div className="space-y-2 max-h-[150px] overflow-y-auto pr-1">
-                      {selectedInvoice.payments.map((payment) => (
+                      {invoice.payments.map((payment) => (
                         <div
                           key={payment.id}
                           className="bg-muted/20 p-3 rounded-lg flex items-center justify-between text-sm"
@@ -297,7 +256,7 @@ export const InvoiceDetailDrawer = ({
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold">
-                      Commandes ({selectedInvoice.orders.length})
+                      Commandes ({invoice.orders.length})
                     </h3>
                     <Button
                       size="sm"
@@ -308,13 +267,13 @@ export const InvoiceDetailDrawer = ({
                       Voir tout
                     </Button>
                   </div>
-                  {selectedInvoice.orders.length === 0 ? (
+                  {invoice.orders.length === 0 ? (
                     <p className="text-sm text-muted-foreground">
                       Aucune commande
                     </p>
                   ) : (
                     <div className="space-y-2 max-h-[250px] overflow-y-auto pr-1">
-                      {selectedInvoice.orders.map((order) => (
+                      {invoice.orders.map((order) => (
                         <div
                           key={order.id}
                           className="bg-muted/20 p-3 rounded-lg flex items-center justify-between text-sm"
@@ -350,7 +309,7 @@ export const InvoiceDetailDrawer = ({
       <AddPaymentModal
         isOpen={addPaymentModalOpen}
         onOpenChange={setAddPaymentModalOpen}
-        invoice={selectedInvoice}
+        invoice={invoice}
       />
 
       {/* Modal pour voir toutes les commandes */}
@@ -362,9 +321,7 @@ export const InvoiceDetailDrawer = ({
       >
         <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>
-              Commandes de la facture {selectedInvoice?.number}
-            </DialogTitle>
+            <DialogTitle>Commandes de la facture {invoice?.number}</DialogTitle>
           </DialogHeader>
 
           {/* Tableau des commandes */}
@@ -383,7 +340,7 @@ export const InvoiceDetailDrawer = ({
                 </tr>
               </thead>
               <tbody>
-                {selectedInvoice?.orders.map((order) => (
+                {invoice?.orders.map((order) => (
                   <tr
                     key={order.id}
                     className="border-b border-border/60 hover:bg-muted/20"
@@ -411,13 +368,11 @@ export const InvoiceDetailDrawer = ({
           </div>
 
           {/* Total général */}
-          {selectedInvoice && (
+          {invoice && (
             <div className="flex justify-end border-t border-border pt-3 mt-2">
               <div className="text-right">
                 <p className="text-sm text-muted-foreground">Total facture</p>
-                <p className="font-bold">
-                  {selectedInvoice.total.toLocaleString()} Ar
-                </p>
+                <p className="font-bold">{invoice.total.toLocaleString()} Ar</p>
               </div>
             </div>
           )}

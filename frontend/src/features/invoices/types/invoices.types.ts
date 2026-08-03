@@ -1,8 +1,8 @@
 // frontend/src/features/invoices/types/invoices.types.ts
 import type {
-  INVOICE_PAYMENT_STATUSES,
+  // INVOICE_PAYMENT_STATUSES,
   InvoicePaymentStatus,
-  PAYMENT_METHODS,
+  // PAYMENT_METHODS,
   PaymentMethod,
 } from "../schema/invoices.schema";
 import type { Order } from "@/features/orders/types/orders.types";
@@ -53,7 +53,7 @@ export type InvoiceDetail = Invoice & {
     secondaryAddress: string;
     logo: string | null;
     stamp: string | null;
-    mobileMoneyNumbers: any;
+    mobileMoneyNumbers: string;
     standardPhone: string | null;
     contactEmail: string | null;
     termsAndConditions: string | null;
@@ -84,15 +84,15 @@ export type InvoiceDetail = Invoice & {
 // ============================================================
 export type InvoicesQueryParams = {
   page?: number;
-  limit?: number;
+  limit: number;
   search?: string;
   status?: InvoicePaymentStatus;
   clientId?: string;
   isDelivered?: boolean | undefined;
   startDate?: string;
   endDate?: string;
-  sortBy?: "createdAt" | "updatedAt" | "number" | "total" | "clientId";
-  sortOrder?: "asc" | "desc";
+  sortBy: "createdAt" | "updatedAt" | "number" | "total" | "clientId";
+  sortOrder: "asc" | "desc";
 };
 
 export type UpdateInvoiceRequest = {

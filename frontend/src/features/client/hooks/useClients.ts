@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 const CLIENTS_QUERY_KEY = "clients";
 
-export const useClients = (params: ClientsQueryParams) => {
+export const useClients = (params?: ClientsQueryParams) => {
   return useQuery({
     queryKey: [CLIENTS_QUERY_KEY, params],
     queryFn: () => clientApi.getClients(params),

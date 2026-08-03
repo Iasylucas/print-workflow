@@ -11,6 +11,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenuSkeleton,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User, Settings } from "lucide-react";
@@ -31,23 +32,20 @@ export const AppSidebar = () => {
   if (isLoading) {
     return (
       <Sidebar variant="sidebar">
-        {}
         <SidebarHeader className="p-4">
           <Skeleton className="h-9 w-32 rounded-lg" />
         </SidebarHeader>
 
-        {}
         <SidebarContent className="p-2">
           <SidebarMenu>
             {Array.from({ length: 5 }).map((_, index) => (
               <SidebarMenuItem key={index} className="px-2 py-1">
-                <SidebarMenuSkeleton showIcon /> {}
+                <SidebarMenuSkeleton showIcon />
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
         </SidebarContent>
 
-        {}
         <SidebarFooter className="border-t p-4 flex flex-row items-center gap-3">
           <Skeleton className="h-8 w-8 rounded-lg shrink-0" />
           <div className="space-y-2 flex-1">
@@ -61,24 +59,21 @@ export const AppSidebar = () => {
 
   return (
     <Sidebar variant="sidebar">
-      {}
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem className="px-0.5 max-lg:p-2">
+          <SidebarMenuItem className="px-0.5 max-lg:p-2 flex items-center justify-between">
             <Logo variant="icon" />
+            <SidebarTrigger />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
-      {}
-      {}
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
-                  {}
                   <NavLink to={item.href}>
                     {({ isActive }) => (
                       <SidebarMenuButton
@@ -99,11 +94,9 @@ export const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {}
         <SidebarGroup className="mt-auto">
           <SidebarGroupContent>
             <SidebarMenu>
-              {}
               <SidebarMenuItem>
                 <NavLink to="/profile">
                   {({ isActive }) => (
@@ -121,7 +114,6 @@ export const AppSidebar = () => {
                 </NavLink>
               </SidebarMenuItem>
 
-              {}
               {user?.role === "ADMIN" && (
                 <SidebarMenuItem>
                   <NavLink to="/settings">
@@ -145,10 +137,8 @@ export const AppSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
 
-      {}
       <SidebarFooter className="border-t p-2">
         <div className="flex w-full items-center gap-3 px-1 py-1.5">
-          {}
           <div className="relative">
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage src={user?.avatarUrl ?? undefined} alt={fullName} />
@@ -157,7 +147,6 @@ export const AppSidebar = () => {
               </AvatarFallback>
             </Avatar>
 
-            {}
             <div
               className="absolute bottom-0 right-0 size-2
                       rounded-full bg-emerald-500 dark:bg-emerald-400
@@ -165,7 +154,6 @@ export const AppSidebar = () => {
             ></div>
           </div>
 
-          {}
           <div className="flex flex-1 flex-col items-start text-left min-w-0">
             <span className="truncate text-sm font-medium leading-none text-sidebar-foreground">
               {fullName}
@@ -175,7 +163,6 @@ export const AppSidebar = () => {
             </span>
           </div>
 
-          {}
           <button
             onClick={() => logout()}
             className="p-2 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"

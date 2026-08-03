@@ -14,23 +14,6 @@ export class OrderService {
     private readonly orderRepository: OrderRepository,
     private readonly invoiceRepository: InvoicesRepository,
   ) {}
-  // backend/src/features/order/order.service.ts
-  // order.service.ts
-
-  private async generateOrderReference(index: number): Promise<string> {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-
-    // Compter le nombre total de lignes déjà créées
-    const totalLines = await this.orderRepository.countOrderLinesByMonth(
-      year,
-      now.getMonth() + 1,
-    );
-    const sequence = String(totalLines + index + 1).padStart(3, "0");
-
-    return `C-${year}-${month}-${sequence}`;
-  }
   // 1. Fonction privée pour formater les numéros avec des zéros initiaux (ex: 1 -> "001")
   private padNumber(num: number, size: number = 3): string {
     let s = num.toString();
@@ -80,8 +63,8 @@ export class OrderService {
 
     const companyInfoId = 1;
 
-    const orderReferences = await Promise.all(
-      data.lines.map((_, index) => this.generateOrderReference(index)),
+    const orderReferences = data.lines.map(
+      () => `CMD-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
     );
 
     try {
@@ -111,8 +94,6 @@ export class OrderService {
     return order;
   }
 
-  // order.service.ts
-  // order.service.ts
   async updateOrderFromPos(
     invoiceId: number,
     data: z.infer<typeof updateOrderFromPosSchema>,
@@ -121,9 +102,19 @@ export class OrderService {
     const invoice = await this.invoiceRepository.findById(invoiceId);
     if (!invoice) throw new NotFoundError("Facture introuvable");
 
-    // ✅ TOUT EN TRANSACTION
+    const newTotal =
+      data.lines?.reduce((sum, line) => {
+        return sum + line.unitPrice * line.quantity;
+      }, 0) || 0;
+    if (newTotal < invoice.deposit) {
+      throw new BadRequestError(
+        `Le nouveau total (${newTotal} Ar) est inférieur au montant déjà payé (${invoice.deposit} Ar). ` +
+          `Veuillez d'abord supprimer ou ajuster les paiements excédentaires.`,
+      );
+    }
     return await this.orderRepository.updateOrderFromPosTransaction(
       invoiceId,
+      newTotal,
       data,
       userId,
       invoice.clientId,

@@ -22,7 +22,6 @@ export const PageHeader = ({
         className,
       )}
     >
-      {}
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           {title}
@@ -34,12 +33,9 @@ export const PageHeader = ({
         )}
       </div>
 
-      {}
       <div className="flex items-center gap-3 shrink-0 sm:ml-auto">
-        {}
         <ThemeToggle className="hidden lg:block" />
 
-        {}
         {children}
       </div>
     </div>

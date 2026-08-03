@@ -4,9 +4,10 @@ import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import { createInvoiceColumns } from "./InvoiceColumns";
 import { DataTable } from "@/components/shared/DataTable";
 import type { InvoicesQueryParams, Invoice } from "../types/invoices.types";
+import type { meta } from "@/features/user/types/user.types";
 
 interface InvoicesTableProps {
-  data: { data: Invoice[]; meta: any } | undefined;
+  data: { data: Invoice[]; meta: meta } | undefined;
   isLoading: boolean;
   queryParams: InvoicesQueryParams &
     Required<Pick<InvoicesQueryParams, "sortBy" | "sortOrder" | "limit">>;
@@ -17,7 +18,7 @@ interface InvoicesTableProps {
   onDeliver: (invoice: Invoice) => void;
   onDelete: (invoice: Invoice) => void;
   onAddPayment: (invoice: Invoice) => void;
-  onRowClick?: (row: any) => void;
+  onRowClick?: (row: Invoice) => void;
 }
 
 const COLUMNS_WIDTHS = [
@@ -37,7 +38,7 @@ export const InvoicesTable = ({
   isLoading,
   queryParams,
   goToPage,
-  handleSort,
+  // handleSort,
   onView,
   onEdit,
   onDeliver,

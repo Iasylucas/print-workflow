@@ -1,6 +1,6 @@
 // frontend/src/features/invoices/components/InvoiceStatusBadge.tsx
 import { Badge } from "@/components/ui/badge";
-import type { InvoicePaymentStatus } from "../types/invoices.types";
+import type { InvoicePaymentStatus } from "../schema/invoices.schema";
 
 interface InvoiceStatusBadgeProps {
   status: InvoicePaymentStatus;

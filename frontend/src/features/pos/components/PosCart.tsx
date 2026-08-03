@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 import {
   ShoppingCart,
   Plus,
@@ -21,15 +21,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ClientSearchCombobox } from "./ClientSearchCombobox";
-import type { PosCartLine, PosFormState } from "./usePosCart";
+import type {
+  payments,
+  PosCartLine,
+  PosFormState,
+  Product,
+} from "../types/pos.types";
+import { cn } from "@/lib/utils";
 
 interface PosCartProps {
   formState: PosFormState;
-  clients: any[];
-  products: any[];
+  products: Product[];
   isLoadingClients: boolean;
   isEditing: boolean;
-  payments: any[];
+  payments: payments[];
   isSubmitting: boolean;
   isValid: boolean;
   subTotal: number;
@@ -37,9 +42,14 @@ interface PosCartProps {
   totalPayments: number;
   remainingAfterPayments: number;
   newPaymentAmount: number;
+  hasUnsavedChanges: boolean;
   onAddLine: () => void;
   onRemoveLine: (index: number) => void;
-  onUpdateLine: (index: number, field: keyof PosCartLine, value: any) => void;
+  onUpdateLine: (
+    index: number,
+    field: keyof PosCartLine,
+    value: PosCartLine[keyof PosCartLine],
+  ) => void;
   onUpdateFormField: <K extends keyof PosFormState>(
     field: K,
     value: PosFormState[K],
@@ -48,6 +58,9 @@ interface PosCartProps {
   onAddPayment: () => void;
   onDeletePayment: (paymentId: number) => void;
   onSetNewPaymentAmount: (value: number) => void;
+  onCancelEdit: () => void;
+  onAddClient: () => void;
+  isLoadingOrder: boolean;
 }
 
 const getLineTotal = (line: PosCartLine) =>
@@ -55,7 +68,6 @@ const getLineTotal = (line: PosCartLine) =>
 
 export const PosCart = ({
   formState,
-  clients,
   products,
   isLoadingClients,
   isEditing,
@@ -75,6 +87,10 @@ export const PosCart = ({
   onAddPayment,
   onDeletePayment,
   onSetNewPaymentAmount,
+  onCancelEdit,
+  hasUnsavedChanges,
+  onAddClient,
+  isLoadingOrder,
 }: PosCartProps) => {
   // ─── STATE LOCAL (UI uniquement) ───
   const [expandedNotes, setExpandedNotes] = useState<number[]>([]);
@@ -115,16 +131,58 @@ export const PosCart = ({
             {formState.cartLines.length}{" "}
             {formState.cartLines.length > 1 ? "lignes" : "ligne"}
           </Badge>
+          {isEditing &&
+            !isLoadingOrder &&
+            (() => {
+              const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
+              const status =
+                totalPaid === 0
+                  ? "unpaid"
+                  : totalPaid >= subTotal
+                    ? "paid"
+                    : "partial";
+
+              return (
+                <Badge
+                  variant="secondary"
+                  className={cn(
+                    "text-[10px] px-1.5 py-0.5 capitalize font-medium",
+                    status === "paid" && "bg-emerald-500/15 text-emerald-600",
+                    status === "partial" && "bg-amber-500/15 text-amber-600",
+                    status === "unpaid" && "bg-destructive/15 text-destructive",
+                  )}
+                >
+                  {status === "paid"
+                    ? "Payée"
+                    : status === "partial"
+                      ? "Partielle"
+                      : "Non payée"}
+                </Badge>
+              );
+            })()}
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onAddLine}
-          className="h-7 gap-1 text-[10px] font-medium"
-        >
-          <Plus size={13} />
-          Ajouter ligne
-        </Button>
+        <div className="flex items-center gap-2">
+          {isEditing && hasUnsavedChanges && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onCancelEdit}
+              className="h-7 gap-1 text-[10px] font-medium text-muted-foreground hover:text-destructive"
+            >
+              <X size={13} />
+              Annuler
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onAddLine}
+            className="h-7 gap-1 text-[10px] font-medium"
+          >
+            <Plus size={13} />
+            Ajouter ligne
+          </Button>
+        </div>
       </div>
 
       {/* CLIENT + TYPE */}
@@ -133,14 +191,25 @@ export const PosCart = ({
           <Label className="text-[11px] font-semibold text-muted-foreground">
             Client
           </Label>
-          <ClientSearchCombobox
-            value={formState.selectedClientId}
-            onChange={(v) => onUpdateFormField("selectedClientId", v)}
-            disabled={isLoadingClients}
-            placeholder={
-              isLoadingClients ? "Chargement..." : "Sélectionner un client..."
-            }
-          />
+          <div className="flex items-center gap-2">
+            <ClientSearchCombobox
+              value={formState.selectedClientId}
+              onChange={(v) => onUpdateFormField("selectedClientId", v)}
+              disabled={isLoadingClients}
+              placeholder={
+                isLoadingClients ? "Chargement..." : "Sélectionner un client..."
+              }
+            />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={onAddClient}
+              className="h-8 w-8 flex-shrink-0"
+              title="Ajouter un client"
+            >
+              <Plus size={14} />
+            </Button>
+          </div>
         </div>
         <div className="space-y-1.5">
           <Label className="text-[11px] font-semibold text-muted-foreground">
@@ -198,16 +267,32 @@ export const PosCart = ({
           <div className="grid grid-cols-12 bg-muted/50 p-2 border-b border-border font-semibold text-muted-foreground text-[10px] uppercase tracking-wider gap-1">
             <div className="col-span-1 text-center">#</div>
             <div className="col-span-2">Produit</div>
-            <div className="col-span-2">Désignation</div>
-            <div className="col-span-2">Dimensions</div>
+            <div className="col-span-3">Désignation</div>
+            <div className="col-span-1">Dimensions</div>
             <div className="col-span-1">Label</div>
             <div className="col-span-1 text-center">Qté</div>
             <div className="col-span-1 text-right">Prix U.</div>
             <div className="col-span-1 text-right">Total</div>
-            <div className="col-span-1 text-center">🗑️</div>
+            <div className="col-span-1 text-center">Actions</div>
           </div>
 
-          {formState.cartLines.length === 0 ? (
+          {isLoadingOrder ? (
+            <div className="space-y-2 p-2">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="grid grid-cols-12 gap-1">
+                  <div className="col-span-1 h-7 bg-muted/50 rounded animate-pulse" />
+                  <div className="col-span-2 h-7 bg-muted/50 rounded animate-pulse" />
+                  <div className="col-span-2 h-7 bg-muted/50 rounded animate-pulse" />
+                  <div className="col-span-2 h-7 bg-muted/50 rounded animate-pulse" />
+                  <div className="col-span-1 h-7 bg-muted/50 rounded animate-pulse" />
+                  <div className="col-span-1 h-7 bg-muted/50 rounded animate-pulse" />
+                  <div className="col-span-1 h-7 bg-muted/50 rounded animate-pulse" />
+                  <div className="col-span-1 h-7 bg-muted/50 rounded animate-pulse" />
+                  <div className="col-span-1 h-7 bg-muted/50 rounded animate-pulse" />
+                </div>
+              ))}
+            </div>
+          ) : formState.cartLines.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground/60 italic">
               Aucune ligne. Cliquez sur "Ajouter ligne".
             </div>
@@ -246,7 +331,7 @@ export const PosCart = ({
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="col-span-2">
+                    <div className="col-span-3">
                       <Input
                         type="text"
                         value={line.designation}
@@ -257,7 +342,7 @@ export const PosCart = ({
                         placeholder="Désignation"
                       />
                     </div>
-                    <div className="col-span-2">
+                    <div className="col-span-1">
                       <Input
                         type="text"
                         value={line.dimensions || ""}
@@ -265,7 +350,7 @@ export const PosCart = ({
                           onUpdateLine(index, "dimensions", e.target.value)
                         }
                         className="h-7 text-xs px-1.5"
-                        placeholder="A4 / 20x30cm"
+                        placeholder="20x30cm"
                       />
                     </div>
                     <div className="col-span-1">
@@ -367,9 +452,13 @@ export const PosCart = ({
             <span className="font-medium text-muted-foreground">
               Sous-total
             </span>
-            <span className="font-semibold text-foreground">
-              {subTotal.toLocaleString()} Ar
-            </span>
+            {isLoadingOrder ? (
+              <div className="h-5 w-32 bg-muted/50 rounded animate-pulse" />
+            ) : (
+              <span className="font-semibold text-foreground">
+                {subTotal.toLocaleString()} Ar
+              </span>
+            )}
           </div>
 
           {/* Acompte / Nouveau paiement */}
@@ -429,54 +518,75 @@ export const PosCart = ({
             <span className="font-bold text-foreground text-sm">
               Reste à payer
             </span>
-            <span className="text-lg font-black text-primary">
-              {isEditing
-                ? remainingAfterPayments.toLocaleString()
-                : isNaN(remaining)
-                  ? "0"
-                  : remaining.toLocaleString()}{" "}
-              Ar
-            </span>
+            {isLoadingOrder ? (
+              <div className="h-6 w-40 bg-muted/50 rounded animate-pulse" />
+            ) : (
+              <span className="text-lg font-black text-primary">
+                {isEditing
+                  ? remainingAfterPayments.toLocaleString()
+                  : isNaN(remaining)
+                    ? "0"
+                    : remaining.toLocaleString()}{" "}
+                Ar
+              </span>
+            )}
           </div>
 
           {/* Historique paiements */}
-          {isEditing && payments.length > 0 && (
+          {isEditing && (
             <div className="mt-2 p-2 bg-muted/20 rounded-md">
               <p className="text-xs font-semibold text-muted-foreground">
                 Historique des paiements
               </p>
-              <div className="space-y-1 mt-1">
-                {payments.map((p, i) => (
-                  <div
-                    key={i}
-                    className="flex justify-between text-xs items-center gap-2"
-                  >
-                    <span className="text-muted-foreground w-20 flex-shrink-0">
-                      {new Date(p.date).toLocaleDateString()}
-                    </span>
-                    <span className="text-muted-foreground w-24 flex-shrink-0">
-                      {p.method}
-                    </span>
-                    <span className="flex-1 text-right font-medium">
-                      {p.amount.toLocaleString()} Ar
-                    </span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => onDeletePayment(p.id)}
-                      className="h-5 w-5 text-muted-foreground/50 hover:text-destructive flex-shrink-0"
-                    >
-                      <X size={12} />
-                    </Button>
+              {isLoadingOrder ? (
+                <div className="space-y-2 mt-1">
+                  {Array.from({ length: 2 }).map((_, i) => (
+                    <div key={i} className="flex justify-between">
+                      <div className="h-4 w-20 bg-muted/50 rounded animate-pulse" />
+                      <div className="h-4 w-16 bg-muted/50 rounded animate-pulse" />
+                    </div>
+                  ))}
+                </div>
+              ) : payments.length > 0 ? (
+                <>
+                  <div className="space-y-1 mt-1">
+                    {payments.map((p, i) => (
+                      <div
+                        key={i}
+                        className="flex justify-between text-xs items-center gap-2"
+                      >
+                        <span className="text-muted-foreground w-20 flex-shrink-0">
+                          {new Date(p.date).toLocaleDateString()}
+                        </span>
+                        <span className="text-muted-foreground w-24 flex-shrink-0">
+                          {p.method}
+                        </span>
+                        <span className="flex-1 text-right font-medium">
+                          {p.amount.toLocaleString()} Ar
+                        </span>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => onDeletePayment(p.id)}
+                          className="h-5 w-5 text-muted-foreground/50 hover:text-destructive flex-shrink-0"
+                        >
+                          <X size={12} />
+                        </Button>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <div className="mt-2 text-xs text-muted-foreground flex justify-between">
-                <span>Total payé</span>
-                <span className="font-semibold">
-                  {totalPayments.toLocaleString()} Ar
-                </span>
-              </div>
+                  <div className="mt-2 text-xs text-muted-foreground flex justify-between">
+                    <span>Total payé</span>
+                    <span className="font-semibold">
+                      {totalPayments.toLocaleString()} Ar
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Aucun paiement
+                </p>
+              )}
             </div>
           )}
 
@@ -487,7 +597,12 @@ export const PosCart = ({
             </span>
             <Select
               value={formState.paymentMethod}
-              onValueChange={(v) => onUpdateFormField("paymentMethod", v)}
+              onValueChange={(v) =>
+                onUpdateFormField(
+                  "paymentMethod",
+                  v as "CASH" | "MOBILE_MONEY" | "BANK_TRANSFER" | "CHECK",
+                )
+              }
             >
               <SelectTrigger className="h-7 w-40 text-xs">
                 <SelectValue />

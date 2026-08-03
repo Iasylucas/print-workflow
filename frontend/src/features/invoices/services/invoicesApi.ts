@@ -3,7 +3,7 @@ import { api } from "@/lib/axios";
 import { unwrap } from "@/lib/apiUtils";
 import type { ApiResponse } from "@/shared/types/";
 import type {
-  Invoice,
+  // Invoice,
   InvoiceDetail,
   InvoicesQueryParams,
   PaginatedInvoicesResponse,

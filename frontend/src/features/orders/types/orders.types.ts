@@ -1,5 +1,5 @@
 // frontend/src/features/orders/types/orders.types.ts
-import type { ORDER_STATUSES, OrderStatus } from "../schema/orders.schema";
+import type { OrderStatus } from "../schema/orders.schema";
 
 // ============================================================
 // 1. TYPES DE BASE
@@ -79,12 +79,12 @@ export type OrderDetail = Order & {
 
 export type OrdersQueryParams = {
   page?: number;
-  limit?: number;
+  limit: number;
   search?: string;
   status?: OrderStatus;
   clientId?: string;
-  sortBy?: "createdAt" | "updatedAt" | "status" | "designation" | "clientId";
-  sortOrder?: "asc" | "desc";
+  sortBy: "createdAt" | "updatedAt" | "status" | "designation" | "clientId";
+  sortOrder: "asc" | "desc";
   startDate?: string;
   endDate?: string;
 };
@@ -115,7 +115,7 @@ export type AddOrderFileRequest = {
 // ============================================================
 
 export type PaginatedOrdersResponse = {
-  data: Order[];
+  data: OrderDetail[];
   meta: {
     total: number;
     page: number;

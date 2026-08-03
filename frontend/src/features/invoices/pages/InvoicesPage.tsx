@@ -130,7 +130,7 @@ export const InvoicesPage = () => {
           onDeliver={handleDeliver}
           onDelete={handleDelete}
           onAddPayment={handleAddPayment}
-          onRowClick={(row) => handleView(row.original)}
+          onRowClick={(row) => handleView(row)}
         />
       </div>
 

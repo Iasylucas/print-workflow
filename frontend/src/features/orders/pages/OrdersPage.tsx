@@ -1,11 +1,11 @@
 // frontend/src/features/orders/pages/OrdersPage.tsx
 import { useState } from "react";
-import { useOrders, useOrderMutations } from "../hooks/useOrders";
+import { useOrders } from "../hooks/useOrders";
 import { OrderFilters } from "../components/OrderFilters";
 import { OrdersTable } from "../components/OrdersTable";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
-import { FailedTable } from "@/components/shared/FailedTable";
+// import { FailedTable } from "@/components/shared/FailedTable";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 import type { OrdersQueryParams, Order } from "../types/orders.types";
@@ -27,8 +27,8 @@ export const OrdersPage = () => {
   const [detailDrawerOpen, setDetailDrawerOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
-  const { data, isLoading, isError, refetch } = useOrders(queryParams);
-  const { deleteOrderMutation } = useOrderMutations();
+  const { data, isLoading, refetch } = useOrders(queryParams);
+  // const { deleteOrderMutation } = useOrderMutations();
 
   const handleFilter = (filters: Partial<OrdersQueryParams>) => {
     setQueryParams((prev) => ({ ...prev, ...filters, page: 1 }));
@@ -52,16 +52,11 @@ export const OrdersPage = () => {
     setDetailDrawerOpen(true);
   };
 
-  const handleEdit = (order: Order) => {
-    setSelectedOrder(order);
-    setEditModalOpen(true);
-  };
-
-  const handleDelete = (order: Order) => {
-    if (window.confirm(`Supprimer la commande ${order.designation} ?`)) {
-      deleteOrderMutation.mutate(order.id);
-    }
-  };
+  // const handleDelete = (order: Order) => {
+  //   if (window.confirm(`Supprimer la commande ${order.designation} ?`)) {
+  //     deleteOrderMutation.mutate(order.id);
+  //   }
+  // };
 
   // if (isError) {
   //   return (
@@ -112,14 +107,10 @@ export const OrdersPage = () => {
           queryParams={queryParams}
           goToPage={goToPage}
           handleSort={handleSort}
-          onView={handleView}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onRowClick={(row) => handleView(row.original)}
+          onRowClick={(row) => handleView(row)}
         />
       </div>
 
-      {/* ⚠️ À décommenter quand les composants seront créés */}
       <OrderDetailDrawer
         isOpen={detailDrawerOpen}
         onOpenChange={setDetailDrawerOpen}

@@ -1,12 +1,6 @@
 // frontend/src/features/orders/components/OrderDetailDrawer.tsx
 import { useOrderDetail, useOrderMutations } from "../hooks/useOrders";
-import { OrderStatusBadge } from "./OrderStatusBadge";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerHeader } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,23 +15,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { Loader2, FileText, Plus, X, Trash2 } from "lucide-react";
 import {
-  Loader2,
-  FileText,
-  Link2,
-  Plus,
-  X,
-  Trash2,
-  User,
-  Calendar,
-  Package,
-  Ruler,
-  Tag,
-} from "lucide-react";
-import { ORDER_STATUS_LABELS, ORDER_STATUSES } from "../schema/orders.schema";
-import type { OrderStatus } from "../types/orders.types";
+  ORDER_STATUS_LABELS,
+  ORDER_STATUSES,
+  type OrderStatus,
+} from "../schema/orders.schema";
 import {
   Select,
   SelectContent,
@@ -45,7 +30,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { OrderDetail } from "../types/orders.types";
 
 interface OrderDetailDrawerProps {
   isOpen: boolean;
@@ -58,9 +42,6 @@ export const OrderDetailDrawer = ({
   onOpenChange,
   orderId,
 }: OrderDetailDrawerProps) => {
-  const [selectedStatus, setSelectedStatus] = useState<OrderStatus | null>(
-    null,
-  );
   const { data: order, isLoading, refetch } = useOrderDetail(orderId);
   const {
     addNoteMutation,
@@ -78,27 +59,21 @@ export const OrderDetailDrawer = ({
   const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
   const [isFileDialogOpen, setIsFileDialogOpen] = useState(false);
 
-  useEffect(() => {
-    if (order) {
-      setSelectedStatus(order.status);
-    }
-  }, [order]);
-
   if (!orderId) return null;
 
-  const handleUpdateStatus = async () => {
-    if (!order || !selectedStatus) return;
-    if (selectedStatus === order.status) {
-      toast.info("Le statut est déjà à jour");
-      return;
-    }
-    await updateStatusMutation.mutateAsync({
-      id: orderId,
-      data: { status: selectedStatus },
-    });
-    setSelectedStatus(null);
-    refetch();
-  };
+  // const handleUpdateStatus = async () => {
+  //   if (!order || !selectedStatus) return;
+  //   if (selectedStatus === order.status) {
+  //     toast.info("Le statut est déjà à jour");
+  //     return;
+  //   }
+  //   await updateStatusMutation.mutateAsync({
+  //     id: orderId,
+  //     data: { status: selectedStatus },
+  //   });
+  //   setSelectedStatus(null);
+  //   refetch();
+  // };
 
   const handleAddNote = async () => {
     if (!newNote.trim()) {
@@ -261,7 +236,7 @@ export const OrderDetailDrawer = ({
               <Separator />
               <div className="flex items-center gap-3 mt-3">
                 <Select
-                  value={selectedStatus || ""}
+                  value={order.status}
                   onValueChange={(val) => {
                     const newStatus = val as OrderStatus;
                     if (newStatus === order.status) return;
@@ -269,7 +244,6 @@ export const OrderDetailDrawer = ({
                       id: orderId,
                       data: { status: newStatus },
                     });
-                    setSelectedStatus(newStatus);
                     refetch();
                   }}
                 >

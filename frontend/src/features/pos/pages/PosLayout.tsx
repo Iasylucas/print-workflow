@@ -1,72 +1,49 @@
-import { useState, useCallback, useEffect } from "react";
-import { AmalgamM2Block } from "./AmalgamM2Block";
-import { PriceCalculationBlock } from "./PriceCalculationBlock";
-import { PosCart } from "./PosCart";
-import { useInvoicePayments, useOrderMutations } from "../hooks/useOrders";
-import type { PosCartLine, CreateBulkOrderRequest } from "../types/order.types";
-import { FolderOpen, LayoutDashboard, Plus, X } from "lucide-react";
-import { AmalgamA4Block } from "./AmalgamA4Block";
-import { useProductsCatalog } from "../hooks/useOrders";
-import { useClients } from "../hooks/useClient";
-import { InvoiceSearchModal } from "./InvoiceSearchModal";
-import { useInvoiceMutations } from "@/features/invoices/hooks/useInvoices";
+import { AmalgamM2Block } from "../components/AmalgamM2Block";
+import { PriceCalculationBlock } from "../components/PriceCalculationBlock";
+import { PosCart } from "../components/PosCart";
+import { FolderOpen, Plus } from "lucide-react";
+import { AmalgamA4Block } from "../components/AmalgamA4Block";
+import { InvoiceSearchModal } from "../components/InvoiceSearchModal";
 import { Button } from "@/components/ui/button";
-import { useInvoiceForPos } from "../hooks/useOrders";
 import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
-import type { ConfirmationState } from "@/components/shared/ConfirmationDialog";
 import { AlertDialog } from "@/components/ui/alert-dialog";
-import { usePosCart } from "./usePosCart";
+import { usePosCart } from "../hooks/usePosCart";
+import { ClientFormModal } from "@/features/client/components/ClientFormModal";
+import { useState } from "react";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 export const PosLayout = () => {
   const pos = usePosCart();
+  // Ajouter en haut avec les autres useState
+  const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false);
 
   return (
     <div className="w-full space-y-6 animate-in fade-in duration-300 font-sans text-xs">
-      {/* HEADER */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <LayoutDashboard className="h-5 w-5 text-primary stroke-[2.5]" />
-          <h2 className="text-xl font-bold tracking-tight text-foreground">
-            Point de Vente (POS) & Chiffrage
-          </h2>
-        </div>
+      <PageHeader
+        title="Point de Vente"
+        subtitle="Gérez vos commandes et paiements en temps réel."
+      >
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => pos.setIsInvoiceModalOpen(true)}
+          className="gap-2"
+        >
+          <FolderOpen className="h-4 w-4" />
+          Charger une facture
+        </Button>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={pos.handleNewOrder}
-            className="gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            Nouvelle commande
-          </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={pos.handleNewOrder}
+          className="gap-2"
+        >
+          <Plus className="h-4 w-4" />
+          Nouvelle commande
+        </Button>
+      </PageHeader>
 
-          {pos.isEditing && pos.hasUnsavedChanges && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={pos.handleCancelEdit}
-              className="gap-2 text-destructive hover:text-destructive hover:bg-destructive/10"
-            >
-              <X className="h-4 w-4" />
-              Annuler les modifications
-            </Button>
-          )}
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => pos.setIsInvoiceModalOpen(true)}
-            className="gap-2"
-          >
-            <FolderOpen className="h-4 w-4" />
-            Charger une facture
-          </Button>
-        </div>
-      </div>
-
-      {/* GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6 items-start w-full">
         <div className="lg:col-span-4 space-y-6 w-full">
           <AmalgamM2Block products={pos.products} />
@@ -77,7 +54,6 @@ export const PosLayout = () => {
         <div className="lg:col-span-6 w-full h-full">
           <PosCart
             formState={pos.formState}
-            clients={pos.clients}
             products={pos.products}
             isLoadingClients={pos.clientsLoading}
             isEditing={pos.isEditing}
@@ -97,11 +73,14 @@ export const PosLayout = () => {
             onAddPayment={pos.handleAddPayment}
             onDeletePayment={pos.handleDeletePayment}
             onSetNewPaymentAmount={pos.setNewPaymentAmount}
+            onCancelEdit={pos.handleCancelEdit}
+            hasUnsavedChanges={pos.hasUnsavedChanges}
+            onAddClient={() => setIsAddClientModalOpen(true)}
+            isLoadingOrder={pos.isLoadingOrder}
           />
         </div>
       </div>
 
-      {/* MODALS */}
       <InvoiceSearchModal
         isOpen={pos.isInvoiceModalOpen}
         onOpenChange={pos.setIsInvoiceModalOpen}
@@ -134,6 +113,10 @@ export const PosLayout = () => {
           onOpenChange={pos.setIsConfirmOpen}
         />
       </AlertDialog>
+      <ClientFormModal
+        isOpen={isAddClientModalOpen}
+        onOpenChange={setIsAddClientModalOpen}
+      />
     </div>
   );
 };

@@ -3,19 +3,17 @@ import { useMemo } from "react";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import { createOrderColumns } from "./OrderColumns";
 import { DataTable } from "@/components/shared/DataTable";
-import type { OrdersQueryParams, Order } from "../types/orders.types";
+import type { OrdersQueryParams, OrderDetail } from "../types/orders.types";
+import type { meta } from "@/features/user/types/user.types";
 
 interface OrdersTableProps {
-  data: { data: Order[]; meta: any } | undefined;
+  data: { data: OrderDetail[]; meta: meta } | undefined;
   isLoading: boolean;
   queryParams: OrdersQueryParams &
     Required<Pick<OrdersQueryParams, "sortBy" | "sortOrder" | "limit">>;
   goToPage: (page: number) => void;
   handleSort: (sortBy: OrdersQueryParams["sortBy"]) => void;
-  onView: (order: Order) => void;
-  onEdit: (order: Order) => void;
-  onDelete?: (order: Order) => void;
-  onRowClick?: (row: any) => void;
+  onRowClick?: (row: OrderDetail) => void;
 }
 
 const COLUMNS_WIDTHS = [
@@ -36,10 +34,7 @@ export const OrdersTable = ({
   isLoading,
   queryParams,
   goToPage,
-  handleSort,
-  onView,
-  onEdit,
-  onDelete,
+  // handleSort,
   onRowClick,
 }: OrdersTableProps) => {
   const fallbackData = useMemo(() => [], []);
@@ -47,15 +42,7 @@ export const OrdersTable = ({
   const totalPages = data?.meta.totalPages || 1;
   const currentPage = queryParams.page || 1;
 
-  const columns = useMemo(
-    () =>
-      createOrderColumns({
-        onView,
-        onEdit,
-        onDelete,
-      }),
-    [onView, onEdit, onDelete],
-  );
+  const columns = useMemo(() => createOrderColumns(), []);
 
   const table = useReactTable({
     data: ordersList,

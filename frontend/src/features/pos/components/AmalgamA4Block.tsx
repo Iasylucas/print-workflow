@@ -1,198 +1,147 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FileText, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-interface PricingRule {
-  pricingMode: string;
-  config: Record<string, number>;
-}
-interface Variant {
-  id: number;
-  name: string;
-  pricingRules: PricingRule[];
-}
-interface Product {
-  id: number;
-  name: string;
-  slug: string;
-  variants: Variant[];
-}
+import type { Product } from "@/shared/types/product.types";
 
 interface AmalgamA4BlockProps {
-  products: Product[] | undefined;
+  products: Product[];
 }
 
 export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
   const laizeMachineA4 = 19;
   const longueurReferenceA4 = 27;
-  const surfaceOneA4M2 = 0.06237;
 
-  // 1. États de saisie de la calculatrice
   const [objectWidth, setObjectWidth] = useState<string>("5");
   const [objectHeight, setObjectHeight] = useState<string>("5");
   const [quantityWanted, setQuantityWanted] = useState<string>("100");
-
-  // 2. États pour le choix du produit et le prix
   const [selectedProductSlug, setSelectedProductSlug] =
     useState<string>("flyers");
   const [faceMode, setFaceMode] = useState<"RECTO" | "RECTO_VERSO">("RECTO");
-  const [overrideUnitPrice, setOverrideUnitPrice] = useState<string>("");
+  const [manualPrice, setManualPrice] = useState<string | null>(null);
 
-  // Filtrer les produits pour exclure le PVC de la liste
-  // 🌟 FILTRAGE STRICT : On garde les formats feuilles mais on exclut explicitement le PVC et le DTF
-  const filteredProducts = (products || []).filter((product: any) => {
-    // 1. Condition d'exclusion par slug
-    if (product.slug === "panneau-pvc" || product.slug === "metrage-dtf") {
-      return false;
-    }
+  const filteredProducts = useMemo(() => {
+    return (products || []).filter((product) => {
+      if (
+        product.slug === "panneau-pvc" ||
+        product.slug === "metrage-dtf" ||
+        product.slug === "conception-graphique"
+      ) {
+        return false;
+      }
+      return product.variants?.some((variant) =>
+        variant.pricingRules?.some(
+          (rule) =>
+            rule.pricingMode === "FORMAT" ||
+            rule.pricingMode === "RECTO_VERSO" ||
+            rule.pricingMode === "PER_UNIT",
+        ),
+      );
+    });
+  }, [products]);
 
-    // 2. Condition d'inclusion par mode de tarification sur feuille
-    return product.variants?.some((variant: any) =>
-      variant.pricingRules?.some(
-        (rule: any) =>
-          rule.pricingMode === "FORMAT" ||
-          rule.pricingMode === "RECTO_VERSO" ||
-          rule.pricingMode === "PER_UNIT",
-      ),
-    );
-  });
-
-  // 🌟 DÉTERMINATION DYNAMIQUE VIA L'API SI LE RECTO/VERSO EST DISPONIBLE
-  // 1. Trouver le produit sélectionné (Sécurisé avec un tableau vide par défaut)
-  const currentProduct = filteredProducts.find(
-    (p: any) => p.slug === selectedProductSlug,
+  const currentProduct = useMemo(
+    () => filteredProducts.find((p) => p.slug === selectedProductSlug),
+    [filteredProducts, selectedProductSlug],
   );
 
-  // 🌟 CORRECTION ICI : Ajout du chaînage optionnel ?. sur variants et pricingRules
-  // Détermine de manière 100% stable si le produit gère le recto/verso
-  // 🌟 CORRECTION : On débloque si l'une des variantes contient le mot "verso" dans son nom
   const hasRectoVersoOptions =
-    currentProduct?.variants?.some((v: any) =>
+    currentProduct?.variants?.some((v) =>
       v.name.toLowerCase().includes("verso"),
     ) ?? false;
 
-  // Forcer le mode RECTO si le produit sélectionné ne gère pas le recto/verso
-  // useEffect(() => {
-  //   if (!hasRectoVersoOptions) {
-  //     setFaceMode("RECTO");
-  //   }
-  // }, [hasRectoVersoOptions]);
+  const defaultUnitPrice = useMemo(() => {
+    if (!currentProduct) return 0;
 
-  // 🌟 EXTRACTION DU PRIX UNIVERSELLE (PAR NOM DE VARIANTE)
-  useEffect(() => {
-    if (!currentProduct) return;
-
-    let targetPrice = 0;
-
-    if (hasRectoVersoOptions) {
-      // On cherche précisément "recto verso" ou "recto" dans le nom de la variante (ex: "Recto Seul")
-      const variantNameTarget =
-        faceMode === "RECTO_VERSO" ? "recto verso" : "recto";
-      const variant = currentProduct.variants.find((v: any) =>
-        v.name.toLowerCase().includes(variantNameTarget),
-      );
-
-      const config = (variant?.pricingRules as any)?.[0]?.config;
-      targetPrice = config?.["A4"] || config?.["unit"] || 0;
-    } else {
-      const firstVariant = currentProduct.variants?.[0];
-      const config = (firstVariant?.pricingRules as any)?.[0]?.config;
-      targetPrice = config?.["A4"] || config?.["unit"] || 0;
-    }
-
-    setOverrideUnitPrice(targetPrice.toString());
-  }, [selectedProductSlug, faceMode, currentProduct, hasRectoVersoOptions]);
-
-  // 🌟 CHARGEMENT AUTOMATIQUE DU PRIX DEPUIS LA DB PAR DÉFAUT
-  useEffect(() => {
-    if (!currentProduct) return;
-
-    let targetPrice = 0;
     if (hasRectoVersoOptions) {
       const variantNameTarget =
         faceMode === "RECTO_VERSO" ? "recto verso" : "recto";
-      const variant = currentProduct.variants.find((v) =>
+      const variant = currentProduct.variants?.find((v) =>
         v.name.toLowerCase().includes(variantNameTarget),
       );
-      // Extraction de la clé A4 ou unit dans le JSON config du backend
       const config = variant?.pricingRules?.[0]?.config;
-      targetPrice = config?.["A4"] || config?.["unit"] || 0;
-    } else {
-      const firstVariant = currentProduct.variants[0];
-      const config = firstVariant?.pricingRules?.[0]?.config;
-      targetPrice = config?.["A4"] || config?.["unit"] || 0;
+      return config?.["A4"] || config?.["unit"] || 0;
     }
 
-    setOverrideUnitPrice(targetPrice.toString());
-  }, [selectedProductSlug, faceMode, currentProduct, hasRectoVersoOptions]);
+    const firstVariant = currentProduct.variants?.[0];
+    const config = firstVariant?.pricingRules?.[0]?.config;
+    return config?.["A4"] || config?.["unit"] || 0;
+  }, [currentProduct, faceMode, hasRectoVersoOptions]);
+  const displayPrice = manualPrice ?? defaultUnitPrice.toString();
 
-  // 3. LOGIQUE MATHÉMATIQUE DE L'AMALGAME
+  const handleProductChange = (slug: string) => {
+    setSelectedProductSlug(slug);
+    setManualPrice(null);
+  };
+
+  const handleFaceChange = (mode: "RECTO" | "RECTO_VERSO") => {
+    setFaceMode(mode);
+    setManualPrice(null);
+  };
+
   const w = Number(objectWidth);
   const h = Number(objectHeight);
   const qty = Number(quantityWanted);
-  const currentPriceA4 = Number(overrideUnitPrice) || 0;
+  const currentPriceA4 = Number(displayPrice) || 0;
 
   const rowLigne1 = w > 0 ? Number((laizeMachineA4 / w).toFixed(5)) : 0;
   const rowLigne2 = h > 0 ? Number((longueurReferenceA4 / h).toFixed(5)) : 0;
 
-  // Calcul combiné exact style Excel avec la virgule, moins 1 de sécurité
   const totalPiecesPerA4 =
     w > 0 && h > 0
       ? Math.floor((laizeMachineA4 / w) * (longueurReferenceA4 / h) - 1)
       : 0;
-  const sheetsA4Required =
-    totalPiecesPerA4 > 0 && qty > 0 ? Math.ceil(qty / totalPiecesPerA4) : 0;
-  const totalSurfaceM2 = Number((sheetsA4Required * surfaceOneA4M2).toFixed(3));
 
-  // 🌟 CONFIGURATION DE LA MATRICE BASÉE STRICTEMENT SUR LA QUANTITÉ VOULUE
-  // 🌟 REMPLACER UNIQUEMENT LE BLOC DE LA VARIABLE MATRIX :
-  const matrix = {
-    A4: {
-      totalPcs: totalPiecesPerA4,
-      sheets:
-        totalPiecesPerA4 > 0 && qty > 0 ? Math.ceil(qty / totalPiecesPerA4) : 0,
-      totalAr:
-        totalPiecesPerA4 > 0 && qty > 0
-          ? Math.ceil(qty / totalPiecesPerA4) * currentPriceA4
-          : 0,
-    },
-    A3: {
-      totalPcs: totalPiecesPerA4 * 2,
-      sheets:
-        totalPiecesPerA4 > 0 && qty > 0
-          ? Math.ceil(qty / (totalPiecesPerA4 * 2))
-          : 0,
-      totalAr:
-        totalPiecesPerA4 > 0 && qty > 0
-          ? Math.ceil(qty / (totalPiecesPerA4 * 2)) * (currentPriceA4 * 2)
-          : 0,
-    },
-    A2: {
-      totalPcs: totalPiecesPerA4 * 4,
-      sheets:
-        totalPiecesPerA4 > 0 && qty > 0
-          ? Math.ceil(qty / (totalPiecesPerA4 * 4))
-          : 0,
-      totalAr:
-        totalPiecesPerA4 > 0 && qty > 0
-          ? Math.ceil(qty / (totalPiecesPerA4 * 4)) * (currentPriceA4 * 4)
-          : 0,
-    },
-    A1: {
-      totalPcs: totalPiecesPerA4 * 8,
-      sheets:
-        totalPiecesPerA4 > 0 && qty > 0
-          ? Math.ceil(qty / (totalPiecesPerA4 * 8))
-          : 0,
-      totalAr:
-        totalPiecesPerA4 > 0 && qty > 0
-          ? Math.ceil(qty / (totalPiecesPerA4 * 8)) * (currentPriceA4 * 8)
-          : 0,
-    },
-  };
+  const matrix = useMemo(() => {
+    return {
+      A4: {
+        totalPcs: totalPiecesPerA4,
+        sheets:
+          totalPiecesPerA4 > 0 && qty > 0
+            ? Math.ceil(qty / totalPiecesPerA4)
+            : 0,
+        totalAr:
+          totalPiecesPerA4 > 0 && qty > 0
+            ? Math.ceil(qty / totalPiecesPerA4) * currentPriceA4
+            : 0,
+      },
+      A3: {
+        totalPcs: totalPiecesPerA4 * 2,
+        sheets:
+          totalPiecesPerA4 > 0 && qty > 0
+            ? Math.ceil(qty / (totalPiecesPerA4 * 2))
+            : 0,
+        totalAr:
+          totalPiecesPerA4 > 0 && qty > 0
+            ? Math.ceil(qty / (totalPiecesPerA4 * 2)) * (currentPriceA4 * 2)
+            : 0,
+      },
+      A2: {
+        totalPcs: totalPiecesPerA4 * 4,
+        sheets:
+          totalPiecesPerA4 > 0 && qty > 0
+            ? Math.ceil(qty / (totalPiecesPerA4 * 4))
+            : 0,
+        totalAr:
+          totalPiecesPerA4 > 0 && qty > 0
+            ? Math.ceil(qty / (totalPiecesPerA4 * 4)) * (currentPriceA4 * 4)
+            : 0,
+      },
+      A1: {
+        totalPcs: totalPiecesPerA4 * 8,
+        sheets:
+          totalPiecesPerA4 > 0 && qty > 0
+            ? Math.ceil(qty / (totalPiecesPerA4 * 8))
+            : 0,
+        totalAr:
+          totalPiecesPerA4 > 0 && qty > 0
+            ? Math.ceil(qty / (totalPiecesPerA4 * 8)) * (currentPriceA4 * 8)
+            : 0,
+      },
+    };
+  }, [totalPiecesPerA4, qty, currentPriceA4]);
 
   const handleReset = () => {
     setObjectWidth("");
@@ -214,11 +163,10 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
           onClick={handleReset}
           className="h-6 text-[10px] text-muted-foreground gap-1 px-2 hover:bg-muted"
         >
-          <RotateCcw size={11} /> Reset
+          <RotateCcw size={11} /> Réinitialiser
         </Button>
       </div>
 
-      {/* SÉLECTEURS AUTOMATIQUES DYNAMIQUES */}
       <div className="grid grid-cols-3 gap-3 p-2.5 rounded-lg border border-border bg-muted/30 items-end">
         <div className="space-y-1.5">
           <Label className="text-[11px] font-semibold text-muted-foreground">
@@ -226,7 +174,7 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
           </Label>
           <select
             value={selectedProductSlug}
-            onChange={(e) => setSelectedProductSlug(e.target.value)}
+            onChange={(e) => handleProductChange(e.target.value)}
             className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs font-medium focus:outline-hidden"
           >
             {filteredProducts.map((p) => (
@@ -244,7 +192,9 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
           <select
             disabled={!hasRectoVersoOptions}
             value={faceMode}
-            onChange={(e) => setFaceMode(e.target.value as any)}
+            onChange={(e) =>
+              handleFaceChange(e.target.value as "RECTO" | "RECTO_VERSO")
+            }
             className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs font-medium focus:outline-hidden disabled:bg-muted disabled:opacity-50"
           >
             <option value="RECTO">Recto Seul</option>
@@ -258,17 +208,14 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
           </Label>
           <Input
             type="number"
-            value={overrideUnitPrice}
-            onChange={(e) => setOverrideUnitPrice(e.target.value)}
+            value={displayPrice}
+            onChange={(e) => setManualPrice(e.target.value)}
             className="h-8 font-bold text-primary focus-visible:ring-0 bg-background"
           />
         </div>
       </div>
 
-      {/* STRUCTURE DU TABLEUR */}
-      {/* TABLEUR D'IMPOSITION A4 UNIQUE ET PROPRE */}
       <div className="border border-border rounded-md overflow-hidden bg-background">
-        {/* En-tête des colonnes Excel */}
         <div className="grid grid-cols-5 bg-muted/60 p-2 font-semibold text-muted-foreground text-[10px] uppercase border-b border-border">
           <div>Format Réf.</div>
           <div>Dim. Objet (cm)</div>
@@ -277,7 +224,6 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
           <div className="text-right">Total Utile (-1)</div>
         </div>
 
-        {/* Unique Ligne de calcul fluide */}
         <div className="grid grid-cols-5 p-2 items-center gap-2">
           <div className="font-bold text-muted-foreground">A4 (19 × 27 cm)</div>
           <div className="flex items-center gap-1">
@@ -297,22 +243,18 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
               placeholder="H"
             />
           </div>
-          {/* Colonne Nb / Ligne */}
           <div className="font-mono font-medium pl-2">
             {w > 0 ? rowLigne1 : "-"}
           </div>
-
-          {/* Colonne Nb / Colonne */}
           <div className="font-mono font-medium pl-2">
             {h > 0 ? rowLigne2 : "-"}
           </div>
-
           <div className="text-right font-black text-primary pr-2">
             {totalPiecesPerA4 > 0 ? `${totalPiecesPerA4} pcs` : "-"}
           </div>
         </div>
       </div>
-      {/* 🌟 À INSERER POUR LA SAISIE DE LA QUANTITÉ VOULUE */}
+
       <div className="space-y-1.5">
         <Label className="text-[11px] font-bold text-primary">
           Quantité voulue
@@ -327,7 +269,6 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
         />
       </div>
 
-      {/* LA MATRICE AUTOMATIQUE QUI SUIT LA MODIFICATION DU PRIX */}
       <div className="border border-border rounded-md overflow-hidden bg-background mt-2">
         <div className="grid grid-cols-4 bg-primary/5 p-2 font-bold text-primary text-[10px] uppercase border-b border-border tracking-wider">
           <div>Type de Feuille</div>

@@ -16,9 +16,6 @@ router.post(
 );
 
 // order.routes.ts
-router.get("/:id/", orderController.getOrderForPos);
-
-// order.routes.ts
 router.patch("/:id/", orderController.updateOrderFromPos);
 
 router.get("/invoice/:id", orderController.getInvoiceForPos);

@@ -6,7 +6,7 @@ import { DashboardPage } from "@/features/dashboard/pages/DashboardPage";
 import { RegisterPage } from "@/features/auth/pages/RegisterPage";
 import { UnauthorizedPage } from "@/pages/UnauthorizedPage";
 import { UsersPage } from "@/features/user/pages/UsersPage";
-import { PosPage } from "./features/order";
+import { PosPage } from "./features/pos";
 import { ClientsPage } from "./features/client/pages/ClientsPage";
 import { OrdersPage } from "./features/orders/pages/OrdersPage";
 import { InvoicesPage } from "./features/invoices/pages/InvoicesPage";

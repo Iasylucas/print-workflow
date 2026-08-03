@@ -1,5 +1,3 @@
-// frontend/src/features/orders/components/EditOrderModal.tsx
-import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -17,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useOrderMutations } from "../hooks/useOrders";
-import type { Order, UpdateOrderRequest } from "../types/orders.types";
+import type { Order } from "../types/orders.types";
 
 // Schéma Zod simple (pas de fichier séparé pour l'instant)
 import { z } from "zod";
@@ -83,7 +81,7 @@ export const EditOrderModal = ({
                   <FieldLabel htmlFor={field.name}>Désignation *</FieldLabel>
                   <Input {...field} id={field.name} placeholder="Flyers A4" />
                   {fieldState.invalid && fieldState.error && (
-                    <FieldError errors={[fieldState.error.message]} />
+                    <FieldError errors={[fieldState.error]} />
                   )}
                 </Field>
               )}
@@ -99,9 +97,10 @@ export const EditOrderModal = ({
                     {...field}
                     id={field.name}
                     placeholder="Étiquette atelier"
+                    value={field.value ?? ""}
                   />
                   {fieldState.invalid && fieldState.error && (
-                    <FieldError errors={[fieldState.error.message]} />
+                    <FieldError errors={[fieldState.error]} />
                   )}
                 </Field>
               )}
@@ -117,9 +116,10 @@ export const EditOrderModal = ({
                     {...field}
                     id={field.name}
                     placeholder="A4 / 20x30cm"
+                    value={field.value ?? ""}
                   />
                   {fieldState.invalid && fieldState.error && (
-                    <FieldError errors={[fieldState.error.message]} />
+                    <FieldError errors={[fieldState.error]} />
                   )}
                 </Field>
               )}
@@ -133,7 +133,7 @@ export const EditOrderModal = ({
                   <FieldLabel htmlFor={field.name}>Quantité *</FieldLabel>
                   <Input type="number" {...field} id={field.name} min={1} />
                   {fieldState.invalid && fieldState.error && (
-                    <FieldError errors={[fieldState.error.message]} />
+                    <FieldError errors={[fieldState.error]} />
                   )}
                 </Field>
               )}
@@ -149,7 +149,7 @@ export const EditOrderModal = ({
                   </FieldLabel>
                   <Input type="number" {...field} id={field.name} min={0} />
                   {fieldState.invalid && fieldState.error && (
-                    <FieldError errors={[fieldState.error.message]} />
+                    <FieldError errors={[fieldState.error]} />
                   )}
                 </Field>
               )}

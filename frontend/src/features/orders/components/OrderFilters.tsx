@@ -9,10 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, X, Filter, Calendar, RotateCcw } from "lucide-react";
+import { Search, X, Filter, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ORDER_STATUS_LABELS, ORDER_STATUSES } from "../schema/orders.schema";
-import type { OrdersQueryParams, OrderStatus } from "../types/orders.types";
+import {
+  ORDER_STATUS_LABELS,
+  ORDER_STATUSES,
+  type OrderStatus,
+} from "../schema/orders.schema";
+import type { OrdersQueryParams } from "../types/orders.types";
 import { Label } from "@/components/ui/label";
 
 interface OrderFiltersProps {
@@ -25,10 +29,6 @@ export const OrderFilters = ({
   onFilterChange,
 }: OrderFiltersProps) => {
   const [localSearch, setLocalSearch] = useState(filters.search || "");
-
-  useEffect(() => {
-    setLocalSearch(filters.search || "");
-  }, [filters.search]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
