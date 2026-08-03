@@ -1,12 +1,25 @@
+import { prisma } from "@/config/prisma.js";
+
+const companyInfo = await prisma.companyInfo.findFirst({
+  orderBy: { createdAt: "desc" },
+  select: { logo: true },
+});
+
+const logoUrl =
+  companyInfo?.logo ||
+  "https://res.cloudinary.com/demo/image/upload/v1/logo.png";
+
 export const getInvitationTemplate = (url: string, role: string) => {
   const brandColor = "#000000"; // Noir pur pour EWA Print
   const secondaryColor = "#666666";
+
+  console.log(logoUrl);
 
   return `
     <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee;">
       <!-- Header avec Logo -->
       <div style="padding: 20px; text-align: center; background-color: #ffffff;">
-        <img src="https://votre-domaine.com/logo.png" alt="EWA Print" style="width: 150px; height: auto;">
+        <img src=${logoUrl} alt="EWA Print" style="width: 150px; height: auto;">
       </div>
 
       <!-- Corps du mail (Français) -->
@@ -22,17 +35,6 @@ export const getInvitationTemplate = (url: string, role: string) => {
         </div>
 
         <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
-
-        <!-- Corps du mail (English) -->
-        <h1 style="font-size: 20px; color: ${brandColor}; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Welcome to EWA Print</h1>
-        <p style="color: ${secondaryColor}; line-height: 1.5;">You have been invited to join our ERP platform as a <strong>${role}</strong>.</p>
-        <p style="color: ${secondaryColor}; line-height: 1.5;">Click the button below to finalize your account registration. This link is valid for 48 hours.</p>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="${url}" style="background-color: ${brandColor}; color: #ffffff; padding: 15px 25px; text-decoration: none; font-weight: bold; border-radius: 4px; display: inline-block;">
-            ACTIVATE MY ACCOUNT
-          </a>
-        </div>
       </div>
 
       <!-- Footer -->

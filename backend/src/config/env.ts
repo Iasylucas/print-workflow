@@ -13,6 +13,7 @@ const envSchema = z.object({
   MAIL_PORT: z.string(),
   MAIL_USER: z.email(),
   MAIL_PASS: z.string(),
+  MAIL_AUTH: z.string(),
   FRONTEND_URL: z.url(),
   CLOUDINARY_CLOUD_NAME: z.string(),
   CLOUDINARY_API_KEY: z.string(),

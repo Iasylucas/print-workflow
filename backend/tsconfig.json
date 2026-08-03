@@ -2,12 +2,12 @@
   "compilerOptions": {
     /* Language & Environment */
     "target": "ES2023",
-    "lib": ["ES2023"], 
+    "lib": ["ES2023"],
     /* IMPORTANT : Pour un backend Node.js pur (sans Next.js/Vite), 
        "NodeNext" ou "Node16" est le meilleur choix car il gère 
        parfaitement les ES Modules (.mjs / type: module) */
-    "module": "NodeNext", 
-    "moduleResolution": "NodeNext", 
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "types": ["node"],
     /* Strictness */
     "strict": true,
@@ -32,6 +32,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/test-email.ts"],
   "exclude": ["node_modules", "dist"]
 }
