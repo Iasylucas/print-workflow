@@ -35,7 +35,7 @@ model User {
   password  String?
   role      String
   isActive  Boolean  @default(false)
-  firstName String?
+  firstName String
   lastName  String?
   phone    String?
   address   String?

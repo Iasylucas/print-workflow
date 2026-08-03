@@ -16,11 +16,11 @@ export const authController = {
   invite: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const validatedData = inviteUserSchema.parse(req.body);
 
-    const { user } = await authService.invite(validatedData);
+    const { data } = await authService.invite(validatedData);
     res.status(201).json({
       success: true,
       message: "Invitation processed and email sent successfully",
-      data: { user },
+      data: { data },
     });
   }),
 
