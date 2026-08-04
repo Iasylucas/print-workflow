@@ -212,29 +212,6 @@ export const PosCart = ({
           </div>
         </div>
         <div className="space-y-1.5">
-          <Label className="text-[11px] font-semibold text-muted-foreground">
-            Type de document
-          </Label>
-          <Select
-            value={formState.documentType}
-            onValueChange={(v) =>
-              onUpdateFormField("documentType", v as "INVOICE" | "QUOTE")
-            }
-          >
-            <SelectTrigger className="h-8 text-xs">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="INVOICE">Facture</SelectItem>
-              <SelectItem value="QUOTE">Devis</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* LIVRAISON + DATE */}
-      <div className="mt-2 grid grid-cols-2 gap-3">
-        <div className="space-y-1.5">
           <Label className="text-[11px] font-medium text-muted-foreground">
             Livraison (optionnel)
           </Label>
@@ -246,6 +223,10 @@ export const PosCart = ({
             placeholder="Adresse"
           />
         </div>
+      </div>
+
+      {/* LIVRAISON + DATE */}
+      <div className="mt-2 grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
           <Label className="text-[11px] font-medium text-muted-foreground">
             Date livraison prévue (optionnel)

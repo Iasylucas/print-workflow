@@ -49,6 +49,7 @@ export type QuoteMinAggregateOutputType = {
   createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type QuoteMaxAggregateOutputType = {
@@ -62,6 +63,7 @@ export type QuoteMaxAggregateOutputType = {
   createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type QuoteCountAggregateOutputType = {
@@ -75,6 +77,7 @@ export type QuoteCountAggregateOutputType = {
   createdById: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
   _all: number
 }
 
@@ -102,6 +105,7 @@ export type QuoteMinAggregateInputType = {
   createdById?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type QuoteMaxAggregateInputType = {
@@ -115,6 +119,7 @@ export type QuoteMaxAggregateInputType = {
   createdById?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type QuoteCountAggregateInputType = {
@@ -128,6 +133,7 @@ export type QuoteCountAggregateInputType = {
   createdById?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -228,6 +234,7 @@ export type QuoteGroupByOutputType = {
   createdById: string
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   _count: QuoteCountAggregateOutputType | null
   _avg: QuoteAvgAggregateOutputType | null
   _sum: QuoteSumAggregateOutputType | null
@@ -264,6 +271,7 @@ export type QuoteWhereInput = {
   createdById?: Prisma.StringFilter<"Quote"> | string
   createdAt?: Prisma.DateTimeFilter<"Quote"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Quote"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Quote"> | Date | string | null
   client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   companyInfo?: Prisma.XOR<Prisma.CompanyInfoScalarRelationFilter, Prisma.CompanyInfoWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -281,6 +289,7 @@ export type QuoteOrderByWithRelationInput = {
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   client?: Prisma.ClientOrderByWithRelationInput
   companyInfo?: Prisma.CompanyInfoOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
@@ -301,6 +310,7 @@ export type QuoteWhereUniqueInput = Prisma.AtLeast<{
   createdById?: Prisma.StringFilter<"Quote"> | string
   createdAt?: Prisma.DateTimeFilter<"Quote"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Quote"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Quote"> | Date | string | null
   client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   companyInfo?: Prisma.XOR<Prisma.CompanyInfoScalarRelationFilter, Prisma.CompanyInfoWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -318,6 +328,7 @@ export type QuoteOrderByWithAggregationInput = {
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.QuoteCountOrderByAggregateInput
   _avg?: Prisma.QuoteAvgOrderByAggregateInput
   _max?: Prisma.QuoteMaxOrderByAggregateInput
@@ -339,6 +350,7 @@ export type QuoteScalarWhereWithAggregatesInput = {
   createdById?: Prisma.StringWithAggregatesFilter<"Quote"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Quote"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Quote"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Quote"> | Date | string | null
 }
 
 export type QuoteCreateInput = {
@@ -348,6 +360,7 @@ export type QuoteCreateInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   client: Prisma.ClientCreateNestedOneWithoutQuotesInput
   companyInfo: Prisma.CompanyInfoCreateNestedOneWithoutQuotesInput
   createdBy: Prisma.UserCreateNestedOneWithoutQuotesCreatedInput
@@ -365,6 +378,7 @@ export type QuoteUncheckedCreateInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutQuoteInput
 }
 
@@ -375,6 +389,7 @@ export type QuoteUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   client?: Prisma.ClientUpdateOneRequiredWithoutQuotesNestedInput
   companyInfo?: Prisma.CompanyInfoUpdateOneRequiredWithoutQuotesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutQuotesCreatedNestedInput
@@ -392,6 +407,7 @@ export type QuoteUncheckedUpdateInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutQuoteNestedInput
 }
 
@@ -406,6 +422,7 @@ export type QuoteCreateManyInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type QuoteUpdateManyMutationInput = {
@@ -415,6 +432,7 @@ export type QuoteUpdateManyMutationInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type QuoteUncheckedUpdateManyInput = {
@@ -428,6 +446,7 @@ export type QuoteUncheckedUpdateManyInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type QuoteListRelationFilter = {
@@ -451,6 +470,7 @@ export type QuoteCountOrderByAggregateInput = {
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type QuoteAvgOrderByAggregateInput = {
@@ -470,6 +490,7 @@ export type QuoteMaxOrderByAggregateInput = {
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type QuoteMinOrderByAggregateInput = {
@@ -483,6 +504,7 @@ export type QuoteMinOrderByAggregateInput = {
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type QuoteSumOrderByAggregateInput = {
@@ -645,6 +667,7 @@ export type QuoteCreateWithoutClientInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   companyInfo: Prisma.CompanyInfoCreateNestedOneWithoutQuotesInput
   createdBy: Prisma.UserCreateNestedOneWithoutQuotesCreatedInput
   orders?: Prisma.OrderCreateNestedManyWithoutQuoteInput
@@ -660,6 +683,7 @@ export type QuoteUncheckedCreateWithoutClientInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutQuoteInput
 }
 
@@ -703,6 +727,7 @@ export type QuoteScalarWhereInput = {
   createdById?: Prisma.StringFilter<"Quote"> | string
   createdAt?: Prisma.DateTimeFilter<"Quote"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Quote"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Quote"> | Date | string | null
 }
 
 export type QuoteCreateWithoutCreatedByInput = {
@@ -712,6 +737,7 @@ export type QuoteCreateWithoutCreatedByInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   client: Prisma.ClientCreateNestedOneWithoutQuotesInput
   companyInfo: Prisma.CompanyInfoCreateNestedOneWithoutQuotesInput
   orders?: Prisma.OrderCreateNestedManyWithoutQuoteInput
@@ -727,6 +753,7 @@ export type QuoteUncheckedCreateWithoutCreatedByInput = {
   companyInfoId: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutQuoteInput
 }
 
@@ -763,6 +790,7 @@ export type QuoteCreateWithoutCompanyInfoInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   client: Prisma.ClientCreateNestedOneWithoutQuotesInput
   createdBy: Prisma.UserCreateNestedOneWithoutQuotesCreatedInput
   orders?: Prisma.OrderCreateNestedManyWithoutQuoteInput
@@ -778,6 +806,7 @@ export type QuoteUncheckedCreateWithoutCompanyInfoInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutQuoteInput
 }
 
@@ -814,6 +843,7 @@ export type QuoteCreateWithoutOrdersInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   client: Prisma.ClientCreateNestedOneWithoutQuotesInput
   companyInfo: Prisma.CompanyInfoCreateNestedOneWithoutQuotesInput
   createdBy: Prisma.UserCreateNestedOneWithoutQuotesCreatedInput
@@ -830,6 +860,7 @@ export type QuoteUncheckedCreateWithoutOrdersInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type QuoteCreateOrConnectWithoutOrdersInput = {
@@ -855,6 +886,7 @@ export type QuoteUpdateWithoutOrdersInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   client?: Prisma.ClientUpdateOneRequiredWithoutQuotesNestedInput
   companyInfo?: Prisma.CompanyInfoUpdateOneRequiredWithoutQuotesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutQuotesCreatedNestedInput
@@ -871,6 +903,7 @@ export type QuoteUncheckedUpdateWithoutOrdersInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type QuoteCreateManyClientInput = {
@@ -883,6 +916,7 @@ export type QuoteCreateManyClientInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type QuoteUpdateWithoutClientInput = {
@@ -892,6 +926,7 @@ export type QuoteUpdateWithoutClientInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   companyInfo?: Prisma.CompanyInfoUpdateOneRequiredWithoutQuotesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutQuotesCreatedNestedInput
   orders?: Prisma.OrderUpdateManyWithoutQuoteNestedInput
@@ -907,6 +942,7 @@ export type QuoteUncheckedUpdateWithoutClientInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutQuoteNestedInput
 }
 
@@ -920,6 +956,7 @@ export type QuoteUncheckedUpdateManyWithoutClientInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type QuoteCreateManyCreatedByInput = {
@@ -932,6 +969,7 @@ export type QuoteCreateManyCreatedByInput = {
   companyInfoId: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type QuoteUpdateWithoutCreatedByInput = {
@@ -941,6 +979,7 @@ export type QuoteUpdateWithoutCreatedByInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   client?: Prisma.ClientUpdateOneRequiredWithoutQuotesNestedInput
   companyInfo?: Prisma.CompanyInfoUpdateOneRequiredWithoutQuotesNestedInput
   orders?: Prisma.OrderUpdateManyWithoutQuoteNestedInput
@@ -956,6 +995,7 @@ export type QuoteUncheckedUpdateWithoutCreatedByInput = {
   companyInfoId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutQuoteNestedInput
 }
 
@@ -969,6 +1009,7 @@ export type QuoteUncheckedUpdateManyWithoutCreatedByInput = {
   companyInfoId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type QuoteCreateManyCompanyInfoInput = {
@@ -981,6 +1022,7 @@ export type QuoteCreateManyCompanyInfoInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type QuoteUpdateWithoutCompanyInfoInput = {
@@ -990,6 +1032,7 @@ export type QuoteUpdateWithoutCompanyInfoInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   client?: Prisma.ClientUpdateOneRequiredWithoutQuotesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutQuotesCreatedNestedInput
   orders?: Prisma.OrderUpdateManyWithoutQuoteNestedInput
@@ -1005,6 +1048,7 @@ export type QuoteUncheckedUpdateWithoutCompanyInfoInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutQuoteNestedInput
 }
 
@@ -1018,6 +1062,7 @@ export type QuoteUncheckedUpdateManyWithoutCompanyInfoInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -1062,6 +1107,7 @@ export type QuoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   companyInfo?: boolean | Prisma.CompanyInfoDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1080,6 +1126,7 @@ export type QuoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   companyInfo?: boolean | Prisma.CompanyInfoDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1096,6 +1143,7 @@ export type QuoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   companyInfo?: boolean | Prisma.CompanyInfoDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1112,9 +1160,10 @@ export type QuoteSelectScalar = {
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type QuoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "number" | "date" | "clientId" | "total" | "status" | "companyInfoId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["quote"]>
+export type QuoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "number" | "date" | "clientId" | "total" | "status" | "companyInfoId" | "createdById" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["quote"]>
 export type QuoteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   companyInfo?: boolean | Prisma.CompanyInfoDefaultArgs<ExtArgs>
@@ -1152,6 +1201,7 @@ export type $QuotePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     createdById: string
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["quote"]>
   composites: {}
 }
@@ -1589,6 +1639,7 @@ export interface QuoteFieldRefs {
   readonly createdById: Prisma.FieldRef<"Quote", 'String'>
   readonly createdAt: Prisma.FieldRef<"Quote", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Quote", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"Quote", 'DateTime'>
 }
     
 
