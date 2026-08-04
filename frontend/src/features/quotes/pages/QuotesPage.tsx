@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { useInvoices, useInvoiceMutations } from "../hooks/useInvoices";
-import { InvoiceFilters } from "../components/InvoiceFilters";
-import { InvoicesTable } from "../components/InvoicesTable";
-import { InvoiceDetailDrawer } from "../components/InvoiceDetailDrawer";
+import { useQuotes, useQuoteMutations } from "../hooks/useQuotes";
+import { QuoteFilters } from "../components/QuoteFilters";
+import { QuotesTable } from "../components/QuotesTable";
+import { QuoteDetailDrawer } from "../components/QuoteDetailDrawer";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
 import { FailedTable } from "@/components/shared/FailedTable";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
-import type { InvoicesQueryParams, Invoice } from "../types/invoices.types";
-import { AddPaymentModal } from "../components/AddPaymentModal";
+import type { QuotesQueryParams, Quote } from "../types/quotes.types";
+import { useNavigate } from "react-router-dom";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
 
@@ -21,8 +21,10 @@ interface ConfirmActionState {
   isDestructive?: boolean;
 }
 
-export const InvoicesPage = () => {
-  const [queryParams, setQueryParams] = useState<InvoicesQueryParams>({
+export const QuotesPage = () => {
+  const navigate = useNavigate();
+
+  const [queryParams, setQueryParams] = useState<QuotesQueryParams>({
     page: 1,
     limit: 20,
     sortBy: "createdAt",
@@ -30,19 +32,12 @@ export const InvoicesPage = () => {
     search: undefined,
     status: undefined,
     clientId: undefined,
-    isDelivered: undefined,
     startDate: undefined,
     endDate: undefined,
   });
 
-  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+  const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
   const [detailDrawerOpen, setDetailDrawerOpen] = useState(false);
-
-  const { data, isLoading, isError, refetch } = useInvoices(queryParams);
-  const { deleteInvoiceMutation } = useInvoiceMutations();
-
-  const [addPaymentModalOpen, setAddPaymentModalOpen] = useState(false);
-  const { markDeliveredMutation } = useInvoiceMutations();
 
   const [confirmAction, setConfirmAction] = useState<ConfirmActionState>({
     isOpen: false,
@@ -51,16 +46,18 @@ export const InvoicesPage = () => {
     onConfirm: () => {},
   });
 
-  const handleAddPayment = (invoice: Invoice) => {
-    setSelectedInvoice(invoice);
-    setAddPaymentModalOpen(true);
-  };
+  const { data, isLoading, isError, refetch } = useQuotes(queryParams);
+  const {
+    deleteQuoteMutation,
+    restoreQuoteMutation,
+    convertToInvoiceMutation,
+  } = useQuoteMutations();
 
-  const handleFilter = (filters: Partial<InvoicesQueryParams>) => {
+  const handleFilter = (filters: Partial<QuotesQueryParams>) => {
     setQueryParams((prev) => ({ ...prev, ...filters, page: 1 }));
   };
 
-  const handleSort = (sortBy: InvoicesQueryParams["sortBy"]) => {
+  const handleSort = (sortBy: QuotesQueryParams["sortBy"]) => {
     setQueryParams((prev) => ({
       ...prev,
       sortBy,
@@ -73,53 +70,62 @@ export const InvoicesPage = () => {
     setQueryParams((prev) => ({ ...prev, page }));
   };
 
-  const handleView = (invoice: Invoice) => {
-    setSelectedInvoice(invoice);
+  const handleView = (quote: Quote) => {
+    setSelectedQuote(quote);
     setDetailDrawerOpen(true);
   };
 
-  const handleEdit = (invoice: Invoice) => {
-    console.log("Edit invoice:", invoice);
+  const handleEdit = (quote: Quote) => {
+    console.log("Edit quote:", quote);
   };
 
-  const handleDeliver = (invoice: Invoice) => {
+  const handleConvert = (quote: Quote) => {
     setConfirmAction({
       isOpen: true,
-      title: "Marquer comme livrée",
-      description: `Voulez-vous marquer la facture ${invoice.number} comme livrée ?`,
+      title: "Convertir en facture",
+      description: `Voulez-vous convertir le devis ${quote.number} en facture ?`,
       isDestructive: false,
       onConfirm: () => {
-        markDeliveredMutation.mutate({
-          id: invoice.id,
-          data: { isDelivered: true },
+        convertToInvoiceMutation.mutate(quote.id, {
+          onSuccess: (data) => {
+            if (data?.invoice?.id) {
+              navigate(`/pos/${data.invoice.id}`);
+            }
+            setConfirmAction((prev) => ({ ...prev, isOpen: false }));
+          },
         });
+      },
+    });
+  };
+
+  const handleDelete = (quote: Quote) => {
+    setConfirmAction({
+      isOpen: true,
+      title: "Supprimer le devis ?",
+      description: `Voulez-vous vraiment supprimer le devis ${quote.number} ? Cette action est irréversible.`,
+      isDestructive: true,
+      onConfirm: () => {
+        deleteQuoteMutation.mutate(quote.id);
         setConfirmAction((prev) => ({ ...prev, isOpen: false }));
       },
     });
   };
 
-  const handleDelete = (invoice: Invoice) => {
-    setConfirmAction({
-      isOpen: true,
-      title: "Supprimer la facture ?",
-      description: `Voulez-vous vraiment supprimer la facture ${invoice.number} ? Cette action est irréversible.`,
-      isDestructive: true,
-      onConfirm: () => {
-        deleteInvoiceMutation.mutate(invoice.id);
-        setConfirmAction((prev) => ({ ...prev, isOpen: false }));
-      },
-    });
+  const handleRestore = (quote: Quote) => {
+    if (window.confirm(`Restaurer le devis ${quote.number} ?`)) {
+      restoreQuoteMutation.mutate(quote.id);
+    }
   };
 
   if (isError) {
-    return <FailedTable refetch={refetch} sujet="factures" />;
+    return <FailedTable refetch={refetch} sujet="devis" />;
   }
 
   return (
     <div className="w-full space-y-6 animate-in fade-in duration-300">
       <PageHeader
-        title="Factures"
-        subtitle="Gérez toutes les factures, suivez les paiements et l'état de livraison."
+        title="Devis"
+        subtitle="Gérez tous vos devis, suivez leur état et convertissez-les en factures."
       >
         <Button
           variant="outline"
@@ -133,7 +139,7 @@ export const InvoicesPage = () => {
       </PageHeader>
 
       <div className="space-y-4">
-        <InvoiceFilters filters={queryParams} onFilterChange={handleFilter} />
+        <QuoteFilters filters={queryParams} onFilterChange={handleFilter} />
 
         <TableStatusBar
           totalCount={data?.meta.total || 0}
@@ -148,7 +154,7 @@ export const InvoicesPage = () => {
           }}
         />
 
-        <InvoicesTable
+        <QuotesTable
           data={data}
           isLoading={isLoading}
           queryParams={queryParams}
@@ -156,9 +162,9 @@ export const InvoicesPage = () => {
           handleSort={handleSort}
           onView={handleView}
           onEdit={handleEdit}
-          onDeliver={handleDeliver}
+          onConvert={handleConvert}
           onDelete={handleDelete}
-          onAddPayment={handleAddPayment}
+          onRestore={handleRestore}
           onRowClick={(row) => {
             const target = window.event?.target as HTMLElement;
             if (target?.closest('button, [role="menuitem"], [role="menu"]')) {
@@ -169,19 +175,19 @@ export const InvoicesPage = () => {
         />
       </div>
 
-      <InvoiceDetailDrawer
+      <QuoteDetailDrawer
         isOpen={detailDrawerOpen}
         onOpenChange={setDetailDrawerOpen}
-        invoiceId={selectedInvoice?.id || null}
+        quoteId={selectedQuote?.id || null}
+        onConvert={() => {
+          if (selectedQuote) {
+            handleConvert(selectedQuote);
+            setDetailDrawerOpen(false);
+          }
+        }}
       />
 
-      <AddPaymentModal
-        isOpen={addPaymentModalOpen}
-        onOpenChange={setAddPaymentModalOpen}
-        invoice={selectedInvoice}
-      />
-
-      {/* Confirmation Dialog */}
+      {}
       <AlertDialog
         open={confirmAction.isOpen}
         onOpenChange={(open) =>

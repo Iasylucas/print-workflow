@@ -78,6 +78,7 @@ export const quoteDetailSelect = {
       unitPrice: true,
       status: true,
       clientId: true,
+      productId: true,
       client: {
         select: {
           id: true,

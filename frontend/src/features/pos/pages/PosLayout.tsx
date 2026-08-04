@@ -11,9 +11,14 @@ import { usePosCart } from "../hooks/usePosCart";
 import { ClientFormModal } from "@/features/client/components/ClientFormModal";
 import { useState } from "react";
 import { PageHeader } from "@/components/shared/PageHeader";
+import { useParams } from "react-router-dom";
 
 export const PosLayout = () => {
-  const pos = usePosCart();
+  // Dans le composant
+  const { invoiceId } = useParams<{ invoiceId?: string }>();
+
+  // Passe l'ID à `usePosCart`
+  const pos = usePosCart(invoiceId ? Number(invoiceId) : null);
   // Ajouter en haut avec les autres useState
   const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false);
 

@@ -6,7 +6,7 @@ import {
   Building2,
   // Package,
   FileText,
-  // FileCheck,
+  FileCheck,
   Receipt,
 } from "lucide-react";
 
@@ -24,7 +24,7 @@ const MENU_CONFIG: Record<string, MenuItem[]> = {
     // { href: "/products", label: "Produits", icon: Package },
     { href: "/pos", label: "Prise de commanes", icon: Receipt },
     { href: "/orders", label: "Commandes", icon: FileText },
-    // { href: "/quotes", label: "Devis", icon: FileCheck },
+    { href: "/quotes", label: "Devis", icon: FileCheck },
     { href: "/invoices", label: "Factures", icon: Receipt },
   ],
   SALES: [
@@ -32,7 +32,7 @@ const MENU_CONFIG: Record<string, MenuItem[]> = {
     { href: "/clients", label: "Clients", icon: Building2 },
     // { href: "/products", label: "Produits", icon: Package },
     { href: "/orders", label: "Commandes", icon: FileText },
-    // { href: "/quotes", label: "Devis", icon: FileCheck },
+    { href: "/quotes", label: "Devis", icon: FileCheck },
     { href: "/invoices", label: "Factures", icon: Receipt },
   ],
   PRINTER: [

@@ -11,11 +11,15 @@ import type {
 } from "../types/pos.types";
 import type { Invoice } from "@/features/invoices/types/invoices.types";
 
-export const usePosCart = () => {
+export const usePosCart = (initialInvoiceId?: number | null) => {
   // ─── MODE / NAVIGATION ───
   const [isEditing, setIsEditing] = useState(false);
-  const [editingInvoiceId, setEditingInvoiceId] = useState<number | null>(null);
-  const [loadingInvoiceId, setLoadingInvoiceId] = useState<number | null>(null);
+  const [editingInvoiceId, setEditingInvoiceId] = useState<number | null>(
+    initialInvoiceId || null,
+  );
+  const [loadingInvoiceId, setLoadingInvoiceId] = useState<number | null>(
+    initialInvoiceId || null,
+  );
   const [lastLoadedId, setLastLoadedId] = useState<number | null>(null);
 
   const currentInvoiceId = loadingInvoiceId || editingInvoiceId;
@@ -58,6 +62,15 @@ export const usePosCart = () => {
   const { createBulkOrderMutation, updateInvoiceFromPosMutation } =
     useOrderMutations();
   const { addPaymentMutation, deletePaymentMutation } = useInvoiceMutations();
+
+  // ─── CHARGEMENT FACTURE ───
+  const isInitialLoad = useRef(true);
+  useEffect(() => {
+    if (isInitialLoad.current && initialInvoiceId) {
+      isInitialLoad.current = false;
+      // Le `useState` initial a déjà chargé la facture
+    }
+  }, [initialInvoiceId]);
 
   // ─── DERIVED (mémoïsés) ───
   const subTotal = useMemo(

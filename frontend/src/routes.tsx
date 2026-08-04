@@ -10,6 +10,7 @@ import { PosPage } from "./features/pos";
 import { ClientsPage } from "./features/client/pages/ClientsPage";
 import { OrdersPage } from "./features/orders/pages/OrdersPage";
 import { InvoicesPage } from "./features/invoices/pages/InvoicesPage";
+import { QuotesPage } from "./features/quotes/pages/QuotesPage";
 
 export const router = createBrowserRouter([
   // Routes publiques
@@ -55,7 +56,15 @@ export const router = createBrowserRouter([
       },
       {
         element: <RootLayout />,
+        children: [{ path: "/pos/:invoiceId", element: <PosPage /> }],
+      },
+      {
+        element: <RootLayout />,
         children: [{ path: "/clients", element: <ClientsPage /> }],
+      },
+      {
+        element: <RootLayout />,
+        children: [{ path: "/quotes", element: <QuotesPage /> }],
       },
     ],
   },
