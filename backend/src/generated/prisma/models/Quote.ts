@@ -266,7 +266,6 @@ export type QuoteWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Quote"> | Date | string
   client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   companyInfo?: Prisma.XOR<Prisma.CompanyInfoScalarRelationFilter, Prisma.CompanyInfoWhereInput>
-  transformedToInvoice?: Prisma.XOR<Prisma.InvoiceNullableScalarRelationFilter, Prisma.InvoiceWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   orders?: Prisma.OrderListRelationFilter
 }
@@ -284,7 +283,6 @@ export type QuoteOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   client?: Prisma.ClientOrderByWithRelationInput
   companyInfo?: Prisma.CompanyInfoOrderByWithRelationInput
-  transformedToInvoice?: Prisma.InvoiceOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
   orders?: Prisma.OrderOrderByRelationAggregateInput
 }
@@ -305,7 +303,6 @@ export type QuoteWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Quote"> | Date | string
   client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   companyInfo?: Prisma.XOR<Prisma.CompanyInfoScalarRelationFilter, Prisma.CompanyInfoWhereInput>
-  transformedToInvoice?: Prisma.XOR<Prisma.InvoiceNullableScalarRelationFilter, Prisma.InvoiceWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   orders?: Prisma.OrderListRelationFilter
 }, "id" | "number">
@@ -353,7 +350,6 @@ export type QuoteCreateInput = {
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutQuotesInput
   companyInfo: Prisma.CompanyInfoCreateNestedOneWithoutQuotesInput
-  transformedToInvoice?: Prisma.InvoiceCreateNestedOneWithoutOriginalQuoteInput
   createdBy: Prisma.UserCreateNestedOneWithoutQuotesCreatedInput
   orders?: Prisma.OrderCreateNestedManyWithoutQuoteInput
 }
@@ -369,7 +365,6 @@ export type QuoteUncheckedCreateInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  transformedToInvoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutOriginalQuoteInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutQuoteInput
 }
 
@@ -382,7 +377,6 @@ export type QuoteUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutQuotesNestedInput
   companyInfo?: Prisma.CompanyInfoUpdateOneRequiredWithoutQuotesNestedInput
-  transformedToInvoice?: Prisma.InvoiceUpdateOneWithoutOriginalQuoteNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutQuotesCreatedNestedInput
   orders?: Prisma.OrderUpdateManyWithoutQuoteNestedInput
 }
@@ -398,7 +392,6 @@ export type QuoteUncheckedUpdateInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  transformedToInvoice?: Prisma.InvoiceUncheckedUpdateOneWithoutOriginalQuoteNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutQuoteNestedInput
 }
 
@@ -629,22 +622,6 @@ export type QuoteUncheckedUpdateManyWithoutCompanyInfoNestedInput = {
   deleteMany?: Prisma.QuoteScalarWhereInput | Prisma.QuoteScalarWhereInput[]
 }
 
-export type QuoteCreateNestedOneWithoutTransformedToInvoiceInput = {
-  create?: Prisma.XOR<Prisma.QuoteCreateWithoutTransformedToInvoiceInput, Prisma.QuoteUncheckedCreateWithoutTransformedToInvoiceInput>
-  connectOrCreate?: Prisma.QuoteCreateOrConnectWithoutTransformedToInvoiceInput
-  connect?: Prisma.QuoteWhereUniqueInput
-}
-
-export type QuoteUpdateOneWithoutTransformedToInvoiceNestedInput = {
-  create?: Prisma.XOR<Prisma.QuoteCreateWithoutTransformedToInvoiceInput, Prisma.QuoteUncheckedCreateWithoutTransformedToInvoiceInput>
-  connectOrCreate?: Prisma.QuoteCreateOrConnectWithoutTransformedToInvoiceInput
-  upsert?: Prisma.QuoteUpsertWithoutTransformedToInvoiceInput
-  disconnect?: Prisma.QuoteWhereInput | boolean
-  delete?: Prisma.QuoteWhereInput | boolean
-  connect?: Prisma.QuoteWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.QuoteUpdateToOneWithWhereWithoutTransformedToInvoiceInput, Prisma.QuoteUpdateWithoutTransformedToInvoiceInput>, Prisma.QuoteUncheckedUpdateWithoutTransformedToInvoiceInput>
-}
-
 export type QuoteCreateNestedOneWithoutOrdersInput = {
   create?: Prisma.XOR<Prisma.QuoteCreateWithoutOrdersInput, Prisma.QuoteUncheckedCreateWithoutOrdersInput>
   connectOrCreate?: Prisma.QuoteCreateOrConnectWithoutOrdersInput
@@ -669,7 +646,6 @@ export type QuoteCreateWithoutClientInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   companyInfo: Prisma.CompanyInfoCreateNestedOneWithoutQuotesInput
-  transformedToInvoice?: Prisma.InvoiceCreateNestedOneWithoutOriginalQuoteInput
   createdBy: Prisma.UserCreateNestedOneWithoutQuotesCreatedInput
   orders?: Prisma.OrderCreateNestedManyWithoutQuoteInput
 }
@@ -684,7 +660,6 @@ export type QuoteUncheckedCreateWithoutClientInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  transformedToInvoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutOriginalQuoteInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutQuoteInput
 }
 
@@ -739,7 +714,6 @@ export type QuoteCreateWithoutCreatedByInput = {
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutQuotesInput
   companyInfo: Prisma.CompanyInfoCreateNestedOneWithoutQuotesInput
-  transformedToInvoice?: Prisma.InvoiceCreateNestedOneWithoutOriginalQuoteInput
   orders?: Prisma.OrderCreateNestedManyWithoutQuoteInput
 }
 
@@ -753,7 +727,6 @@ export type QuoteUncheckedCreateWithoutCreatedByInput = {
   companyInfoId: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  transformedToInvoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutOriginalQuoteInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutQuoteInput
 }
 
@@ -791,7 +764,6 @@ export type QuoteCreateWithoutCompanyInfoInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutQuotesInput
-  transformedToInvoice?: Prisma.InvoiceCreateNestedOneWithoutOriginalQuoteInput
   createdBy: Prisma.UserCreateNestedOneWithoutQuotesCreatedInput
   orders?: Prisma.OrderCreateNestedManyWithoutQuoteInput
 }
@@ -806,7 +778,6 @@ export type QuoteUncheckedCreateWithoutCompanyInfoInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  transformedToInvoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutOriginalQuoteInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutQuoteInput
 }
 
@@ -836,76 +807,6 @@ export type QuoteUpdateManyWithWhereWithoutCompanyInfoInput = {
   data: Prisma.XOR<Prisma.QuoteUpdateManyMutationInput, Prisma.QuoteUncheckedUpdateManyWithoutCompanyInfoInput>
 }
 
-export type QuoteCreateWithoutTransformedToInvoiceInput = {
-  number: string
-  date?: Date | string
-  total: number
-  status?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  client: Prisma.ClientCreateNestedOneWithoutQuotesInput
-  companyInfo: Prisma.CompanyInfoCreateNestedOneWithoutQuotesInput
-  createdBy: Prisma.UserCreateNestedOneWithoutQuotesCreatedInput
-  orders?: Prisma.OrderCreateNestedManyWithoutQuoteInput
-}
-
-export type QuoteUncheckedCreateWithoutTransformedToInvoiceInput = {
-  id?: number
-  number: string
-  date?: Date | string
-  clientId: string
-  total: number
-  status?: string
-  companyInfoId: number
-  createdById: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutQuoteInput
-}
-
-export type QuoteCreateOrConnectWithoutTransformedToInvoiceInput = {
-  where: Prisma.QuoteWhereUniqueInput
-  create: Prisma.XOR<Prisma.QuoteCreateWithoutTransformedToInvoiceInput, Prisma.QuoteUncheckedCreateWithoutTransformedToInvoiceInput>
-}
-
-export type QuoteUpsertWithoutTransformedToInvoiceInput = {
-  update: Prisma.XOR<Prisma.QuoteUpdateWithoutTransformedToInvoiceInput, Prisma.QuoteUncheckedUpdateWithoutTransformedToInvoiceInput>
-  create: Prisma.XOR<Prisma.QuoteCreateWithoutTransformedToInvoiceInput, Prisma.QuoteUncheckedCreateWithoutTransformedToInvoiceInput>
-  where?: Prisma.QuoteWhereInput
-}
-
-export type QuoteUpdateToOneWithWhereWithoutTransformedToInvoiceInput = {
-  where?: Prisma.QuoteWhereInput
-  data: Prisma.XOR<Prisma.QuoteUpdateWithoutTransformedToInvoiceInput, Prisma.QuoteUncheckedUpdateWithoutTransformedToInvoiceInput>
-}
-
-export type QuoteUpdateWithoutTransformedToInvoiceInput = {
-  number?: Prisma.StringFieldUpdateOperationsInput | string
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  total?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  client?: Prisma.ClientUpdateOneRequiredWithoutQuotesNestedInput
-  companyInfo?: Prisma.CompanyInfoUpdateOneRequiredWithoutQuotesNestedInput
-  createdBy?: Prisma.UserUpdateOneRequiredWithoutQuotesCreatedNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutQuoteNestedInput
-}
-
-export type QuoteUncheckedUpdateWithoutTransformedToInvoiceInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  number?: Prisma.StringFieldUpdateOperationsInput | string
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  clientId?: Prisma.StringFieldUpdateOperationsInput | string
-  total?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  companyInfoId?: Prisma.IntFieldUpdateOperationsInput | number
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutQuoteNestedInput
-}
-
 export type QuoteCreateWithoutOrdersInput = {
   number: string
   date?: Date | string
@@ -915,7 +816,6 @@ export type QuoteCreateWithoutOrdersInput = {
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutQuotesInput
   companyInfo: Prisma.CompanyInfoCreateNestedOneWithoutQuotesInput
-  transformedToInvoice?: Prisma.InvoiceCreateNestedOneWithoutOriginalQuoteInput
   createdBy: Prisma.UserCreateNestedOneWithoutQuotesCreatedInput
 }
 
@@ -930,7 +830,6 @@ export type QuoteUncheckedCreateWithoutOrdersInput = {
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  transformedToInvoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutOriginalQuoteInput
 }
 
 export type QuoteCreateOrConnectWithoutOrdersInput = {
@@ -958,7 +857,6 @@ export type QuoteUpdateWithoutOrdersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutQuotesNestedInput
   companyInfo?: Prisma.CompanyInfoUpdateOneRequiredWithoutQuotesNestedInput
-  transformedToInvoice?: Prisma.InvoiceUpdateOneWithoutOriginalQuoteNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutQuotesCreatedNestedInput
 }
 
@@ -973,7 +871,6 @@ export type QuoteUncheckedUpdateWithoutOrdersInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  transformedToInvoice?: Prisma.InvoiceUncheckedUpdateOneWithoutOriginalQuoteNestedInput
 }
 
 export type QuoteCreateManyClientInput = {
@@ -996,7 +893,6 @@ export type QuoteUpdateWithoutClientInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   companyInfo?: Prisma.CompanyInfoUpdateOneRequiredWithoutQuotesNestedInput
-  transformedToInvoice?: Prisma.InvoiceUpdateOneWithoutOriginalQuoteNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutQuotesCreatedNestedInput
   orders?: Prisma.OrderUpdateManyWithoutQuoteNestedInput
 }
@@ -1011,7 +907,6 @@ export type QuoteUncheckedUpdateWithoutClientInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  transformedToInvoice?: Prisma.InvoiceUncheckedUpdateOneWithoutOriginalQuoteNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutQuoteNestedInput
 }
 
@@ -1048,7 +943,6 @@ export type QuoteUpdateWithoutCreatedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutQuotesNestedInput
   companyInfo?: Prisma.CompanyInfoUpdateOneRequiredWithoutQuotesNestedInput
-  transformedToInvoice?: Prisma.InvoiceUpdateOneWithoutOriginalQuoteNestedInput
   orders?: Prisma.OrderUpdateManyWithoutQuoteNestedInput
 }
 
@@ -1062,7 +956,6 @@ export type QuoteUncheckedUpdateWithoutCreatedByInput = {
   companyInfoId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  transformedToInvoice?: Prisma.InvoiceUncheckedUpdateOneWithoutOriginalQuoteNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutQuoteNestedInput
 }
 
@@ -1098,7 +991,6 @@ export type QuoteUpdateWithoutCompanyInfoInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutQuotesNestedInput
-  transformedToInvoice?: Prisma.InvoiceUpdateOneWithoutOriginalQuoteNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutQuotesCreatedNestedInput
   orders?: Prisma.OrderUpdateManyWithoutQuoteNestedInput
 }
@@ -1113,7 +1005,6 @@ export type QuoteUncheckedUpdateWithoutCompanyInfoInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  transformedToInvoice?: Prisma.InvoiceUncheckedUpdateOneWithoutOriginalQuoteNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutQuoteNestedInput
 }
 
@@ -1173,7 +1064,6 @@ export type QuoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   updatedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   companyInfo?: boolean | Prisma.CompanyInfoDefaultArgs<ExtArgs>
-  transformedToInvoice?: boolean | Prisma.Quote$transformedToInvoiceArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   orders?: boolean | Prisma.Quote$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.QuoteCountOutputTypeDefaultArgs<ExtArgs>
@@ -1228,7 +1118,6 @@ export type QuoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type QuoteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   companyInfo?: boolean | Prisma.CompanyInfoDefaultArgs<ExtArgs>
-  transformedToInvoice?: boolean | Prisma.Quote$transformedToInvoiceArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   orders?: boolean | Prisma.Quote$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.QuoteCountOutputTypeDefaultArgs<ExtArgs>
@@ -1249,7 +1138,6 @@ export type $QuotePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     client: Prisma.$ClientPayload<ExtArgs>
     companyInfo: Prisma.$CompanyInfoPayload<ExtArgs>
-    transformedToInvoice: Prisma.$InvoicePayload<ExtArgs> | null
     createdBy: Prisma.$UserPayload<ExtArgs>
     orders: Prisma.$OrderPayload<ExtArgs>[]
   }
@@ -1660,7 +1548,6 @@ export interface Prisma__QuoteClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   client<T extends Prisma.ClientDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClientDefaultArgs<ExtArgs>>): Prisma.Prisma__ClientClient<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   companyInfo<T extends Prisma.CompanyInfoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyInfoDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyInfoClient<runtime.Types.Result.GetResult<Prisma.$CompanyInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  transformedToInvoice<T extends Prisma.Quote$transformedToInvoiceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Quote$transformedToInvoiceArgs<ExtArgs>>): Prisma.Prisma__InvoiceClient<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   orders<T extends Prisma.Quote$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Quote$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2100,25 +1987,6 @@ export type QuoteDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Quotes to delete.
    */
   limit?: number
-}
-
-/**
- * Quote.transformedToInvoice
- */
-export type Quote$transformedToInvoiceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Invoice
-   */
-  select?: Prisma.InvoiceSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Invoice
-   */
-  omit?: Prisma.InvoiceOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.InvoiceInclude<ExtArgs> | null
-  where?: Prisma.InvoiceWhereInput
 }
 
 /**

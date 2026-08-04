@@ -92,7 +92,7 @@ export class AuthService {
       ) {
         throw new ConflictError(AUTH_ERRORS.EMAIL_EXISTS);
       }
-      throw new InternalServerError(AUTH_ERRORS.FAILED_CREATION);
+      throw new InternalServerError(error as any);
     }
   }
 

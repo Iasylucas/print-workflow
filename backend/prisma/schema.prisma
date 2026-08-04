@@ -140,8 +140,6 @@ model Quote {
   companyInfoId Int
   companyInfo   CompanyInfo @relation(fields: [companyInfoId], references: [id])
 
-  // link to the invoice if converted
-  transformedToInvoice Invoice? @relation("QuoteToInvoice")
 
   createdById String
   createdBy   User   @relation("UserQuote", fields: [createdById], references: [id])
@@ -177,7 +175,6 @@ model Invoice {
 
   // link to the original quote (if this invoice comes from a quote)
   originalQuoteId Int?   @unique
-  originalQuote   Quote? @relation("QuoteToInvoice", fields: [originalQuoteId], references: [id])
 
   createdById String
   createdBy   User @relation("UserInvoice", fields: [createdById], references: [id])
