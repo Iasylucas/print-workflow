@@ -11,6 +11,7 @@ import { ClientsPage } from "./features/client/pages/ClientsPage";
 import { OrdersPage } from "./features/orders/pages/OrdersPage";
 import { InvoicesPage } from "./features/invoices/pages/InvoicesPage";
 import { QuotesPage } from "./features/quotes/pages/QuotesPage";
+import { ProductsPage } from "./features/products/pages/ProductsPage";
 
 export const router = createBrowserRouter([
   // Routes publiques
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         element: <RootLayout />,
         children: [{ path: "/users", element: <UsersPage /> }],
+      },
+      {
+        element: <RootLayout />,
+        children: [{ path: "/products", element: <ProductsPage /> }],
       },
       {
         element: <RootLayout />,

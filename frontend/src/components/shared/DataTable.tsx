@@ -88,13 +88,18 @@ export const DataTable = <TData,>({
               <TableRow
                 key={row.id}
                 onClick={() => onRowClick?.(row.original)}
-                className={
-                  (cn(
-                    onRowClick &&
-                      "cursor-pointer hover:bg-muted/50 transition-colors",
-                  ),
-                  "hover:bg-muted/30 transition-colors")
-                }
+                // className={
+                //   (cn(
+                //     onRowClick &&
+                //       "cursor-pointer hover:bg-muted/50 transition-colors",
+                //   ),
+                //   "hover:bg-muted/30 transition-colors")
+                // }
+                className={cn(
+                  onRowClick &&
+                    "cursor-pointer hover:bg-muted/50 transition-colors",
+                  "hover:bg-muted/30 transition-colors",
+                )}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="py-2.5 align-middle">

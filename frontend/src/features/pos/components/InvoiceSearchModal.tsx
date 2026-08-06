@@ -53,6 +53,7 @@ export const InvoiceSearchModal = ({
     onDeliver: () => {},
     onDelete: () => {},
     onAddPayment: () => {},
+    onDownloadPDF: () => {},
   });
 
   // On adapte les colonnes : on enlève la colonne actions

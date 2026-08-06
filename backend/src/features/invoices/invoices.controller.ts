@@ -72,6 +72,7 @@ export const invoicesController = {
   addPayment: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const { id } = invoiceIdParamSchema.parse(req.params);
     const userId = req.user!.sub;
+
     const data = addPaymentSchema.parse(req.body);
     const payment = await invoicesService.addPayment(id, userId, data);
     res.status(201).json({

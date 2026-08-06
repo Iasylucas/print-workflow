@@ -5,7 +5,7 @@ import { Logo } from "@/features/company-info/components/Logo";
 export const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/dashboard";
+  const from = location.state?.from?.pathname || "/";
 
   const handleSuccess = () => {
     navigate(from, { replace: true });
