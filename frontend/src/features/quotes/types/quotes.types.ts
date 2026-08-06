@@ -1,4 +1,5 @@
 // frontend/src/features/quotes/types/quotes.types.ts
+import type { CompanyInfo } from "@/features/company-info/types/company.types";
 import type { QuoteStatus } from "../schema/quotes.schema";
 import type { Order } from "@/features/orders/types/orders.types";
 
@@ -35,23 +36,7 @@ export type Quote = {
 // 2. DEVIS AVEC DÉTAILS (commandes)
 // ============================================================
 export type QuoteDetail = Quote & {
-  companyInfo: {
-    nif: string;
-    stat: string;
-    mainAddress: string;
-    secondaryAddress: string;
-    logo: string | null;
-    stamp: string | null;
-    mobileMoneyNumbers: string;
-    standardPhone: string | null;
-    contactEmail: string | null;
-    termsAndConditions: string | null;
-    deliveryLeadTime: string | null;
-    bankAccountHolder: string | null;
-    bankBranch: string | null;
-    bankCode: string | null;
-    ribInfo: string | null;
-  };
+  companyInfo: CompanyInfo;
   orders: Order[];
 };
 

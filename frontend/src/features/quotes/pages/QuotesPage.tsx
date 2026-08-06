@@ -12,6 +12,9 @@ import type { QuotesQueryParams, Quote } from "../types/quotes.types";
 import { useNavigate } from "react-router-dom";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
+import { downloadQuotePDF } from "@/shared/pdf/QuotePdf";
+import { toast } from "sonner";
+import { quotesApi } from "../services/quotesApi";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -117,6 +120,15 @@ export const QuotesPage = () => {
     }
   };
 
+  const handleDownloadPDF = async (quote: Quote) => {
+    try {
+      const detail = await quotesApi.getQuoteById(quote.id);
+      await downloadQuotePDF(detail, detail.companyInfo);
+    } catch {
+      toast.error("Erreur lors de la génération du PDF");
+    }
+  };
+
   if (isError) {
     return <FailedTable refetch={refetch} sujet="devis" />;
   }
@@ -172,6 +184,7 @@ export const QuotesPage = () => {
             }
             handleView(row);
           }}
+          onDownloadPDF={handleDownloadPDF}
         />
       </div>
 
@@ -182,12 +195,10 @@ export const QuotesPage = () => {
         onConvert={() => {
           if (selectedQuote) {
             handleConvert(selectedQuote);
-            setDetailDrawerOpen(false);
           }
         }}
       />
 
-      {}
       <AlertDialog
         open={confirmAction.isOpen}
         onOpenChange={(open) =>

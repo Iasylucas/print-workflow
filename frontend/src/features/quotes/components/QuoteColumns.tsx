@@ -1,7 +1,7 @@
 // frontend/src/features/quotes/components/QuoteColumns.tsx
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Eye, Trash2, FileText } from "lucide-react";
+import { MoreHorizontal, Eye, Trash2, FileText, FileDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,12 +17,14 @@ interface QuoteColumnsProps {
   onView: (quote: Quote) => void;
   onConvert: (quote: Quote) => void;
   onDelete: (quote: Quote) => void;
+  onDownloadPDF: (quote: Quote) => void;
 }
 
 export const createQuoteColumns = ({
   onView,
   onConvert,
   onDelete,
+  onDownloadPDF,
 }: QuoteColumnsProps): ColumnDef<Quote>[] => [
   {
     accessorKey: "number",
@@ -75,6 +77,10 @@ export const createQuoteColumns = ({
             <DropdownMenuItem onClick={() => onView(quote)}>
               <Eye className="mr-2 h-4 w-4" />
               Détail
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onDownloadPDF(quote)}>
+              <FileDown className="mr-2 h-4 w-4" />
+              Télécharger PDF
             </DropdownMenuItem>
             {!isConverted && (
               <DropdownMenuItem onClick={() => onConvert(quote)}>

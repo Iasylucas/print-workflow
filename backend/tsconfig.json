@@ -32,6 +32,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*", "src/test-email.ts"],
+  "include": ["src/**/*", "src/test-email.ts", "../frontend/src/shared/pdf"],
   "exclude": ["node_modules", "dist"]
 }

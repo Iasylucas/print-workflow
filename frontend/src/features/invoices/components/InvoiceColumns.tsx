@@ -7,6 +7,7 @@ import {
   Pencil,
   Trash2,
   CheckCircle,
+  FileDown,
   // Receipt,
 } from "lucide-react";
 import {
@@ -27,6 +28,7 @@ interface InvoiceColumnsProps {
   onDeliver: (invoice: Invoice) => void;
   onDelete: (invoice: Invoice) => void;
   onAddPayment: (invoice: Invoice) => void;
+  onDownloadPDF: (invoice: Invoice) => void;
 }
 
 export const createInvoiceColumns = ({
@@ -34,7 +36,7 @@ export const createInvoiceColumns = ({
   onEdit,
   onDeliver,
   onDelete,
-  // onAddPayment,
+  onDownloadPDF,
 }: InvoiceColumnsProps): ColumnDef<Invoice>[] => [
   {
     accessorKey: "number",
@@ -127,10 +129,10 @@ export const createInvoiceColumns = ({
                 Marquer livrée
               </DropdownMenuItem>
             )}
-            {/* <DropdownMenuItem onClick={() => onAddPayment(invoice)}>
-              <Receipt className="mr-2 h-4 w-4" />
-              Ajouter paiement
-            </DropdownMenuItem> */}
+            <DropdownMenuItem onClick={() => onDownloadPDF(invoice)}>
+              <FileDown className="mr-2 h-4 w-4" />
+              Télécharger PDF
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="text-destructive focus:text-destructive"

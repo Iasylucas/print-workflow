@@ -12,6 +12,10 @@ import type { InvoicesQueryParams, Invoice } from "../types/invoices.types";
 import { AddPaymentModal } from "../components/AddPaymentModal";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
+import { downloadInvoicePDF } from "@/shared/pdf/InvoicePdf";
+
+import { invoicesApi } from "../services/invoicesApi";
+import { toast } from "sonner";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -50,6 +54,16 @@ export const InvoicesPage = () => {
     description: "",
     onConfirm: () => {},
   });
+
+  // Dans handleDownloadPDF
+  const handleDownloadPDF = async (invoice: Invoice) => {
+    try {
+      const detail = await invoicesApi.getInvoiceById(invoice.id);
+      await downloadInvoicePDF(detail, detail.companyInfo);
+    } catch {
+      toast.error("Erreur lors de la génération du PDF");
+    }
+  };
 
   const handleAddPayment = (invoice: Invoice) => {
     setSelectedInvoice(invoice);
@@ -166,6 +180,7 @@ export const InvoicesPage = () => {
             }
             handleView(row);
           }}
+          onDownloadPDF={handleDownloadPDF}
         />
       </div>
 

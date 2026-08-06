@@ -19,6 +19,7 @@ interface QuotesTableProps {
   onDelete: (quote: Quote) => void;
   onRestore?: (quote: Quote) => void;
   onRowClick?: (row: Quote) => void;
+  onDownloadPDF: (quote: Quote) => void;
 }
 
 const COLUMNS_WIDTHS = [
@@ -39,6 +40,7 @@ export const QuotesTable = ({
   onConvert,
   onDelete,
   onRowClick,
+  onDownloadPDF,
 }: QuotesTableProps) => {
   const fallbackData = useMemo(() => [], []);
   const quotesList = data?.data ?? fallbackData;
@@ -51,8 +53,9 @@ export const QuotesTable = ({
         onView,
         onConvert,
         onDelete,
+        onDownloadPDF,
       }),
-    [onView, onConvert, onDelete],
+    [onView, onConvert, onDelete, onDownloadPDF],
   );
 
   const table = useReactTable({

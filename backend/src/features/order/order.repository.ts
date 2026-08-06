@@ -179,6 +179,7 @@ export class OrderRepository {
         documentType: data.documentType,
         documentNumber: generatedNumber,
         total: calculatedTotal,
+        id: createdInvoiceId || createdQuoteId,
       };
     });
   }

@@ -12,10 +12,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { X, Package, Eye, FileText } from "lucide-react";
+import { X, Package, Eye, FileText, Download } from "lucide-react";
 import { QuoteStatusBadge } from "./QuoteStatusBadge";
 import { useQuoteDetail, useQuoteMutations } from "../hooks/useQuotes";
 import type { QuoteDetail } from "../types/quotes.types";
+import { downloadQuotePDF } from "@/shared/pdf/QuotePdf";
+import { toast } from "sonner";
 
 interface QuoteDetailDrawerProps {
   isOpen: boolean;
@@ -30,7 +32,7 @@ export const QuoteDetailDrawer = ({
   quoteId,
   onConvert,
 }: QuoteDetailDrawerProps) => {
-  const { data: quote, isLoading, refetch } = useQuoteDetail(quoteId);
+  const { data: quote, isLoading } = useQuoteDetail(quoteId);
   const { convertToInvoiceMutation } = useQuoteMutations();
 
   const [ordersModalOpen, setOrdersModalOpen] = useState(false);
@@ -41,9 +43,16 @@ export const QuoteDetailDrawer = ({
   const handleConvert = async () => {
     if (!quote || quote.status === "converted") return;
 
-    await convertToInvoiceMutation.mutateAsync(quote.id);
-    refetch();
     onConvert?.(quote);
+  };
+
+  const handleDownloadPDF = async () => {
+    if (!quote) return;
+    try {
+      await downloadQuotePDF(quote, quote.companyInfo);
+    } catch {
+      toast.error("Erreur lors de la génération du PDF");
+    }
   };
 
   return (
@@ -65,14 +74,25 @@ export const QuoteDetailDrawer = ({
                   Détail du devis
                 </span>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onOpenChange(false)}
-                className="h-8 w-8 shrink-0 justify-self-end"
-              >
-                <X className="h-4 w-4" />
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleDownloadPDF}
+                  className="h-8 w-8 shrink-0"
+                  title="Télécharger PDF"
+                >
+                  <Download className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onOpenChange(false)}
+                  className="h-8 w-8 shrink-0"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </DrawerHeader>
 

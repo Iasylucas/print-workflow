@@ -52,6 +52,7 @@ export interface BulkOrderResponse {
   documentType: "INVOICE" | "QUOTE";
   documentNumber: string;
   total: number;
+  id: number;
 }
 
 export interface UpdateInvoiceResponse {
