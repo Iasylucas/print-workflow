@@ -1,4 +1,3 @@
-// frontend/src/features/products/components/ProductTable.tsx
 import { useMemo } from "react";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import { createProductColumns } from "./ProductColumns";
@@ -18,38 +17,21 @@ interface ProductTableProps {
   onRowClick?: (row: Product) => void;
 }
 
-const COLUMNS_WIDTHS = [
-  "w-[20%]", // Nom
-  "w-[20%]", // Slug
-  "w-[35%]", // Variantes
-  "w-[15%]", // Créé le
-  "w-[50px]", // Actions
-];
+const COLUMNS_WIDTHS = ["w-[20%]", "w-[20%]", "w-[35%]", "w-[15%]", "w-[50px]"];
 
 export const ProductTable = ({
   data,
   isLoading,
   queryParams,
   goToPage,
-  onView,
   onEdit,
-  onDelete,
-  onRowClick,
 }: ProductTableProps) => {
   const fallbackData = useMemo(() => [], []);
   const productsList = data?.data ?? fallbackData;
   const totalPages = data?.meta.totalPages || 1;
   const currentPage = queryParams.page || 1;
 
-  const columns = useMemo(
-    () =>
-      createProductColumns({
-        onView,
-        onEdit,
-        onDelete,
-      }),
-    [onView, onEdit, onDelete],
-  );
+  const columns = useMemo(() => createProductColumns(), []);
 
   const table = useReactTable({
     data: productsList,
@@ -75,7 +57,9 @@ export const ProductTable = ({
       totalPages={totalPages}
       limit={queryParams.limit}
       goToPage={goToPage}
-      onRowClick={onRowClick}
+      onRowClick={(row) => {
+        onEdit(row);
+      }}
     />
   );
 };
