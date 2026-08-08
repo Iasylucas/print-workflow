@@ -21,7 +21,7 @@ export const LoginPage = () => {
             </div>
             Acme Inc.
           </a> */}
-          <Logo variant="icon" />
+          <Logo variant="icon" className="w-30" />
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">

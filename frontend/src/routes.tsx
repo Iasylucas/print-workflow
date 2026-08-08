@@ -12,12 +12,17 @@ import { OrdersPage } from "./features/orders/pages/OrdersPage";
 import { InvoicesPage } from "./features/invoices/pages/InvoicesPage";
 import { QuotesPage } from "./features/quotes/pages/QuotesPage";
 import { ProductsPage } from "./features/products/pages/ProductsPage";
+import { ProfilePage } from "./features/profile/pages/ProfilePage";
+import { ForgotPasswordPage } from "./features/auth/pages/ForgotPasswordPage";
+import { ResetPasswordPage } from "./features/auth/pages/ResetPasswordPage";
 
 export const router = createBrowserRouter([
   // Routes publiques
   { path: "/login", element: <LoginPage /> },
   { path: "/unauthorized", element: <UnauthorizedPage /> },
   { path: "/finalize", element: <RegisterPage /> },
+  { path: "/forgot-password", element: <ForgotPasswordPage /> },
+  { path: "/reset-password", element: <ResetPasswordPage /> },
 
   // Routes protégées (tous les utilisateurs connectés)
   {
@@ -26,6 +31,10 @@ export const router = createBrowserRouter([
       {
         element: <RootLayout />,
         children: [{ path: "/", element: <DashboardPage /> }],
+      },
+      {
+        element: <RootLayout />,
+        children: [{ path: "/profile", element: <ProfilePage /> }],
       },
     ],
   },

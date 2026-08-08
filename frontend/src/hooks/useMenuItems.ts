@@ -18,7 +18,7 @@ export type MenuItem = {
 
 const MENU_CONFIG: Record<string, MenuItem[]> = {
   ADMIN: [
-    { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    // { href: "/", label: "Dashboard", icon: LayoutDashboard },
     { href: "/users", label: "Utilisateurs", icon: Users },
     { href: "/clients", label: "Clients", icon: Building2 },
     { href: "/products", label: "Produits", icon: Package },

@@ -48,6 +48,10 @@ const productFormSchema = z.object({
 
 type ProductFormData = z.infer<typeof productFormSchema>;
 
+const SIMPLE_VARIANTS = [
+  { name: "Standard", pricingMode: "FIXED" as const, config: { unit: 0 } },
+];
+
 const DEFAULT_VARIANTS = [
   {
     name: "Prédécoupé",
@@ -104,12 +108,11 @@ export const ProductFormModal = ({
           config: { ...config },
         };
       });
-
       form.reset({ name: product.name, variants });
     } else if (isOpen && !product) {
       form.reset({
         name: "",
-        variants: DEFAULT_VARIANTS.map((v) => ({
+        variants: SIMPLE_VARIANTS.map((v) => ({
           name: v.name,
           pricingMode: v.pricingMode,
           config: { ...v.config },
@@ -117,7 +120,6 @@ export const ProductFormModal = ({
       });
     }
   }, [product, isOpen, form]);
-
   const onSubmit = async (data: ProductFormData) => {
     try {
       if (isEditing && product) {
@@ -154,10 +156,6 @@ export const ProductFormModal = ({
       console.error(error);
     }
   };
-
-  //   const onError = (errors: any) => {
-  //     console.error("❌ Erreurs de validation RHF:", errors);
-  //   };
 
   const isPending =
     createProductMutation.isPending || updateProductMutation.isPending;

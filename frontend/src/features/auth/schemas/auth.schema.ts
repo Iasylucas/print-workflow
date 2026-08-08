@@ -66,10 +66,15 @@ export const forgotPasswordSchema = z.object({
 // ============================================
 // Réinitialisation du mot de passe
 // ============================================
-export const resetPasswordSchema = z.object({
-  token: z.string().min(1, "Le token est requis"),
-  newPassword: passwordSchema,
-});
+export const resetPasswordSchema = z
+  .object({
+    password: passwordSchema,
+    confirmPassword: passwordSchema,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Les mots de passe ne correspondent pas",
+    path: ["confirmPassword"],
+  });
 
 // ============================================
 // Confirmation de changement d’email

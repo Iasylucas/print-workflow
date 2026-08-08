@@ -79,7 +79,7 @@ export const ProductsPage = () => {
     return <FailedTable refetch={refetch} sujet="produits" />;
   }
 
-  const showAddButton = false;
+  const showAddButton = true;
 
   return (
     <div className="w-full space-y-6 animate-in fade-in duration-300">

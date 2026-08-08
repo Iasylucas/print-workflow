@@ -23,6 +23,11 @@ export type ConfirmEmailChangeRequest = z.infer<
 >;
 export type InviteUserRequest = z.infer<typeof inviteUserSchema>;
 
+export type ResetPasswordApiRequest = {
+  token: string;
+  newPassword: string;
+};
+
 // ============================================
 // Types de réponse (non inférés – définis manuellement)
 // ============================================

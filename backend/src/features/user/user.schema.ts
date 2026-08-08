@@ -26,7 +26,7 @@ export const updateProfileSchema = z.object({
   firstName: firstNameSchema.optional(),
   lastName: lastNameSchema.optional(),
   phone: phoneSchema.optional(),
-  address: z.string().optional(),
+  address: z.string().optional().nullable(),
   avatarUrl: imageUrlSchema,
 });
 

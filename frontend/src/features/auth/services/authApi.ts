@@ -7,8 +7,8 @@ import type {
   FinalizeRegistrationResponse,
   ChangePasswordRequest,
   ForgotPasswordRequest,
-  ResetPasswordRequest,
   ConfirmEmailChangeRequest,
+  ResetPasswordApiRequest,
 } from "../types/auth.types";
 
 export const authApi = {
@@ -29,7 +29,7 @@ export const authApi = {
   forgotPassword: (data: ForgotPasswordRequest) =>
     api.post<void>("/auth/forgot-password", data).then((res) => res.data),
 
-  resetPassword: (data: ResetPasswordRequest) =>
+  resetPassword: (data: ResetPasswordApiRequest) =>
     api.post<void>("/auth/reset-password", data).then((res) => res.data),
 
   confirmEmailChange: (data: ConfirmEmailChangeRequest) =>
