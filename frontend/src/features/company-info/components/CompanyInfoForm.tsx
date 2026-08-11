@@ -6,11 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Trash2 } from "lucide-react";
-import { CompanyLogoUpload } from "./CompanyLogoUpload";
 import { companyInfoSchema } from "../schema/company-info.schema";
 import type { CompanyInfoFormData } from "../types/company.types";
 import type { CompanyInfo } from "../types/company.types";
 import { cloudinaryApi } from "@/features/cloudinary/service/cloudinaryApi";
+import { Logo } from "./Logo";
 
 interface CompanyInfoFormProps {
   active: CompanyInfo | undefined;
@@ -84,13 +84,6 @@ export const CompanyInfoForm = ({
     }
   }, [active, form]);
 
-  const handleLogoSelect = (file: File | null) => {
-    setSelectedLogoFile(file);
-    if (!file) {
-      form.setValue("logo", active?.logo || "");
-    }
-  };
-
   const handleSubmit = async (data: CompanyInfoFormData) => {
     let logoUrl = data.logo || active?.logo || null;
 
@@ -144,18 +137,8 @@ export const CompanyInfoForm = ({
 
   return (
     <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-      <div className="flex items-center gap-6">
-        {/* <CompanyLogoUpload
-          logoUrl={form.watch("logo") || active?.logo || null}
-          companyName={form.watch("name") || active?.name || "EWA Print"}
-          onFileSelect={handleLogoSelect}
-        /> */}
-        <div>
-          <p className="text-sm font-medium">Logo de l'entreprise</p>
-          <p className="text-xs text-muted-foreground">
-            Format recommandé : PNG transparent, largeur ~200px
-          </p>
-        </div>
+      <div className="flex items-center gap-4">
+        <Logo variant="default" className="h-16 w-auto" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
