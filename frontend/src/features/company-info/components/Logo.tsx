@@ -1,7 +1,8 @@
-// frontend/src/features/company-info/components/Logo.tsx
 import { useCompanyStore } from "@/features/company-info/stores/companyStore";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import logoFallback from "@/assets/images/logo.png";
+import { useState } from "react";
 
 interface LogoProps {
   variant?: "default" | "icon";
@@ -15,6 +16,7 @@ export const Logo = ({ variant = "default", className, style }: LogoProps) => {
     (state) => state.company?.name || "EWA Print",
   );
   const isLoading = useCompanyStore((state) => state.isLoading);
+  const [imgError, setImgError] = useState(false);
 
   if (isLoading) {
     return variant === "icon" ? (
@@ -27,32 +29,18 @@ export const Logo = ({ variant = "default", className, style }: LogoProps) => {
     );
   }
 
-  const fallbackChar = companyName.charAt(0).toUpperCase();
-
   const renderIcon = (sizeClass: string) => {
-    if (logoUrl) {
-      return (
-        <img
-          src={logoUrl}
-          alt={`Logo ${companyName}`}
-          className={cn(sizeClass, "object-contain", className)}
-          style={style}
-        />
-      );
-    }
+    // ✅ Si logoUrl existe mais a échoué au chargement, ou si logoUrl est null → fallback
+    const src = logoUrl && !imgError ? logoUrl : logoFallback;
+
     return (
-      <div
-        className={cn(
-          "shrink-0 flex items-center justify-center rounded-lg bg-primary",
-          sizeClass,
-          className,
-        )}
+      <img
+        src={src}
+        alt={`${companyName}`}
+        className={cn(sizeClass, "object-contain", className)}
         style={style}
-      >
-        <span className="text-sm font-bold text-primary-foreground">
-          {fallbackChar}
-        </span>
-      </div>
+        onError={() => setImgError(true)} // ← En cas d'erreur de chargement
+      />
     );
   };
 
@@ -66,7 +54,7 @@ export const Logo = ({ variant = "default", className, style }: LogoProps) => {
       style={style}
     >
       {renderIcon("h-8 w-8")}
-      <span className="truncate text-sidebar-foreground">{companyName}</span>
+      {/* <span className="truncate text-sidebar-foreground">{companyName}</span> */}
     </div>
   );
 };

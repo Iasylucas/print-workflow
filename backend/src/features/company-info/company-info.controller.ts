@@ -19,7 +19,7 @@ export const companyInfoController = {
     async (req: Request, res: Response): Promise<void> => {
       const query = companyInfoQuerySchema.parse(req.query);
       const result = await companyInfoService.getAllVersions(query);
-      res.status(200).json({ success: true, ...result });
+      res.status(200).json({ success: true, data: result });
     },
   ),
 

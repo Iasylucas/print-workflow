@@ -29,6 +29,17 @@ export type CompanyInfo = {
   createdAt: string;
 };
 
+export type PaginatedCompanyInfoResponse = {
+  data: CompanyInfo[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    hasMore: boolean;
+  };
+};
+
 // ============================================================
 // 4. TYPES INFÉRÉS
 // ============================================================

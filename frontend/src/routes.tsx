@@ -15,6 +15,7 @@ import { ProductsPage } from "./features/products/pages/ProductsPage";
 import { ProfilePage } from "./features/profile/pages/ProfilePage";
 import { ForgotPasswordPage } from "./features/auth/pages/ForgotPasswordPage";
 import { ResetPasswordPage } from "./features/auth/pages/ResetPasswordPage";
+import { CompanySettingsPage } from "./features/company-info/pages/CompanySettingsPage";
 
 export const router = createBrowserRouter([
   // Routes publiques
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
         element: <RootLayout />,
         children: [{ path: "/invoices", element: <InvoicesPage /> }],
       },
+      {
+        element: <RootLayout />,
+        children: [{ path: "/settings", element: <CompanySettingsPage /> }],
+      },
     ],
   },
   {
@@ -79,6 +84,10 @@ export const router = createBrowserRouter([
       {
         element: <RootLayout />,
         children: [{ path: "/quotes", element: <QuotesPage /> }],
+      },
+      {
+        element: <RootLayout />,
+        children: [{ path: "/invoices", element: <InvoicesPage /> }],
       },
     ],
   },
