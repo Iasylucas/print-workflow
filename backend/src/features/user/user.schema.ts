@@ -15,7 +15,7 @@ export const updateUserSchema = z.object({
   firstName: firstNameSchema.optional(),
   lastName: lastNameSchema.optional(),
   phone: phoneSchema.optional(),
-  address: z.string().optional(),
+  address: z.string().optional().nullable(),
   role: UserRole.optional(),
   isActive: z.boolean().optional(),
   avatarUrl: imageUrlSchema,
