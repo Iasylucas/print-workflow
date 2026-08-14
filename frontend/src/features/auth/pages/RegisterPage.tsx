@@ -12,7 +12,7 @@ export const RegisterPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/", { replace: true });
+      navigate("/orders", { replace: true });
     }
   }, [isAuthenticated, navigate]);
 

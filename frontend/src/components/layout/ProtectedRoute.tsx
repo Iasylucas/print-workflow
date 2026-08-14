@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { api } from "@/lib/axios";
@@ -57,10 +57,6 @@ export const ProtectedRoute = ({
   // 2. Barrière d'authentification stricte
   if (!isAuthenticated || !user) {
     return <Navigate to={redirectTo} state={{ from: location }} replace />;
-  }
-
-  if (allowedRoles && !allowedRoles.includes(user.role as UserRole)) {
-    return <Navigate to="/unauthorized" replace />;
   }
 
   return <Outlet />;

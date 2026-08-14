@@ -17,77 +17,123 @@ import { ForgotPasswordPage } from "./features/auth/pages/ForgotPasswordPage";
 import { ResetPasswordPage } from "./features/auth/pages/ResetPasswordPage";
 import { CompanySettingsPage } from "./features/company-info/pages/CompanySettingsPage";
 
+// export const router = createBrowserRouter([
+//   // Routes publiques
+//   { path: "/login", element: <LoginPage /> },
+//   { path: "/unauthorized", element: <UnauthorizedPage /> },
+//   { path: "/finalize", element: <RegisterPage /> },
+//   { path: "/forgot-password", element: <ForgotPasswordPage /> },
+//   { path: "/reset-password", element: <ResetPasswordPage /> },
+
+//   // Routes protégées (tous les utilisateurs connectés)
+//   {
+//     element: <ProtectedRoute />,
+//     children: [
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/", element: <DashboardPage /> }],
+//       },
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/profile", element: <ProfilePage /> }],
+//       },
+//     ],
+//   },
+
+//   // Routes admin uniquement (layout identique)
+//   {
+//     element: <ProtectedRoute allowedRoles={["ADMIN"]} />,
+//     children: [
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/users", element: <UsersPage /> }],
+//       },
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/products", element: <ProductsPage /> }],
+//       },
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/orders", element: <OrdersPage /> }],
+//       },
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/invoices", element: <InvoicesPage /> }],
+//       },
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/settings", element: <CompanySettingsPage /> }],
+//       },
+//     ],
+//   },
+//   {
+//     element: <ProtectedRoute allowedRoles={["ADMIN", "SALES"]} />,
+//     children: [
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/pos", element: <PosPage /> }],
+//       },
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/orders", element: <OrdersPage /> }],
+//       },
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/pos/:invoiceId", element: <PosPage /> }],
+//       },
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/clients", element: <ClientsPage /> }],
+//       },
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/quotes", element: <QuotesPage /> }],
+//       },
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/invoices", element: <InvoicesPage /> }],
+//       },
+//     ],
+//   },
+//   {
+//     element: <ProtectedRoute allowedRoles={["PRINTER", "GRAPHIC_DESIGNER"]} />,
+//     children: [
+//       {
+//         element: <RootLayout />,
+//         children: [{ path: "/orders", element: <OrdersPage /> }],
+//       },
+//     ],
+//   },
+// ]);
+
 export const router = createBrowserRouter([
-  // Routes publiques
+  // ============================================================
+  // 1. ROUTES PUBLIQUES
+  // ============================================================
   { path: "/login", element: <LoginPage /> },
   { path: "/unauthorized", element: <UnauthorizedPage /> },
   { path: "/finalize", element: <RegisterPage /> },
   { path: "/forgot-password", element: <ForgotPasswordPage /> },
   { path: "/reset-password", element: <ResetPasswordPage /> },
 
-  // Routes protégées (tous les utilisateurs connectés)
+  // Toutes les routes protégées dans un seul bloc
   {
     element: <ProtectedRoute />,
     children: [
       {
         element: <RootLayout />,
-        children: [{ path: "/", element: <DashboardPage /> }],
-      },
-      {
-        element: <RootLayout />,
-        children: [{ path: "/profile", element: <ProfilePage /> }],
-      },
-    ],
-  },
-
-  // Routes admin uniquement (layout identique)
-  {
-    element: <ProtectedRoute allowedRoles={["ADMIN"]} />,
-    children: [
-      {
-        element: <RootLayout />,
-        children: [{ path: "/users", element: <UsersPage /> }],
-      },
-      {
-        element: <RootLayout />,
-        children: [{ path: "/products", element: <ProductsPage /> }],
-      },
-      {
-        element: <RootLayout />,
-        children: [{ path: "/orders", element: <OrdersPage /> }],
-      },
-      {
-        element: <RootLayout />,
-        children: [{ path: "/invoices", element: <InvoicesPage /> }],
-      },
-      {
-        element: <RootLayout />,
-        children: [{ path: "/settings", element: <CompanySettingsPage /> }],
-      },
-    ],
-  },
-  {
-    element: <ProtectedRoute allowedRoles={["ADMIN", "SALES"]} />,
-    children: [
-      {
-        element: <RootLayout />,
-        children: [{ path: "/pos", element: <PosPage /> }],
-      },
-      {
-        element: <RootLayout />,
-        children: [{ path: "/pos/:invoiceId", element: <PosPage /> }],
-      },
-      {
-        element: <RootLayout />,
-        children: [{ path: "/clients", element: <ClientsPage /> }],
-      },
-      {
-        element: <RootLayout />,
-        children: [{ path: "/quotes", element: <QuotesPage /> }],
-      },
-      {
-        element: <RootLayout />,
-        children: [{ path: "/invoices", element: <InvoicesPage /> }],
+        children: [
+          { path: "/", element: <DashboardPage /> },
+          { path: "/profile", element: <ProfilePage /> },
+          { path: "/users", element: <UsersPage /> },
+          { path: "/products", element: <ProductsPage /> },
+          { path: "/pos", element: <PosPage /> },
+          { path: "/clients", element: <ClientsPage /> },
+          { path: "/quotes", element: <QuotesPage /> },
+          { path: "/orders", element: <OrdersPage /> },
+          { path: "/invoices", element: <InvoicesPage /> },
+          { path: "/settings", element: <CompanySettingsPage /> },
+        ],
       },
     ],
   },
