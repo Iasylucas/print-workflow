@@ -12,8 +12,11 @@ import { ClientFormModal } from "@/features/client/components/ClientFormModal";
 import { useState } from "react";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { useParams } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
 export const PosLayout = () => {
+  const { user } = useAuth();
   // Dans le composant
   const { invoiceId } = useParams<{ invoiceId?: string }>();
 
@@ -21,6 +24,10 @@ export const PosLayout = () => {
   const pos = usePosCart(invoiceId ? Number(invoiceId) : null);
   // Ajouter en haut avec les autres useState
   const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false);
+
+  if (user?.role !== "ADMIN" && user?.role !== "SALES") {
+    return <Navigate to="/unauthorized" replace />;
+  }
 
   return (
     <div className="w-full space-y-6 animate-in fade-in duration-300 font-sans text-xs">
@@ -59,6 +66,7 @@ export const PosLayout = () => {
         <div className="lg:col-span-6 w-full h-full">
           <PosCart
             formState={pos.formState}
+            selectedClient={pos.selectedClient}
             products={pos.products}
             isLoadingClients={pos.clientsLoading}
             isEditing={pos.isEditing}

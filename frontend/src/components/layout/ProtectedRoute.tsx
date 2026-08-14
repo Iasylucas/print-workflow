@@ -1,17 +1,17 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { api } from "@/lib/axios";
 import { Loader2 } from "lucide-react";
-import { UserRole } from "@/shared/schemas";
+// import { UserRole } from "@/shared/schemas";
 
 interface ProtectedRouteProps {
-  allowedRoles?: UserRole[];
+  // allowedRoles?: UserRole[];
   redirectTo?: string;
 }
 
 export const ProtectedRoute = ({
-  allowedRoles,
+  // allowedRoles,
   redirectTo = "/login",
 }: ProtectedRouteProps) => {
   const { isAuthenticated, isLoading, user, token, setAuth, logout } =

@@ -28,6 +28,7 @@ import type {
   Product,
 } from "../types/pos.types";
 import { cn } from "@/lib/utils";
+import type { Client } from "@/features/client/types/client.types";
 
 interface PosCartProps {
   formState: PosFormState;
@@ -61,6 +62,7 @@ interface PosCartProps {
   onCancelEdit: () => void;
   onAddClient: () => void;
   isLoadingOrder: boolean;
+  selectedClient?: Client | null;
 }
 
 const getLineTotal = (line: PosCartLine) =>
@@ -91,6 +93,7 @@ export const PosCart = ({
   hasUnsavedChanges,
   onAddClient,
   isLoadingOrder,
+  selectedClient,
 }: PosCartProps) => {
   // ─── STATE LOCAL (UI uniquement) ───
   const [expandedNotes, setExpandedNotes] = useState<number[]>([]);
@@ -185,8 +188,9 @@ export const PosCart = ({
         </div>
       </div>
 
-      {/* CLIENT + TYPE */}
+      {/* CLIENT + DATE */}
       <div className="mt-3 grid grid-cols-2 gap-3">
+        {/* Colonne gauche */}
         <div className="space-y-1.5">
           <Label className="text-[11px] font-semibold text-muted-foreground">
             Client
@@ -210,23 +214,21 @@ export const PosCart = ({
               <Plus size={14} />
             </Button>
           </div>
+          {selectedClient && (
+            <div className="space-y-1.5">
+              <Label className="text-[11px] font-medium text-muted-foreground">
+                Téléphone
+              </Label>
+              <Input
+                value={selectedClient.phone || "Non renseigné"}
+                disabled
+                className="h-8 text-xs bg-muted/50 cursor-default"
+              />
+            </div>
+          )}
         </div>
-        <div className="space-y-1.5">
-          <Label className="text-[11px] font-medium text-muted-foreground">
-            Livraison (optionnel)
-          </Label>
-          <Input
-            type="text"
-            value={formState.deliveryPlace}
-            onChange={(e) => onUpdateFormField("deliveryPlace", e.target.value)}
-            className="h-8 text-xs"
-            placeholder="Adresse"
-          />
-        </div>
-      </div>
 
-      {/* LIVRAISON + DATE */}
-      <div className="mt-2 grid grid-cols-2 gap-3">
+        {/* Colonne droite */}
         <div className="space-y-1.5">
           <Label className="text-[11px] font-medium text-muted-foreground">
             Date livraison prévue (optionnel)
@@ -239,6 +241,20 @@ export const PosCart = ({
             }
             className="h-8 text-xs"
           />
+          <div className="space-y-1.5">
+            <Label className="text-[11px] font-medium text-muted-foreground">
+              Lieu de livraison (optionnel)
+            </Label>
+            <Input
+              type="text"
+              value={formState.deliveryPlace}
+              onChange={(e) =>
+                onUpdateFormField("deliveryPlace", e.target.value)
+              }
+              className="h-8 text-xs"
+              placeholder="Adresse"
+            />
+          </div>
         </div>
       </div>
 

@@ -20,6 +20,7 @@ export type Invoice = {
     id: string;
     firstName: string | null;
     lastName: string;
+    phone: string | null;
   };
   total: number;
   deposit: number;

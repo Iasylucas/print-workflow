@@ -336,8 +336,14 @@ export const usePosCart = (initialInvoiceId?: number | null) => {
       clearAll,
     ],
   );
+
+  const selectedClient = clients.find(
+    (c) => c.id === formState.selectedClientId,
+  );
+
   return {
     // raw state
+    selectedClient,
     isEditing,
     editingInvoiceId,
     loadingInvoiceId,

@@ -11,6 +11,8 @@ import {
   useCompanyInfoVersion,
 } from "../hooks/useCompanyInfo";
 import type { CompanyInfo, CompanyInfoFormData } from "../types/company.types";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
 const DEFAULT_QUERY_PARAMS = {
   page: 1,
@@ -20,6 +22,8 @@ const DEFAULT_QUERY_PARAMS = {
 };
 
 export const CompanySettingsPage = () => {
+  const { user } = useAuth();
+
   const [queryParams, setQueryParams] = useState(DEFAULT_QUERY_PARAMS);
   const [selectedVersionId, setSelectedVersionId] = useState<number | null>(
     null,
@@ -45,6 +49,10 @@ export const CompanySettingsPage = () => {
     setSelectedVersionId(version.id);
     setDetailModalOpen(true);
   };
+
+  if (user?.role !== "ADMIN") {
+    return <Navigate to="/unauthorized" replace />;
+  }
 
   return (
     <div className="w-full space-y-6 animate-in fade-in duration-300">

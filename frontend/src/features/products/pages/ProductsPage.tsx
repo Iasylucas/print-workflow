@@ -12,6 +12,8 @@ import type { Product, ProductQueryParams } from "../types/products.types";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
 import { ProductFormModal } from "../components/ProductFormModal";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -22,6 +24,7 @@ interface ConfirmActionState {
 }
 
 export const ProductsPage = () => {
+  const { user } = useAuth();
   const [queryParams, setQueryParams] = useState<ProductQueryParams>({
     page: 1,
     limit: 20,
@@ -80,6 +83,10 @@ export const ProductsPage = () => {
   }
 
   const showAddButton = true;
+
+  if (user?.role !== "ADMIN") {
+    return <Navigate to="/unauthorized" replace />;
+  }
 
   return (
     <div className="w-full space-y-6 animate-in fade-in duration-300">

@@ -40,11 +40,7 @@ router.patch("/:id/deliver", invoicesController.markAsDelivered);
  * @route   POST /api/invoices/:id/payments
  * @access  Private (All authenticated users)
  */
-router.post(
-  "/:id/payments",
-  restrictTo("ADMIN"),
-  invoicesController.addPayment,
-);
+router.post("/:id/payments", invoicesController.addPayment);
 
 /**
  * @desc    Delete a payment

@@ -10,6 +10,9 @@ import { AlertDialog } from "@/components/ui/alert-dialog";
 import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
 import { ClientFormModal } from "../components/ClientFormModal";
+// frontend/src/features/client/pages/ClientsPage.tsx
+import { Navigate } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -20,6 +23,7 @@ interface ConfirmActionState {
 }
 
 export const ClientsPage = () => {
+  const { user } = useAuth();
   // États du tableau
   const [queryParams, setQueryParams] = useState<ClientsQueryParams>({
     page: 1,
@@ -91,6 +95,9 @@ export const ClientsPage = () => {
   // if (isError) {
   //   return <FailedTable refetch={refetch} sujet="clients" />;
   // }
+  if (user?.role !== "ADMIN" && user?.role !== "SALES") {
+    return <Navigate to="/unauthorized" replace />;
+  }
 
   return (
     <div className="w-full space-y-6 animate-in fade-in duration-300">

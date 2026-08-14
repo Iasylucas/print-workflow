@@ -35,11 +35,11 @@ const MENU_CONFIG: Record<string, MenuItem[]> = {
     { href: "/invoices", label: "Factures", icon: Receipt },
   ],
   PRINTER: [
-    // { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/invoices", label: "Factures", icon: Receipt },
     { href: "/orders", label: "Commandes", icon: FileText },
   ],
   GRAPHIC_DESIGNER: [
-    // { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/invoices", label: "Factures", icon: Receipt },
     { href: "/orders", label: "Commandes", icon: FileText },
   ],
 };

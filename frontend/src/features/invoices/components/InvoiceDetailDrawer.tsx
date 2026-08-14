@@ -91,6 +91,8 @@ export const InvoiceDetailDrawer = ({
     }
   };
 
+  console.log(invoice);
+
   return (
     <>
       <Drawer
@@ -165,6 +167,18 @@ export const InvoiceDetailDrawer = ({
                       Créée le
                     </p>
                     <p>{new Date(invoice.createdAt).toLocaleDateString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Numéro du client
+                    </p>
+                    <p>{invoice.client.phone}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Lieu de livraison
+                    </p>
+                    <p>{invoice.deliveryPlace ? invoice.deliveryPlace : "_"}</p>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">

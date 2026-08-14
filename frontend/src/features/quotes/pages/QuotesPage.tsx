@@ -15,6 +15,8 @@ import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
 import { downloadQuotePDF } from "@/shared/pdf/QuotePdf";
 import { toast } from "sonner";
 import { quotesApi } from "../services/quotesApi";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -25,6 +27,7 @@ interface ConfirmActionState {
 }
 
 export const QuotesPage = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [queryParams, setQueryParams] = useState<QuotesQueryParams>({
@@ -131,6 +134,10 @@ export const QuotesPage = () => {
 
   if (isError) {
     return <FailedTable refetch={refetch} sujet="devis" />;
+  }
+
+  if (user?.role !== "ADMIN" && user?.role !== "SALES") {
+    return <Navigate to="/unauthorized" replace />;
   }
 
   return (

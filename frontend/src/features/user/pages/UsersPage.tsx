@@ -19,6 +19,8 @@ import { InviteUserModal } from "../components/InviteUserModal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { InvitationFilters } from "../components/InvitationFilters";
 import { InvitationTable } from "../components/InvitationTable";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -29,6 +31,8 @@ interface ConfirmActionState {
 }
 
 export const UsersPage = () => {
+  const { user } = useAuth();
+
   // Invitation state
   const [activeTab, setActiveTab] = useState<"users" | "invitations">("users");
   const [invitationParams, setInvitationParams] =
@@ -158,6 +162,10 @@ export const UsersPage = () => {
 
   if (isError) {
     return <FailedTable refetch={refetch} sujet="utilisateurs" />;
+  }
+
+  if (user?.role !== "ADMIN") {
+    return <Navigate to="/unauthorized" replace />;
   }
 
   return (

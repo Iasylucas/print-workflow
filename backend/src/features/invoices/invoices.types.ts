@@ -23,6 +23,7 @@ export const invoiceListSelect = {
       id: true,
       firstName: true,
       lastName: true,
+      phone: true,
     },
   },
   total: true,
