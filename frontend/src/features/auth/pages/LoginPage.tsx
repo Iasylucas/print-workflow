@@ -1,14 +1,14 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LoginForm } from "@/features/auth/components/LoginForm";
 import { Logo } from "@/features/company-info/components/Logo";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/orders";
+  // const location = useLocation();
+  // const from = location.state?.from?.pathname || "/orders";
 
   const handleSuccess = () => {
-    navigate(from, { replace: true });
+    navigate("/orders", { replace: true });
   };
 
   return (
