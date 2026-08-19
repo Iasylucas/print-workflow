@@ -84,7 +84,7 @@ export const ProductsPage = () => {
 
   const showAddButton = true;
 
-  if (user?.role !== "ADMIN") {
+  if (user?.role !== "ADMIN" && user?.role !== "SALES") {
     return <Navigate to="/unauthorized" replace />;
   }
 

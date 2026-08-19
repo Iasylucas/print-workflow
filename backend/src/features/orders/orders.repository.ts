@@ -150,12 +150,6 @@ export class OrdersRepository {
   // AJOUT D'UN FICHIER (VISUEL)
   // ============================================
   async addFile(orderId: number, userId: string, data: AddOrderFileInput) {
-    console.log("Creating file with:", {
-      url: data.url,
-      category: data.category,
-      orderId,
-      uploadedById: userId,
-    });
     return await prisma.file.create({
       data: {
         url: data.url,

@@ -2,8 +2,6 @@ import { prisma } from "@/config/prisma.js";
 import { PricingMode } from "@/generated/prisma/client.js";
 
 async function main() {
-  console.log("🚀 Début du seeding du catalogue de l'imprimerie...");
-
   // Nettoyage préalable pour éviter les doublons si le script est relancé
   await prisma.pricingRule.deleteMany({});
   await prisma.productVariant.deleteMany({});

@@ -13,8 +13,6 @@ export const getInvitationTemplate = (url: string, role: string) => {
   const brandColor = "#000000"; // Noir pur pour EWA Print
   const secondaryColor = "#666666";
 
-  console.log(logoUrl);
-
   return `
     <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee;">
       <!-- Header avec Logo -->

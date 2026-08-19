@@ -83,8 +83,6 @@ export class OrderService {
       );
       return result;
     } catch (error) {
-      console.log(error);
-
       throw new InternalServerError(
         "Une erreur technique est survenue lors de la validation finale du panier.",
       );

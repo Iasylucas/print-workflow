@@ -10,7 +10,6 @@ import { AlertDialog } from "@/components/ui/alert-dialog";
 import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
 import { ClientFormModal } from "../components/ClientFormModal";
-// frontend/src/features/client/pages/ClientsPage.tsx
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
@@ -24,7 +23,6 @@ interface ConfirmActionState {
 
 export const ClientsPage = () => {
   const { user } = useAuth();
-  // États du tableau
   const [queryParams, setQueryParams] = useState<ClientsQueryParams>({
     page: 1,
     limit: 20,
@@ -36,7 +34,6 @@ export const ClientsPage = () => {
   const [formModalOpen, setFormModalOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
 
-  // Confirmation dialog
   const [confirmAction, setConfirmAction] = useState<ConfirmActionState>({
     isOpen: false,
     title: "",
@@ -44,17 +41,13 @@ export const ClientsPage = () => {
     onConfirm: () => {},
   });
 
-  // Données et mutations
-  // const { data, isLoading, isError, refetch } = useClients(queryParams);
   const { data, isLoading } = useClients(queryParams);
   const { deleteMutation } = useClientMutations();
 
-  // Gestion des filtres
   const handleFilter = (filters: Partial<ClientsQueryParams>) => {
     setQueryParams((prev) => ({ ...prev, ...filters, page: 1 }));
   };
 
-  // Gestion du tri
   const handleSort = (sortBy: ClientsQueryParams["sortBy"]) => {
     setQueryParams((prev) => ({
       ...prev,
@@ -64,12 +57,10 @@ export const ClientsPage = () => {
     }));
   };
 
-  // Pagination
   const goToPage = (page: number) => {
     setQueryParams((prev) => ({ ...prev, page }));
   };
 
-  // Suppression d'un client
   const handleDelete = (clientId: string) => {
     setConfirmAction({
       isOpen: true,
@@ -84,17 +75,11 @@ export const ClientsPage = () => {
     });
   };
 
-  // Modification d'un client
   const handleEdit = (client: Client) => {
-    console.log("Edit clicked:", client); // ← ajoute ce log pour vérifier
     setSelectedClient(client);
     setFormModalOpen(true);
   };
 
-  // Gestion d'erreur
-  // if (isError) {
-  //   return <FailedTable refetch={refetch} sujet="clients" />;
-  // }
   if (user?.role !== "ADMIN" && user?.role !== "SALES") {
     return <Navigate to="/unauthorized" replace />;
   }
@@ -150,7 +135,7 @@ export const ClientsPage = () => {
         client={selectedClient}
       />
 
-      {/* Confirmation Dialog */}
+      {}
       <AlertDialog
         open={confirmAction.isOpen}
         onOpenChange={(open) =>

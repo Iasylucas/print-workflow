@@ -30,8 +30,7 @@ export const ProtectedRoute = ({
       try {
         const response = await api.get("/auth/me");
         setAuth(response.data.user, token);
-      } catch (error) {
-        console.log(error);
+      } catch {
         logout();
       } finally {
         setIsVerifying(false);

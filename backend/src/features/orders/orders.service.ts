@@ -98,12 +98,9 @@ export class OrdersService {
   // ============================================
   async addFile(orderId: number, userId: string, data: AddOrderFileInput) {
     await this.getOrderById(orderId);
-    console.log("orderId:", orderId, "userId:", userId, "data:", data);
     try {
       return await this.ordersRepository.addFile(orderId, userId, data);
     } catch (error) {
-      console.log(error);
-
       throw new InternalServerError(ORDERS_ERRORS.FILE_FAILED);
     }
   }

@@ -1,30 +1,8 @@
-// import nodemailer from "nodemailer";
-// import { env } from "@/config/env.js";
-
-// const transporter = nodemailer.createTransport({
-//   host: env.MAIL_HOST,
-//   port: Number(env.MAIL_PORT),
-//   auth: {
-//     user: env.MAIL_AUTH,
-//     pass: env.MAIL_PASS,
-//   },
-// });
-
-// export const sendEmail = async (to: string, subject: string, html: string) => {
-//   await transporter.sendMail({
-//     from: `${env.MAIL_USER}`,
-//     to,
-//     subject,
-//     html,
-//   });
-// };
-
 import { env } from "@/config/env.js";
 
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 
 export const sendEmail = async (to: string, subject: string, html: string) => {
-  // Version texte brute auto-générée depuis le HTML
   const text = html
     .replace(/<[^>]*>/g, " ")
     .replace(/\s+/g, " ")
@@ -39,7 +17,7 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
     },
     body: JSON.stringify({
       sender: {
-        email: env.MAIL_USER, // ← réutilise ton env existante
+        email: env.MAIL_USER,
         name: "EWA Print",
       },
       to: [{ email: to }],
@@ -56,7 +34,6 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
   }
 
   const data = await response.json();
-  // console.log("✅ Email envoyé ! Message ID:", data.messageId);
 
   return data;
 };
