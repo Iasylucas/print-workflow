@@ -81,10 +81,6 @@ export const QuotesPage = () => {
     setDetailDrawerOpen(true);
   };
 
-  const handleEdit = (quote: Quote) => {
-    console.log("Edit quote:", quote);
-  };
-
   const handleConvert = (quote: Quote) => {
     setConfirmAction({
       isOpen: true,
@@ -180,7 +176,6 @@ export const QuotesPage = () => {
           goToPage={goToPage}
           handleSort={handleSort}
           onView={handleView}
-          onEdit={handleEdit}
           onConvert={handleConvert}
           onDelete={handleDelete}
           onRestore={handleRestore}

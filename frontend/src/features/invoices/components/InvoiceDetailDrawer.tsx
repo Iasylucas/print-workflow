@@ -58,8 +58,6 @@ export const InvoiceDetailDrawer = ({
     return null;
   }
   const invoiceRemain = invoice.total - invoice.deposit;
-  console.log(invoiceRemain);
-
   const handleDeliverToggle = async (checked: boolean) => {
     if (!invoice) return;
     if (invoiceRemain > 0 && checked) {
@@ -90,8 +88,6 @@ export const InvoiceDetailDrawer = ({
       toast.error("Erreur lors de la génération du PDF");
     }
   };
-
-  console.log(invoice);
 
   return (
     <>

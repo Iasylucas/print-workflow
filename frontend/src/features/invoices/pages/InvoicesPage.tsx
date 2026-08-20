@@ -92,10 +92,6 @@ export const InvoicesPage = () => {
     setDetailDrawerOpen(true);
   };
 
-  const handleEdit = (invoice: Invoice) => {
-    console.log("Edit invoice:", invoice);
-  };
-
   const handleDeliver = (invoice: Invoice) => {
     setConfirmAction({
       isOpen: true,
@@ -169,7 +165,6 @@ export const InvoicesPage = () => {
           goToPage={goToPage}
           handleSort={handleSort}
           onView={handleView}
-          onEdit={handleEdit}
           onDeliver={handleDeliver}
           onDelete={handleDelete}
           onAddPayment={handleAddPayment}

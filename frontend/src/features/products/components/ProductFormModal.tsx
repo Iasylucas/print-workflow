@@ -5,6 +5,7 @@ import { z } from "zod";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -169,11 +170,11 @@ export const ProductFormModal = ({
           <DialogTitle>
             {isEditing ? "Modifier le produit" : "Ajouter un produit"}
           </DialogTitle>
+          <DialogDescription>Formulaire produit</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FieldGroup className="flex flex-col gap-4">
-            {}
             <Controller
               name="name"
               control={form.control}
@@ -195,7 +196,6 @@ export const ProductFormModal = ({
               )}
             />
 
-            {}
             <div>
               <FieldLabel>Variantes et prix</FieldLabel>
               <div className="mt-2 space-y-3">

@@ -16,20 +16,12 @@ interface UploadResponse {
 
 export const cloudinaryApi = {
   getSignature: async (folder: string = "avatars", publicId?: string) => {
-    try {
-      const response = await api.post<SignatureResponse>(
-        "/cloudinary/signature",
-        { folder, publicId },
-      );
-      console.log("📥 Réponse brute:", response);
-
-      const data = await response;
-      console.log("✅ Signature reçue:", data);
-      return data;
-    } catch (error) {
-      console.error("❌ Erreur getSignature:", error);
-      throw error;
-    }
+    const response = await api.post<SignatureResponse>(
+      "/cloudinary/signature",
+      { folder, publicId },
+    );
+    const data = await response;
+    return data;
   },
 
   deleteImage: async (url: string) => {
@@ -44,11 +36,7 @@ export const cloudinaryApi = {
     folder: string = "avatars",
     publicId?: string,
   ): Promise<UploadResponse> => {
-    console.log("📤 Uploading file:", file.name);
-
     const response = await cloudinaryApi.getSignature(folder, publicId);
-    console.log("🔑 Signature reçue:", response);
-
     const { apiKey, cloudName, timestamp, signature } = response.data;
 
     const formData = new FormData();
@@ -62,21 +50,16 @@ export const cloudinaryApi = {
     }
 
     const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-    console.log("🌐 Uploading to:", cloudinaryUrl);
-
     const uploadResponse = await fetch(cloudinaryUrl, {
       method: "POST",
       body: formData,
     });
 
     if (!uploadResponse.ok) {
-      const text = await uploadResponse.text();
-      console.error("❌ Upload failed:", text);
       throw new Error(`Upload failed: ${uploadResponse.status}`);
     }
 
     const data = await uploadResponse.json();
-    console.log("✅ Upload success:", data);
     return {
       url: data.url,
       secure_url: data.secure_url,

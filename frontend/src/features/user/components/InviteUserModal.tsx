@@ -76,9 +76,7 @@ export function InviteUserModal({
     <FormDialog
       isOpen={isOpen}
       onClose={handleClose}
-      onSubmit={form.handleSubmit(onSubmit, (errors) =>
-        console.log("Erreurs de validation bloquantes :", errors),
-      )}
+      onSubmit={form.handleSubmit(onSubmit)}
       title="Inviter un collaborateur"
       description="Formulaire permettant d'envoyer un lien d'activation sécurisé à un nouvel utilisateur."
       submitLabel="Envoyer l'invitation"

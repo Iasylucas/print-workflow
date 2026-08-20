@@ -2,7 +2,7 @@ import { useCompanyStore } from "@/features/company-info/stores/companyStore";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import logoFallback from "@/assets/images/logo.png";
-import { useState } from "react";
+// import { useState } from "react";
 
 interface LogoProps {
   variant?: "default" | "icon";
@@ -11,12 +11,12 @@ interface LogoProps {
 }
 
 export const Logo = ({ variant = "default", className, style }: LogoProps) => {
-  const logoUrl = useCompanyStore((state) => state.company?.logo);
+  // const logoUrl = useCompanyStore((state) => state.company?.logo);
   const companyName = useCompanyStore(
     (state) => state.company?.name || "EWA Print",
   );
   const isLoading = useCompanyStore((state) => state.isLoading);
-  const [imgError, setImgError] = useState(false);
+  // const [ setImgError] = useState(false);
 
   if (isLoading) {
     return variant === "icon" ? (
@@ -30,8 +30,8 @@ export const Logo = ({ variant = "default", className, style }: LogoProps) => {
   }
 
   const renderIcon = (sizeClass: string) => {
-    // ✅ Si logoUrl existe mais a échoué au chargement, ou si logoUrl est null → fallback
-    const src = logoUrl && !imgError ? logoUrl : logoFallback;
+    // const src = logoUrl && !imgError ? logoUrl : logoFallback;
+    const src = logoFallback;
 
     return (
       <img
@@ -39,7 +39,7 @@ export const Logo = ({ variant = "default", className, style }: LogoProps) => {
         alt={`${companyName}`}
         className={cn(sizeClass, "object-contain", className)}
         style={style}
-        onError={() => setImgError(true)} // ← En cas d'erreur de chargement
+        // onError={() => setImgError(true)}
       />
     );
   };
@@ -54,7 +54,6 @@ export const Logo = ({ variant = "default", className, style }: LogoProps) => {
       style={style}
     >
       {renderIcon("h-8 w-8")}
-      {/* <span className="truncate text-sidebar-foreground">{companyName}</span> */}
     </div>
   );
 };

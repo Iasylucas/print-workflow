@@ -56,8 +56,6 @@ export const ProductsPage = () => {
 
   const handleView = (product: Product) => {
     setSelectedProduct(product);
-    // Optionnel : ouvrir un drawer ou modal de détail
-    console.log("View product:", product);
   };
 
   const handleEdit = (product: Product) => {

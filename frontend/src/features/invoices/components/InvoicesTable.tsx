@@ -14,7 +14,6 @@ interface InvoicesTableProps {
   goToPage: (page: number) => void;
   handleSort: (sortBy: InvoicesQueryParams["sortBy"]) => void;
   onView: (invoice: Invoice) => void;
-  onEdit: (invoice: Invoice) => void;
   onDeliver: (invoice: Invoice) => void;
   onDelete: (invoice: Invoice) => void;
   onAddPayment: (invoice: Invoice) => void;
@@ -41,7 +40,7 @@ export const InvoicesTable = ({
   goToPage,
   // handleSort,
   onView,
-  onEdit,
+
   onDeliver,
   onDelete,
   onAddPayment,
@@ -57,13 +56,12 @@ export const InvoicesTable = ({
     () =>
       createInvoiceColumns({
         onView,
-        onEdit,
         onDeliver,
         onDelete,
         onAddPayment,
         onDownloadPDF,
       }),
-    [onView, onEdit, onDeliver, onDelete, onAddPayment, onDownloadPDF],
+    [onView, onDeliver, onDelete, onAddPayment, onDownloadPDF],
   );
 
   const table = useReactTable({

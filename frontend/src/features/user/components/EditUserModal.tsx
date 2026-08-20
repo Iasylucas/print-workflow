@@ -117,9 +117,7 @@ export function EditUserModal({
     <FormDialog
       isOpen={isOpen}
       onClose={handleClose}
-      onSubmit={form.handleSubmit(onSubmit, (errors) =>
-        console.log("Erreurs de validation bloquantes :", errors),
-      )}
+      onSubmit={form.handleSubmit(onSubmit)}
       title="Modifier le profil utilisateur"
       description="Formulaire de modification des informations professionnelles du collaborateur."
       submitLabel="Enregistrer"

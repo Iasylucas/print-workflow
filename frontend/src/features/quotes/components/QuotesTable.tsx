@@ -1,4 +1,3 @@
-// frontend/src/features/quotes/components/QuotesTable.tsx
 import { useMemo } from "react";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import { createQuoteColumns } from "./QuoteColumns";
@@ -14,7 +13,6 @@ interface QuotesTableProps {
   goToPage: (page: number) => void;
   handleSort: (sortBy: QuotesQueryParams["sortBy"]) => void;
   onView: (quote: Quote) => void;
-  onEdit: (quote: Quote) => void;
   onConvert: (quote: Quote) => void;
   onDelete: (quote: Quote) => void;
   onRestore?: (quote: Quote) => void;
@@ -23,12 +21,12 @@ interface QuotesTableProps {
 }
 
 const COLUMNS_WIDTHS = [
-  "w-[15%]", // Numéro
-  "w-[20%]", // Client
-  "w-[15%]", // Total
-  "w-[15%]", // Statut
-  "w-[15%]", // Créé le
-  "w-[50px]", // Actions
+  "w-[15%]",
+  "w-[20%]",
+  "w-[15%]",
+  "w-[15%]",
+  "w-[15%]",
+  "w-[50px]",
 ];
 
 export const QuotesTable = ({

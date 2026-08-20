@@ -1,15 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  MoreHorizontal,
-  Eye,
-  Pencil,
-  Trash2,
-  CheckCircle,
-  FileDown,
-  // Receipt,
-} from "lucide-react";
+import { MoreHorizontal, Eye, Trash2, FileDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +16,6 @@ import { cn } from "@/lib/utils";
 
 interface InvoiceColumnsProps {
   onView: (invoice: Invoice) => void;
-  onEdit: (invoice: Invoice) => void;
   onDeliver: (invoice: Invoice) => void;
   onDelete: (invoice: Invoice) => void;
   onAddPayment: (invoice: Invoice) => void;
@@ -33,8 +24,6 @@ interface InvoiceColumnsProps {
 
 export const createInvoiceColumns = ({
   onView,
-  onEdit,
-  onDeliver,
   onDelete,
   onDownloadPDF,
 }: InvoiceColumnsProps): ColumnDef<Invoice>[] => [
@@ -119,16 +108,6 @@ export const createInvoiceColumns = ({
               <Eye className="mr-2 h-4 w-4" />
               Détail
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onEdit(invoice)}>
-              <Pencil className="mr-2 h-4 w-4" />
-              Modifier
-            </DropdownMenuItem>
-            {!invoice.isDelivered && (
-              <DropdownMenuItem onClick={() => onDeliver(invoice)}>
-                <CheckCircle className="mr-2 h-4 w-4" />
-                Marquer livrée
-              </DropdownMenuItem>
-            )}
             <DropdownMenuItem onClick={() => onDownloadPDF(invoice)}>
               <FileDown className="mr-2 h-4 w-4" />
               Télécharger PDF

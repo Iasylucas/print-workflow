@@ -1,4 +1,3 @@
-// frontend/src/features/quotes/components/QuoteColumns.tsx
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Eye, Trash2, FileText, FileDown } from "lucide-react";
