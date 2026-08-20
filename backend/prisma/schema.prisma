@@ -325,13 +325,3 @@ enum PricingMode {
   OPTION          // extra (grommet, lamination, installation)
   COMPOSITE       // combination of several rules (pre‑cut: m² + A4)
 }
-
-
-// // Workshop configuration (only one active row)
-// model WorkshopConfig {
-//   id              String @id @default(cuid())
-//   maxWidthM       Float  @default(1.5)
-//   cuttingMarginM  Float  @default(0.02)
-//   referenceSurfaceM2 Json @default("{\"width\":1.5,\"height\":0.7}")
-//   isActive        Boolean @default(true)
-// }
