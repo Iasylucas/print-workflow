@@ -4,10 +4,8 @@ import { userController } from "./user.controller.js";
 
 const router: Router = Router();
 
-// Routes protégées (authentification requise)
 router.use(protect);
 
-// ROUTE ACCESSIBLE À TOUS LES UTILISATEURS AUTHENTIFIÉS
 /**
  * @desc    Get my profile *
  * @route   GET /api/users/me

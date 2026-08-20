@@ -1,4 +1,3 @@
-// backend/src/features/orders/orders.repository.ts
 import { prisma } from "@/config/prisma.js";
 import { Prisma } from "@/generated/prisma/client.js";
 import {
@@ -13,9 +12,6 @@ import {
 } from "./orders.types.js";
 
 export class OrdersRepository {
-  // ============================================
-  // LISTE PAGINÉE DES COMMANDES
-  // ============================================
   async findAll(query: OrdersQuery): Promise<PaginatedOrdersList> {
     const {
       page,
@@ -92,9 +88,6 @@ export class OrdersRepository {
     };
   }
 
-  // ============================================
-  // DÉTAIL D'UNE COMMANDE
-  // ============================================
   async findById(id: number) {
     return await prisma.order.findUnique({
       where: { id, deletedAt: null },
@@ -102,9 +95,6 @@ export class OrdersRepository {
     });
   }
 
-  // ============================================
-  // MISE À JOUR PARTIELLE D'UNE COMMANDE
-  // ============================================
   async update(id: number, data: UpdateOrderInput) {
     return await prisma.order.update({
       where: { id, deletedAt: null },
@@ -113,9 +103,6 @@ export class OrdersRepository {
     });
   }
 
-  // ============================================
-  // MISE À JOUR DU STATUT
-  // ============================================
   async updateStatus(id: number, status: UpdateOrderStatusInput["status"]) {
     return await prisma.order.update({
       where: { id, deletedAt: null },
@@ -124,9 +111,6 @@ export class OrdersRepository {
     });
   }
 
-  // ============================================
-  // AJOUT D'UNE NOTE
-  // ============================================
   async addNote(orderId: number, userId: string, data: AddOrderNoteInput) {
     return await prisma.note.create({
       data: {
@@ -146,9 +130,6 @@ export class OrdersRepository {
     });
   }
 
-  // ============================================
-  // AJOUT D'UN FICHIER (VISUEL)
-  // ============================================
   async addFile(orderId: number, userId: string, data: AddOrderFileInput) {
     return await prisma.file.create({
       data: {
@@ -170,20 +151,12 @@ export class OrdersRepository {
     });
   }
 
-  // ============================================
-  // SUPPRESSION D'UN FICHIER (optionnel)
-  // ============================================
   async deleteFile(fileId: number, userId: string) {
-    // Vérifier que le fichier appartient bien à l'utilisateur ou qu'il est admin
-    // (à gérer dans le service)
     return await prisma.file.delete({
       where: { id: fileId },
     });
   }
 
-  // ============================================
-  // SUPPRESSION D'UNE NOTE (optionnel)
-  // ============================================
   async deleteNote(noteId: number) {
     return await prisma.note.delete({
       where: { id: noteId },

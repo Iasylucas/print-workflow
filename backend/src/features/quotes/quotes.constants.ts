@@ -1,4 +1,3 @@
-// backend/src/features/quotes/quotes.constants.ts
 export const QUOTE_ERRORS = {
   NOT_FOUND: "Devis introuvable",
   NO_FIELDS_TO_UPDATE: "Aucun champ à mettre à jour",

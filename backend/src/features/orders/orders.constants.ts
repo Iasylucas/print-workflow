@@ -1,4 +1,3 @@
-// backend/src/features/orders/orders.constants.ts
 export const ORDERS_ERRORS = {
   NOT_FOUND: "Commande introuvable",
   NO_FIELDS_TO_UPDATE: "Aucun champ à mettre à jour",

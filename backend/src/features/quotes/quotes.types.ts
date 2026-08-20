@@ -1,4 +1,3 @@
-// backend/src/features/quotes/quotes.types.ts
 import { Prisma } from "@/generated/prisma/client.js";
 import { z } from "zod";
 import {
@@ -7,9 +6,6 @@ import {
   quoteIdParamSchema,
 } from "./quotes.schema.js";
 
-// ============================================================
-// 1. SÉLECTION POUR LA LISTE
-// ============================================================
 export const quoteListSelect = {
   id: true,
   number: true,
@@ -42,9 +38,6 @@ export const quoteListSelect = {
   },
 } satisfies Prisma.QuoteSelect;
 
-// ============================================================
-// 2. SÉLECTION POUR LE DÉTAIL
-// ============================================================
 export const quoteDetailSelect = {
   ...quoteListSelect,
   companyInfo: {
@@ -119,9 +112,6 @@ export const quoteDetailSelect = {
   },
 } satisfies Prisma.QuoteSelect;
 
-// ============================================================
-// 3. TYPES INFÉRÉS
-// ============================================================
 export type QuoteListOutput = Prisma.QuoteGetPayload<{
   select: typeof quoteListSelect;
 }>;
@@ -133,9 +123,6 @@ export type QuoteDetailOutput = Prisma.QuoteGetPayload<{
 export type UpdateQuoteInput = z.infer<typeof updateQuoteSchema>;
 export type QuotesQuery = z.infer<typeof quotesQuerySchema>;
 
-// ============================================================
-// 4. STRUCTURE PAGINÉE
-// ============================================================
 export type PaginatedQuotesList = {
   data: QuoteListOutput[];
   meta: {

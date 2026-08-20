@@ -2,7 +2,6 @@ import { useCompanyStore } from "@/features/company-info/stores/companyStore";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import logoFallback from "@/assets/images/logo.png";
-// import { useState } from "react";
 
 interface LogoProps {
   variant?: "default" | "icon";
@@ -11,12 +10,10 @@ interface LogoProps {
 }
 
 export const Logo = ({ variant = "default", className, style }: LogoProps) => {
-  // const logoUrl = useCompanyStore((state) => state.company?.logo);
   const companyName = useCompanyStore(
     (state) => state.company?.name || "EWA Print",
   );
   const isLoading = useCompanyStore((state) => state.isLoading);
-  // const [ setImgError] = useState(false);
 
   if (isLoading) {
     return variant === "icon" ? (
@@ -30,7 +27,6 @@ export const Logo = ({ variant = "default", className, style }: LogoProps) => {
   }
 
   const renderIcon = (sizeClass: string) => {
-    // const src = logoUrl && !imgError ? logoUrl : logoFallback;
     const src = logoFallback;
 
     return (
@@ -39,7 +35,6 @@ export const Logo = ({ variant = "default", className, style }: LogoProps) => {
         alt={`${companyName}`}
         className={cn(sizeClass, "object-contain", className)}
         style={style}
-        // onError={() => setImgError(true)}
       />
     );
   };

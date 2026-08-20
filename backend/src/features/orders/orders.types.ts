@@ -1,4 +1,3 @@
-// backend/src/features/orders/orders.types.ts
 import { Prisma } from "@/generated/prisma/client.js";
 import { z } from "zod";
 import {
@@ -10,7 +9,6 @@ import {
   orderIdParamSchema,
 } from "./orders.schema.js";
 
-// Sélection pour la liste des commandes (avec infos essentielles)
 export const orderListSelect = {
   id: true,
   reference: true,
@@ -61,7 +59,6 @@ export const orderListSelect = {
   },
 } satisfies Prisma.OrderSelect;
 
-// Sélection complète (pour le détail d'une commande)
 export const orderDetailSelect = {
   ...orderListSelect,
   files: {
@@ -98,7 +95,6 @@ export const orderDetailSelect = {
   },
 } satisfies Prisma.OrderSelect;
 
-// Types inférés
 export type OrderListOutput = Prisma.OrderGetPayload<{
   select: typeof orderListSelect;
 }>;
@@ -107,14 +103,12 @@ export type OrderDetailOutput = Prisma.OrderGetPayload<{
   select: typeof orderDetailSelect;
 }>;
 
-// Types pour les requêtes
 export type UpdateOrderStatusInput = z.infer<typeof updateOrderStatusSchema>;
 export type AddOrderNoteInput = z.infer<typeof addOrderNoteSchema>;
 export type AddOrderFileInput = z.infer<typeof addOrderFileSchema>;
 export type OrdersQuery = z.infer<typeof ordersQuerySchema>;
 export type UpdateOrderInput = z.infer<typeof updateOrderSchema>;
 
-// Structure paginée pour la liste des commandes
 export type PaginatedOrdersList = {
   data: OrderListOutput[];
   meta: {

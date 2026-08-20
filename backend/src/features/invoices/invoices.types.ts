@@ -1,4 +1,3 @@
-// backend/src/features/invoices/invoices.types.ts
 import { Prisma } from "@/generated/prisma/client.js";
 import { z } from "zod";
 import {
@@ -10,9 +9,6 @@ import {
   invoiceIdParamSchema,
 } from "./invoices.schema.js";
 
-// ============================================================
-// 1. SÉLECTION POUR LA LISTE
-// ============================================================
 export const invoiceListSelect = {
   id: true,
   number: true,
@@ -28,7 +24,6 @@ export const invoiceListSelect = {
   },
   total: true,
   deposit: true,
-  // remaining: true,
   deliveryPlace: true,
   expectedDeliveryDate: true,
   isDelivered: true,
@@ -52,9 +47,6 @@ export const invoiceListSelect = {
   },
 } satisfies Prisma.InvoiceSelect;
 
-// ============================================================
-// 2. SÉLECTION POUR LE DÉTAIL
-// ============================================================
 export const invoiceDetailSelect = {
   ...invoiceListSelect,
   companyInfo: {
@@ -146,9 +138,6 @@ export const invoiceDetailSelect = {
   },
 } satisfies Prisma.InvoiceSelect;
 
-// ============================================================
-// 3. TYPES INFÉRÉS
-// ============================================================
 export type InvoiceListOutput = Prisma.InvoiceGetPayload<{
   select: typeof invoiceListSelect;
 }>;
@@ -165,9 +154,6 @@ export type AddPaymentInput = z.infer<typeof addPaymentSchema>;
 export type UpdatePaymentInput = z.infer<typeof updatePaymentSchema>;
 export type InvoicesQuery = z.infer<typeof invoicesQuerySchema>;
 
-// ============================================================
-// 4. STRUCTURE PAGINÉE
-// ============================================================
 export type PaginatedInvoicesList = {
   data: InvoiceListOutput[];
   meta: {

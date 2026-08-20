@@ -15,20 +15,13 @@ import {
 } from "./orders.types.js";
 import { ORDERS_ERRORS } from "./orders.constants.js";
 
-// Constantes d'erreur à créer dans orders.constants.ts
 export class OrdersService {
   constructor(private readonly ordersRepository: OrdersRepository) {}
 
-  // ============================================
-  // LISTE PAGINÉE DES COMMANDES
-  // ============================================
   async listOrders(query: OrdersQuery) {
     return await this.ordersRepository.findAll(query);
   }
 
-  // ============================================
-  // DÉTAIL D'UNE COMMANDE
-  // ============================================
   async getOrderById(id: number): Promise<OrderDetailOutput> {
     const order = await this.ordersRepository.findById(id);
     if (!order) {
@@ -37,17 +30,12 @@ export class OrdersService {
     return order;
   }
 
-  // ============================================
-  // MISE À JOUR PARTIELLE (designation, label, dimensions, quantity, unitPrice)
-  // ============================================
   async updateOrder(
     id: number,
     data: UpdateOrderInput,
   ): Promise<OrderDetailOutput> {
-    // Vérifier que la commande existe
     await this.getOrderById(id);
 
-    // Vérifier qu'au moins un champ est fourni
     if (Object.keys(data).length === 0) {
       throw new BadRequestError(ORDERS_ERRORS.NO_FIELDS_TO_UPDATE);
     }
@@ -59,19 +47,11 @@ export class OrdersService {
     }
   }
 
-  // ============================================
-  // MISE À JOUR DU STATUT
-  // ============================================
   async updateOrderStatus(
     id: number,
     data: UpdateOrderStatusInput,
   ): Promise<OrderDetailOutput> {
     const order = await this.getOrderById(id);
-
-    // Vérification de transition (optionnel)
-    // if (!this.isValidTransition(order.status, data.status)) {
-    //   throw new BadRequestError(ORDERS_ERRORS.INVALID_STATUS_TRANSITION);
-    // }
 
     try {
       return await this.ordersRepository.updateStatus(id, data.status);
@@ -80,9 +60,6 @@ export class OrdersService {
     }
   }
 
-  // ============================================
-  // AJOUT D'UNE NOTE
-  // ============================================
   async addNote(orderId: number, userId: string, data: AddOrderNoteInput) {
     await this.getOrderById(orderId);
 
@@ -93,9 +70,6 @@ export class OrdersService {
     }
   }
 
-  // ============================================
-  // AJOUT D'UN FICHIER (VISUEL)
-  // ============================================
   async addFile(orderId: number, userId: string, data: AddOrderFileInput) {
     await this.getOrderById(orderId);
     try {
@@ -105,13 +79,7 @@ export class OrdersService {
     }
   }
 
-  // ============================================
-  // SUPPRESSION D'UNE NOTE
-  // ============================================
   async deleteNote(noteId: number, userId: string, userRole: string) {
-    // Vérifier que la note existe (on peut ajouter un find)
-    // Pour l'instant, seul l'admin ou le créateur peut supprimer
-    // (à implémenter selon vos besoins)
     try {
       return await this.ordersRepository.deleteNote(noteId);
     } catch (error) {
@@ -119,9 +87,6 @@ export class OrdersService {
     }
   }
 
-  // ============================================
-  // SUPPRESSION D'UN FICHIER
-  // ============================================
   async deleteFile(fileId: number, userId: string, userRole: string) {
     try {
       return await this.ordersRepository.deleteFile(fileId, userId);

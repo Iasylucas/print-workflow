@@ -10,7 +10,6 @@ import {
 } from "@/shared/schemas/index.js";
 export { uuidSchema } from "@/shared/schemas/id.schema.js";
 
-// Schéma pour la mise à jour d’un utilisateur par l’admin (sans email pour l’instant)
 export const updateUserSchema = z.object({
   firstName: firstNameSchema.optional(),
   lastName: lastNameSchema.optional(),
@@ -21,7 +20,6 @@ export const updateUserSchema = z.object({
   avatarUrl: imageUrlSchema,
 });
 
-// Schéma pour la mise à jour du profil par l’utilisateur lui-même
 export const updateProfileSchema = z.object({
   firstName: firstNameSchema.optional(),
   lastName: lastNameSchema.optional(),
@@ -30,7 +28,6 @@ export const updateProfileSchema = z.object({
   avatarUrl: imageUrlSchema,
 });
 
-// Schéma pour la requête d’historique (pagination, recherche, tri)
 export const userQuerySchema = paginationSchema.extend({
   sortBy: z
     .enum(["createdAt", "email", "firstName", "lastName", "role"])
@@ -44,12 +41,10 @@ export const userQuerySchema = paginationSchema.extend({
   }, z.boolean().optional()),
 });
 
-// Admin modifie un utilisateur – avec newEmail
 export const updateUserWithEmailSchema = updateUserSchema.extend({
   newEmail: emailRequiredSchema,
 });
 
-// Confirmation de changement d’email
 export const confirmEmailChangeSchema = z.object({
   token: z.string().min(1, "Token is required"),
 });

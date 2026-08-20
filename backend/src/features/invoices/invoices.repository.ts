@@ -1,4 +1,3 @@
-// backend/src/features/invoices/invoices.repository.ts
 import { prisma } from "@/config/prisma.js";
 import { Prisma } from "@/generated/prisma/client.js";
 import {
@@ -12,9 +11,6 @@ import {
 } from "./invoices.types.js";
 
 export class InvoicesRepository {
-  // ============================================================
-  // LISTE PAGINÉE DES FACTURES
-  // ============================================================
   async findAll(query: InvoicesQuery): Promise<PaginatedInvoicesList> {
     const {
       page,
@@ -36,14 +32,12 @@ export class InvoicesRepository {
     if (clientId) where.clientId = clientId;
     if (isDelivered !== undefined) where.isDelivered = isDelivered;
 
-    // Filtre par plage de dates
     if (startDate || endDate) {
       where.createdAt = {};
       if (startDate) where.createdAt.gte = new Date(startDate);
       if (endDate) where.createdAt.lte = new Date(endDate);
     }
 
-    // Recherche textuelle
     if (search) {
       where.OR = [
         { number: { contains: search, mode: "insensitive" } },
@@ -84,9 +78,6 @@ export class InvoicesRepository {
     };
   }
 
-  // ============================================================
-  // DÉTAIL D'UNE FACTURE (avec commandes et paiements)
-  // ============================================================
   async findById(id: number) {
     return await prisma.invoice.findUnique({
       where: { id, deletedAt: null },
@@ -94,14 +85,10 @@ export class InvoicesRepository {
     });
   }
 
-  // ============================================================
-  // MISE À JOUR PARTIELLE D'UNE FACTURE
-  // ============================================================
   async update(id: number, data: UpdateInvoiceInput) {
     const updateData: any = { ...data };
 
     if (data.deposit !== undefined) {
-      // Récupérer la facture actuelle pour connaître le total
       const current = await prisma.invoice.findUnique({
         where: { id },
         select: { total: true, deposit: true },
@@ -125,11 +112,7 @@ export class InvoicesRepository {
     });
   }
 
-  // ============================================================
-  // MARQUER COMME LIVRÉE (avec propagation aux commandes)
-  // ============================================================
   async markAsDelivered(id: number) {
-    // Récupérer les commandes liées pour les mettre à jour
     const invoice = await prisma.invoice.findUnique({
       where: { id },
       select: {
@@ -141,7 +124,6 @@ export class InvoicesRepository {
 
     if (!invoice) throw new Error("Facture introuvable");
 
-    // Mettre à jour toutes les commandes en "delivered"
     const orderIds = invoice.orders.map((o) => o.id);
 
     if (orderIds.length > 0) {
@@ -158,9 +140,6 @@ export class InvoicesRepository {
     });
   }
 
-  // ============================================================
-  // AJOUT D'UN PAIEMENT
-  // ============================================================
   async addPayment(invoiceId: number, userId: string, data: AddPaymentInput) {
     const invoice = await prisma.invoice.findUnique({
       where: { id: invoiceId },
@@ -171,7 +150,6 @@ export class InvoicesRepository {
 
     const newDeposit = invoice.deposit + data.amount;
 
-    // Créer le paiement
     const payment = await prisma.payment.create({
       data: {
         invoiceId,
@@ -197,7 +175,6 @@ export class InvoicesRepository {
       },
     });
 
-    // Mettre à jour la facture
     await prisma.invoice.update({
       where: { id: invoiceId },
       data: {
@@ -214,11 +191,7 @@ export class InvoicesRepository {
     return payment;
   }
 
-  // ============================================================
-  // SUPPRESSION D'UN PAIEMENT
-  // ============================================================
   async deletePayment(paymentId: number) {
-    // Récupérer le paiement et la facture associée
     const payment = await prisma.payment.findUnique({
       where: { id: paymentId },
       select: {
@@ -237,12 +210,10 @@ export class InvoicesRepository {
 
     const newDeposit = payment.invoice.deposit - payment.amount;
 
-    // Supprimer le paiement
     await prisma.payment.delete({
       where: { id: paymentId },
     });
 
-    // Mettre à jour la facture
     await prisma.invoice.update({
       where: { id: payment.invoiceId },
       data: {
@@ -257,9 +228,6 @@ export class InvoicesRepository {
     });
   }
 
-  // ============================================================
-  // SOFT DELETE D'UNE FACTURE
-  // ============================================================
   async softDelete(id: number) {
     return await prisma.invoice.update({
       where: { id },
@@ -268,9 +236,6 @@ export class InvoicesRepository {
     });
   }
 
-  // ============================================================
-  // RESTAURER UNE FACTURE SOFT DELETE
-  // ============================================================
   async restore(id: number) {
     return await prisma.invoice.update({
       where: { id },

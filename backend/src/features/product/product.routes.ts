@@ -6,10 +6,6 @@ const router: Router = Router();
 
 router.use(protect);
 
-// =========================================================================
-// ROUTES ACCESSIBLES PAR TOUS LES COLLABORATEURS CONNECTÉS (ADMIN & COMMERCIAL POS)
-// =========================================================================
-
 /**
  * @desc    Lister les produits du catalogue (avec pagination, filtres et recherche)
  * @route   GET /api/products

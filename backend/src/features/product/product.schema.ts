@@ -2,8 +2,6 @@ import { z } from "zod";
 import { PricingMode } from "@/generated/prisma/client.js";
 import { paginationSchema } from "@/shared/schemas/query.schema.js";
 
-// Schéma générique pour valider le dictionnaire de prix JSON (Clé textuelle -> Prix entier)
-// Il accepte n'importe quelle clé ("A4", "per_m2", "unit", etc.) mais force une valeur entière positive
 export const pricingConfigSchema = z.record(
   z.string().min(1, "La clé de tarification ne peut pas être vide"),
   z
@@ -12,8 +10,6 @@ export const pricingConfigSchema = z.record(
     .positive("Le prix doit être supérieur à 0"),
 );
 
-// Schéma pour la création d'une règle tarifaire imbriquée
-// 🛠️ La syntaxe officielle mise à jour pour Zod v4 (Remplacement de nativeEnum)
 export const createPricingRuleSchema = z.object({
   pricingMode: z.enum(Object.values(PricingMode) as [string, ...string[]], {
     error: "Le mode de tarification sélectionné est invalide",
@@ -21,20 +17,14 @@ export const createPricingRuleSchema = z.object({
   config: pricingConfigSchema,
 });
 
-// Schéma pour la création d'une variante imbriquée
 export const createProductVariantSchema = z.object({
   name: z
     .string()
     .trim()
     .min(2, "Le nom de la variante doit contenir au moins 2 caractères"),
-  pricingRule: createPricingRuleSchema, // Agrégation directe
+  pricingRule: createPricingRuleSchema,
 });
 
-// =========================================================================
-// SCHÉMAS DE VALIDATION DES REQUÊTES API (SOU-MISES AU CONTROLLER)
-// =========================================================================
-
-// 1. Validation pour la CRÉATION d'un produit complet avec ses variantes
 export const createProductSchema = z.object({
   name: z
     .string()
@@ -45,7 +35,6 @@ export const createProductSchema = z.object({
     .min(1, "Le produit doit posséder au moins une variante technique"),
 });
 
-// 2. Validation pour la MISE À JOUR d'un produit complet
 export const updateProductSchema = z.object({
   name: z
     .string()
@@ -55,10 +44,10 @@ export const updateProductSchema = z.object({
   variants: z
     .array(
       z.object({
-        id: z.number().int().positive().optional(), // Présent s'il s'agit d'une modification d'une variante existante
+        id: z.number().int().positive().optional(),
         name: z.string().trim().min(2, "Le nom de la variante est requis"),
         pricingRule: z.object({
-          id: z.number().int().positive().optional(), // Présent s'il s'agit d'une modification d'une règle existante
+          id: z.number().int().positive().optional(),
           pricingMode: z.enum(PricingMode),
           config: pricingConfigSchema,
         }),
@@ -69,6 +58,6 @@ export const updateProductSchema = z.object({
 });
 
 export const productQuerySchema = paginationSchema.extend({
-  search: z.string().trim().optional(), // Recherche par mot-clé sur le nom ou slug
-  sortBy: z.enum(["createdAt", "name", "slug"]).default("createdAt"), // Colonnes de tri autorisées pour l'indexation
+  search: z.string().trim().optional(),
+  sortBy: z.enum(["createdAt", "name", "slug"]).default("createdAt"),
 });

@@ -2,12 +2,10 @@ import { prisma } from "@/config/prisma.js";
 import { PricingMode } from "@/generated/prisma/client.js";
 
 async function main() {
-  // Nettoyage préalable pour éviter les doublons si le script est relancé
   await prisma.pricingRule.deleteMany({});
   await prisma.productVariant.deleteMany({});
   await prisma.product.deleteMany({});
 
-  // 1. MODULE : VINYLE & SUPPORTS GRAND FORMAT
   await prisma.product.create({
     data: {
       name: "Vinyle Autocollant",
@@ -57,7 +55,6 @@ async function main() {
     },
   });
 
-  // 2. MODULE : SUPPORTS RIGIDES (PVC)
   await prisma.product.create({
     data: {
       name: "Panneau PVC",
@@ -84,7 +81,6 @@ async function main() {
     },
   });
 
-  // 3. MODULE : IMPRESSION NUMÉRIQUE STANDARD (PAPIER, CARTE, FLYERS)
   await prisma.product.create({
     data: {
       name: "Papier Autocollant",
@@ -163,7 +159,6 @@ async function main() {
     },
   });
 
-  // 4. MODULE : SIGNALÉTIQUE AUTOPORTANTE (ROLLUP, ORIFLAMME)
   await prisma.product.create({
     data: {
       name: "Rollup",
@@ -213,7 +208,6 @@ async function main() {
     },
   });
 
-  // 5. MODULE : TEXTILE & MARQUAGE (DTF, FLEX)
   await prisma.product.create({
     data: {
       name: "Métrage DTF",
@@ -292,7 +286,6 @@ async function main() {
     },
   });
 
-  // 6. MODULE : GOODIES
   await prisma.product.create({
     data: {
       name: "Mug Souvenir",

@@ -1,4 +1,3 @@
-// backend/src/features/orders/orders.controller.ts
 import { Request, Response } from "express";
 import { catchAsync } from "@/utils/catchAsync.js";
 import { ordersService } from "./orders.service.js";
@@ -12,14 +11,12 @@ import {
 } from "./orders.schema.js";
 
 export const ordersController = {
-  // Liste paginée des commandes
   listOrders: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const query = ordersQuerySchema.parse(req.query);
     const result = await ordersService.listOrders(query);
     res.status(200).json({ success: true, data: result });
   }),
 
-  // Détail d'une commande
   getOrderById: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { id } = orderIdParamSchema.parse(req.params);
@@ -28,7 +25,6 @@ export const ordersController = {
     },
   ),
 
-  // Mise à jour partielle d'une commande
   updateOrder: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { id } = orderIdParamSchema.parse(req.params);
@@ -42,7 +38,6 @@ export const ordersController = {
     },
   ),
 
-  // Mise à jour du statut
   updateOrderStatus: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { id } = orderIdParamSchema.parse(req.params);
@@ -56,7 +51,6 @@ export const ordersController = {
     },
   ),
 
-  // Ajout d'une note
   addNote: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const { id } = orderIdParamSchema.parse(req.params);
     const userId = req.user!.sub;
@@ -69,7 +63,6 @@ export const ordersController = {
     });
   }),
 
-  // Ajout d'un fichier
   addFile: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const { id } = orderIdParamSchema.parse(req.params);
     const userId = req.user!.sub;
@@ -82,7 +75,6 @@ export const ordersController = {
     });
   }),
 
-  // Suppression d'une note
   deleteNote: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const noteId = orderIdParamSchema.parse(req.params).id;
     const userId = req.user!.sub;
@@ -94,7 +86,6 @@ export const ordersController = {
     });
   }),
 
-  // Suppression d'un fichier
   deleteFile: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const fileId = orderIdParamSchema.parse(req.params).id;
     const userId = req.user!.sub;

@@ -27,11 +27,11 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
     }),
   });
 
-  if (!response.ok) {
-    const errorBody = await response.text();
-    console.error("❌ Brevo API error:", errorBody);
-    throw new Error(`Brevo API error ${response.status}: ${errorBody}`);
-  }
+  // if (!response.ok) {
+  //   const errorBody = await response.text();
+  //   console.error("Brevo API error:", errorBody);
+  //   throw new Error(`Brevo API error ${response.status}: ${errorBody}`);
+  // }
 
   const data = await response.json();
 

@@ -13,7 +13,6 @@ import {
 import { findUserByEmail } from "@/utils/index.js";
 
 export class UserRepository {
-  // Récupérer un utilisateur par son ID
   async findById(id: string) {
     return await prisma.user.findUnique({
       where: { id, deletedAt: null },
@@ -21,12 +20,10 @@ export class UserRepository {
     });
   }
 
-  // Récupérer un utilisateur par son email
   async findByEmail(email: string) {
     return await findUserByEmail(email, userSafeSelect);
   }
 
-  // Lister les utilisateurs avec pagination, recherche et tri
   async findAllPaginated(query: UserQuery): Promise<PaginatedUserList> {
     const { page, limit, sortBy, sortOrder, search, isActive, role } = query;
     const skip = (page - 1) * limit;
@@ -78,7 +75,6 @@ export class UserRepository {
     };
   }
 
-  // Mettre à jour un utilisateur
   async update(id: string, data: UpdateUserInput) {
     return await prisma.user.update({
       where: { id, deletedAt: null },
@@ -87,7 +83,6 @@ export class UserRepository {
     });
   }
 
-  // Soft delete d’un utilisateur
   async softDelete(id: string) {
     return await prisma.user.update({
       where: { id, deletedAt: null },
@@ -96,7 +91,6 @@ export class UserRepository {
     });
   }
 
-  // hard delete d’un utilisateur
   async hardDelete(id: string) {
     return await prisma.user.delete({
       where: { id, deletedAt: null },
@@ -104,7 +98,6 @@ export class UserRepository {
     });
   }
 
-  // Supprimer les anciennes demandes de changement d’email non utilisées
   async deleteOldEmailChangeRequests(userId: string) {
     await prisma.emailChangeRequest.deleteMany({
       where: {
@@ -114,7 +107,6 @@ export class UserRepository {
     });
   }
 
-  // Créer une demande de changement d’email
   async createEmailChangeRequest(data: CreateEmailChangeRequestInput) {
     await prisma.emailChangeRequest.create({
       data: {
@@ -127,7 +119,6 @@ export class UserRepository {
     });
   }
 
-  // Rechercher une demande par son token hash
   async findEmailChangeRequestByTokenHash(tokenHash: string) {
     return await prisma.emailChangeRequest.findUnique({
       where: { tokenHash },
@@ -135,7 +126,6 @@ export class UserRepository {
     });
   }
 
-  // Marquer une demande comme utilisée
   async markEmailChangeRequestAsUsed(id: string) {
     await prisma.emailChangeRequest.update({
       where: { id },
@@ -143,7 +133,6 @@ export class UserRepository {
     });
   }
 
-  // Mettre à jour l’email d’un utilisateur
   async updateUserEmail(userId: string, newEmail: string) {
     await prisma.user.update({
       where: { id: userId },
@@ -151,7 +140,6 @@ export class UserRepository {
     });
   }
 
-  // Lister les invitations avec pagination, recherche et filtrage par rôle
   async findAllInvitationsPaginated(
     query: InvitationQuery,
   ): Promise<PaginatedInvitationList> {
@@ -203,14 +191,12 @@ export class UserRepository {
     };
   }
 
-  // Trouver une invitation unique par ID (Utile pour vérification dans le service avant suppression)
   async findInvitationById(id: string) {
     return await prisma.invitationToken.findFirst({
       where: { id, usedAt: null },
     });
   }
 
-  // Hard delete d'une invitation (Annulation par l'administrateur)
   async deleteInvitation(id: string): Promise<void> {
     await prisma.invitationToken.delete({
       where: { id },

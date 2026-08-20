@@ -1,4 +1,3 @@
-// backend/src/features/quotes/quotes.controller.ts
 import { Request, Response } from "express";
 import { catchAsync } from "@/utils/catchAsync.js";
 import { quotesService } from "./quotes.service.js";
@@ -9,18 +8,12 @@ import {
 } from "./quotes.schema.js";
 
 export const quotesController = {
-  // ============================================================
-  // LISTE PAGINÉE DES DEVIS
-  // ============================================================
   listQuotes: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const query = quotesQuerySchema.parse(req.query);
     const result = await quotesService.listQuotes(query);
     res.status(200).json({ success: true, data: result });
   }),
 
-  // ============================================================
-  // DÉTAIL D'UN DEVIS
-  // ============================================================
   getQuoteById: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { id } = quoteIdParamSchema.parse(req.params);
@@ -29,9 +22,6 @@ export const quotesController = {
     },
   ),
 
-  // ============================================================
-  // MISE À JOUR PARTIELLE D'UN DEVIS
-  // ============================================================
   updateQuote: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { id } = quoteIdParamSchema.parse(req.params);
@@ -45,9 +35,6 @@ export const quotesController = {
     },
   ),
 
-  // ============================================================
-  // CONVERTIR UN DEVIS EN FACTURE
-  // ============================================================
   convertToInvoice: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { id } = quoteIdParamSchema.parse(req.params);
@@ -61,9 +48,6 @@ export const quotesController = {
     },
   ),
 
-  // ============================================================
-  // SOFT DELETE D'UN DEVIS
-  // ============================================================
   deleteQuote: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { id } = quoteIdParamSchema.parse(req.params);
@@ -75,9 +59,6 @@ export const quotesController = {
     },
   ),
 
-  // ============================================================
-  // RESTAURER UN DEVIS
-  // ============================================================
   restoreQuote: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { id } = quoteIdParamSchema.parse(req.params);

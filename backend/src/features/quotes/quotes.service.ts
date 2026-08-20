@@ -1,4 +1,3 @@
-// backend/src/features/quotes/quotes.service.ts
 import {
   NotFoundError,
   BadRequestError,
@@ -20,16 +19,10 @@ export class QuotesService {
     private readonly companyInfoRepository: CompanyInfoRepository,
   ) {}
 
-  // ============================================================
-  // LISTE PAGINÉE DES DEVIS
-  // ============================================================
   async listQuotes(query: QuotesQuery) {
     return await this.quotesRepository.findAll(query);
   }
 
-  // ============================================================
-  // DÉTAIL D'UN DEVIS
-  // ============================================================
   async getQuoteById(id: number): Promise<QuoteDetailOutput> {
     const quote = await this.quotesRepository.findById(id);
     if (!quote) {
@@ -38,9 +31,6 @@ export class QuotesService {
     return quote;
   }
 
-  // ============================================================
-  // MISE À JOUR PARTIELLE D'UN DEVIS
-  // ============================================================
   async updateQuote(
     id: number,
     data: UpdateQuoteInput,
@@ -58,9 +48,6 @@ export class QuotesService {
     }
   }
 
-  // ============================================================
-  // CONVERTIR UN DEVIS EN FACTURE
-  // ============================================================
   async convertToInvoice(quoteId: number, userId: string) {
     const quote = await this.getQuoteById(quoteId);
 
@@ -75,14 +62,12 @@ export class QuotesService {
     const companyInfoId = companyInfo.id;
 
     try {
-      // 1. Créer une facture à partir du devis
       const invoice = await this.quotesRepository.createInvoiceFromQuote(
         quote,
         userId,
         companyInfoId,
       );
 
-      // 2. Marquer le devis comme converti
       await this.quotesRepository.markAsConverted(quoteId, invoice.id);
 
       return { invoice, quoteId };
@@ -91,9 +76,6 @@ export class QuotesService {
     }
   }
 
-  // ============================================================
-  // SOFT DELETE D'UN DEVIS
-  // ============================================================
   async softDeleteQuote(id: number) {
     await this.getQuoteById(id);
 
@@ -105,9 +87,6 @@ export class QuotesService {
     }
   }
 
-  // ============================================================
-  // RESTAURER UN DEVIS
-  // ============================================================
   async restoreQuote(id: number) {
     try {
       const quote = await this.quotesRepository.restore(id);

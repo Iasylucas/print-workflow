@@ -17,23 +17,6 @@ export const getResetPasswordTemplate = (resetUrl: string): string => {
             RÉINITIALISER MON MOT DE PASSE
           </a>
         </div>
-
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
-
-        <h1 style="font-size: 20px; color: ${brandColor}; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Reset Your Password</h1>
-        <p style="color: ${secondaryColor}; line-height: 1.5;">You requested to reset your password. Click the button below to create a new password. This link is valid for 1 hour.</p>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="${resetUrl}" style="background-color: ${brandColor}; color: #ffffff; padding: 15px 25px; text-decoration: none; font-weight: bold; border-radius: 4px; display: inline-block;">
-            RESET MY PASSWORD
-          </a>
-        </div>
-      </div>
-
-      <div style="padding: 20px; background-color: #f9f9f9; text-align: center; font-size: 12px; color: #999999;">
-        <p>© ${new Date().getFullYear()} EWA Print. Tous droits réservés / All rights reserved.</p>
-        <p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email.</p>
-      </div>
     </div>
   `;
 };
