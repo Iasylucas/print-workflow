@@ -1,21 +1,18 @@
-**Voici un README simple et direct :**
-
----
-
-```markdown
-# EWA Print Backend
+# EWA Print Frontend
 
 ## Technologies utilisées
 
-- Node.js + Express.js
+- React 19
 - TypeScript
-- Prisma ORM
-- PostgreSQL
-- JWT pour l'authentification
-- Zod pour les validations
-- Cloudinary pour les images
-- Brevo pour les emails
-- Argon2 pour le hachage des mots de passe
+- Vite (build tool)
+- Tailwind CSS
+- TanStack Query (gestion des données)
+- TanStack Router
+- React Hook Form + Zod (formulaires)
+- Zustand (état global)
+- Shadcn UI (composants)
+- Lucide React (icônes)
+- @react-pdf/renderer (génération PDF)
 
 ---
 
@@ -24,11 +21,13 @@
 ### Prérequis
 
 - Node.js 18+
-- PostgreSQL
 - pnpm (ou npm)
 
-## Documentation
+### Étapes
 
-- **`.env.example`** → Configuration des variables d'environnement
-- **`dbInstruction.md`** → Création de la base de données avec premier utilisateur et catalogue produit
+1. **Installer les dépendances**
+
+```bash
+cd frontend
+pnpm install
 ```
