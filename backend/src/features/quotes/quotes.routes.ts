@@ -1,4 +1,3 @@
-// backend/src/features/quotes/quotes.routes.ts
 import { Router } from "express";
 import { protect, restrictTo } from "@/middlewares/auth.middleware.js";
 import { quotesController } from "./quotes.controller.js";

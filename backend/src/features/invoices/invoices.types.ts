@@ -6,7 +6,6 @@ import {
   addPaymentSchema,
   updatePaymentSchema,
   invoicesQuerySchema,
-  invoiceIdParamSchema,
 } from "./invoices.schema.js";
 
 export const invoiceListSelect = {

@@ -4,7 +4,6 @@ import { protect, restrictTo } from "@/middlewares/auth.middleware.js";
 
 const router: Router = Router();
 
-// Protect all client routes: only ADMIN and SALES
 router.use(protect, restrictTo("ADMIN", "SALES"));
 
 /**

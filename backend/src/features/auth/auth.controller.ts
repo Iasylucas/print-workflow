@@ -12,7 +12,6 @@ import {
 import { catchAsync } from "@/utils/catchAsync.js";
 
 export const authController = {
-  // action to invite a collabolator by the admin
   invite: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const validatedData = inviteUserSchema.parse(req.body);
 
@@ -24,7 +23,6 @@ export const authController = {
     });
   }),
 
-  // invite action finilize by the colaborator
   finalize: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const validatedData = finalizeRegistrationSchema.parse(req.body);
     const result = await authService.finalizeRegistration(validatedData);
@@ -36,7 +34,6 @@ export const authController = {
     });
   }),
 
-  // login classique for users
   login: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const validatedData = loginSchema.parse(req.body);
     const result = await authService.login(validatedData);
@@ -48,7 +45,6 @@ export const authController = {
     });
   }),
 
-  // change password for authenticated users
   changePassword: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { sub: userId } = req.user!;
@@ -61,7 +57,6 @@ export const authController = {
     },
   ),
 
-  // forgot password (public)
   forgotPassword: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { email } = forgotPasswordSchema.parse(req.body);
@@ -74,7 +69,6 @@ export const authController = {
     },
   ),
 
-  // reset password (public)
   resetPassword: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { token, newPassword } = resetPasswordSchema.parse(req.body);
@@ -86,7 +80,6 @@ export const authController = {
     },
   ),
 
-  // confirm email change (public)
   confirmEmailChange: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { token } = confirmEmailChangeSchema.parse(req.body);
@@ -99,7 +92,6 @@ export const authController = {
     },
   ),
 
-  // get me
   getMe: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user.sub;
 

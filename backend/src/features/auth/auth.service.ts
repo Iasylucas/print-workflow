@@ -16,7 +16,6 @@ import {
   LoginInput,
   InvitationResponse,
 } from "./auth.types.js";
-import { UserSafe } from "@/shared/types/user.types.js";
 import { AUTH_ERRORS } from "./auth.constants.js";
 import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
@@ -29,20 +28,17 @@ import { getInvitationTemplate } from "@/shared/infrastructure/mail/templates/in
 import { getResetPasswordTemplate } from "@/shared/infrastructure/mail/templates/password-reset-request.template.js";
 import { UserRepository } from "../user/user.repository.js";
 
-// function to genrate token
 function generateToken(payload: JWTpayload): string {
   return jwt.sign(payload, env.JWT_SECRET, {
     expiresIn: "8h",
   });
 }
 
-// class de service d'authentification
 export class AuthService {
   constructor(
     private readonly authRepository: AuthRepository,
     private readonly userRepository: UserRepository,
   ) {}
-  //1. INVITATION (Action de l'Admin)
   async invite(data: InviteUserInput): Promise<InvitationResponse> {
     const existingUser = await this.authRepository.findByEmail(data.email);
 
@@ -63,15 +59,12 @@ export class AuthService {
     const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
 
     try {
-      // const user = await this.authRepository.createInvitedUser(data);
-
       await this.authRepository.createInvitationToken({
         id: uuidv7(),
         tokenHash,
         email: data.email,
         role: data.role,
         expiresAt,
-        // userId: user.id,
       });
 
       const activationUrl = `${env.FRONTEND_URL}/finalize?token=${plainToken}`;
@@ -81,8 +74,6 @@ export class AuthService {
         "Invitation à rejoindre l'ERP EWA Print",
         getInvitationTemplate(activationUrl, data.role),
       );
-
-      // await sendEmail(data.email, "Test Brevo Final", "<p>Test avec Brevo</p>");
 
       return { data };
     } catch (error) {
@@ -96,7 +87,6 @@ export class AuthService {
     }
   }
 
-  //  2. FINALISATION (Action du collaborateur invité)
   async finalizeRegistration(
     data: FinalizeRegistrationInput,
   ): Promise<AuthResponse> {
@@ -122,7 +112,6 @@ export class AuthService {
 
     const hashedPassword = await argon2.hash(data.password);
 
-    // Déclenchement de la transaction atomique (Mise à jour User + Clôture Token)
     const user = await this.authRepository.finalizeUserRegistration(
       invitation.id,
       {
@@ -145,11 +134,9 @@ export class AuthService {
     return { user, token };
   }
 
-  //  3. CONNEXION (Login standard)
   async login(data: LoginInput): Promise<AuthResponse> {
     const user = await this.authRepository.findByEmail(data.email);
 
-    // Protection contre l'énumération de comptes : message identique
     if (!user) {
       throw new UnauthorizedError(AUTH_ERRORS.INVALID_CREDENTIALS);
     }
@@ -196,7 +183,6 @@ export class AuthService {
     };
   }
 
-  // 4. CHANGEMENT DE MOT DE PASSE (Action de l'utilisateur connecté)
   async changePassword(
     userId: string,
     data: ChangePasswordInput,
@@ -220,7 +206,6 @@ export class AuthService {
     await this.authRepository.updatePassword(userId, hashedPassword);
   }
 
-  // 5. MOT DE PASSE OUBLIÉ (Action publique)
   async forgotPassword(email: string): Promise<void> {
     const user = await this.authRepository.findByEmail(email);
 
@@ -253,7 +238,6 @@ export class AuthService {
     );
   }
 
-  // 6. RÉINITIALISATION DU MOT DE PASSE (Action publique avec token)
   async resetPassword(token: string, newPassword: string): Promise<void> {
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
     const tokenRecord =
@@ -280,7 +264,6 @@ export class AuthService {
     await this.authRepository.markPasswordResetTokenAsUsed(tokenRecord.id);
   }
 
-  // 7. CHANGEMENT D'EMAIL (Action initiée par l'admin, confirmée par le collaborateur)
   async confirmEmailChange(token: string): Promise<void> {
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
     const request =
@@ -303,7 +286,6 @@ export class AuthService {
     await this.userRepository.markEmailChangeRequestAsUsed(request.id);
   }
 
-  // 8. RÉCUPÉRER SON PROFIL (Action de l'utilisateur connecté)
   async getMe(userId: string): Promise<{ user: any }> {
     const user = await this.userRepository.findById(userId);
 
@@ -317,7 +299,6 @@ export class AuthService {
   }
 }
 
-// Export d'une instance du service avec le repository injecté (DI simple)
 export const authService = new AuthService(
   new AuthRepository(),
   new UserRepository(),

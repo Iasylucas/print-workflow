@@ -6,7 +6,6 @@ import {
   InvoicesQuery,
   UpdateInvoiceInput,
   AddPaymentInput,
-  UpdatePaymentInput,
   PaginatedInvoicesList,
 } from "./invoices.types.js";
 

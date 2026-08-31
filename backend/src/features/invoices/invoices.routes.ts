@@ -1,6 +1,5 @@
-// backend/src/features/invoices/invoices.routes.ts
 import { Router } from "express";
-import { protect, restrictTo } from "@/middlewares/auth.middleware.js";
+import { protect } from "@/middlewares/auth.middleware.js";
 import { invoicesController } from "./invoices.controller.js";
 
 const router: Router = Router();

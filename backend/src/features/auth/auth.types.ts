@@ -46,7 +46,6 @@ export type inviteData = {
   email: string;
   role: string;
   expiresAt: Date;
-  // userId: string;
 };
 
 export interface AuthResponse {

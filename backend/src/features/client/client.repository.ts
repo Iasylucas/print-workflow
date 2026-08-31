@@ -9,12 +9,10 @@ import {
 } from "./client.types.js";
 
 export class ClientRepository {
-  // Méthode pour créer un client
   async create(data: CreateClientInput) {
     return await prisma.client.create({ data, select: clientSelect });
   }
 
-  // Méthode pour trouver un client par email
   async findByEmail(email: string) {
     return await prisma.client.findUnique({
       where: { email, deletedAt: null },
@@ -22,7 +20,6 @@ export class ClientRepository {
     });
   }
 
-  // Méthode pour trouver un client par ID
   async findById(id: string) {
     return await prisma.client.findUnique({
       where: { id, deletedAt: null },
@@ -30,7 +27,6 @@ export class ClientRepository {
     });
   }
 
-  // Méthode pour lister les clients avec pagination, recherche et tri
   async findAll(query: ClientQuery): Promise<PaginatedClientList> {
     const { page, limit, search, sortBy, sortOrder, email, id } = query;
     const skip = (page - 1) * limit;
@@ -78,7 +74,6 @@ export class ClientRepository {
     };
   }
 
-  // Méthode pour mettre à jour un client
   async update(id: string, data: UpdateClientInput) {
     return await prisma.client.update({
       where: { id, deletedAt: null },
@@ -87,7 +82,6 @@ export class ClientRepository {
     });
   }
 
-  // Méthode pour supprimer un client (soft delete)
   async delete(id: string) {
     return await prisma.client.update({
       where: { id },

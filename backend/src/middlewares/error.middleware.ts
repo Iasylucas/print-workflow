@@ -9,7 +9,6 @@ export const errorMiddleware = (
   res: Response,
   next: NextFunction,
 ) => {
-  // error for zod validation
   if (err instanceof ZodError) {
     return res.status(400).json({
       success: false,
@@ -21,7 +20,6 @@ export const errorMiddleware = (
     });
   }
 
-  // error for custom AppError (like NotFound, Forbidden, etc.)
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       success: false,
@@ -29,7 +27,6 @@ export const errorMiddleware = (
     });
   }
 
-  // unknown error (500)
   console.error(`[ERROR] ${err.stack}`);
 
   res.status(500).json({

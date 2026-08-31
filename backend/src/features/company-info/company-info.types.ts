@@ -6,7 +6,6 @@ import {
 } from "./company-info.schema.js";
 import { PaginatedResult } from "@/shared/types/index.js";
 
-// Selecteur Prisma (tous les champs)
 export const companyInfoSelect = {
   id: true,
   nif: true,

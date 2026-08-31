@@ -1,4 +1,3 @@
-// backend/src/features/invoices/invoices.constants.ts
 export const INVOICE_ERRORS = {
   NOT_FOUND: "Facture introuvable",
   NO_FIELDS_TO_UPDATE: "Aucun champ à mettre à jour",

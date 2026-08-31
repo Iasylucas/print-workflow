@@ -9,7 +9,6 @@ import {
 } from "./client.schema.js";
 
 export const clientController = {
-  // Create a new client
   create: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const validated = createClientSchema.parse(req.body);
     const client = await clientService.create(validated);
@@ -19,7 +18,6 @@ export const clientController = {
       .json({ success: true, message: "Client created", data: { client } });
   }),
 
-  // List clients with pagination, search and sorting
   list: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const query = clientQuerySchema.parse(req.query);
     const result = await clientService.list(query);
@@ -27,7 +25,6 @@ export const clientController = {
     res.status(200).json({ success: true, data: result });
   }),
 
-  // Get a client by ID
   getById: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const { id } = idParamSchema.parse(req.params);
     const client = await clientService.getById(id);
@@ -35,7 +32,6 @@ export const clientController = {
     res.status(200).json({ success: true, data: { client } });
   }),
 
-  // Update a client by ID
   update: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const { id } = idParamSchema.parse(req.params);
     const validated = updateClientSchema.parse(req.body);
@@ -46,7 +42,6 @@ export const clientController = {
       .json({ success: true, message: "Client updated", data: { client } });
   }),
 
-  // Soft delete a client by ID
   remove: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const { id } = idParamSchema.parse(req.params);
     await clientService.remove(id);

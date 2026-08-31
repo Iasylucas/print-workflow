@@ -12,6 +12,7 @@ import {
 } from "@/shared/error/error.js";
 import { prisma } from "@/config/prisma.js";
 import { Prisma } from "@/generated/prisma/client.js";
+import { PRODUCT_ERRORS } from "./product.constants.js";
 
 export class ProductService {
   constructor(private readonly productRepository: ProductRepository) {}
@@ -32,23 +33,21 @@ export class ProductService {
 
     const existingProduct = await this.productRepository.findBySlug(slug);
     if (existingProduct) {
-      throw new ConflictError(
-        "Un produit portant ce nom ou ce slug existe déjà.",
-      );
+      throw new ConflictError(PRODUCT_ERRORS.DUPLICATE_NAME);
     }
 
     try {
       const product = await this.productRepository.create(data, slug);
       return product as unknown as FullProductOutput;
     } catch (error) {
-      throw new InternalServerError("Échec de la création du produit.");
+      throw new InternalServerError(PRODUCT_ERRORS.CREATE_FAILED);
     }
   }
 
   async getProductById(id: number): Promise<FullProductOutput> {
     const product = await this.productRepository.findById(id);
     if (!product) {
-      throw new NotFoundError("Le produit demandé n'existe pas.");
+      throw new NotFoundError(PRODUCT_ERRORS.NOT_FOUND);
     }
     return product as unknown as FullProductOutput;
   }
@@ -60,13 +59,13 @@ export class ProductService {
   async deleteProduct(id: number): Promise<void> {
     const product = await this.productRepository.findById(id);
     if (!product) {
-      throw new NotFoundError("Le produit à supprimer n'existe pas.");
+      throw new NotFoundError(PRODUCT_ERRORS.DELETE_NOT_FOUND);
     }
 
     try {
       await this.productRepository.delete(id);
     } catch (error) {
-      throw new InternalServerError("Échec de la suppression du produit.");
+      throw new InternalServerError(PRODUCT_ERRORS.DELETE_FAILED);
     }
   }
 
@@ -76,7 +75,7 @@ export class ProductService {
   ): Promise<FullProductOutput> {
     const existing = await this.productRepository.findById(id);
     if (!existing) {
-      throw new NotFoundError("Le produit à modifier n'existe pas.");
+      throw new NotFoundError(PRODUCT_ERRORS.NOT_FOUND);
     }
 
     let newSlug: string | undefined = undefined;
@@ -84,7 +83,7 @@ export class ProductService {
       newSlug = this.generateSlug(data.name);
       const duplicate = await this.productRepository.findBySlug(newSlug);
       if (duplicate && duplicate.id !== id) {
-        throw new ConflictError("Un autre produit porte déjà ce nom.");
+        throw new ConflictError(PRODUCT_ERRORS.DUPLICATE_NAME);
       }
     }
 

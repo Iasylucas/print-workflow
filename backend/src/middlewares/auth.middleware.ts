@@ -5,7 +5,6 @@ import { UnauthorizedError, ForbiddenError } from "@/shared/error/error.js";
 import { JWTpayload } from "@/features/auth/auth.types.js";
 import { AUTH_ERRORS } from "@/features/auth/auth.constants.js";
 
-// jwt verification middleware to protect routes
 export const protect = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
@@ -34,7 +33,6 @@ export const protect = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// middleware to restrict access based on user roles
 export const restrictTo = (...roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user || !roles.includes(req.user.role)) {

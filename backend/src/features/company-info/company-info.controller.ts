@@ -8,13 +8,11 @@ import {
 import { intIdParamSchema } from "@/shared/schemas/id.schema.js";
 
 export const companyInfoController = {
-  // Récupérer la version active
   getActive: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const active = await companyInfoService.getActive();
     res.status(200).json({ success: true, data: active });
   }),
 
-  // Lister les versions (historique paginé)
   getAllVersions: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const query = companyInfoQuerySchema.parse(req.query);
@@ -23,7 +21,6 @@ export const companyInfoController = {
     },
   ),
 
-  // Récupérer une version spécifique par ID
   getVersionById: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { id } = intIdParamSchema.parse(req.params);
@@ -32,7 +29,6 @@ export const companyInfoController = {
     },
   ),
 
-  // Créer une nouvelle version (objet complet envoyé par le front)
   createNewVersion: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const validatedData = companyInfoSchema.parse(req.body);

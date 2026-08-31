@@ -1,21 +1,14 @@
 import { Request, Response } from "express";
-import { catchAsync } from "@/utils/catchAsync.js"; // Adaptez selon votre chemin exact de catchAsync
+import { catchAsync } from "@/utils/catchAsync.js";
 import {
   createBulkOrderSchema,
   updateOrderFromPosSchema,
 } from "./order.schema.js";
-import { OrderService } from "./order.service.js";
-import { OrderRepository } from "./order.repository.js";
 import { orderIdParamSchema } from "../orders/orders.schema.js";
 import { invoiceIdParamSchema } from "../invoices/invoices.schema.js";
 import { orderService } from "./order.service.js";
 
 export const orderController = {
-  /**
-   * @desc    Créer et valider un panier complet de commandes depuis le POS (Bulk)
-   * @route   POST /api/orders/bulk
-   * @access  Private (Admin & Sales)
-   */
   createBulkOrder: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const validatedData = createBulkOrderSchema.parse(req.body);

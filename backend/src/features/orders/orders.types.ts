@@ -6,7 +6,6 @@ import {
   addOrderFileSchema,
   ordersQuerySchema,
   updateOrderSchema,
-  orderIdParamSchema,
 } from "./orders.schema.js";
 
 export const orderListSelect = {
