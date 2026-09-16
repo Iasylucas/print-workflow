@@ -38,7 +38,6 @@ export const InvoicesTable = ({
   isLoading,
   queryParams,
   goToPage,
-  // handleSort,
   onView,
 
   onDeliver,

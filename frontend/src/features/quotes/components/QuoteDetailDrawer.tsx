@@ -1,4 +1,3 @@
-// frontend/src/features/quotes/components/QuoteDetailDrawer.tsx
 import { useState } from "react";
 import { Drawer, DrawerContent, DrawerHeader } from "@/components/ui/drawer";
 import {
@@ -147,8 +146,8 @@ export const QuoteDetailDrawer = ({
                 <Separator />
 
                 {/* Actions */}
-                <div className="flex gap-2">
-                  {quote.status !== "converted" && (
+                {quote.status !== "converted" && (
+                  <div className="flex gap-2">
                     <Button
                       onClick={handleConvert}
                       className="flex-1 gap-2"
@@ -159,15 +158,8 @@ export const QuoteDetailDrawer = ({
                         ? "Conversion..."
                         : "Convertir en facture"}
                     </Button>
-                  )}
-                  {quote.status === "converted" && (
-                    <Badge variant="default" className="text-sm py-2 px-4">
-                      Déjà converti
-                    </Badge>
-                  )}
-                </div>
-
-                <Separator />
+                  </div>
+                )}
 
                 {/* Commandes liées */}
                 <div>
