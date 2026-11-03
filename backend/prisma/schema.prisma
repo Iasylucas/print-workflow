@@ -313,6 +313,33 @@ model PricingRule {
   @@index([variantId])
 }
 
+// model PaymentAuditLog {
+//   id        String   @id @default(uuid())
+//   // Le type d'action effectuée
+//   action    String   // "CREATE", "UPDATE", "DELETE"
+  
+//   // La référence vers le paiement concerné
+//   paymentId Int?
+//   payment   Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+  
+//   // Qui a fait l'action
+//   userId    String
+//   user      User     @relation(fields: [userId], references: [id])
+  
+//   // L'état AVANT et APRÈS l'action (très important pour le debug)
+//   // On stocke le snapshot complet du paiement en JSON
+//   oldData   Json?
+//   newData   Json?
+  
+//   // La raison / commentaire optionnel
+//   reason    String?
+  
+//   createdAt DateTime @default(now())
+
+//   @@index([paymentId])
+//   @@index([createdAt])
+// }
+
 
 
 enum PricingMode {
