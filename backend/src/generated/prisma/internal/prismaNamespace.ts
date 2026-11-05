@@ -394,6 +394,7 @@ export const ModelName = {
   Invoice: 'Invoice',
   File: 'File',
   Payment: 'Payment',
+  PaymentAuditLog: 'PaymentAuditLog',
   Note: 'Note',
   AppSettings: 'AppSettings',
   Order: 'Order',
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "client" | "user" | "invitationToken" | "emailChangeRequest" | "passwordResetToken" | "companyInfo" | "quote" | "invoice" | "file" | "payment" | "note" | "appSettings" | "order" | "product" | "productVariant" | "pricingRule"
+    modelProps: "client" | "user" | "invitationToken" | "emailChangeRequest" | "passwordResetToken" | "companyInfo" | "quote" | "invoice" | "file" | "payment" | "paymentAuditLog" | "note" | "appSettings" | "order" | "product" | "productVariant" | "pricingRule"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1159,6 +1160,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PaymentAuditLog: {
+      payload: Prisma.$PaymentAuditLogPayload<ExtArgs>
+      fields: Prisma.PaymentAuditLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentAuditLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentAuditLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentAuditLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentAuditLogPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentAuditLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentAuditLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentAuditLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentAuditLogPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentAuditLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentAuditLogPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentAuditLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentAuditLogPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentAuditLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PaymentAuditLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentAuditLogPayload>[]
+        }
+        delete: {
+          args: Prisma.PaymentAuditLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentAuditLogPayload>
+        }
+        update: {
+          args: Prisma.PaymentAuditLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentAuditLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentAuditLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentAuditLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PaymentAuditLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentAuditLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.PaymentAuditLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentAuditLogPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentAuditLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentAuditLog>
+        }
+        groupBy: {
+          args: Prisma.PaymentAuditLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentAuditLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentAuditLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentAuditLogCountAggregateOutputType> | number
+        }
+      }
+    }
     Note: {
       payload: Prisma.$NotePayload<ExtArgs>
       fields: Prisma.NoteFieldRefs
@@ -1805,6 +1880,20 @@ export const PaymentScalarFieldEnum = {
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
+export const PaymentAuditLogScalarFieldEnum = {
+  id: 'id',
+  action: 'action',
+  paymentId: 'paymentId',
+  userId: 'userId',
+  oldData: 'oldData',
+  newData: 'newData',
+  reason: 'reason',
+  createdAt: 'createdAt'
+} as const
+
+export type PaymentAuditLogScalarFieldEnum = (typeof PaymentAuditLogScalarFieldEnum)[keyof typeof PaymentAuditLogScalarFieldEnum]
+
+
 export const NoteScalarFieldEnum = {
   id: 'id',
   text: 'text',
@@ -2160,6 +2249,7 @@ export type GlobalOmitConfig = {
   invoice?: Prisma.InvoiceOmit
   file?: Prisma.FileOmit
   payment?: Prisma.PaymentOmit
+  paymentAuditLog?: Prisma.PaymentAuditLogOmit
   note?: Prisma.NoteOmit
   appSettings?: Prisma.AppSettingsOmit
   order?: Prisma.OrderOmit

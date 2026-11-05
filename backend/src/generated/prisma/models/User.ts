@@ -249,6 +249,7 @@ export type UserWhereInput = {
   files?: Prisma.FileListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   notes?: Prisma.NoteListRelationFilter
+  paymentAuditLog?: Prisma.PaymentAuditLogListRelationFilter
   quotesCreated?: Prisma.QuoteListRelationFilter
   invoicesCreated?: Prisma.InvoiceListRelationFilter
   ordersCreated?: Prisma.OrderListRelationFilter
@@ -273,6 +274,7 @@ export type UserOrderByWithRelationInput = {
   files?: Prisma.FileOrderByRelationAggregateInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   notes?: Prisma.NoteOrderByRelationAggregateInput
+  paymentAuditLog?: Prisma.PaymentAuditLogOrderByRelationAggregateInput
   quotesCreated?: Prisma.QuoteOrderByRelationAggregateInput
   invoicesCreated?: Prisma.InvoiceOrderByRelationAggregateInput
   ordersCreated?: Prisma.OrderOrderByRelationAggregateInput
@@ -300,6 +302,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   files?: Prisma.FileListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   notes?: Prisma.NoteListRelationFilter
+  paymentAuditLog?: Prisma.PaymentAuditLogListRelationFilter
   quotesCreated?: Prisma.QuoteListRelationFilter
   invoicesCreated?: Prisma.InvoiceListRelationFilter
   ordersCreated?: Prisma.OrderListRelationFilter
@@ -362,6 +365,7 @@ export type UserCreateInput = {
   files?: Prisma.FileCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
@@ -386,6 +390,7 @@ export type UserUncheckedCreateInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteUncheckedCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -410,6 +415,7 @@ export type UserUpdateInput = {
   files?: Prisma.FileUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
@@ -434,6 +440,7 @@ export type UserUncheckedUpdateInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUncheckedUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -630,6 +637,20 @@ export type UserUpdateOneRequiredWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaymentsInput, Prisma.UserUpdateWithoutPaymentsInput>, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
 }
 
+export type UserCreateNestedOneWithoutPaymentAuditLogInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentAuditLogInput, Prisma.UserUncheckedCreateWithoutPaymentAuditLogInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentAuditLogInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPaymentAuditLogNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentAuditLogInput, Prisma.UserUncheckedCreateWithoutPaymentAuditLogInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentAuditLogInput
+  upsert?: Prisma.UserUpsertWithoutPaymentAuditLogInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaymentAuditLogInput, Prisma.UserUpdateWithoutPaymentAuditLogInput>, Prisma.UserUncheckedUpdateWithoutPaymentAuditLogInput>
+}
+
 export type UserCreateNestedOneWithoutNotesInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutNotesInput, Prisma.UserUncheckedCreateWithoutNotesInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotesInput
@@ -675,6 +696,7 @@ export type UserCreateWithoutResetEmailRequestInput = {
   files?: Prisma.FileCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
@@ -698,6 +720,7 @@ export type UserUncheckedCreateWithoutResetEmailRequestInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteUncheckedCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -737,6 +760,7 @@ export type UserUpdateWithoutResetEmailRequestInput = {
   files?: Prisma.FileUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
@@ -760,6 +784,7 @@ export type UserUncheckedUpdateWithoutResetEmailRequestInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUncheckedUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -783,6 +808,7 @@ export type UserCreateWithoutResetTokensInput = {
   files?: Prisma.FileCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
@@ -806,6 +832,7 @@ export type UserUncheckedCreateWithoutResetTokensInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteUncheckedCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -845,6 +872,7 @@ export type UserUpdateWithoutResetTokensInput = {
   files?: Prisma.FileUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
@@ -868,6 +896,7 @@ export type UserUncheckedUpdateWithoutResetTokensInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUncheckedUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -891,6 +920,7 @@ export type UserCreateWithoutQuotesCreatedInput = {
   files?: Prisma.FileCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogCreateNestedManyWithoutUserInput
   invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -914,6 +944,7 @@ export type UserUncheckedCreateWithoutQuotesCreatedInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
   invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -953,6 +984,7 @@ export type UserUpdateWithoutQuotesCreatedInput = {
   files?: Prisma.FileUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUpdateManyWithoutUserNestedInput
   invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -976,6 +1008,7 @@ export type UserUncheckedUpdateWithoutQuotesCreatedInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
   invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -999,6 +1032,7 @@ export type UserCreateWithoutInvoicesCreatedInput = {
   files?: Prisma.FileCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -1022,6 +1056,7 @@ export type UserUncheckedCreateWithoutInvoicesCreatedInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteUncheckedCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -1061,6 +1096,7 @@ export type UserUpdateWithoutInvoicesCreatedInput = {
   files?: Prisma.FileUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -1084,6 +1120,7 @@ export type UserUncheckedUpdateWithoutInvoicesCreatedInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUncheckedUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -1106,6 +1143,7 @@ export type UserCreateWithoutFilesInput = {
   deletedAt?: Date | string | null
   payments?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
@@ -1129,6 +1167,7 @@ export type UserUncheckedCreateWithoutFilesInput = {
   deletedAt?: Date | string | null
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteUncheckedCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1168,6 +1207,7 @@ export type UserUpdateWithoutFilesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   payments?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
@@ -1191,6 +1231,7 @@ export type UserUncheckedUpdateWithoutFilesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUncheckedUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1214,6 +1255,7 @@ export type UserCreateWithoutPaymentsInput = {
   deletedAt?: Date | string | null
   files?: Prisma.FileCreateNestedManyWithoutUploadedByInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
@@ -1237,6 +1279,7 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   deletedAt?: Date | string | null
   files?: Prisma.FileUncheckedCreateNestedManyWithoutUploadedByInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteUncheckedCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1276,6 +1319,7 @@ export type UserUpdateWithoutPaymentsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.FileUpdateManyWithoutUploadedByNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
@@ -1298,6 +1342,119 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.FileUncheckedUpdateManyWithoutUploadedByNestedInput
+  notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  quotesCreated?: Prisma.QuoteUncheckedUpdateManyWithoutCreatedByNestedInput
+  invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
+  ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPaymentAuditLogInput = {
+  id: string
+  avatarUrl?: string | null
+  email: string
+  password?: string | null
+  role: string
+  isActive?: boolean
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  files?: Prisma.FileCreateNestedManyWithoutUploadedByInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+  notes?: Prisma.NoteCreateNestedManyWithoutUserInput
+  quotesCreated?: Prisma.QuoteCreateNestedManyWithoutCreatedByInput
+  invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
+  ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
+  resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPaymentAuditLogInput = {
+  id: string
+  avatarUrl?: string | null
+  email: string
+  password?: string | null
+  role: string
+  isActive?: boolean
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  files?: Prisma.FileUncheckedCreateNestedManyWithoutUploadedByInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+  notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
+  quotesCreated?: Prisma.QuoteUncheckedCreateNestedManyWithoutCreatedByInput
+  invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
+  ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
+  resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPaymentAuditLogInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentAuditLogInput, Prisma.UserUncheckedCreateWithoutPaymentAuditLogInput>
+}
+
+export type UserUpsertWithoutPaymentAuditLogInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPaymentAuditLogInput, Prisma.UserUncheckedUpdateWithoutPaymentAuditLogInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentAuditLogInput, Prisma.UserUncheckedCreateWithoutPaymentAuditLogInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPaymentAuditLogInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPaymentAuditLogInput, Prisma.UserUncheckedUpdateWithoutPaymentAuditLogInput>
+}
+
+export type UserUpdateWithoutPaymentAuditLogInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  files?: Prisma.FileUpdateManyWithoutUploadedByNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+  notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
+  quotesCreated?: Prisma.QuoteUpdateManyWithoutCreatedByNestedInput
+  invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
+  ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
+  resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  resetEmailRequest?: Prisma.EmailChangeRequestUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPaymentAuditLogInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  files?: Prisma.FileUncheckedUpdateManyWithoutUploadedByNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUncheckedUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1322,6 +1479,7 @@ export type UserCreateWithoutNotesInput = {
   deletedAt?: Date | string | null
   files?: Prisma.FileCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+  paymentAuditLog?: Prisma.PaymentAuditLogCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderCreateNestedManyWithoutCreatedByInput
@@ -1345,6 +1503,7 @@ export type UserUncheckedCreateWithoutNotesInput = {
   deletedAt?: Date | string | null
   files?: Prisma.FileUncheckedCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteUncheckedCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
   ordersCreated?: Prisma.OrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1384,6 +1543,7 @@ export type UserUpdateWithoutNotesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.FileUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUpdateManyWithoutCreatedByNestedInput
@@ -1407,6 +1567,7 @@ export type UserUncheckedUpdateWithoutNotesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.FileUncheckedUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUncheckedUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
   ordersCreated?: Prisma.OrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1431,6 +1592,7 @@ export type UserCreateWithoutOrdersCreatedInput = {
   files?: Prisma.FileCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -1454,6 +1616,7 @@ export type UserUncheckedCreateWithoutOrdersCreatedInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutUploadedByInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedCreateNestedManyWithoutUserInput
   quotesCreated?: Prisma.QuoteUncheckedCreateNestedManyWithoutCreatedByInput
   invoicesCreated?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCreatedByInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -1493,6 +1656,7 @@ export type UserUpdateWithoutOrdersCreatedInput = {
   files?: Prisma.FileUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -1516,6 +1680,7 @@ export type UserUncheckedUpdateWithoutOrdersCreatedInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutUploadedByNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
+  paymentAuditLog?: Prisma.PaymentAuditLogUncheckedUpdateManyWithoutUserNestedInput
   quotesCreated?: Prisma.QuoteUncheckedUpdateManyWithoutCreatedByNestedInput
   invoicesCreated?: Prisma.InvoiceUncheckedUpdateManyWithoutCreatedByNestedInput
   resetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -1531,6 +1696,7 @@ export type UserCountOutputType = {
   files: number
   payments: number
   notes: number
+  paymentAuditLog: number
   quotesCreated: number
   invoicesCreated: number
   ordersCreated: number
@@ -1542,6 +1708,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   files?: boolean | UserCountOutputTypeCountFilesArgs
   payments?: boolean | UserCountOutputTypeCountPaymentsArgs
   notes?: boolean | UserCountOutputTypeCountNotesArgs
+  paymentAuditLog?: boolean | UserCountOutputTypeCountPaymentAuditLogArgs
   quotesCreated?: boolean | UserCountOutputTypeCountQuotesCreatedArgs
   invoicesCreated?: boolean | UserCountOutputTypeCountInvoicesCreatedArgs
   ordersCreated?: boolean | UserCountOutputTypeCountOrdersCreatedArgs
@@ -1578,6 +1745,13 @@ export type UserCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.E
  */
 export type UserCountOutputTypeCountNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.NoteWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPaymentAuditLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentAuditLogWhereInput
 }
 
 /**
@@ -1633,6 +1807,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   files?: boolean | Prisma.User$filesArgs<ExtArgs>
   payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   notes?: boolean | Prisma.User$notesArgs<ExtArgs>
+  paymentAuditLog?: boolean | Prisma.User$paymentAuditLogArgs<ExtArgs>
   quotesCreated?: boolean | Prisma.User$quotesCreatedArgs<ExtArgs>
   invoicesCreated?: boolean | Prisma.User$invoicesCreatedArgs<ExtArgs>
   ordersCreated?: boolean | Prisma.User$ordersCreatedArgs<ExtArgs>
@@ -1694,6 +1869,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   files?: boolean | Prisma.User$filesArgs<ExtArgs>
   payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   notes?: boolean | Prisma.User$notesArgs<ExtArgs>
+  paymentAuditLog?: boolean | Prisma.User$paymentAuditLogArgs<ExtArgs>
   quotesCreated?: boolean | Prisma.User$quotesCreatedArgs<ExtArgs>
   invoicesCreated?: boolean | Prisma.User$invoicesCreatedArgs<ExtArgs>
   ordersCreated?: boolean | Prisma.User$ordersCreatedArgs<ExtArgs>
@@ -1710,6 +1886,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     files: Prisma.$FilePayload<ExtArgs>[]
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     notes: Prisma.$NotePayload<ExtArgs>[]
+    paymentAuditLog: Prisma.$PaymentAuditLogPayload<ExtArgs>[]
     quotesCreated: Prisma.$QuotePayload<ExtArgs>[]
     invoicesCreated: Prisma.$InvoicePayload<ExtArgs>[]
     ordersCreated: Prisma.$OrderPayload<ExtArgs>[]
@@ -2127,6 +2304,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   files<T extends Prisma.User$filesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$filesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.User$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notes<T extends Prisma.User$notesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paymentAuditLog<T extends Prisma.User$paymentAuditLogArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentAuditLogArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   quotesCreated<T extends Prisma.User$quotesCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$quotesCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invoicesCreated<T extends Prisma.User$invoicesCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invoicesCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ordersCreated<T extends Prisma.User$ordersCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2636,6 +2814,30 @@ export type User$notesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.NoteScalarFieldEnum | Prisma.NoteScalarFieldEnum[]
+}
+
+/**
+ * User.paymentAuditLog
+ */
+export type User$paymentAuditLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentAuditLog
+   */
+  select?: Prisma.PaymentAuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentAuditLog
+   */
+  omit?: Prisma.PaymentAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentAuditLogInclude<ExtArgs> | null
+  where?: Prisma.PaymentAuditLogWhereInput
+  orderBy?: Prisma.PaymentAuditLogOrderByWithRelationInput | Prisma.PaymentAuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentAuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentAuditLogScalarFieldEnum | Prisma.PaymentAuditLogScalarFieldEnum[]
 }
 
 /**

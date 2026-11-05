@@ -13,45 +13,46 @@ datasource db {
 }
 
 model Client {
-  id        String   @id
+  id        String    @id
   firstName String
   lastName  String?
-  email     String?  @unique
+  email     String?   @unique
   phone     String?
   address   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  orders    Order[]
-  invoices  Invoice[]
-  quotes    Quote[]
+  orders   Order[]
+  invoices Invoice[]
+  quotes   Quote[]
 }
 
 model User {
-  id        String   @id
+  id        String    @id
   avatarUrl String?
-  email     String   @unique
+  email     String    @unique
   password  String?
   role      String
-  isActive  Boolean  @default(false)
+  isActive  Boolean   @default(false)
   firstName String?
   lastName  String?
-  phone    String?
+  phone     String?
   address   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  files     File[]
-  payments  Payment[]
-  notes     Note[]
+  files           File[]
+  payments        Payment[]
+  notes           Note[]
+  paymentAuditLog PaymentAuditLog[]
 
-  quotesCreated    Quote[]    @relation("UserQuote")
-  invoicesCreated  Invoice[]  @relation("UserInvoice")
-  ordersCreated    Order[]    @relation("UserOrder")
+  quotesCreated   Quote[]   @relation("UserQuote")
+  invoicesCreated Invoice[] @relation("UserInvoice")
+  ordersCreated   Order[]   @relation("UserOrder")
 
-  resetTokens  PasswordResetToken[]
+  resetTokens       PasswordResetToken[]
   resetEmailRequest EmailChangeRequest[]
 }
 
@@ -63,65 +64,66 @@ enum Role {
 }
 
 model InvitationToken {
-  id        String   @id // UUIDv7
-  token     String   @unique // hashed token (security)
-  email     String   // invited email
-  role      Role     // pre‑assigned role
+  id        String    @id // UUIDv7
+  token     String    @unique // hashed token (security)
+  email     String // invited email
+  role      Role // pre‑assigned role
   expiresAt DateTime // expiration date (e.g. 48h)
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   usedAt    DateTime? // marks if already used
 }
 
 model EmailChangeRequest {
-  id        String   @id
+  id        String    @id
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   newEmail  String
-  tokenHash String   @unique
+  tokenHash String    @unique
   expiresAt DateTime
   usedAt    DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 }
+
 model PasswordResetToken {
-  id        String   @id
-  tokenHash String   @unique
+  id        String    @id
+  tokenHash String    @unique
   expiresAt DateTime
-  createdAt DateTime @default(now())
-  usedAt       DateTime?
+  createdAt DateTime  @default(now())
+  usedAt    DateTime?
 
   userId String
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
 model CompanyInfo {
-  id                      Int       @id @default(autoincrement())
-  nif                     String
-  stat                    String
-  rif                     String?
-  mainAddress             String
-  mainAddressDetail       String?
-  secondaryAddress        String?
-  secondaryAddressDetail  String?
-  logo                    String?
-  name                    String    @default("Ewa print")
-  stamp                   String?
+  id                     Int     @id @default(autoincrement())
+  nif                    String
+  stat                   String
+  rif                    String?
+  mainAddress            String
+  mainAddressDetail      String?
+  secondaryAddress       String?
+  secondaryAddressDetail String?
+  logo                   String?
+  name                   String  @default("Ewa print")
+  stamp                  String?
 
-  mobileMoneyNumbers      Json?
+  mobileMoneyNumbers Json?
 
-  standardPhone           String?
-  contactEmail            String?
+  standardPhone String?
+  contactEmail  String?
 
-  termsAndConditions      String?
-  deliveryLeadTime        String?
+  termsAndConditions String?
+  deliveryLeadTime   String?
 
-  bankAccountHolder       String?
-  bankBranch              String?
-  bankCode                String?
-  ribInfo                 String?
+  bankAccountHolder String?
+  bankBranch        String?
+  bankCode          String?
+  ribInfo           String?
 
-  createdAt               DateTime  @default(now())
+  createdAt DateTime @default(now())
 
   invoices Invoice[]
   quotes   Quote[]
@@ -140,15 +142,14 @@ model Quote {
   companyInfoId Int
   companyInfo   CompanyInfo @relation(fields: [companyInfoId], references: [id])
 
-
   createdById String
   createdBy   User   @relation("UserQuote", fields: [createdById], references: [id])
 
   // all orders of this quote
   orders Order[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   @@index([createdAt])
@@ -161,46 +162,46 @@ model Invoice {
   clientId String
   client   Client   @relation(fields: [clientId], references: [id])
 
-  total     Int
-  deposit   Int @default(0)
+  total   Int
+  deposit Int @default(0)
   // remaining Int
 
-  deliveryPlace       String?
+  deliveryPlace        String?
   expectedDeliveryDate DateTime?
 
-  isDelivered      Boolean @default(false)
-  paymentStatus    String  @default("unpaid")
+  isDelivered   Boolean @default(false)
+  paymentStatus String  @default("unpaid")
 
   companyInfoId Int
   companyInfo   CompanyInfo @relation(fields: [companyInfoId], references: [id])
 
   // link to the original quote (if this invoice comes from a quote)
-  originalQuoteId Int?   @unique
+  originalQuoteId Int? @unique
 
   createdById String
-  createdBy   User @relation("UserInvoice", fields: [createdById], references: [id])
+  createdBy   User   @relation("UserInvoice", fields: [createdById], references: [id])
 
   // all orders of this invoice
   orders Order[]
 
-  payments Payment[]
-  deletedAt   DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  payments  Payment[]
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@index([createdAt])
 }
 
 model File {
-  id   Int      @id @default(autoincrement())
-  url  String
+  id       Int    @id @default(autoincrement())
+  url      String
   category String
 
   orderId Int
   order   Order @relation(fields: [orderId], references: [id])
 
   uploadedById String
-  uploadedBy   User @relation(fields: [uploadedById], references: [id])
+  uploadedBy   User   @relation(fields: [uploadedById], references: [id])
 
   createdAt DateTime @default(now())
 }
@@ -219,15 +220,44 @@ model Payment {
   date DateTime @default(now())
 
   receivedById String
-  receivedBy   User @relation(fields: [receivedById], references: [id])
+  receivedBy   User   @relation(fields: [receivedById], references: [id])
+
+  paymentAuditLog PaymentAuditLog[]
+}
+
+model PaymentAuditLog {
+  id     String @id @default(uuid())
+  // Le type d'action effectuée
+  action String // "CREATE", "UPDATE", "DELETE"
+
+  // La référence vers le paiement concerné
+  paymentId Int?
+  payment   Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+
+  // Qui a fait l'action
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  // L'état AVANT et APRÈS l'action (très important pour le debug)
+  // On stocke le snapshot complet du paiement en JSON
+  oldData Json?
+  newData Json?
+
+  // La raison / commentaire optionnel
+  reason String?
+
+  createdAt DateTime @default(now())
+
+  @@index([paymentId])
+  @@index([createdAt])
 }
 
 model Note {
-  id    Int    @id @default(autoincrement())
-  text  String
+  id   Int    @id @default(autoincrement())
+  text String
 
   userId String
-  user   User @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 
   orderId Int
   order   Order @relation(fields: [orderId], references: [id])
@@ -243,24 +273,24 @@ model AppSettings {
 }
 
 model Order {
-  id          Int      @id @default(autoincrement())
-  reference   String   @unique 
+  id          Int     @id @default(autoincrement())
+  reference   String  @unique
   designation String
-  label       String? 
-  dimensions  String? 
+  label       String?
+  dimensions  String?
 
   clientId String
   client   Client @relation(fields: [clientId], references: [id])
 
-  productId   Int?            // ← optionnel (si le produit existe dans le catalogue)
-  product     Product?        @relation(fields: [productId], references: [id])
+  productId Int? // ← optionnel (si le produit existe dans le catalogue)
+  product   Product? @relation(fields: [productId], references: [id])
 
-  unitPrice  Int
-  quantity   Int
+  unitPrice Int
+  quantity  Int
 
   status String @default("waiting_for_file")
-  files File[]
-  notes Note[]
+  files  File[]
+  notes  Note[]
 
   invoiceId Int?
   invoice   Invoice? @relation(fields: [invoiceId], references: [id])
@@ -269,85 +299,55 @@ model Order {
 
   // 👇 Audit
   createdById String
-  createdBy   User @relation("UserOrder", fields: [createdById], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdBy   User      @relation("UserOrder", fields: [createdById], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
 
   @@index([createdAt])
 }
 
 model Product {
-  id        Int   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   name      String
-  slug      String  @unique
+  slug      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orders    Order[] 
-  variants  ProductVariant[]
+  orders   Order[]
+  variants ProductVariant[]
 }
 
-
 model ProductVariant {
-  id        Int   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   productId Int
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  name      String   // "Prédécoupé", "Sans découpe", "Recto Verso"
+  name      String // "Prédécoupé", "Sans découpe", "Recto Verso"
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   pricingRules PricingRule[]
 }
 
-
 model PricingRule {
-  id          Int      @id @default(autoincrement())
+  id          Int            @id @default(autoincrement())
   variantId   Int
   variant     ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
   pricingMode PricingMode // L'enum (PER_M2, FORMAT, PER_UNIT, etc.)
-  config      Json        // Votre structure flexible validée par Zod
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  config      Json // Votre structure flexible validée par Zod
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
 
   @@index([variantId])
 }
 
-// model PaymentAuditLog {
-//   id        String   @id @default(uuid())
-//   // Le type d'action effectuée
-//   action    String   // "CREATE", "UPDATE", "DELETE"
-  
-//   // La référence vers le paiement concerné
-//   paymentId Int?
-//   payment   Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
-  
-//   // Qui a fait l'action
-//   userId    String
-//   user      User     @relation(fields: [userId], references: [id])
-  
-//   // L'état AVANT et APRÈS l'action (très important pour le debug)
-//   // On stocke le snapshot complet du paiement en JSON
-//   oldData   Json?
-//   newData   Json?
-  
-//   // La raison / commentaire optionnel
-//   reason    String?
-  
-//   createdAt DateTime @default(now())
-
-//   @@index([paymentId])
-//   @@index([createdAt])
-// }
-
-
 enum PricingMode {
-  FIXED           // fixed price (mug, t‑shirt)
-  PER_M2          // price per square meter (banner, vinyl without cut)
-  PER_UNIT        // price per unit (business card)
-  FORMAT          // price by format (PVC: A4, A3, A2...)
-  RECTO_VERSO     // recto / recto‑verso (flyers)
-  PER_METER       // price per linear meter (flag)
-  OPTION          // extra (grommet, lamination, installation)
-  COMPOSITE       // combination of several rules (pre‑cut: m² + A4)
+  FIXED // fixed price (mug, t‑shirt)
+  PER_M2 // price per square meter (banner, vinyl without cut)
+  PER_UNIT // price per unit (business card)
+  FORMAT // price by format (PVC: A4, A3, A2...)
+  RECTO_VERSO // recto / recto‑verso (flyers)
+  PER_METER // price per linear meter (flag)
+  OPTION // extra (grommet, lamination, installation)
+  COMPOSITE // combination of several rules (pre‑cut: m² + A4)
 }

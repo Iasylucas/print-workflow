@@ -68,6 +68,11 @@ export type File = Prisma.FileModel
  */
 export type Payment = Prisma.PaymentModel
 /**
+ * Model PaymentAuditLog
+ * 
+ */
+export type PaymentAuditLog = Prisma.PaymentAuditLogModel
+/**
  * Model Note
  * 
  */
