@@ -14,8 +14,8 @@ datasource db {
 
 model Client {
   id        String   @id
-  firstName String?
-  lastName  String
+  firstName String
+  lastName  String?
   email     String?  @unique
   phone     String?
   address   String?
@@ -140,8 +140,6 @@ model Quote {
   companyInfoId Int
   companyInfo   CompanyInfo @relation(fields: [companyInfoId], references: [id])
 
-  // link to the invoice if converted
-  transformedToInvoice Invoice? @relation("QuoteToInvoice")
 
   createdById String
   createdBy   User   @relation("UserQuote", fields: [createdById], references: [id])
@@ -151,6 +149,7 @@ model Quote {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   @@index([createdAt])
 }
@@ -177,7 +176,6 @@ model Invoice {
 
   // link to the original quote (if this invoice comes from a quote)
   originalQuoteId Int?   @unique
-  originalQuote   Quote? @relation("QuoteToInvoice", fields: [originalQuoteId], references: [id])
 
   createdById String
   createdBy   User @relation("UserInvoice", fields: [createdById], references: [id])
@@ -315,6 +313,32 @@ model PricingRule {
   @@index([variantId])
 }
 
+// model PaymentAuditLog {
+//   id        String   @id @default(uuid())
+//   // Le type d'action effectuée
+//   action    String   // "CREATE", "UPDATE", "DELETE"
+  
+//   // La référence vers le paiement concerné
+//   paymentId Int?
+//   payment   Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+  
+//   // Qui a fait l'action
+//   userId    String
+//   user      User     @relation(fields: [userId], references: [id])
+  
+//   // L'état AVANT et APRÈS l'action (très important pour le debug)
+//   // On stocke le snapshot complet du paiement en JSON
+//   oldData   Json?
+//   newData   Json?
+  
+//   // La raison / commentaire optionnel
+//   reason    String?
+  
+//   createdAt DateTime @default(now())
+
+//   @@index([paymentId])
+//   @@index([createdAt])
+// }
 
 
 enum PricingMode {
@@ -327,13 +351,3 @@ enum PricingMode {
   OPTION          // extra (grommet, lamination, installation)
   COMPOSITE       // combination of several rules (pre‑cut: m² + A4)
 }
-
-
-// // Workshop configuration (only one active row)
-// model WorkshopConfig {
-//   id              String @id @default(cuid())
-//   maxWidthM       Float  @default(1.5)
-//   cuttingMarginM  Float  @default(0.02)
-//   referenceSurfaceM2 Json @default("{\"width\":1.5,\"height\":0.7}")
-//   isActive        Boolean @default(true)
-// }

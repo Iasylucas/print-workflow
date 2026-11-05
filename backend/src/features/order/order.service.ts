@@ -7,14 +7,15 @@ import {
   BadRequestError,
   InternalServerError,
   NotFoundError,
-} from "@/shared/error/error.js"; // Adaptez selon vos erreurs globales
+} from "@/shared/error/error.js";
+import { CompanyInfoRepository } from "../company-info/company-info.repository.js";
 
 export class OrderService {
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly invoiceRepository: InvoicesRepository,
+    private readonly companyInfoRepository: CompanyInfoRepository,
   ) {}
-  // 1. Fonction privée pour formater les numéros avec des zéros initiaux (ex: 1 -> "001")
   private padNumber(num: number, size: number = 3): string {
     let s = num.toString();
     while (s.length < size) s = "0" + s;
@@ -61,7 +62,11 @@ export class OrderService {
       );
     }
 
-    const companyInfoId = 1;
+    const companyInfo = await this.companyInfoRepository.findActive();
+    if (!companyInfo) {
+      throw new InternalServerError("Aucune information société trouvée");
+    }
+    const companyInfoId = companyInfo.id;
 
     const orderReferences = data.lines.map(
       () => `CMD-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
@@ -71,15 +76,13 @@ export class OrderService {
       const result = await this.orderRepository.createBulk(
         data,
         generatedNumber,
-        orderReferences, // ← NOUVEAU PARAMÈTRE
+        orderReferences,
         currentUserId,
         companyInfoId,
         calculatedTotal,
       );
       return result;
     } catch (error) {
-      console.log(error);
-
       throw new InternalServerError(
         "Une erreur technique est survenue lors de la validation finale du panier.",
       );
@@ -132,5 +135,6 @@ export class OrderService {
 
 export const orderService = new OrderService(
   new OrderRepository(),
-  new InvoicesRepository(), // ← AJOUT
+  new InvoicesRepository(),
+  new CompanyInfoRepository(),
 );

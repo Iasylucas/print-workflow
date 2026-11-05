@@ -1,11 +1,9 @@
-// backend/src/features/orders/orders.routes.ts
 import { Router } from "express";
 import { protect, restrictTo } from "@/middlewares/auth.middleware.js";
 import { ordersController } from "./orders.controller.js";
 
 const router: Router = Router();
 
-// Protect all orders routes
 router.use(protect);
 
 /**

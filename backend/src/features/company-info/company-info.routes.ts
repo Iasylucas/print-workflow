@@ -12,6 +12,7 @@ const router: Router = Router();
 router.get("/", companyInfoController.getActive);
 
 router.use(protect);
+
 router.use(restrictTo("ADMIN"));
 
 /**

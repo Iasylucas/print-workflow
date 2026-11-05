@@ -1,12 +1,10 @@
 import { Router } from "express";
 import { productController } from "./product.controller.js";
-import { restrictTo } from "@/middlewares/auth.middleware.js"; // Adaptez selon votre chemin exact
+import { protect, restrictTo } from "@/middlewares/auth.middleware.js"; // Adaptez selon votre chemin exact
 
 const router: Router = Router();
 
-// =========================================================================
-// ROUTES ACCESSIBLES PAR TOUS LES COLLABORATEURS CONNECTÉS (ADMIN & COMMERCIAL POS)
-// =========================================================================
+router.use(protect);
 
 /**
  * @desc    Lister les produits du catalogue (avec pagination, filtres et recherche)

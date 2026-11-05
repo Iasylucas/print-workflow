@@ -5,17 +5,11 @@ import {
   createSingleOrderLineSchema,
 } from "./order.schema.js";
 
-// 1. Extraction des types d'entrées API (Infrés depuis Zod)
 export type CreateSingleOrderLineInput = z.infer<
   typeof createSingleOrderLineSchema
 >;
 export type CreateBulkOrderInput = z.infer<typeof createBulkOrderSchema>;
 
-// =========================================================================
-// TYPES DE SORTIES / RETOURS DE LA BASE DE DONNÉES (AGRÉGATS PRISMA PRO)
-// =========================================================================
-
-// Déclaration de la sélection stricte pour récupérer une commande avec ses dépendances
 export const orderFullSelect = {
   id: true,
   reference: true,
@@ -36,12 +30,10 @@ export const orderFullSelect = {
   notes: true,
 } as const;
 
-// Type Payload officiel généré par Prisma pour garantir l'absence de "as unknown as" ou de "any"
 export type FullOrderOutput = Prisma.OrderGetPayload<{
   select: typeof orderFullSelect;
 }>;
 
-// Structure de retour paginée pour la liste des commandes de l'administration
 export interface PaginatedOrderList {
   data: FullOrderOutput[];
   meta: {

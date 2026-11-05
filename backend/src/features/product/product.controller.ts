@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { catchAsync } from "@/utils/catchAsync.js"; // Adaptez selon votre
+import { catchAsync } from "@/utils/catchAsync.js";
 import {
   createProductSchema,
   updateProductSchema,
@@ -8,23 +8,18 @@ import {
 import { z } from "zod";
 import { productService } from "./product.service.js";
 
-// Schéma de validation rapide et strict pour les ID séquentiels de type Int
 const intIdSchema = z.coerce
   .number()
   .int()
   .positive("L'identifiant doit être un entier valide");
 
 export const productController = {
-  // 1. Créer un produit complet (Admin)
   createProduct: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
-      // Validation du corps de la requête (Le slug est automatiquement exclu car géré par le Service)
       const validatedData = createProductSchema.parse(req.body);
 
-      // Appel de la couche métier
       const result = await productService.createProduct(validatedData);
 
-      // Réponse standardisée
       res.status(201).json({
         success: true,
         message: "Produit et grille tarifaire créés avec succès",
@@ -33,10 +28,8 @@ export const productController = {
     },
   ),
 
-  // 2. Récupérer un produit spécifique par son ID (Admin & POS Commercial)
   getProductById: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
-      // Conversion et validation de l'ID reçu dans les paramètres de l'URL
       const id = intIdSchema.parse(req.params.id);
 
       const product = await productService.getProductById(id);
@@ -48,10 +41,8 @@ export const productController = {
     },
   ),
 
-  // 3. Lister les produits avec filtres, recherche et pagination (Admin & POS Commercial)
   listProducts: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
-      // Décodage et validation automatique des query params (?page=1&limit=20&search=vynile)
       const query = productQuerySchema.parse(req.query);
 
       const result = await productService.listProducts(query);
@@ -63,7 +54,6 @@ export const productController = {
     },
   ),
 
-  // 4. Mettre à jour un produit et ses variantes (Admin)
   updateProduct: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const id = intIdSchema.parse(req.params.id);
@@ -82,7 +72,6 @@ export const productController = {
     },
   ),
 
-  // 5. Supprimer un produit et ses déclinaisons techniques (Admin)
   deleteProduct: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const id = intIdSchema.parse(req.params.id);

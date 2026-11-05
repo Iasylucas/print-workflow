@@ -1,4 +1,3 @@
-// frontend/src/features/invoices/pages/InvoicesPage.tsx
 import { useState } from "react";
 import { useInvoices, useInvoiceMutations } from "../hooks/useInvoices";
 import { InvoiceFilters } from "../components/InvoiceFilters";
@@ -11,6 +10,20 @@ import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 import type { InvoicesQueryParams, Invoice } from "../types/invoices.types";
 import { AddPaymentModal } from "../components/AddPaymentModal";
+import { AlertDialog } from "@/components/ui/alert-dialog";
+import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
+import { downloadInvoicePDF } from "@/shared/pdf/InvoicePdf";
+
+import { invoicesApi } from "../services/invoicesApi";
+import { toast } from "sonner";
+
+interface ConfirmActionState {
+  isOpen: boolean;
+  title: string;
+  description: string;
+  onConfirm: () => void;
+  isDestructive?: boolean;
+}
 
 export const InvoicesPage = () => {
   const [queryParams, setQueryParams] = useState<InvoicesQueryParams>({
@@ -34,6 +47,23 @@ export const InvoicesPage = () => {
 
   const [addPaymentModalOpen, setAddPaymentModalOpen] = useState(false);
   const { markDeliveredMutation } = useInvoiceMutations();
+
+  const [confirmAction, setConfirmAction] = useState<ConfirmActionState>({
+    isOpen: false,
+    title: "",
+    description: "",
+    onConfirm: () => {},
+  });
+
+  // Dans handleDownloadPDF
+  const handleDownloadPDF = async (invoice: Invoice) => {
+    try {
+      const detail = await invoicesApi.getInvoiceById(invoice.id);
+      await downloadInvoicePDF(detail, detail.companyInfo);
+    } catch {
+      toast.error("Erreur lors de la génération du PDF");
+    }
+  };
 
   const handleAddPayment = (invoice: Invoice) => {
     setSelectedInvoice(invoice);
@@ -62,24 +92,33 @@ export const InvoicesPage = () => {
     setDetailDrawerOpen(true);
   };
 
-  const handleEdit = (invoice: Invoice) => {
-    // À implémenter : modal d'édition de la facture
-    console.log("Edit invoice:", invoice);
-  };
-
   const handleDeliver = (invoice: Invoice) => {
-    if (window.confirm(`Marquer la facture ${invoice.number} comme livrée ?`)) {
-      markDeliveredMutation.mutate({
-        id: invoice.id,
-        data: { isDelivered: true },
-      });
-    }
+    setConfirmAction({
+      isOpen: true,
+      title: "Marquer comme livrée",
+      description: `Voulez-vous marquer la facture ${invoice.number} comme livrée ?`,
+      isDestructive: false,
+      onConfirm: () => {
+        markDeliveredMutation.mutate({
+          id: invoice.id,
+          data: { isDelivered: true },
+        });
+        setConfirmAction((prev) => ({ ...prev, isOpen: false }));
+      },
+    });
   };
 
   const handleDelete = (invoice: Invoice) => {
-    if (window.confirm(`Supprimer la facture ${invoice.number} ?`)) {
-      deleteInvoiceMutation.mutate(invoice.id);
-    }
+    setConfirmAction({
+      isOpen: true,
+      title: "Supprimer la facture ?",
+      description: `Voulez-vous vraiment supprimer la facture ${invoice.number} ? Cette action est irréversible.`,
+      isDestructive: true,
+      onConfirm: () => {
+        deleteInvoiceMutation.mutate(invoice.id);
+        setConfirmAction((prev) => ({ ...prev, isOpen: false }));
+      },
+    });
   };
 
   if (isError) {
@@ -126,11 +165,17 @@ export const InvoicesPage = () => {
           goToPage={goToPage}
           handleSort={handleSort}
           onView={handleView}
-          onEdit={handleEdit}
           onDeliver={handleDeliver}
           onDelete={handleDelete}
           onAddPayment={handleAddPayment}
-          onRowClick={(row) => handleView(row)}
+          onRowClick={(row) => {
+            const target = window.event?.target as HTMLElement;
+            if (target?.closest('button, [role="menuitem"], [role="menu"]')) {
+              return;
+            }
+            handleView(row);
+          }}
+          onDownloadPDF={handleDownloadPDF}
         />
       </div>
 
@@ -145,6 +190,21 @@ export const InvoicesPage = () => {
         onOpenChange={setAddPaymentModalOpen}
         invoice={selectedInvoice}
       />
+
+      {/* Confirmation Dialog */}
+      <AlertDialog
+        open={confirmAction.isOpen}
+        onOpenChange={(open) =>
+          setConfirmAction((prev) => ({ ...prev, isOpen: open }))
+        }
+      >
+        <ConfirmationDialog
+          state={confirmAction}
+          onOpenChange={(open) =>
+            setConfirmAction((prev) => ({ ...prev, isOpen: open }))
+          }
+        />
+      </AlertDialog>
     </div>
   );
 };

@@ -3,12 +3,12 @@ import { firstNameSchema } from "@/shared/schemas";
 
 // Création d'un client (tous les champs)
 export const createClientSchema = z.object({
-  firstName: firstNameSchema, // ✅ requis (grace à firstNameSchema)
+  firstName: firstNameSchema,
   lastName: z.string().trim().optional().nullable(),
-  email: z.preprocess(
-    (val) => (val === "" ? undefined : val),
-    z.email("Email invalide").optional().nullable(),
-  ),
+  email: z
+    .union([z.literal(""), z.literal(null), z.string().email("Email invalide")])
+    .optional()
+    .transform((val) => (val === "" || val === null ? undefined : val)),
   phone: z.string().trim().optional().nullable(),
   address: z.string().trim().optional().nullable(),
 });

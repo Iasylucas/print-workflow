@@ -14,12 +14,21 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { X, CreditCard, Package, Plus, Trash2, Eye } from "lucide-react";
+import {
+  X,
+  CreditCard,
+  Package,
+  Plus,
+  Trash2,
+  Eye,
+  Download,
+} from "lucide-react";
 import { toast } from "sonner";
 import { InvoiceStatusBadge } from "./InvoiceStatusBadge";
 import { useInvoiceDetail, useInvoiceMutations } from "../hooks/useInvoices";
 // import type { InvoiceDetail } from "../types/invoices.types";
 import { AddPaymentModal } from "./AddPaymentModal";
+import { downloadInvoicePDF } from "@/shared/pdf/InvoicePdf";
 // import type { InvoicePaymentStatus } from "../schema/invoices.schema";
 
 interface InvoiceDetailDrawerProps {
@@ -27,12 +36,6 @@ interface InvoiceDetailDrawerProps {
   onOpenChange: (open: boolean) => void;
   invoiceId: number | null;
 }
-
-// const statusLabels: Record<InvoicePaymentStatus, string> = {
-//   unpaid: "Non payée",
-//   partial: "Partiellement payée",
-//   paid: "Payée",
-// };
 
 export const InvoiceDetailDrawer = ({
   isOpen,
@@ -55,8 +58,6 @@ export const InvoiceDetailDrawer = ({
     return null;
   }
   const invoiceRemain = invoice.total - invoice.deposit;
-  console.log(invoiceRemain);
-
   const handleDeliverToggle = async (checked: boolean) => {
     if (!invoice) return;
     if (invoiceRemain > 0 && checked) {
@@ -76,6 +77,15 @@ export const InvoiceDetailDrawer = ({
     if (window.confirm("Supprimer ce paiement ?")) {
       await deletePaymentMutation.mutateAsync(paymentId);
       refetch();
+    }
+  };
+
+  const handleDownloadPDF = async () => {
+    if (!invoiceId) return;
+    try {
+      await downloadInvoicePDF(invoice, invoice.companyInfo);
+    } catch {
+      toast.error("Erreur lors de la génération du PDF");
     }
   };
 
@@ -100,14 +110,25 @@ export const InvoiceDetailDrawer = ({
                   Détail de la facture
                 </span>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onOpenChange(false)}
-                className="h-8 w-8 shrink-0 justify-self-end"
-              >
-                <X className="h-4 w-4" />
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleDownloadPDF}
+                  className="h-8 w-8 shrink-0"
+                  title="Télécharger PDF"
+                >
+                  <Download className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onOpenChange(false)}
+                  className="h-8 w-8 shrink-0"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </DrawerHeader>
 
@@ -142,6 +163,18 @@ export const InvoiceDetailDrawer = ({
                       Créée le
                     </p>
                     <p>{new Date(invoice.createdAt).toLocaleDateString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Numéro du client
+                    </p>
+                    <p>{invoice.client.phone}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Lieu de livraison
+                    </p>
+                    <p>{invoice.deliveryPlace ? invoice.deliveryPlace : "_"}</p>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">

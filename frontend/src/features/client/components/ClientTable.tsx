@@ -3,9 +3,10 @@ import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import { createClientColumns } from "./clientColumns";
 import { DataTable } from "@/components/shared/DataTable";
 import type { ClientsQueryParams, Client } from "../types/client.types";
+import type { meta } from "@/features/user/types/user.types";
 
 interface ClientTableProps {
-  data: { data: Client[]; meta: any } | undefined;
+  data: { data: Client[]; meta: meta } | undefined;
   isLoading: boolean;
   queryParams: ClientsQueryParams &
     Required<Pick<ClientsQueryParams, "sortBy" | "sortOrder" | "limit">>;
@@ -30,7 +31,7 @@ export const ClientTable = ({
   isLoading,
   queryParams,
   goToPage,
-  handleSort,
+  // handleSort,
   handleEdit,
   handleDelete,
 }: ClientTableProps) => {

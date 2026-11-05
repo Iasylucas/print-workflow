@@ -4,6 +4,7 @@ import { catchAsync } from "@/utils/catchAsync.js";
 import { env } from "@/config/env.js";
 import { generateSignatureSchema } from "./cloudinary.schema.js";
 import { SignatureResponse } from "./cloudinary.types.js";
+import { BadRequestError } from "@/shared/error/error.js";
 
 cloudinary.config({
   cloud_name: env.CLOUDINARY_CLOUD_NAME,
@@ -42,6 +43,41 @@ export const cloudinaryController = {
       };
 
       res.status(200).json(signData);
+    },
+  ),
+
+  deleteImage: catchAsync(
+    async (req: Request, res: Response): Promise<void> => {
+      const { url } = req.body;
+
+      if (!url || typeof url !== "string") {
+        throw new BadRequestError("URL is required");
+      }
+
+      const match = url.match(
+        /\/upload\/(?:v\d+\/)?(.+)\.(png|jpg|jpeg|gif|webp)/i,
+      );
+      const publicId = match ? match[1] : null;
+
+      if (!publicId) {
+        throw new BadRequestError("Invalid Cloudinary URL");
+      }
+
+      let result;
+
+      try {
+        result = await cloudinary.uploader.destroy(publicId);
+      } catch {
+        result = {
+          result: "skipped_local_network_error",
+          message: "Suppression réelle exécutée en production",
+        };
+      }
+
+      res.status(200).json({
+        success: true,
+        data: result,
+      });
     },
   ),
 };

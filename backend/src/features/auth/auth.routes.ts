@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authController } from "./auth.controller.js";
 import { protect, restrictTo } from "@/middlewares/auth.middleware.js";
+import { authLimiter } from "@/middlewares/rateLimiter.middleware.js";
 
 const router: Router = Router();
 
@@ -9,7 +10,7 @@ const router: Router = Router();
  * @route   POST /api/auth/login
  * @access  Public
  */
-router.post("/login", authController.login);
+router.post("/login", authLimiter, authController.login);
 
 /**
  * @desc    Get current user profile (Session validation)
@@ -44,14 +45,14 @@ router.post("/change-password", protect, authController.changePassword);
  * @route   POST /api/auth/forgot-password
  * @access  Public
  */
-router.post("/forgot-password", authController.forgotPassword);
+router.post("/forgot-password", authLimiter, authController.forgotPassword);
 
 /**
  * @desc    Reset password using token
  * @route   POST /api/auth/reset-password
  * @access  Public (Verified by token in the body)
  */
-router.post("/reset-password", authController.resetPassword);
+router.post("/reset-password", authLimiter, authController.resetPassword);
 
 /**
  * @desc    Confirm email change using token

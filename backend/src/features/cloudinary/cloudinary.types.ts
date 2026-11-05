@@ -9,5 +9,5 @@ export interface SignatureResponse {
   public_id?: string;
   signature: string;
   apiKey: string;
-  cloudname: string;
+  cloudName: string;
 }

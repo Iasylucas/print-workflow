@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -34,8 +35,9 @@ export const InvoiceSearchModal = ({
     limit,
     search: search || undefined,
     isDelivered: false,
+    sortBy: "createdAt",
+    sortOrder: "desc",
   });
-
   const invoices = data?.data || [];
   const totalPages = data?.meta.totalPages || 1;
   const currentPage = data?.meta.page || 1;
@@ -45,16 +47,14 @@ export const InvoiceSearchModal = ({
     onOpenChange(false);
   };
 
-  // Colonnes simplifiées pour le modal
   const columns = createInvoiceColumns({
     onView: handleView,
-    onEdit: () => {},
     onDeliver: () => {},
     onDelete: () => {},
     onAddPayment: () => {},
+    onDownloadPDF: () => {},
   });
 
-  // On adapte les colonnes : on enlève la colonne actions
   const modalColumns = columns.filter((col) => col.id !== "actions");
 
   const table = useReactTable({
@@ -72,10 +72,12 @@ export const InvoiceSearchModal = ({
       <DialogContent className="sm:max-w-[70vw] max-h-[80vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>Charger une facture</DialogTitle>
+          <DialogDescription>
+            Formulaire de choix de facture a charger
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 min-h-0 flex flex-col space-y-4 overflow-hidden">
-          {/* Barre de recherche */}
           <div className="flex items-center gap-2 flex-shrink-0">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -99,7 +101,6 @@ export const InvoiceSearchModal = ({
             </Button>
           </div>
 
-          {/* Tableau */}
           {isLoading ? (
             <div className="flex justify-center py-8">
               <Loader2 className="h-6 w-6 animate-spin" />
@@ -122,7 +123,7 @@ export const InvoiceSearchModal = ({
                 totalPages={totalPages}
                 limit={limit}
                 goToPage={setPage}
-                onRowClick={(row) => handleView(row.original)}
+                onRowClick={(row) => handleView(row)}
               />
             </div>
           )}

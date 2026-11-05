@@ -1,12 +1,11 @@
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import type { LucideIcon } from "lucide-react";
 import {
-  LayoutDashboard,
   Users,
   Building2,
-  // Package,
+  Package,
   FileText,
-  // FileCheck,
+  FileCheck,
   Receipt,
 } from "lucide-react";
 
@@ -18,29 +17,29 @@ export type MenuItem = {
 
 const MENU_CONFIG: Record<string, MenuItem[]> = {
   ADMIN: [
-    { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    // { href: "/", label: "Dashboard", icon: LayoutDashboard },
     { href: "/users", label: "Utilisateurs", icon: Users },
     { href: "/clients", label: "Clients", icon: Building2 },
-    // { href: "/products", label: "Produits", icon: Package },
+    { href: "/products", label: "Produits", icon: Package },
     { href: "/pos", label: "Prise de commanes", icon: Receipt },
     { href: "/orders", label: "Commandes", icon: FileText },
-    // { href: "/quotes", label: "Devis", icon: FileCheck },
+    { href: "/quotes", label: "Devis", icon: FileCheck },
     { href: "/invoices", label: "Factures", icon: Receipt },
   ],
   SALES: [
-    { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    // { href: "/", label: "Dashboard", icon: LayoutDashboard },
     { href: "/clients", label: "Clients", icon: Building2 },
-    // { href: "/products", label: "Produits", icon: Package },
+    { href: "/pos", label: "Prise de commanes", icon: Receipt },
     { href: "/orders", label: "Commandes", icon: FileText },
-    // { href: "/quotes", label: "Devis", icon: FileCheck },
+    { href: "/quotes", label: "Devis", icon: FileCheck },
     { href: "/invoices", label: "Factures", icon: Receipt },
   ],
   PRINTER: [
-    { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/invoices", label: "Factures", icon: Receipt },
     { href: "/orders", label: "Commandes", icon: FileText },
   ],
   GRAPHIC_DESIGNER: [
-    { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/invoices", label: "Factures", icon: Receipt },
     { href: "/orders", label: "Commandes", icon: FileText },
   ],
 };

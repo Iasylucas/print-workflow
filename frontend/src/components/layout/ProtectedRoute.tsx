@@ -3,15 +3,15 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { api } from "@/lib/axios";
 import { Loader2 } from "lucide-react";
-import { UserRole } from "@/shared/schemas";
+// import { UserRole } from "@/shared/schemas";
 
 interface ProtectedRouteProps {
-  allowedRoles?: UserRole[];
+  // allowedRoles?: UserRole[];
   redirectTo?: string;
 }
 
 export const ProtectedRoute = ({
-  allowedRoles,
+  // allowedRoles,
   redirectTo = "/login",
 }: ProtectedRouteProps) => {
   const { isAuthenticated, isLoading, user, token, setAuth, logout } =
@@ -30,8 +30,7 @@ export const ProtectedRoute = ({
       try {
         const response = await api.get("/auth/me");
         setAuth(response.data.user, token);
-      } catch (error) {
-        console.log(error);
+      } catch {
         logout();
       } finally {
         setIsVerifying(false);
@@ -57,10 +56,6 @@ export const ProtectedRoute = ({
   // 2. Barrière d'authentification stricte
   if (!isAuthenticated || !user) {
     return <Navigate to={redirectTo} state={{ from: location }} replace />;
-  }
-
-  if (allowedRoles && !allowedRoles.includes(user.role as UserRole)) {
-    return <Navigate to="/unauthorized" replace />;
   }
 
   return <Outlet />;

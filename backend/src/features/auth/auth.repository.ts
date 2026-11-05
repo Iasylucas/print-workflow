@@ -14,20 +14,6 @@ import {
 import { uuidv7 } from "zod";
 
 export class AuthRepository {
-  // 1.Crée un utilisateur partiel (invité par l'admin)
-  // async createInvitedUser(data: InviteUserInput): Promise<UserSafe> {
-  //   return await prisma.user.create({
-  //     data: {
-  //       id: data.id,
-  //       email: data.email,
-  //       role: data.role,
-  //       isActive: false,
-  //     },
-  //     select: userSafeSelect,
-  //   });
-  // }
-
-  //  2.Enregistre le token d'invitation lié à l'utilisateur
   async createInvitationToken(inviteData: inviteData): Promise<void> {
     await prisma.invitationToken.create({
       data: {
@@ -40,14 +26,12 @@ export class AuthRepository {
     });
   }
 
-  //3.Recherche un token d'invitation pour vérification
   async findInvitationByToken(tokenHash: string) {
     return await prisma.invitationToken.findUnique({
       where: { token: tokenHash },
     });
   }
 
-  //  4.Finalise l'inscription (Transaction Atomique)
   async finalizeUserRegistration(
     tokenId: string,
     data: Omit<
@@ -90,12 +74,10 @@ export class AuthRepository {
     });
   }
 
-  // fonction utilitaire pour la connexion classique
   async findByEmail(email: string): Promise<UserComplete | null> {
     return await findUserByEmail(email, userCompleteSelect);
   }
 
-  // Vérifie si un utilisateur existe déjà avec cet email (pour éviter les doublons)
   async exists(email: string): Promise<boolean> {
     const count = await prisma.user.count({
       where: { email },
@@ -103,7 +85,6 @@ export class AuthRepository {
     return count > 0;
   }
 
-  // fonction utilitaire pour la récupération d'un utilisateur par son ID
   async findById(id: string): Promise<UserComplete | null> {
     return await prisma.user.findUnique({
       where: { id, deletedAt: null },
@@ -111,7 +92,6 @@ export class AuthRepository {
     });
   }
 
-  // fonction pour mettre à jour le mot de passe d'un utilisateur
   async updatePassword(userId: string, hashedPassword: string) {
     await prisma.user.update({
       where: { id: userId },
@@ -119,7 +99,6 @@ export class AuthRepository {
     });
   }
 
-  // Supprimer les anciens tokens non utilisés d’un utilisateur
   async deleteOldPasswordResetTokens(userId: string) {
     await prisma.passwordResetToken.deleteMany({
       where: {
@@ -129,7 +108,6 @@ export class AuthRepository {
     });
   }
 
-  // Créer un token de réinitialisation de mot de passe
   async createPasswordResetToken(data: {
     id: string;
     userId: string;
@@ -146,7 +124,6 @@ export class AuthRepository {
     });
   }
 
-  // Rechercher un token par son hash
   async findPasswordResetTokenByHash(tokenHash: string) {
     return await prisma.passwordResetToken.findUnique({
       where: { tokenHash },
@@ -154,7 +131,6 @@ export class AuthRepository {
     });
   }
 
-  // Marquer un token comme utilisé
   async markPasswordResetTokenAsUsed(tokenId: string) {
     await prisma.passwordResetToken.update({
       where: { id: tokenId },

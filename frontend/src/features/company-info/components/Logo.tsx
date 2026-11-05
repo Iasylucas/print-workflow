@@ -1,12 +1,15 @@
 import { useCompanyStore } from "@/features/company-info/stores/companyStore";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+import logoFallback from "@/assets/images/logo.png";
 
 interface LogoProps {
   variant?: "default" | "icon";
+  className?: string;
+  style?: React.CSSProperties;
 }
 
-export const Logo = ({ variant = "default" }: LogoProps) => {
-  const logoUrl = useCompanyStore((state) => state.company?.logo);
+export const Logo = ({ variant = "default", className, style }: LogoProps) => {
   const companyName = useCompanyStore(
     (state) => state.company?.name || "EWA Print",
   );
@@ -14,7 +17,7 @@ export const Logo = ({ variant = "default" }: LogoProps) => {
 
   if (isLoading) {
     return variant === "icon" ? (
-      <Skeleton className="h-10 w-10 rounded-lg" />
+      <Skeleton className={cn("rounded-lg", className || "h-10 w-10")} />
     ) : (
       <div className="flex items-center gap-2">
         <Skeleton className="h-8 w-8 rounded-lg" />
@@ -23,35 +26,29 @@ export const Logo = ({ variant = "default" }: LogoProps) => {
     );
   }
 
-  const fallbackChar = companyName.charAt(0).toUpperCase();
-
   const renderIcon = (sizeClass: string) => {
-    if (logoUrl) {
-      return (
-        <img
-          src={logoUrl}
-          alt={`Logo ${companyName}`}
-          className={`${sizeClass} object-contain`}
-        />
-      );
-    }
+    const src = logoFallback;
+
     return (
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary">
-        <span className="text-sm font-bold text-primary-foreground">
-          {fallbackChar}
-        </span>
-      </div>
+      <img
+        src={src}
+        alt={`${companyName}`}
+        className={cn(sizeClass, "object-contain", className)}
+        style={style}
+      />
     );
   };
 
   if (variant === "icon") {
-    return renderIcon("h-10");
+    return renderIcon(className || "h-10 w-22");
   }
 
   return (
-    <div className="flex items-center gap-2 font-semibold min-w-0">
+    <div
+      className={cn("flex items-center gap-2 font-semibold min-w-0", className)}
+      style={style}
+    >
       {renderIcon("h-8 w-8")}
-      <span className="truncate text-sidebar-foreground">{companyName}</span>
     </div>
   );
 };

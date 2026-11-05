@@ -53,6 +53,12 @@ export const AmalgamM2Block = ({
   const [objectHeight, setObjectHeight] = useState<number | "">(12);
   const [quantityWanted, setQuantityWanted] = useState<number | "">(500);
   const [pricePerM2, setPricePerM2] = useState<number | "">("");
+  const [requiredSurfaceInput, setRequiredSurfaceInput] = useState<number | "">(
+    "",
+  );
+  const [calculationMode, setCalculationMode] = useState<
+    "quantity" | "surface"
+  >("quantity");
 
   const fetchedPrice = useMemo(() => {
     if (!products || isLoading) return 0;
@@ -102,6 +108,37 @@ export const AmalgamM2Block = ({
     setObjectHeight(12);
     setQuantityWanted(500);
     setPricePerM2("");
+  };
+
+  // Quantité effective (soit saisie, soit calculée depuis la surface)
+  const effectiveQuantity = useMemo(() => {
+    if (calculationMode === "surface" && requiredSurfaceInput !== "") {
+      const surface = Number(requiredSurfaceInput);
+      if (surface > 0 && piecesPerM2 > 0) {
+        return Math.round(surface * piecesPerM2);
+      }
+    }
+    return typeof quantityWanted === "number" ? quantityWanted : 0;
+  }, [calculationMode, requiredSurfaceInput, quantityWanted, piecesPerM2]);
+
+  // Surface effective (soit calculée depuis la quantité, soit saisie)
+  const effectiveSurface = useMemo(() => {
+    if (calculationMode === "surface" && requiredSurfaceInput !== "") {
+      return Number(requiredSurfaceInput);
+    }
+    return computeRequiredSurface(piecesPerM2, effectiveQuantity);
+  }, [calculationMode, requiredSurfaceInput, effectiveQuantity, piecesPerM2]);
+
+  const handleQuantityChange = (value: number | "") => {
+    setQuantityWanted(value);
+    setCalculationMode("quantity");
+    // La surface sera recalculée via useMemo
+  };
+
+  const handleSurfaceChange = (value: number | "") => {
+    setRequiredSurfaceInput(value);
+    setCalculationMode("surface");
+    // La quantité sera recalculée via useMemo
   };
 
   return (
@@ -164,11 +201,24 @@ export const AmalgamM2Block = ({
             {piecesPerM2 || "-"}
           </div>
           <div className="text-right">
-            <Input
+            {/* <Input
               type="number"
               value={quantityWanted}
               onChange={(e) =>
                 setQuantityWanted(parseFloat(e.target.value) || "")
+              }
+              className="h-7 w-24 text-xs px-2 text-right"
+              placeholder="Qté"
+            /> */}
+            <Input
+              type="number"
+              value={
+                calculationMode === "surface"
+                  ? effectiveQuantity
+                  : quantityWanted
+              }
+              onChange={(e) =>
+                handleQuantityChange(parseFloat(e.target.value) || "")
               }
               className="h-7 w-24 text-xs px-2 text-right"
               placeholder="Qté"
@@ -196,10 +246,21 @@ export const AmalgamM2Block = ({
           </div>
 
           <div></div>
-          <div className="text-right">
-            <div className="inline-block px-3 py-0.5 bg-primary/10 rounded-full text-primary font-bold text-xs">
-              {requiredSurface > 0 ? `${requiredSurface} m²` : "-"}
-            </div>
+          <div className="flex items-center justify-end gap-2">
+            <span className="text-[10px] text-muted-foreground">m²</span>
+            <Input
+              type="number"
+              value={
+                calculationMode === "surface"
+                  ? requiredSurfaceInput
+                  : effectiveSurface
+              }
+              onChange={(e) =>
+                handleSurfaceChange(parseFloat(e.target.value) || "")
+              }
+              className="h-7 w-20 text-xs px-2 text-right"
+              placeholder="m²"
+            />
           </div>
         </div>
 

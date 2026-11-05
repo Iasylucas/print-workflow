@@ -9,14 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, X, Filter, Calendar, RotateCcw } from "lucide-react";
+import { Search, X, Filter, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { INVOICE_PAYMENT_STATUSES } from "../schema/invoices.schema";
-import type {
-  InvoicesQueryParams,
-  InvoicePaymentStatus,
-} from "../types/invoices.types";
+import type { InvoicesQueryParams } from "../types/invoices.types";
+import type { InvoicePaymentStatus } from "../schema/invoices.schema";
 
 interface InvoiceFiltersProps {
   filters: InvoicesQueryParams;

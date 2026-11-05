@@ -21,10 +21,8 @@ import crypto from "node:crypto";
 import { getEmailChangeRequestTemplate } from "@/shared/infrastructure/mail/templates/email-change-request.template.js";
 
 export class UserService {
-  // Injection du repository via le constructeur
   constructor(private readonly userRepository: UserRepository) {}
 
-  // Récupérer un utilisateur par ID (admin)
   async getUserById(id: string): Promise<UserSafe> {
     const user = await this.userRepository.findById(id);
     if (!user) {
@@ -33,12 +31,10 @@ export class UserService {
     return user;
   }
 
-  // Lister les utilisateurs (admin)
   async listUsers(query: UserQuery) {
     return await this.userRepository.findAllPaginated(query);
   }
 
-  // Mettre à jour un utilisateur (admin) – sans email
   async updateUser(
     id: string,
     currentUserId: string,
@@ -69,7 +65,6 @@ export class UserService {
     }
   }
 
-  // Soft delete d’un utilisateur (admin)
   async deleteUser(id: string, currentUserId: string): Promise<void> {
     if (id === currentUserId) {
       throw new ConflictError(USER_ERRORS.CANNOT_DELETE_OWN_ACCOUNT);
@@ -87,7 +82,6 @@ export class UserService {
     }
   }
 
-  // Récupérer son propre profil (user connecté)
   async getMyProfile(userId: string): Promise<UserSafe> {
     const user = await this.userRepository.findById(userId);
     if (!user) {
@@ -96,7 +90,6 @@ export class UserService {
     return user;
   }
 
-  // Mettre à jour son propre profil (user connecté)
   async updateMyProfile(
     userId: string,
     data: UpdateProfileInput,
@@ -114,7 +107,6 @@ export class UserService {
     }
   }
 
-  // Autres méthodes liées aux demandes de changement d’email seront ajoutées ici (création, validation du token, etc.)
   async adminInitiateEmailChange(
     userId: string,
     newEmail: string,
@@ -160,7 +152,6 @@ export class UserService {
     );
   }
 
-  // Lister les invitations en cours (admin)
   async listInvitations(
     query: InvitationQuery,
   ): Promise<PaginatedInvitationList> {
@@ -171,7 +162,6 @@ export class UserService {
     }
   }
 
-  // Supprimer/Annuler une invitation (admin)
   async cancelInvitation(id: string): Promise<void> {
     const invitation = await this.userRepository.findInvitationById(id);
     if (!invitation) {

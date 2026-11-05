@@ -4,7 +4,6 @@ import {
   paginationSchema,
 } from "@/shared/schemas/index.js";
 
-// Schéma de création d'une version CompanyInfo
 export const companyInfoSchema = z.object({
   nif: z.string().min(1),
   stat: z.string().min(1),
@@ -27,7 +26,6 @@ export const companyInfoSchema = z.object({
   ribInfo: z.string().optional(),
 });
 
-// Schéma pour la requête d’historique (pagination, tri, filtres)
 export const companyInfoQuerySchema = paginationSchema.extend({
   sortBy: z.enum(["createdAt"]).default("createdAt"),
 });

@@ -11,7 +11,6 @@ import { COMPANY_INFO_ERRORS } from "./company-info.constants.js";
 export class CompanyInfoService {
   constructor(private readonly companyInfoRepository: CompanyInfoRepository) {}
 
-  // Récupérer la version active (la plus récente)
   async getActive(): Promise<CompanyInfoSafe> {
     const active = await this.companyInfoRepository.findActive();
     if (!active) {
@@ -20,7 +19,6 @@ export class CompanyInfoService {
     return active;
   }
 
-  // Récupérer une version spécifique par ID
   async getVersionById(id: number): Promise<CompanyInfoSafe> {
     const version = await this.companyInfoRepository.findById(id);
     if (!version) {
@@ -29,14 +27,12 @@ export class CompanyInfoService {
     return version;
   }
 
-  // Lister toutes les versions (historique paginé)
   async getAllVersions(
     query: CompanyInfoQuery,
   ): Promise<PaginatedCompanyInfoList> {
     return await this.companyInfoRepository.findAllVersions(query);
   }
 
-  // Créer une nouvelle version (objet complet envoyé par le front)
   async createNewVersion(
     data: CreateCompanyInfoInput,
   ): Promise<CompanyInfoSafe> {

@@ -1,4 +1,5 @@
 // frontend/src/features/invoices/types/invoices.types.ts
+import type { CompanyInfo } from "@/features/company-info/types/company.types";
 import type {
   // INVOICE_PAYMENT_STATUSES,
   InvoicePaymentStatus,
@@ -19,6 +20,7 @@ export type Invoice = {
     id: string;
     firstName: string | null;
     lastName: string;
+    phone: string | null;
   };
   total: number;
   deposit: number;
@@ -46,23 +48,7 @@ export type Invoice = {
 // 2. FACTURE AVEC DÉTAILS (commandes + paiements)
 // ============================================================
 export type InvoiceDetail = Invoice & {
-  companyInfo: {
-    nif: string;
-    stat: string;
-    mainAddress: string;
-    secondaryAddress: string;
-    logo: string | null;
-    stamp: string | null;
-    mobileMoneyNumbers: string;
-    standardPhone: string | null;
-    contactEmail: string | null;
-    termsAndConditions: string | null;
-    deliveryLeadTime: string | null;
-    bankAccountHolder: string | null;
-    bankBranch: string | null;
-    bankCode: string | null;
-    ribInfo: string | null;
-  };
+  companyInfo: CompanyInfo;
   orders: Order[];
   payments: {
     id: number;
@@ -129,4 +115,9 @@ export type PaginatedInvoicesResponse = {
     sortBy: string;
     sortOrder: "asc" | "desc";
   };
+};
+
+export type MobileMoney = {
+  nom?: string;
+  numero: string;
 };

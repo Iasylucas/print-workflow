@@ -14,10 +14,8 @@ import {
 } from "./client.types.js";
 
 export class ClientService {
-  // Injection du repository dans le service
   constructor(private readonly clientRepository: ClientRepository) {}
 
-  // Create a new client
   async create(data: CreateClientInput) {
     if (data.email) {
       const existing = await this.clientRepository.findByEmail(data.email);
@@ -32,19 +30,16 @@ export class ClientService {
     }
   }
 
-  // List clients with pagination, search and sorting
   async list(query: ClientQuery): Promise<PaginatedClientList> {
     return await this.clientRepository.findAll(query);
   }
 
-  // Get a client by ID
   async getById(id: string) {
     const client = await this.clientRepository.findById(id);
     if (!client) throw new NotFoundError(CLIENT_ERRORS.NOT_FOUND);
     return client;
   }
 
-  // Update a client by ID
   async update(id: string, data: UpdateClientInput) {
     if (Object.keys(data).length === 0) {
       throw new BadRequestError(
@@ -70,7 +65,6 @@ export class ClientService {
     }
   }
 
-  // Soft delete a client by ID
   async remove(id: string) {
     const client = await this.clientRepository.findById(id);
     if (!client) throw new NotFoundError(CLIENT_ERRORS.NOT_FOUND);

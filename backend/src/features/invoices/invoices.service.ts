@@ -1,4 +1,3 @@
-// backend/src/features/invoices/invoices.service.ts
 import {
   NotFoundError,
   BadRequestError,
@@ -20,16 +19,10 @@ export class InvoicesService {
     private readonly ordersRepository: OrdersRepository,
   ) {}
 
-  // ============================================================
-  // LISTE PAGINÉE DES FACTURES
-  // ============================================================
   async listInvoices(query: InvoicesQuery) {
     return await this.invoicesRepository.findAll(query);
   }
 
-  // ============================================================
-  // DÉTAIL D'UNE FACTURE
-  // ============================================================
   async getInvoiceById(id: number): Promise<InvoiceDetailOutput> {
     const invoice = await this.invoicesRepository.findById(id);
     if (!invoice) {
@@ -38,9 +31,6 @@ export class InvoicesService {
     return invoice;
   }
 
-  // ============================================================
-  // MISE À JOUR PARTIELLE D'UNE FACTURE
-  // ============================================================
   async updateInvoice(
     id: number,
     data: UpdateInvoiceInput,
@@ -58,9 +48,6 @@ export class InvoicesService {
     }
   }
 
-  // ============================================================
-  // MARQUER UNE FACTURE COMME LIVRÉE (avec propagation aux commandes)
-  // ============================================================
   async markAsDelivered(id: number): Promise<InvoiceDetailOutput> {
     await this.getInvoiceById(id);
 
@@ -72,9 +59,6 @@ export class InvoicesService {
     }
   }
 
-  // ============================================================
-  // AJOUT D'UN PAIEMENT
-  // ============================================================
   async addPayment(invoiceId: number, userId: string, data: AddPaymentInput) {
     const invoice = await this.getInvoiceById(invoiceId);
     const invoiceRemaining = invoice.total - invoice.deposit;
@@ -98,9 +82,6 @@ export class InvoicesService {
     }
   }
 
-  // ============================================================
-  // SUPPRESSION D'UN PAIEMENT
-  // ============================================================
   async deletePayment(paymentId: number) {
     try {
       await this.invoicesRepository.deletePayment(paymentId);
@@ -109,9 +90,6 @@ export class InvoicesService {
     }
   }
 
-  // ============================================================
-  // SOFT DELETE D'UNE FACTURE
-  // ============================================================
   async softDeleteInvoice(id: number) {
     await this.getInvoiceById(id);
 
@@ -123,9 +101,6 @@ export class InvoicesService {
     }
   }
 
-  // ============================================================
-  // RESTAURER UNE FACTURE
-  // ============================================================
   async restoreInvoice(id: number) {
     try {
       const invoice = await this.invoicesRepository.restore(id);

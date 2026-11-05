@@ -11,14 +11,12 @@ import {
 } from "./user.schema.js";
 
 export const userController = {
-  // Lister les utilisateurs (admin)
   listUsers: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const query = userQuerySchema.parse(req.query);
     const result = await userService.listUsers(query);
     res.status(200).json({ success: true, data: result });
   }),
 
-  // Récupérer un utilisateur par ID (admin)
   getUserById: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const id = uuidSchema.parse(req.params.id);
@@ -27,7 +25,6 @@ export const userController = {
     },
   ),
 
-  // Mettre à jour un utilisateur (admin)
   updateUser: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const id = uuidSchema.parse(req.params.id);
     const currentUserId = req.user!.sub;
@@ -40,7 +37,6 @@ export const userController = {
     });
   }),
 
-  // Soft delete d’un utilisateur (admin)
   deleteUser: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const id = uuidSchema.parse(req.params.id);
     const currentUserId = req.user!.sub;
@@ -50,7 +46,6 @@ export const userController = {
       .json({ success: true, message: "User deleted successfully" });
   }),
 
-  // Récupérer son propre profil (user connecté)
   getMyProfile: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { sub: userId } = req.user!;
@@ -59,7 +54,6 @@ export const userController = {
     },
   ),
 
-  // Mettre à jour son propre profil (user connecté)
   updateMyProfile: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { sub: userId } = req.user!;
@@ -73,7 +67,6 @@ export const userController = {
     },
   ),
 
-  // Admin : initier un changement d'email pour un utilisateur
   initiateEmailChange: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const id = uuidSchema.parse(req.params.id);
@@ -86,7 +79,6 @@ export const userController = {
     },
   ),
 
-  // lister les invitations (admin)
   listInvitations: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const query = invitationQuerySchema.parse(req.query);
@@ -99,7 +91,6 @@ export const userController = {
     },
   ),
 
-  // Supprimer/Annuler une invitation (admin)
   cancelInvitation: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const id = uuidSchema.parse(req.params.id);

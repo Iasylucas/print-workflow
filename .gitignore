@@ -3,7 +3,8 @@
 **/.pnpm-store/
 
 note
-
+note.md
+nvidia.md
 api.rest
 
 # Fichiers de build
