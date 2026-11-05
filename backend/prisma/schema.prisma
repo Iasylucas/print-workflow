@@ -341,7 +341,6 @@ model PricingRule {
 // }
 
 
-
 enum PricingMode {
   FIXED           // fixed price (mug, t‑shirt)
   PER_M2          // price per square meter (banner, vinyl without cut)
