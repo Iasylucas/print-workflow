@@ -243,6 +243,7 @@ export const PaymentScalarFieldEnum = {
   method: 'method',
   reference: 'reference',
   date: 'date',
+  deletedAt: 'deletedAt',
   receivedById: 'receivedById'
 } as const
 

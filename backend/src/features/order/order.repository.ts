@@ -405,6 +405,7 @@ export class OrderRepository {
       where: { id: invoiceId, deletedAt: null },
       select: {
         payments: {
+          where: { deletedAt: null },
           select: {
             id: true,
             amount: true,

@@ -118,6 +118,7 @@ export const invoiceDetailSelect = {
     },
   },
   payments: {
+    where: { deletedAt: null },
     select: {
       id: true,
       amount: true,

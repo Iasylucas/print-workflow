@@ -139,8 +139,13 @@ export class InvoicesRepository {
     });
   }
 
-  async addPayment(invoiceId: number, userId: string, data: AddPaymentInput) {
-    const invoice = await prisma.invoice.findUnique({
+  async addPayment(
+    tx: Prisma.TransactionClient,
+    invoiceId: number,
+    userId: string,
+    data: AddPaymentInput,
+  ) {
+    const invoice = await tx.invoice.findUnique({
       where: { id: invoiceId },
       select: { total: true, deposit: true },
     });
@@ -149,7 +154,7 @@ export class InvoicesRepository {
 
     const newDeposit = invoice.deposit + data.amount;
 
-    const payment = await prisma.payment.create({
+    const payment = await tx.payment.create({
       data: {
         invoiceId,
         amount: data.amount,
@@ -174,7 +179,7 @@ export class InvoicesRepository {
       },
     });
 
-    await prisma.invoice.update({
+    await tx.invoice.update({
       where: { id: invoiceId },
       data: {
         deposit: newDeposit,
@@ -190,12 +195,12 @@ export class InvoicesRepository {
     return payment;
   }
 
-  async deletePayment(paymentId: number) {
-    const payment = await prisma.payment.findUnique({
+  async deletePayment(tx: Prisma.TransactionClient, paymentId: number) {
+    const payment = await tx.payment.findUnique({
       where: { id: paymentId },
       select: {
-        invoiceId: true,
         amount: true,
+        invoiceId: true,
         invoice: {
           select: {
             total: true,
@@ -209,11 +214,13 @@ export class InvoicesRepository {
 
     const newDeposit = payment.invoice.deposit - payment.amount;
 
-    await prisma.payment.delete({
+    await tx.payment.update({
       where: { id: paymentId },
+      data: { deletedAt: new Date() },
+      select: { id: true },
     });
 
-    await prisma.invoice.update({
+    await tx.invoice.update({
       where: { id: payment.invoiceId },
       data: {
         deposit: newDeposit,
