@@ -7,3 +7,7 @@ export const QUOTE_ERRORS = {
   CONVERT_FAILED: "Échec de la conversion du devis en facture",
   ALREADY_CONVERTED: "Ce devis a déjà été converti en facture",
 } as const;
+
+export const QUOTE_STATS_ERRORS = {
+  STATS_FAILED: "Échec de la récupération des statistiques de devis",
+} as const;

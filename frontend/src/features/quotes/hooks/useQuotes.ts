@@ -20,6 +20,14 @@ export const useQuotes = (params: QuotesQueryParams) => {
   });
 };
 
+export const useQuoteStats = () => {
+  return useQuery({
+    queryKey: ["quotes", "stats"],
+    queryFn: quotesApi.getStats,
+    staleTime: 1000 * 60 * 2,
+  });
+};
+
 // ============================================================
 // 2. HOOK POUR LE DÉTAIL D'UN DEVIS
 // ============================================================

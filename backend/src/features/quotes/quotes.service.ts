@@ -9,8 +9,9 @@ import {
   QuotesQuery,
   UpdateQuoteInput,
   QuoteDetailOutput,
+  QuoteStats,
 } from "./quotes.types.js";
-import { QUOTE_ERRORS } from "./quotes.constants.js";
+import { QUOTE_ERRORS, QUOTE_STATS_ERRORS } from "./quotes.constants.js";
 import { CompanyInfoRepository } from "../company-info/company-info.repository.js";
 
 export class QuotesService {
@@ -21,6 +22,14 @@ export class QuotesService {
 
   async listQuotes(query: QuotesQuery) {
     return await this.quotesRepository.findAll(query);
+  }
+
+  async getStats(): Promise<QuoteStats> {
+    try {
+      return await this.quotesRepository.getStats();
+    } catch {
+      throw new InternalServerError(QUOTE_STATS_ERRORS.STATS_FAILED);
+    }
   }
 
   async getQuoteById(id: number): Promise<QuoteDetailOutput> {
