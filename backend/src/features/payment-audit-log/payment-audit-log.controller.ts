@@ -39,4 +39,13 @@ export const paymentAuditLogController = {
       res.status(200).json({ success: true, data: logs });
     },
   ),
+
+  // ============================================================
+  // STATISTIQUES D'AUDIT
+  // ============================================================
+  getStats: catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const query = paymentAuditLogQuerySchema.parse(req.query);
+    const stats = await paymentAuditLogService.getStats(query);
+    res.status(200).json({ success: true, data: stats });
+  }),
 };

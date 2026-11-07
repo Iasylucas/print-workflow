@@ -19,9 +19,11 @@ export const createPaymentAuditLogSchema = z.object({
 // 2. SCHÉMA POUR LA REQUÊTE D'HISTORIQUE (pagination, filtres)
 // ============================================================
 export const paymentAuditLogQuerySchema = paginationSchema.extend({
-  paymentId: z.coerce.number().int().positive().optional(),
+  invoiceNumber: z.string().trim().min(1).optional(),
   action: z.enum(["CREATE", "UPDATE", "DELETE"]).optional(),
   userId: z.uuid().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
   sortBy: z.enum(["createdAt"]).default("createdAt"),
   sortOrder: z.enum(["asc", "desc"]).default("desc"),
 });

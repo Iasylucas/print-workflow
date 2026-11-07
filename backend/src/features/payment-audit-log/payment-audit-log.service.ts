@@ -1,9 +1,10 @@
 import { PaymentAuditLogRepository } from "./payment-audit-log.repository.js";
 import {
+  PaymentAuditLogStats,
+  PaymentAuditLogOutput,
   CreatePaymentAuditLogInput,
   PaymentAuditLogQuery,
   PaginatedPaymentAuditLogList,
-  PaymentAuditLogOutput,
 } from "./payment-audit-log.types.js";
 import { NotFoundError, InternalServerError } from "@/shared/error/error.js";
 import { PAYMENT_AUDIT_LOG_ERRORS } from "./payment-audit-log.constants.js";
@@ -55,9 +56,20 @@ export class PaymentAuditLogService {
   // ============================================================
   // HISTORIQUE D'UN PAIEMENT
   // ============================================================
-  async getByPaymentId(paymentId: number): Promise<PaymentAuditLogOutput[]> {
-    return await this.paymentAuditLogRepository.findByPaymentId(paymentId);
+async getByPaymentId(paymentId: number): Promise<PaymentAuditLogOutput[]> {
+    return await this.paymentAuditLogRepository.getByPaymentId(paymentId);
   }
+
+  // ============================================================
+  // STATISTIQUES D'AUDIT
+  // ============================================================
+  async getStats(query: PaymentAuditLogQuery): Promise<PaymentAuditLogStats> {
+    try {
+      return await this.paymentAuditLogRepository.getStats(query);
+    } catch {
+      throw new InternalServerError(PAYMENT_AUDIT_LOG_ERRORS.FAILED_FETCHING);
+    }
+}
 }
 
 export const paymentAuditLogService = new PaymentAuditLogService(

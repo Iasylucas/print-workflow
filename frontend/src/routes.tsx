@@ -16,6 +16,7 @@ import { ProfilePage } from "./features/profile/pages/ProfilePage";
 import { ForgotPasswordPage } from "./features/auth/pages/ForgotPasswordPage";
 import { ResetPasswordPage } from "./features/auth/pages/ResetPasswordPage";
 import { CompanySettingsPage } from "./features/company-info/pages/CompanySettingsPage";
+import { PaymentAuditLogsPage } from "./features/payment-audit-log";
 
 // export const router = createBrowserRouter([
 //   // Routes publiques
@@ -132,6 +133,7 @@ export const router = createBrowserRouter([
           { path: "/quotes", element: <QuotesPage /> },
           { path: "/orders", element: <OrdersPage /> },
           { path: "/invoices", element: <InvoicesPage /> },
+          { path: "/payment-audit-logs", element: <PaymentAuditLogsPage /> },
           { path: "/settings", element: <CompanySettingsPage /> },
         ],
       },

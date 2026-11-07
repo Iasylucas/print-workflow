@@ -86,7 +86,13 @@ export class InvoicesService {
           paymentId: payment.id,
           userId,
           oldData: null,
-          newData: payment,
+          newData: {
+            ...payment,
+            invoice: {
+              id: invoiceId,
+              number: invoice.number,
+            },
+          },
         });
 
         return payment;
@@ -102,8 +108,12 @@ export class InvoicesService {
         // On récupère l'ancien état avant suppression
         const oldPayment = await tx.payment.findUnique({
           where: { id: paymentId, deletedAt: null },
+          include: {
+            invoice: {
+              select: { id: true, number: true },
+            },
+          },
         });
-
         await this.invoicesRepository.deletePayment(tx, paymentId);
 
         if (oldPayment) {

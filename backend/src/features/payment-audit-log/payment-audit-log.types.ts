@@ -41,6 +41,13 @@ export type PaymentAuditLogOutput = Prisma.PaymentAuditLogGetPayload<{
 // ============================================================
 // 3. STRUCTURE PAGINÉE
 // ============================================================
+export interface PaymentAuditLogStats {
+  totalActions: number;
+  totalCreations: number;
+  totalDeletions: number;
+  revenue: number;
+}
+
 export interface PaginatedPaymentAuditLogList {
   data: PaymentAuditLogOutput[];
   meta: {
