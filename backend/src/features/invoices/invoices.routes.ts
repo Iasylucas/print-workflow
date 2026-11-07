@@ -14,6 +14,13 @@ router.use(protect);
 router.get("/", invoicesController.listInvoices);
 
 /**
+ * @desc    Statistiques de facturation (KPI fixes)
+ * @route   GET /api/invoices/stats
+ * @access  Private (All authenticated users)
+ */
+router.get("/stats", invoicesController.getStats);
+
+/**
  * @desc    Get invoice by ID (with orders and payments)
  * @route   GET /api/invoices/:id
  * @access  Private (All authenticated users)

@@ -170,3 +170,10 @@ export type PaginatedInvoicesList = {
     sortOrder: "asc" | "desc";
   };
 };
+
+export type InvoiceStats = {
+  unpaid: number;
+  partial: number;
+  remainingToCollect: number;
+  toDeliver: number;
+};

@@ -100,4 +100,13 @@ export const invoicesController = {
       });
     },
   ),
+
+  // ============================================================
+  // STATISTIQUES DE FACTURATION
+  // ============================================================
+  getStats: catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const stats = await invoicesService.getStats();
+    res.status(200).json({ success: true, data: stats });
+  }),
+
 };

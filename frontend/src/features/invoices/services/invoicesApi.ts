@@ -10,6 +10,7 @@ import type {
   UpdateInvoiceRequest,
   AddPaymentRequest,
   MarkInvoiceDeliveredRequest,
+  InvoiceStats,
 } from "../types/invoices.types";
 
 export const invoicesApi = {
@@ -20,6 +21,9 @@ export const invoicesApi = {
     api
       .get<ApiResponse<PaginatedInvoicesResponse>>("/invoices", { params })
       .then(unwrap),
+
+  getStats: () =>
+    api.get<ApiResponse<InvoiceStats>>("/invoices/stats").then(unwrap),
 
   // ============================================================
   // DÉTAIL D'UNE FACTURE (avec commandes + paiements)

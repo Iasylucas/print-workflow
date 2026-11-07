@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { useInvoices, useInvoiceMutations } from "../hooks/useInvoices";
+import {
+  useInvoices,
+  useInvoiceMutations,
+  useInvoiceStats,
+} from "../hooks/useInvoices";
 import { InvoiceFilters } from "../components/InvoiceFilters";
 import { InvoicesTable } from "../components/InvoicesTable";
 import { InvoiceDetailDrawer } from "../components/InvoiceDetailDrawer";
@@ -7,7 +11,13 @@ import { PageHeader } from "@/components/shared/PageHeader";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
 import { FailedTable } from "@/components/shared/FailedTable";
 import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
+import {
+  RefreshCw,
+  AlertCircle,
+  CircleDollarSign,
+  Wallet,
+  Truck,
+} from "lucide-react";
 import type { InvoicesQueryParams, Invoice } from "../types/invoices.types";
 import { AddPaymentModal } from "../components/AddPaymentModal";
 import { AlertDialog } from "@/components/ui/alert-dialog";
@@ -16,6 +26,7 @@ import { downloadInvoicePDF } from "@/shared/pdf/InvoicePdf";
 
 import { invoicesApi } from "../services/invoicesApi";
 import { toast } from "sonner";
+import { KpiCard } from "@/components/shared/KpiCard";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -38,6 +49,8 @@ export const InvoicesPage = () => {
     startDate: undefined,
     endDate: undefined,
   });
+
+  const { data: stats, isLoading: isStatsLoading } = useInvoiceStats();
 
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [detailDrawerOpen, setDetailDrawerOpen] = useState(false);
@@ -141,6 +154,39 @@ export const InvoicesPage = () => {
           Rafraîchir
         </Button>
       </PageHeader>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiCard
+          label="Impayées"
+          value={stats?.unpaid ?? 0}
+          icon={AlertCircle}
+          variant="destructive"
+          isLoading={isStatsLoading}
+          description="Factures sans aucun paiement"
+        />
+        <KpiCard
+          label="Partiellement payées"
+          value={stats?.partial ?? 0}
+          icon={CircleDollarSign}
+          variant="warning"
+          isLoading={isStatsLoading}
+          description="Acompte versé, solde restant"
+        />
+        <KpiCard
+          label="Reste à encaisser"
+          value={`${(stats?.remainingToCollect ?? 0).toLocaleString("fr-FR")} Ar`}
+          icon={Wallet}
+          isLoading={isStatsLoading}
+          description="Sur les factures impayées et partielles"
+        />
+        <KpiCard
+          label="À livrer"
+          value={stats?.toDeliver ?? 0}
+          icon={Truck}
+          isLoading={isStatsLoading}
+          description="Factures non livrées"
+        />
+      </div>
 
       <div className="space-y-4">
         <InvoiceFilters filters={queryParams} onFilterChange={handleFilter} />

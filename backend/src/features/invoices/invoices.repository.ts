@@ -7,6 +7,7 @@ import {
   UpdateInvoiceInput,
   AddPaymentInput,
   PaginatedInvoicesList,
+  InvoiceStats,
 } from "./invoices.types.js";
 
 export class InvoicesRepository {
@@ -248,5 +249,33 @@ export class InvoicesRepository {
       data: { deletedAt: null },
       select: invoiceDetailSelect,
     });
+  }
+
+  async getStats(): Promise<InvoiceStats> {
+    const baseWhere: Prisma.InvoiceWhereInput = { deletedAt: null };
+
+    const [unpaid, partial, remainingAgg, toDeliver] = await Promise.all([
+      prisma.invoice.count({
+        where: { ...baseWhere, paymentStatus: "unpaid" },
+      }),
+      prisma.invoice.count({
+        where: { ...baseWhere, paymentStatus: "partial" },
+      }),
+      prisma.invoice.aggregate({
+        where: {
+          ...baseWhere,
+          paymentStatus: { in: ["unpaid", "partial"] },
+        },
+        _sum: { total: true, deposit: true },
+      }),
+      prisma.invoice.count({
+        where: { ...baseWhere, isDelivered: false },
+      }),
+    ]);
+
+    const remainingToCollect =
+      (remainingAgg._sum.total ?? 0) - (remainingAgg._sum.deposit ?? 0);
+
+    return { unpaid, partial, remainingToCollect, toDeliver };
   }
 }

@@ -10,8 +10,9 @@ import {
   UpdateInvoiceInput,
   AddPaymentInput,
   InvoiceDetailOutput,
+  InvoiceStats,
 } from "./invoices.types.js";
-import { INVOICE_ERRORS } from "./invoices.constants.js";
+import { INVOICE_ERRORS, INVOICE_STATS_ERRORS } from "./invoices.constants.js";
 import { prisma } from "@/config/prisma.js";
 import { paymentAuditLogService } from "@/features/payment-audit-log/index.js";
 
@@ -148,6 +149,14 @@ export class InvoicesService {
       return invoice;
     } catch (error) {
       throw new InternalServerError(INVOICE_ERRORS.RESTORE_FAILED);
+    }
+  }
+
+  async getStats(): Promise<InvoiceStats> {
+    try {
+      return await this.invoicesRepository.getStats();
+    } catch (error) {
+      throw new InternalServerError(INVOICE_STATS_ERRORS.STATS_FAILED);
     }
   }
 }
