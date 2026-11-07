@@ -102,6 +102,13 @@ export type OrderDetailOutput = Prisma.OrderGetPayload<{
   select: typeof orderDetailSelect;
 }>;
 
+export type OrderStats = {
+  waitingForFile: number;
+  inProgress: number;
+  inProduction: number;
+  readyForDelivery: number;
+};
+
 export type UpdateOrderStatusInput = z.infer<typeof updateOrderStatusSchema>;
 export type AddOrderNoteInput = z.infer<typeof addOrderNoteSchema>;
 export type AddOrderFileInput = z.infer<typeof addOrderFileSchema>;

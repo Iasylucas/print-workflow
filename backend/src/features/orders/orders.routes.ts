@@ -14,6 +14,13 @@ router.use(protect);
 router.get("/", ordersController.listOrders);
 
 /**
+ * @desc    Statistiques de production des commandes (KPI fixes)
+ * @route   GET /api/orders/stats
+ * @access  Private
+ */
+router.get("/stats", ordersController.getStats);
+
+/**
  * @desc    Get order by ID
  * @route   GET /api/orders/:id
  * @access  Private (All authenticated users)

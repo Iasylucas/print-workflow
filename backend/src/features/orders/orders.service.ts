@@ -12,6 +12,7 @@ import {
   AddOrderFileInput,
   UpdateOrderStatusInput,
   OrderDetailOutput,
+  OrderStats,
 } from "./orders.types.js";
 import { ORDERS_ERRORS } from "./orders.constants.js";
 
@@ -92,6 +93,14 @@ export class OrdersService {
       return await this.ordersRepository.deleteFile(fileId, userId);
     } catch (error) {
       throw new InternalServerError(ORDERS_ERRORS.DELETE_FILE_FAILED);
+    }
+  }
+
+  async getStats(): Promise<OrderStats> {
+    try {
+      return await this.ordersRepository.getStats();
+    } catch (error) {
+      throw new InternalServerError(ORDERS_ERRORS.STATS_FAILED);
     }
   }
 }

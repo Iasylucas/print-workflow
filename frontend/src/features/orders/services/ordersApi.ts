@@ -10,6 +10,7 @@ import type {
   UpdateOrderStatusRequest,
   AddOrderNoteRequest,
   AddOrderFileRequest,
+  OrderStats,
 } from "../types/orders.types";
 
 export const ordersApi = {
@@ -20,6 +21,9 @@ export const ordersApi = {
     api
       .get<ApiResponse<PaginatedOrdersResponse>>("/orders", { params })
       .then(unwrap),
+
+  getOrdersStats: () =>
+    api.get<{ success: true; data: OrderStats }>("/orders/stats").then(unwrap),
 
   // ============================================================
   // DÉTAIL D'UNE COMMANDE

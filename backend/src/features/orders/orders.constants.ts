@@ -1,3 +1,13 @@
+export const IN_PROGRESS_STATUSES = [
+  "in_progress",
+  "file_completed",
+] as const;
+
+export const IN_PRODUCTION_STATUSES = [
+  "printing_in_progress",
+  "cutting_in_progress",
+] as const;
+
 export const ORDERS_ERRORS = {
   NOT_FOUND: "Commande introuvable",
   NO_FIELDS_TO_UPDATE: "Aucun champ à mettre à jour",
@@ -8,4 +18,5 @@ export const ORDERS_ERRORS = {
   DELETE_FILE_FAILED: "Échec de la suppression du fichier",
   INVALID_STATUS_TRANSITION: "Transition de statut invalide",
   FORBIDDEN: "Vous n'avez pas les droits pour effectuer cette action",
+  STATS_FAILED: "Impossible de récupérer les statistiques des commandes",
 } as const;

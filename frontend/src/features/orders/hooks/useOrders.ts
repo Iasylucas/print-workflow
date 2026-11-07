@@ -19,7 +19,15 @@ export const useOrders = (params: OrdersQueryParams) => {
   return useQuery({
     queryKey: [ORDERS_QUERY_KEY, params],
     queryFn: () => ordersApi.getOrders(params),
-    staleTime: 1000 * 60 * 2, // 2 minutes
+    staleTime: 1000 * 60 * 2,
+  });
+};
+
+export const useOrderStats = () => {
+  return useQuery({
+    queryKey: [ORDERS_QUERY_KEY, "stats"],
+    queryFn: () => ordersApi.getOrdersStats(),
+    staleTime: 1000 * 60 * 2,
   });
 };
 

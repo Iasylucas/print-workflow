@@ -1,16 +1,17 @@
 // frontend/src/features/orders/pages/OrdersPage.tsx
 import { useState } from "react";
-import { useOrders } from "../hooks/useOrders";
+import { useOrders, useOrderStats } from "../hooks/useOrders";
 import { OrderFilters } from "../components/OrderFilters";
 import { OrdersTable } from "../components/OrdersTable";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
 // import { FailedTable } from "@/components/shared/FailedTable";
 import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Clock, PenTool, Printer, PackageCheck } from "lucide-react";
 import type { OrdersQueryParams, Order } from "../types/orders.types";
 import { OrderDetailDrawer } from "../components/OrderDetailDrawer";
 import { EditOrderModal } from "../components/EditOrderModal";
+import { KpiCard } from "@/components/shared/KpiCard";
 
 export const OrdersPage = () => {
   const [queryParams, setQueryParams] = useState<OrdersQueryParams>({
@@ -29,6 +30,7 @@ export const OrdersPage = () => {
 
   const { data, isLoading, refetch } = useOrders(queryParams);
   // const { deleteOrderMutation } = useOrderMutations();
+  const { data: stats, isLoading: isStatsLoading } = useOrderStats();
 
   const handleFilter = (filters: Partial<OrdersQueryParams>) => {
     setQueryParams((prev) => ({ ...prev, ...filters, page: 1 }));
@@ -84,6 +86,38 @@ export const OrdersPage = () => {
           Rafraîchir
         </Button>
       </PageHeader>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiCard
+          label="En attente fichier"
+          value={stats?.waitingForFile ?? 0}
+          icon={Clock}
+          variant="warning"
+          isLoading={isStatsLoading}
+          description="Commandes bloquées côté client"
+        />
+        <KpiCard
+          label="En cours"
+          value={stats?.inProgress ?? 0}
+          icon={PenTool}
+          isLoading={isStatsLoading}
+          description="Graphiste en cours / fichier complet"
+        />
+        <KpiCard
+          label="En production"
+          value={stats?.inProduction ?? 0}
+          icon={Printer}
+          isLoading={isStatsLoading}
+          description="Impression et découpe en cours"
+        />
+        <KpiCard
+          label="Prêt pour livraison"
+          value={stats?.readyForDelivery ?? 0}
+          icon={PackageCheck}
+          variant="success"
+          isLoading={isStatsLoading}
+          description="En attente d'action commerciale"
+        />
+      </div>
 
       <div className="space-y-4">
         <OrderFilters filters={queryParams} onFilterChange={handleFilter} />

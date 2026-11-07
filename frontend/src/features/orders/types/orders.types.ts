@@ -129,3 +129,10 @@ export type PaginatedOrdersResponse = {
     sortOrder: "asc" | "desc";
   };
 };
+
+export type OrderStats = {
+  waitingForFile: number;
+  inProgress: number;
+  inProduction: number;
+  readyForDelivery: number;
+};

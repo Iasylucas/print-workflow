@@ -86,7 +86,7 @@ export const ordersController = {
     });
   }),
 
-  deleteFile: catchAsync(async (req: Request, res: Response): Promise<void> => {
+deleteFile: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const fileId = orderIdParamSchema.parse(req.params).id;
     const userId = req.user!.sub;
     const userRole = req.user!.role;
@@ -96,4 +96,13 @@ export const ordersController = {
       message: "Fichier supprimé avec succès",
     });
   }),
+
+  // ============================================================
+  // STATISTIQUES DE PRODUCTION DES COMMANDES
+  // ============================================================
+  getStats: catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const stats = await ordersService.getStats();
+    res.status(200).json({ success: true, data: stats });
+  }),
+
 };
