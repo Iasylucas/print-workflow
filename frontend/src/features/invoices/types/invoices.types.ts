@@ -121,3 +121,10 @@ export type MobileMoney = {
   nom?: string;
   numero: string;
 };
+
+export type InvoiceStats = {
+  unpaid: number;
+  partial: number;
+  remainingToCollect: number;
+  toDeliver: number;
+};

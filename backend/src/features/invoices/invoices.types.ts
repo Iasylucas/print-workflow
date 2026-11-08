@@ -118,6 +118,7 @@ export const invoiceDetailSelect = {
     },
   },
   payments: {
+    where: { deletedAt: null },
     select: {
       id: true,
       amount: true,
@@ -168,4 +169,11 @@ export type PaginatedInvoicesList = {
     sortBy: string;
     sortOrder: "asc" | "desc";
   };
+};
+
+export type InvoiceStats = {
+  unpaid: number;
+  partial: number;
+  remainingToCollect: number;
+  toDeliver: number;
 };

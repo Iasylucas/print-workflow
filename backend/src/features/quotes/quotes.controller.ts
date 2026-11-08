@@ -14,6 +14,11 @@ export const quotesController = {
     res.status(200).json({ success: true, data: result });
   }),
 
+  getStats: catchAsync(async (_req: Request, res: Response): Promise<void> => {
+    const stats = await quotesService.getStats();
+    res.status(200).json({ success: true, data: stats });
+  }),
+
   getQuoteById: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { id } = quoteIdParamSchema.parse(req.params);

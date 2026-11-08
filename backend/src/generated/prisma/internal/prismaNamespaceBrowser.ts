@@ -61,6 +61,7 @@ export const ModelName = {
   Invoice: 'Invoice',
   File: 'File',
   Payment: 'Payment',
+  PaymentAuditLog: 'PaymentAuditLog',
   Note: 'Note',
   AppSettings: 'AppSettings',
   Order: 'Order',
@@ -242,10 +243,25 @@ export const PaymentScalarFieldEnum = {
   method: 'method',
   reference: 'reference',
   date: 'date',
+  deletedAt: 'deletedAt',
   receivedById: 'receivedById'
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const PaymentAuditLogScalarFieldEnum = {
+  id: 'id',
+  action: 'action',
+  paymentId: 'paymentId',
+  userId: 'userId',
+  oldData: 'oldData',
+  newData: 'newData',
+  reason: 'reason',
+  createdAt: 'createdAt'
+} as const
+
+export type PaymentAuditLogScalarFieldEnum = (typeof PaymentAuditLogScalarFieldEnum)[keyof typeof PaymentAuditLogScalarFieldEnum]
 
 
 export const NoteScalarFieldEnum = {

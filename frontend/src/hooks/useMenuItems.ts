@@ -7,6 +7,8 @@ import {
   FileText,
   FileCheck,
   Receipt,
+  History,
+  LayoutDashboard,
 } from "lucide-react";
 
 export type MenuItem = {
@@ -17,7 +19,7 @@ export type MenuItem = {
 
 const MENU_CONFIG: Record<string, MenuItem[]> = {
   ADMIN: [
-    // { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/", label: "Dashboard", icon: LayoutDashboard },
     { href: "/users", label: "Utilisateurs", icon: Users },
     { href: "/clients", label: "Clients", icon: Building2 },
     { href: "/products", label: "Produits", icon: Package },
@@ -25,6 +27,11 @@ const MENU_CONFIG: Record<string, MenuItem[]> = {
     { href: "/orders", label: "Commandes", icon: FileText },
     { href: "/quotes", label: "Devis", icon: FileCheck },
     { href: "/invoices", label: "Factures", icon: Receipt },
+    {
+      href: "/payment-audit-logs",
+      label: "Historique paiements",
+      icon: History,
+    },
   ],
   SALES: [
     // { href: "/", label: "Dashboard", icon: LayoutDashboard },

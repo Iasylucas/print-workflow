@@ -10,8 +10,11 @@ import {
   UpdateInvoiceInput,
   AddPaymentInput,
   InvoiceDetailOutput,
+  InvoiceStats,
 } from "./invoices.types.js";
-import { INVOICE_ERRORS } from "./invoices.constants.js";
+import { INVOICE_ERRORS, INVOICE_STATS_ERRORS } from "./invoices.constants.js";
+import { prisma } from "@/config/prisma.js";
+import { paymentAuditLogService } from "@/features/payment-audit-log/index.js";
 
 export class InvoicesService {
   constructor(
@@ -71,21 +74,60 @@ export class InvoicesService {
     }
 
     try {
-      const payment = await this.invoicesRepository.addPayment(
-        invoiceId,
-        userId,
-        data,
-      );
-      return payment;
-    } catch (error) {
+      return await prisma.$transaction(async (tx) => {
+        const payment = await this.invoicesRepository.addPayment(
+          tx,
+          invoiceId,
+          userId,
+          data,
+        );
+
+        await paymentAuditLogService.create(tx, {
+          action: "CREATE",
+          paymentId: payment.id,
+          userId,
+          oldData: null,
+          newData: {
+            ...payment,
+            invoice: {
+              id: invoiceId,
+              number: invoice.number,
+            },
+          },
+        });
+
+        return payment;
+      });
+    } catch {
       throw new InternalServerError(INVOICE_ERRORS.PAYMENT_FAILED);
     }
   }
 
-  async deletePayment(paymentId: number) {
+  async deletePayment(paymentId: number, userId: string) {
     try {
-      await this.invoicesRepository.deletePayment(paymentId);
-    } catch (error) {
+      await prisma.$transaction(async (tx) => {
+        // On récupère l'ancien état avant suppression
+        const oldPayment = await tx.payment.findUnique({
+          where: { id: paymentId, deletedAt: null },
+          include: {
+            invoice: {
+              select: { id: true, number: true },
+            },
+          },
+        });
+        await this.invoicesRepository.deletePayment(tx, paymentId);
+
+        if (oldPayment) {
+          await paymentAuditLogService.create(tx, {
+            action: "DELETE",
+            paymentId,
+            userId,
+            oldData: oldPayment,
+            newData: null,
+          });
+        }
+      });
+    } catch {
       throw new InternalServerError(INVOICE_ERRORS.DELETE_PAYMENT_FAILED);
     }
   }
@@ -107,6 +149,14 @@ export class InvoicesService {
       return invoice;
     } catch (error) {
       throw new InternalServerError(INVOICE_ERRORS.RESTORE_FAILED);
+    }
+  }
+
+  async getStats(): Promise<InvoiceStats> {
+    try {
+      return await this.invoicesRepository.getStats();
+    } catch (error) {
+      throw new InternalServerError(INVOICE_STATS_ERRORS.STATS_FAILED);
     }
   }
 }

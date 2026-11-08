@@ -6,6 +6,7 @@ import {
   QuotesQuery,
   UpdateQuoteInput,
   PaginatedQuotesList,
+  QuoteStats,
 } from "./quotes.types.js";
 import { InternalServerError } from "@/shared/error/error.js";
 
@@ -71,6 +72,26 @@ export class QuotesRepository {
         sortBy,
         sortOrder,
       },
+    };
+  }
+
+  async getStats(): Promise<QuoteStats> {
+    const baseWhere: Prisma.QuoteWhereInput = {
+      deletedAt: null,
+      status: "pending",
+    };
+
+    const [pending, pendingAgg] = await Promise.all([
+      prisma.quote.count({ where: baseWhere }),
+      prisma.quote.aggregate({
+        where: baseWhere,
+        _sum: { total: true },
+      }),
+    ]);
+
+    return {
+      pending,
+      pendingAmount: pendingAgg._sum.total ?? 0,
     };
   }
 

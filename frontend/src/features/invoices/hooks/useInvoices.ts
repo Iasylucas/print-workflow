@@ -22,6 +22,14 @@ export const useInvoices = (params: InvoicesQueryParams) => {
   });
 };
 
+export const useInvoiceStats = () => {
+  return useQuery({
+    queryKey: ["invoices", "stats"],
+    queryFn: invoicesApi.getStats,
+    staleTime: 1000 * 60 * 2,
+  });
+};
+
 // ============================================================
 // 2. HOOK POUR LE DÉTAIL D'UNE FACTURE
 // ============================================================

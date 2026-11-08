@@ -7,6 +7,7 @@ import type {
   QuotesQueryParams,
   PaginatedQuotesResponse,
   UpdateQuoteRequest,
+  QuoteStats,
 } from "../types/quotes.types";
 
 export const quotesApi = {
@@ -18,6 +19,8 @@ export const quotesApi = {
       .get<ApiResponse<PaginatedQuotesResponse>>("/quotes", { params })
       .then(unwrap),
 
+  getStats: () =>
+    api.get<ApiResponse<QuoteStats>>("/quotes/stats").then(unwrap),
   // ============================================================
   // DÉTAIL D'UN DEVIS (avec commandes)
   // ============================================================

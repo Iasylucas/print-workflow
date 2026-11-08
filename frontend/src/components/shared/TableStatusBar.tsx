@@ -8,7 +8,7 @@ import {
 
 interface TableStatusBarProps {
   totalCount: number;
-  limit: number;
+  limit?: number;
   isLoading: boolean;
   onLimitChange: (newLimit: number) => void;
   entityName?: string;

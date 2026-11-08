@@ -10,11 +10,12 @@ import { ordersRoutes } from "./features/orders/index.js";
 import { invoicesRoutes } from "./features/invoices/invoices.routes.js";
 import { quotesRoutes } from "./features/quotes/quotes.routes.js";
 import { standardLimiter } from "./middlewares/rateLimiter.middleware.js";
+import { paymentAuditLogRoutes } from "./features/payment-audit-log/payment-audit-log.routes.js";
+import { dashboardRoutes } from "./features/dashboard/dashboard.routes.js";
 
 const router: Router = Router();
 
 router.use("/auth", authRoutes);
-
 router.use("/clients", standardLimiter, clientRoutes);
 router.use("/company-info", standardLimiter, companyInfoRoutes);
 router.use("/users", standardLimiter, userRoutes);
@@ -24,5 +25,7 @@ router.use("/pos", standardLimiter, orderRoutes);
 router.use("/orders", standardLimiter, ordersRoutes);
 router.use("/invoices", standardLimiter, invoicesRoutes);
 router.use("/quotes", standardLimiter, quotesRoutes);
+router.use("/payment-audit-logs", paymentAuditLogRoutes);
+router.use("/dashboard", dashboardRoutes);
 
 export default router;

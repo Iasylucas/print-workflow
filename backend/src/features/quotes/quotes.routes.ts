@@ -14,6 +14,13 @@ router.use(protect, restrictTo("ADMIN", "SALES"));
 router.get("/", quotesController.listQuotes);
 
 /**
+ * @desc    Statistiques de devis (KPI fixes)
+ * @route   GET /api/quotes/stats
+ * @access  Private (All authenticated users)
+ */
+router.get("/stats", quotesController.getStats);
+
+/**
  * @desc    Get quote by ID (with orders)
  * @route   GET /api/quotes/:id
  * @access  Private (All authenticated users)

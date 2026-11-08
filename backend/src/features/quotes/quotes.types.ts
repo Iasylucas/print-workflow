@@ -138,3 +138,8 @@ export type PaginatedQuotesList = {
     sortOrder: "asc" | "desc";
   };
 };
+
+export type QuoteStats = {
+  pending: number;
+  pendingAmount: number;
+};

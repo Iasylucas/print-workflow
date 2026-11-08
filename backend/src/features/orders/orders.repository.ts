@@ -9,7 +9,12 @@ import {
   AddOrderFileInput,
   UpdateOrderStatusInput,
   PaginatedOrdersList,
+  OrderStats,
 } from "./orders.types.js";
+import {
+  IN_PROGRESS_STATUSES,
+  IN_PRODUCTION_STATUSES,
+} from "./orders.constants.js";
 
 export class OrdersRepository {
   async findAll(query: OrdersQuery): Promise<PaginatedOrdersList> {
@@ -162,4 +167,81 @@ export class OrdersRepository {
       where: { id: noteId },
     });
   }
+
+  async getStats(): Promise<OrderStats> {
+    const baseWhere: Prisma.OrderWhereInput = { deletedAt: null };
+
+    const [
+      waitingForFile,
+      inProgress,
+      inProduction,
+      readyForDelivery,
+      grouped,
+    ] = await Promise.all([
+      prisma.order.count({
+        where: { ...baseWhere, status: "waiting_for_file" },
+      }),
+      prisma.order.count({
+        where: {
+          ...baseWhere,
+          status: { in: [...IN_PROGRESS_STATUSES] },
+        },
+      }),
+      prisma.order.count({
+        where: {
+          ...baseWhere,
+          status: { in: [...IN_PRODUCTION_STATUSES] },
+        },
+      }),
+      prisma.order.count({
+        where: { ...baseWhere, status: "ready_for_delivery" },
+      }),
+      prisma.order.groupBy({
+        by: ["status"],
+        where: baseWhere,
+        _count: { _all: true },
+      }),
+    ]);
+
+    const byStatus: Record<string, number> = {};
+    for (const row of grouped) {
+      byStatus[row.status] = row._count._all;
+    }
+
+    return {
+      waitingForFile,
+      inProgress,
+      inProduction,
+      readyForDelivery,
+      byStatus,
+    };
+  }
+
+  // async getStats(): Promise<OrderStats> {
+  //   const baseWhere: Prisma.OrderWhereInput = { deletedAt: null };
+
+  //   const [waitingForFile, inProgress, inProduction, readyForDelivery] =
+  //     await Promise.all([
+  //       prisma.order.count({
+  //         where: { ...baseWhere, status: "waiting_for_file" },
+  //       }),
+  //       prisma.order.count({
+  //         where: {
+  //           ...baseWhere,
+  //           status: { in: [...IN_PROGRESS_STATUSES] },
+  //         },
+  //       }),
+  //       prisma.order.count({
+  //         where: {
+  //           ...baseWhere,
+  //           status: { in: [...IN_PRODUCTION_STATUSES] },
+  //         },
+  //       }),
+  //       prisma.order.count({
+  //         where: { ...baseWhere, status: "ready_for_delivery" },
+  //       }),
+  //     ]);
+
+  //   return { waitingForFile, inProgress, inProduction, readyForDelivery };
+  // }
 }

@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { useQuotes, useQuoteMutations } from "../hooks/useQuotes";
+import {
+  useQuotes,
+  useQuoteMutations,
+  useQuoteStats,
+} from "../hooks/useQuotes";
 import { QuoteFilters } from "../components/QuoteFilters";
 import { QuotesTable } from "../components/QuotesTable";
 import { QuoteDetailDrawer } from "../components/QuoteDetailDrawer";
@@ -7,7 +11,7 @@ import { PageHeader } from "@/components/shared/PageHeader";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
 import { FailedTable } from "@/components/shared/FailedTable";
 import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Clock, Banknote } from "lucide-react";
 import type { QuotesQueryParams, Quote } from "../types/quotes.types";
 import { useNavigate } from "react-router-dom";
 import { AlertDialog } from "@/components/ui/alert-dialog";
@@ -17,6 +21,7 @@ import { toast } from "sonner";
 import { quotesApi } from "../services/quotesApi";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { KpiCard } from "@/components/shared/KpiCard";
 
 interface ConfirmActionState {
   isOpen: boolean;
@@ -44,6 +49,7 @@ export const QuotesPage = () => {
 
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
   const [detailDrawerOpen, setDetailDrawerOpen] = useState(false);
+  const { data: stats, isLoading: isStatsLoading } = useQuoteStats();
 
   const [confirmAction, setConfirmAction] = useState<ConfirmActionState>({
     isOpen: false,
@@ -152,6 +158,24 @@ export const QuotesPage = () => {
           Rafraîchir
         </Button>
       </PageHeader>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <KpiCard
+          label="Devis en attente"
+          value={stats?.pending ?? 0}
+          icon={Clock}
+          variant="warning"
+          isLoading={isStatsLoading}
+          description="En attente de conversion en facture"
+        />
+        <KpiCard
+          label="Montant en attente"
+          value={`${(stats?.pendingAmount ?? 0).toLocaleString("fr-FR")} Ar`}
+          icon={Banknote}
+          isLoading={isStatsLoading}
+          description="Valeur des devis non convertis"
+        />
+      </div>
 
       <div className="space-y-4">
         <QuoteFilters filters={queryParams} onFilterChange={handleFilter} />

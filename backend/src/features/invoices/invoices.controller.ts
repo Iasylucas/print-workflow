@@ -68,8 +68,9 @@ export const invoicesController = {
 
   deletePayment: catchAsync(
     async (req: Request, res: Response): Promise<void> => {
+      const userId = req.user!.sub;
       const { paymentId } = paymentIdParamSchema.parse(req.params);
-      await invoicesService.deletePayment(paymentId);
+      await invoicesService.deletePayment(paymentId, userId);
       res.status(200).json({
         success: true,
         message: "Paiement supprimé avec succès",
@@ -99,4 +100,13 @@ export const invoicesController = {
       });
     },
   ),
+
+  // ============================================================
+  // STATISTIQUES DE FACTURATION
+  // ============================================================
+  getStats: catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const stats = await invoicesService.getStats();
+    res.status(200).json({ success: true, data: stats });
+  }),
+
 };
