@@ -107,6 +107,7 @@ export type OrderStats = {
   inProgress: number;
   inProduction: number;
   readyForDelivery: number;
+  byStatus: Record<string, number>;
 };
 
 export type UpdateOrderStatusInput = z.infer<typeof updateOrderStatusSchema>;
