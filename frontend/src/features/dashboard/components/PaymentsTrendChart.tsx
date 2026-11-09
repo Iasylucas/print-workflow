@@ -35,12 +35,12 @@ type ChartView = "area" | "bar";
 
 export const PaymentsTrendChart = () => {
   const { data, isLoading } = usePaymentsTrend();
-  const [view, setView] = useState<ChartView>("area");
+  const [view, setView] = useState<ChartView>("bar");
 
   const points = data?.data ?? [];
 
   return (
-    <div className="rounded-xl border bg-card p-4 h-full flex flex-col">
+    <div className="rounded-xl border bg-background p-4 h-full flex flex-col">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div>
           <p className="text-sm font-medium">Encaissements — 6 derniers mois</p>
@@ -104,7 +104,7 @@ export const PaymentsTrendChart = () => {
                 tickFormatter={formatCompact}
                 tickLine={false}
                 axisLine={false}
-                width={40}
+                width={60}
                 fontSize={11}
               />
               <ChartTooltip

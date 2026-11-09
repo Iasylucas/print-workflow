@@ -13,6 +13,9 @@ import {
 import type { CompanyInfo, CompanyInfoFormData } from "../types/company.types";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Navigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { RefreshCw } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 const DEFAULT_QUERY_PARAMS = {
   page: 1,
@@ -29,6 +32,14 @@ export const CompanySettingsPage = () => {
     null,
   );
   const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const queryClient = useQueryClient();
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    queryClient.invalidateQueries({ queryKey: ["orders", "stats"] });
+    queryClient.invalidateQueries({ queryKey: ["invoices", "stats"] });
+    queryClient.invalidateQueries({ queryKey: ["quotes", "stats"] });
+    queryClient.invalidateQueries({ queryKey: ["payment-audit-logs"] });
+  };
 
   const { data: active, isLoading: isLoadingActive } = useCompanyInfo();
   const { data: history, isLoading: isLoadingHistory } =
@@ -59,7 +70,17 @@ export const CompanySettingsPage = () => {
       <PageHeader
         title="Paramètres de l'entreprise"
         subtitle="Gérez les informations de votre entreprise et suivez l'historique des modifications"
-      />
+      >
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleRefresh}
+          className="gap-2"
+        >
+          <RefreshCw className="h-4 w-4" />
+          Rafraîchi
+        </Button>
+      </PageHeader>
 
       <div className="w-full space-y-6">
         <Card>

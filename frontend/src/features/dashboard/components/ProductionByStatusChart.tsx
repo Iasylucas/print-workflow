@@ -51,7 +51,7 @@ export const ProductionByStatusChart = () => {
   }));
 
   return (
-    <div className="rounded-xl border bg-card p-4 h-full flex flex-col w-full">
+    <div className="rounded-xl border bg-background p-4 h-full flex flex-col w-full">
       <div className="mb-3">
         <p className="text-sm font-medium">Production par statut</p>
         <p className="text-xs text-muted-foreground">

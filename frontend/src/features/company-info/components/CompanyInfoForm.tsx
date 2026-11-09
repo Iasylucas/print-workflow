@@ -344,7 +344,7 @@ export const CompanyInfoForm = ({
           <FieldLabel>Numéros Mobile Money</FieldLabel>
           <Button
             type="button"
-            variant="outline"
+            variant="default"
             size="sm"
             onClick={() => append({ numero: "", nom: "" })}
           >

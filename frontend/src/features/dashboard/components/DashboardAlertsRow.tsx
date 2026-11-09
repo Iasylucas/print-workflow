@@ -18,7 +18,7 @@ export const DashboardAlertsRow = () => {
   return (
     <section>
       <h2 className="text-sm font-semibold text-muted-foreground mb-3">
-        Alertes
+        À traiter
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link to="/orders?status=waiting_for_file">
@@ -28,7 +28,7 @@ export const DashboardAlertsRow = () => {
             icon={Clock}
             variant="warning"
             isLoading={isLoading}
-            description="Commandes bloquées côté client"
+            description="En attente du fichier graphiste"
           />
         </Link>
         <Link to="/invoices?status=unpaid">
@@ -47,7 +47,7 @@ export const DashboardAlertsRow = () => {
             value={quoteStats?.pending ?? 0}
             icon={FileText}
             isLoading={isLoading}
-            description="À convertir en facture"
+            description="En attente de réponse client"
           />
         </Link>
         <Link to="/payment-audit-logs?action=DELETE">

@@ -20,34 +20,33 @@ export type MenuItem = {
 const MENU_CONFIG: Record<string, MenuItem[]> = {
   ADMIN: [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/users", label: "Utilisateurs", icon: Users },
     { href: "/clients", label: "Clients", icon: Building2 },
-    { href: "/products", label: "Produits", icon: Package },
-    { href: "/pos", label: "Prise de commanes", icon: Receipt },
-    { href: "/orders", label: "Commandes", icon: FileText },
+    { href: "/pos", label: "Prise de commande", icon: Receipt },
     { href: "/quotes", label: "Devis", icon: FileCheck },
+    { href: "/orders", label: "Commandes", icon: FileText },
     { href: "/invoices", label: "Factures", icon: Receipt },
     {
       href: "/payment-audit-logs",
       label: "Historique paiements",
       icon: History,
     },
+    { href: "/products", label: "Produits", icon: Package },
+    { href: "/users", label: "Utilisateurs", icon: Users },
   ],
   SALES: [
-    // { href: "/", label: "Dashboard", icon: LayoutDashboard },
     { href: "/clients", label: "Clients", icon: Building2 },
-    { href: "/pos", label: "Prise de commanes", icon: Receipt },
-    { href: "/orders", label: "Commandes", icon: FileText },
+    { href: "/pos", label: "Prise de commande", icon: Receipt },
     { href: "/quotes", label: "Devis", icon: FileCheck },
+    { href: "/orders", label: "Commandes", icon: FileText },
     { href: "/invoices", label: "Factures", icon: Receipt },
   ],
   PRINTER: [
-    { href: "/invoices", label: "Factures", icon: Receipt },
     { href: "/orders", label: "Commandes", icon: FileText },
+    { href: "/invoices", label: "Factures", icon: Receipt },
   ],
   GRAPHIC_DESIGNER: [
-    { href: "/invoices", label: "Factures", icon: Receipt },
     { href: "/orders", label: "Commandes", icon: FileText },
+    { href: "/invoices", label: "Factures", icon: Receipt },
   ],
 };
 

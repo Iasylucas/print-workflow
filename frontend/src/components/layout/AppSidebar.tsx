@@ -12,18 +12,33 @@ import {
   SidebarGroupContent,
   SidebarMenuSkeleton,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User, Settings } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Skeleton } from "../ui/skeleton";
 import { useCompanyStore } from "@/features/company-info/stores/companyStore";
 import { useAuthStore } from "@/features/auth/store/authStore";
 import { Logo } from "@/features/company-info/components/Logo";
+import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const AppSidebar = () => {
   const { user, logout, fullName, avatarInitials } = useAuth();
   const menuItems = useMenuItems();
+  const { state } = useSidebar();
+  const isCollapsed = state === "collapsed";
+  const navigate = useNavigate();
+  const isMobile = useIsMobile();
+
+  const isIconMode = !isMobile && state === "collapsed";
 
   const isCompanyLoading = useCompanyStore((state) => state.isLoading);
   const isAuthLoading = useAuthStore((state) => state.isLoading);
@@ -58,7 +73,7 @@ export const AppSidebar = () => {
   }
 
   return (
-    <Sidebar variant="sidebar">
+    <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem className="px-0.5 max-lg:p-2 flex items-center justify-between">
@@ -94,82 +109,134 @@ export const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup className="mt-auto">
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <NavLink to="/profile">
-                  {({ isActive }) => (
-                    <SidebarMenuButton
-                      asChild
-                      tooltip="Mon profil"
-                      isActive={isActive}
-                    >
-                      <div>
-                        <User className="h-4 w-4" />
-                        <span>Mon profil</span>
-                      </div>
-                    </SidebarMenuButton>
-                  )}
-                </NavLink>
-              </SidebarMenuItem>
-
-              {user?.role === "ADMIN" && (
+        {!isCollapsed && (
+          <SidebarGroup className="mt-auto">
+            <SidebarGroupContent>
+              <SidebarMenu>
                 <SidebarMenuItem>
-                  <NavLink to="/settings">
+                  <NavLink to="/profile">
                     {({ isActive }) => (
                       <SidebarMenuButton
                         asChild
-                        tooltip="Paramètres"
+                        tooltip="Mon profil"
                         isActive={isActive}
                       >
                         <div>
-                          <Settings className="h-4 w-4" />
-                          <span>Paramètres</span>
+                          <User className="h-4 w-4" />
+                          <span>Mon profil</span>
                         </div>
                       </SidebarMenuButton>
                     )}
                   </NavLink>
                 </SidebarMenuItem>
-              )}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+
+                {user?.role === "ADMIN" && (
+                  <SidebarMenuItem>
+                    <NavLink to="/settings">
+                      {({ isActive }) => (
+                        <SidebarMenuButton
+                          asChild
+                          tooltip="Paramètres"
+                          isActive={isActive}
+                        >
+                          <div>
+                            <Settings className="h-4 w-4" />
+                            <span>Paramètres</span>
+                          </div>
+                        </SidebarMenuButton>
+                      )}
+                    </NavLink>
+                  </SidebarMenuItem>
+                )}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
       <SidebarFooter className="border-t p-2">
-        <div className="flex w-full items-center gap-3 px-1 py-1.5">
-          <div className="relative">
-            <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarImage src={user?.avatarUrl ?? undefined} alt={fullName} />
-              <AvatarFallback className="bg-primary/10 text-xs font-semibold rounded-[inherit]">
-                {avatarInitials}
-              </AvatarFallback>
-            </Avatar>
+        <div
+          className={cn(
+            "flex w-full items-center gap-3 px-1 py-1.5",
+            isCollapsed && "justify-center px-0",
+          )}
+        >
+          {isIconMode ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="relative shrink-0 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarImage
+                      src={user?.avatarUrl ?? undefined}
+                      alt={fullName}
+                    />
+                    <AvatarFallback className="bg-primary/10 text-xs font-semibold rounded-[inherit]">
+                      {avatarInitials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="absolute bottom-0 right-0 size-2 rounded-full bg-emerald-500 dark:bg-emerald-400 ring-sidebar ring-1" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="right"
+                align="end"
+                sideOffset={8}
+                className="w-48"
+              >
+                <DropdownMenuItem onClick={() => navigate("/profile")}>
+                  <User className="h-4 w-4" />
+                  Mon profil
+                </DropdownMenuItem>
+                {user?.role === "ADMIN" && (
+                  <DropdownMenuItem onClick={() => navigate("/settings")}>
+                    <Settings className="h-4 w-4" />
+                    Paramètres
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem
+                  onClick={() => logout()}
+                  className="text-destructive focus:text-destructive"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Déconnexion
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="relative shrink-0">
+              <Avatar className="h-8 w-8 rounded-lg">
+                <AvatarImage
+                  src={user?.avatarUrl ?? undefined}
+                  alt={fullName}
+                />
+                <AvatarFallback className="bg-primary/10 text-xs font-semibold rounded-[inherit]">
+                  {avatarInitials}
+                </AvatarFallback>
+              </Avatar>
+              <div className="absolute bottom-0 right-0 size-2 rounded-full bg-emerald-500 dark:bg-emerald-400 ring-sidebar ring-1" />
+            </div>
+          )}
 
-            <div
-              className="absolute bottom-0 right-0 size-2
-                      rounded-full bg-emerald-500 dark:bg-emerald-400
-                      ring-sidebar ring-1"
-            ></div>
-          </div>
+          {!isIconMode && (
+            <>
+              <div className="flex flex-1 flex-col items-start text-left min-w-0">
+                <span className="truncate text-sm font-medium leading-none text-sidebar-foreground">
+                  {fullName}
+                </span>
+                <span className="truncate text-xs text-muted-foreground mt-1">
+                  {user?.email || "email@exemple.com"}
+                </span>
+              </div>
 
-          <div className="flex flex-1 flex-col items-start text-left min-w-0">
-            <span className="truncate text-sm font-medium leading-none text-sidebar-foreground">
-              {fullName}
-            </span>
-            <span className="truncate text-xs text-muted-foreground mt-1">
-              {user?.email || "email@exemple.com"}
-            </span>
-          </div>
-
-          <button
-            onClick={() => logout()}
-            className="p-2 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-            title="Déconnexion"
-          >
-            <LogOut className="h-4 w-4" />
-          </button>
+              <button
+                onClick={() => logout()}
+                className="p-2 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                title="Déconnexion"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            </>
+          )}
         </div>
       </SidebarFooter>
     </Sidebar>

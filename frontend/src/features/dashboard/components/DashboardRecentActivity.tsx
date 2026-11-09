@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { usePaymentAuditLogs } from "@/features/payment-audit-log/hooks/usePaymentAuditLogs";
+import type { PaymentAuditLog } from "@/features/payment-audit-log";
 
 const ACTION_LABELS: Record<string, { label: string; className: string }> = {
   CREATE: {
@@ -61,14 +62,14 @@ export const DashboardRecentActivity = () => {
               </tr>
             </thead>
             <tbody>
-              {data.data.map((log) => {
+              {data.data.map((log: PaymentAuditLog) => {
                 const config = ACTION_LABELS[log.action];
                 const snapshot = (log.newData ?? log.oldData) as {
                   invoice?: { number?: string };
                   amount?: number;
                 } | null;
                 return (
-                  <tr key={log.id} className="border-t">
+                  <tr key={log.id} className="border-t bg-background">
                     <td className="px-4 py-2 whitespace-nowrap text-xs">
                       {new Date(log.createdAt).toLocaleString("fr-FR", {
                         day: "2-digit",

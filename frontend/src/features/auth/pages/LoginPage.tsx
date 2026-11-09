@@ -24,14 +24,15 @@ export const LoginPage = () => {
           </div>
         </div>
       </div>
-      <div className="relative hidden bg-muted lg:block">
+      <div className="relative hidden bg-muted lg:m-2 lg:block lg:rounded-2xl lg:shadow-sm lg:overflow-hidden lg:border lg:border-border">
         {!imgLoaded && <Skeleton className="absolute inset-0 h-full w-full" />}
         <img
-          src="https://images.unsplash.com/photo-1527031169734-cc605463fe17?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          // src="https://images.unsplash.com/photo-1527031169734-cc605463fe17?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
           onLoad={() => setImageLoaded(true)}
           alt="LoadingSideImage"
           className={cn(
-            "absolute inset-0 h-full w-full object-cover dark:brightness-[0.4] transition-opacity duration-500",
+            "absolute inset-0 h-full w-full object-cover dark:brightness-[0.7] transition-opacity duration-500",
             imgLoaded ? "opacity-100" : "opacity-0",
           )}
           loading="eager"

@@ -36,7 +36,7 @@ export const useAuth = () => {
 
   // --- Affichage Visuel ---
   const fullName = user
-    ? `${user.firstName || ""} ${user.lastName?.toUpperCase()}`.trim()
+    ? `${user.firstName || ""} ${user.lastName}`.trim()
     : "";
 
   const avatarInitials = user

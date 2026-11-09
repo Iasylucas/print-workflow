@@ -93,7 +93,7 @@ export const OrdersPage = () => {
           icon={Clock}
           variant="warning"
           isLoading={isStatsLoading}
-          description="Commandes bloquées côté client"
+          description="En attente du fichier graphiste"
         />
         <KpiCard
           label="En cours"
