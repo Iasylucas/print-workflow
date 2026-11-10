@@ -40,7 +40,7 @@ export const useAuth = () => {
     : "";
 
   const avatarInitials = user
-    ? `${user.firstName?.charAt(0) || ""}${user.lastName?.charAt(0)}`.toUpperCase()
+    ? `${user.firstName?.charAt(0) || ""}${user.lastName?.charAt(0)}`
     : "";
 
   return {

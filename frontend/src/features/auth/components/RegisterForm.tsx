@@ -133,9 +133,6 @@ export function RegisterForm({
                 placeholder="034 12 345 67"
                 className="bg-background"
               />
-              <FieldDescription>
-                Utilisé pour les communications urgentes
-              </FieldDescription>
               {fieldState.invalid && fieldState.error && (
                 <FieldError errors={[fieldState.error || ""]} />
               )}

@@ -83,7 +83,7 @@ export const CompanySettingsPage = () => {
       </PageHeader>
 
       <div className="w-full space-y-6">
-        <Card>
+        <Card className="bg-background">
           <CardHeader>
             <CardTitle>Informations générales</CardTitle>
           </CardHeader>
@@ -97,7 +97,7 @@ export const CompanySettingsPage = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-background">
           <CardHeader>
             <CardTitle>Historique des modifications</CardTitle>
           </CardHeader>
