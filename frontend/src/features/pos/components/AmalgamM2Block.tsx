@@ -142,7 +142,7 @@ export const AmalgamM2Block = ({
   };
 
   return (
-    <Card className="border-border bg-card shadow-sm">
+    <Card className="border-border bg-background shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <div className="flex items-center gap-2">
           <Layers className="h-4 w-4 text-primary" />

@@ -5,7 +5,7 @@ export type PaymentAuditAction = "CREATE" | "UPDATE" | "DELETE";
 
 export interface PaymentAuditLogQueryParams {
   page?: number;
-  limit?: number;
+  limit: number;
   invoiceNumber?: string;
   action?: PaymentAuditAction;
   userId?: string;
@@ -34,19 +34,26 @@ export interface PaymentAuditLog {
 // ============================================================
 // 2. RÉPONSE PAGINÉE
 // ============================================================
+export type PaginationMeta = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasMore: boolean;
+  sortBy: string;
+  sortOrder: "asc" | "desc";
+};
+
+// types
+export type PaymentAuditLogStatsParams = Pick<
+  PaymentAuditLogQueryParams,
+  "startDate" | "endDate" | "invoiceNumber" | "action" | "userId"
+>;
+
 export interface PaginatedPaymentAuditLogsResponse {
   data: PaymentAuditLog[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-    hasMore: boolean;
-    sortBy: string;
-    sortOrder: "asc" | "desc";
-  };
+  meta: PaginationMeta;
 }
-
 // ============================================================
 // 3. TYPE STATS
 // ============================================================

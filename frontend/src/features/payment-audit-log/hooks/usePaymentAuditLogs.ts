@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { paymentAuditLogApi } from "../services/paymentAuditLogApi";
-import type { PaymentAuditLogQueryParams } from "../types/payment-audit-log.types";
+import type {
+  PaymentAuditLogQueryParams,
+  PaymentAuditLogStatsParams,
+} from "../types/payment-audit-log.types";
 
 const PAYMENT_AUDIT_LOG_QUERY_KEY = "payment-audit-logs";
 
@@ -42,7 +45,7 @@ export const usePaymentAuditLogsByPaymentId = (paymentId: number | null) => {
 // ============================================================
 // HOOK POUR LES STATISTIQUES D'AUDIT
 // ============================================================
-export const usePaymentAuditLogStats = (params: PaymentAuditLogQueryParams) => {
+export const usePaymentAuditLogStats = (params: PaymentAuditLogStatsParams) => {
   return useQuery({
     queryKey: [PAYMENT_AUDIT_LOG_QUERY_KEY, "stats", params],
     queryFn: () => paymentAuditLogApi.getStats(params),

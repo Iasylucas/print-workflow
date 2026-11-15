@@ -1,5 +1,5 @@
 // frontend/src/features/orders/types/orders.types.ts
-import type { OrderStatus } from "../schema/orders.schema";
+// import type { OrderStatus } from "../schema/orders.schema";
 
 // ============================================================
 // 1. TYPES DE BASE

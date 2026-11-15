@@ -39,7 +39,7 @@ export const LoginPage = () => {
 
             <div className="relative z-10 space-y-3">
               <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/90">
-                E-WaPrint
+                EwaPrint
               </span>
               <h2 className="text-3xl font-bold leading-tight tracking-tight">
                 Votre espace, <br />

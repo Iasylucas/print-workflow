@@ -106,7 +106,7 @@ export const PaymentAuditLogDetailModal = ({
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Paiement</p>
-              <p className="font-mono">{log.paymentId ?? "-"}</p>
+              <p className="font-mono">{log.invoiceNumber ?? "-"}</p>
             </div>
           </div>
 

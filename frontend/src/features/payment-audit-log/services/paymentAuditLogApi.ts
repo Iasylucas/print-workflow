@@ -2,9 +2,11 @@ import { api } from "@/lib/axios";
 import { unwrap } from "@/lib/apiUtils";
 import type { ApiResponse } from "@/shared/types";
 import type {
+  PaginatedPaymentAuditLogsResponse,
   PaymentAuditLog,
   PaymentAuditLogQueryParams,
   PaymentAuditLogStats,
+  PaymentAuditLogStatsParams,
 } from "../types/payment-audit-log.types";
 
 export const paymentAuditLogApi = {
@@ -13,10 +15,9 @@ export const paymentAuditLogApi = {
   // ============================================================
   getLogs: (params?: PaymentAuditLogQueryParams) =>
     api
-      .get<ApiResponse<PaginatedPaymentAuditLogsResponse>>(
-        "/payment-audit-logs",
-        { params },
-      )
+      .get<
+        ApiResponse<PaginatedPaymentAuditLogsResponse>
+      >("/payment-audit-logs", { params })
       .then(unwrap),
 
   // ============================================================
@@ -32,19 +33,18 @@ export const paymentAuditLogApi = {
   // ============================================================
   getLogsByPaymentId: (paymentId: number) =>
     api
-      .get<ApiResponse<PaymentAuditLog[]>>(
-        `/payment-audit-logs/payment/${paymentId}`,
-      )
+      .get<
+        ApiResponse<PaymentAuditLog[]>
+      >(`/payment-audit-logs/payment/${paymentId}`)
       .then(unwrap),
 
   // ============================================================
   // STATISTIQUES D'AUDIT
   // ============================================================
-  getStats: (params?: PaymentAuditLogQueryParams) =>
+  getStats: (params?: PaymentAuditLogStatsParams) =>
     api
-      .get<ApiResponse<PaymentAuditLogStats>>(
-        "/payment-audit-logs/stats",
-        { params },
-      )
+      .get<
+        ApiResponse<PaymentAuditLogStats>
+      >("/payment-audit-logs/stats", { params })
       .then(unwrap),
 };

@@ -3,12 +3,13 @@ import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import { DataTable } from "@/components/shared/DataTable";
 import { paymentAuditLogColumns } from "./PaymentAuditLogColumns";
 import type {
+  PaginationMeta,
   PaymentAuditLog,
   PaymentAuditLogQueryParams,
 } from "../types/payment-audit-log.types";
 
 interface PaymentAuditLogTableProps {
-  data: { data: PaymentAuditLog[]; meta: any } | undefined;
+  data: { data: PaymentAuditLog[]; meta: PaginationMeta } | undefined;
   isLoading: boolean;
   queryParams: PaymentAuditLogQueryParams;
   goToPage: (page: number) => void;
