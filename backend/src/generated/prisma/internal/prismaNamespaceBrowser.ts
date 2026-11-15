@@ -65,6 +65,7 @@ export const ModelName = {
   Note: 'Note',
   AppSettings: 'AppSettings',
   Order: 'Order',
+  OrderStatusHistory: 'OrderStatusHistory',
   Product: 'Product',
   ProductVariant: 'ProductVariant',
   PricingRule: 'PricingRule'
@@ -305,6 +306,18 @@ export const OrderScalarFieldEnum = {
 } as const
 
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const OrderStatusHistoryScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  fromStatus: 'fromStatus',
+  toStatus: 'toStatus',
+  changedById: 'changedById',
+  createdAt: 'createdAt'
+} as const
+
+export type OrderStatusHistoryScalarFieldEnum = (typeof OrderStatusHistoryScalarFieldEnum)[keyof typeof OrderStatusHistoryScalarFieldEnum]
 
 
 export const ProductScalarFieldEnum = {

@@ -1,3 +1,4 @@
+import { prisma } from "@/config/prisma.js";
 import {
   NotFoundError,
   ForbiddenError,
@@ -51,12 +52,27 @@ export class OrdersService {
   async updateOrderStatus(
     id: number,
     data: UpdateOrderStatusInput,
+    changedById: string,
   ): Promise<OrderDetailOutput> {
     const order = await this.getOrderById(id);
 
+    if (order.status === data.status) {
+      return order;
+    }
+
     try {
-      return await this.ordersRepository.updateStatus(id, data.status);
-    } catch (error) {
+      return await prisma.$transaction(async (tx) => {
+        return await this.ordersRepository.updateStatusWithHistory(
+          tx,
+          id,
+          data.status,
+          {
+            fromStatus: order.status,
+            changedById,
+          },
+        );
+      });
+    } catch {
       throw new InternalServerError(ORDERS_ERRORS.UPDATE_FAILED);
     }
   }

@@ -162,6 +162,15 @@ export class OrderRepository {
           },
         });
 
+        await tx.orderStatusHistory.create({
+          data: {
+            orderId: createdOrder.id,
+            fromStatus: null,
+            toStatus: "waiting_for_file",
+            changedById: currentUserId,
+          },
+        });
+
         if (line.atelierNote && line.atelierNote.trim() !== "") {
           await tx.note.create({
             data: {
@@ -607,6 +616,16 @@ export class OrderRepository {
                 status: "waiting_for_file",
               },
             });
+
+            await tx.orderStatusHistory.create({
+              data: {
+                orderId: created.id,
+                fromStatus: null,
+                toStatus: "waiting_for_file",
+                changedById: userId,
+              },
+            });
+
             // Stocker le nouvel ID
             createdOrderIds[i] = created.id;
           }

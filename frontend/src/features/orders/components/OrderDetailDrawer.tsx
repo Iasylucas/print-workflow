@@ -1,4 +1,3 @@
-// frontend/src/features/orders/components/OrderDetailDrawer.tsx
 import { useOrderDetail, useOrderMutations } from "../hooks/useOrders";
 import { Drawer, DrawerContent, DrawerHeader } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { OrderStatusHistoryTable } from "./OrderStatusHistoryTable";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -60,20 +60,6 @@ export const OrderDetailDrawer = ({
   const [isFileDialogOpen, setIsFileDialogOpen] = useState(false);
 
   if (!orderId) return null;
-
-  // const handleUpdateStatus = async () => {
-  //   if (!order || !selectedStatus) return;
-  //   if (selectedStatus === order.status) {
-  //     toast.info("Le statut est déjà à jour");
-  //     return;
-  //   }
-  //   await updateStatusMutation.mutateAsync({
-  //     id: orderId,
-  //     data: { status: selectedStatus },
-  //   });
-  //   setSelectedStatus(null);
-  //   refetch();
-  // };
 
   const handleAddNote = async () => {
     if (!newNote.trim()) {
@@ -130,14 +116,12 @@ export const OrderDetailDrawer = ({
       <DrawerContent className="w-[500px] max-w-full h-full rounded-none">
         <DrawerHeader className="border-b px-4 py-3">
           <div className="grid grid-cols-[1fr_auto] items-center gap-2">
-            {/* Colonne gauche : Titre + Statut en colonne */}
             <div className="flex flex-col min-w-0">
               <span className="text-lg font-semibold truncate">
                 Détail de la commande
               </span>
             </div>
 
-            {/* Colonne droite : Bouton X */}
             <Button
               variant="ghost"
               size="icon"
@@ -159,7 +143,6 @@ export const OrderDetailDrawer = ({
             </div>
           ) : order ? (
             <div className="space-y-6">
-              {/* Informations principales */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2">
                   <p className="text-muted-foreground">Référence</p>
@@ -263,7 +246,7 @@ export const OrderDetailDrawer = ({
                 )}
               </div>
               <Separator />
-              {/* Notes */}
+
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold">
@@ -337,96 +320,6 @@ export const OrderDetailDrawer = ({
 
               <Separator />
 
-              {/* Fichiers */}
-              {/* <div>
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-semibold">
-                    Fichiers ({order.files.length})
-                  </h3>
-                  <Dialog
-                    open={isFileDialogOpen}
-                    onOpenChange={setIsFileDialogOpen}
-                  >
-                    <DialogTrigger asChild>
-                      <Button size="sm" variant="outline">
-                        <Plus className="h-4 w-4 mr-1" />
-                        Ajouter
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Ajouter un fichier</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <Input
-                          placeholder="URL du fichier (Mega.nz, etc.)"
-                          value={newFileUrl}
-                          onChange={(e) => setNewFileUrl(e.target.value)}
-                        />
-                        <select
-                          value={newFileCategory}
-                          onChange={(e) =>
-                            setNewFileCategory(
-                              e.target.value as "client_visual" | "final_print",
-                            )
-                          }
-                          className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
-                        >
-                          <option value="client_visual">Visuel client</option>
-                          <option value="final_print">Visuel à imprimer</option>
-                        </select>
-                        <Button
-                          onClick={handleAddFile}
-                          disabled={addFileMutation.isPending}
-                        >
-                          {addFileMutation.isPending ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            "Ajouter"
-                          )}
-                        </Button>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-                {order.files.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">Aucun fichier</p>
-                ) : (
-                  <div className="space-y-2">
-                    {order.files.map((file) => (
-                      <div
-                        key={file.id}
-                        className="bg-muted/20 p-3 rounded-lg flex items-center justify-between group"
-                      >
-                        <div className="flex items-center gap-2 min-w-0 flex-1">
-                          <FileText className="h-4 w-4 shrink-0" />
-                          <a
-                            href={file.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm hover:underline truncate"
-                          >
-                            {file.url}
-                          </a>
-                          <Badge variant="outline" className="text-xs">
-                            {file.category === "client_visual"
-                              ? "Client"
-                              : "À imprimer"}
-                          </Badge>
-                        </div>
-                        <button
-                          onClick={() => handleDeleteFile(file.id)}
-                          className="text-muted-foreground/50 hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div> */}
-
-              {/* Fichiers - Séparés par catégorie */}
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold">
@@ -480,7 +373,6 @@ export const OrderDetailDrawer = ({
                   </Dialog>
                 </div>
 
-                {/* Section Visuel client */}
                 <div className="mb-3">
                   <div className="flex items-center gap-2 mb-1">
                     <p className="text-sm font-medium text-muted-foreground">
@@ -531,7 +423,6 @@ export const OrderDetailDrawer = ({
                   )}
                 </div>
 
-                {/* Section Visuel à imprimer */}
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <p className="text-sm font-medium text-muted-foreground">
@@ -581,6 +472,8 @@ export const OrderDetailDrawer = ({
                   )}
                 </div>
               </div>
+              <Separator />
+              <OrderStatusHistoryTable orderId={orderId} />
             </div>
           ) : (
             <div className="text-center text-muted-foreground">

@@ -112,6 +112,11 @@ export type AppSettings = Prisma.AppSettingsModel
  */
 export type Order = Prisma.OrderModel
 /**
+ * Model OrderStatusHistory
+ * 
+ */
+export type OrderStatusHistory = Prisma.OrderStatusHistoryModel
+/**
  * Model Product
  * 
  */

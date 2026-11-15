@@ -84,6 +84,9 @@ export const useOrderMutations = () => {
       queryClient.invalidateQueries({
         queryKey: [ORDERS_QUERY_KEY, "detail", id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["order-status-history", id],
+      });
     },
     onError: (error: Error) => {
       toast.error(error.message || "Échec de la mise à jour du statut");

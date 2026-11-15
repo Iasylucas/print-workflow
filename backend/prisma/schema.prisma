@@ -54,6 +54,7 @@ model User {
 
   resetTokens       PasswordResetToken[]
   resetEmailRequest EmailChangeRequest[]
+  orderStatusChanges OrderStatusHistory[]
 }
 
 enum Role {
@@ -298,14 +299,32 @@ model Order {
   quoteId   Int?
   quote     Quote?   @relation(fields: [quoteId], references: [id])
 
-  // 👇 Audit
   createdById String
   createdBy   User      @relation("UserOrder", fields: [createdById], references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
+  statusHistory OrderStatusHistory[]
 
   @@index([createdAt])
+}
+
+model OrderStatusHistory {
+  id      Int   @id @default(autoincrement())
+  orderId Int
+  order   Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  fromStatus String?
+  toStatus   String
+
+  changedById String
+  changedBy   User   @relation(fields: [changedById], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([orderId])
+  @@index([createdAt])
+  @@index([changedById])
 }
 
 model Product {

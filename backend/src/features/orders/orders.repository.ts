@@ -116,6 +116,33 @@ export class OrdersRepository {
     });
   }
 
+  async updateStatusWithHistory(
+    tx: Prisma.TransactionClient,
+    id: number,
+    status: UpdateOrderStatusInput["status"],
+    historyData: {
+      fromStatus: string;
+      changedById: string;
+    },
+  ) {
+    const updated = await tx.order.update({
+      where: { id, deletedAt: null },
+      data: { status },
+      select: orderDetailSelect,
+    });
+
+    await tx.orderStatusHistory.create({
+      data: {
+        orderId: id,
+        fromStatus: historyData.fromStatus,
+        toStatus: status,
+        changedById: historyData.changedById,
+      },
+    });
+
+    return updated;
+  }
+
   async addNote(orderId: number, userId: string, data: AddOrderNoteInput) {
     return await prisma.note.create({
       data: {
@@ -216,32 +243,4 @@ export class OrdersRepository {
       byStatus,
     };
   }
-
-  // async getStats(): Promise<OrderStats> {
-  //   const baseWhere: Prisma.OrderWhereInput = { deletedAt: null };
-
-  //   const [waitingForFile, inProgress, inProduction, readyForDelivery] =
-  //     await Promise.all([
-  //       prisma.order.count({
-  //         where: { ...baseWhere, status: "waiting_for_file" },
-  //       }),
-  //       prisma.order.count({
-  //         where: {
-  //           ...baseWhere,
-  //           status: { in: [...IN_PROGRESS_STATUSES] },
-  //         },
-  //       }),
-  //       prisma.order.count({
-  //         where: {
-  //           ...baseWhere,
-  //           status: { in: [...IN_PRODUCTION_STATUSES] },
-  //         },
-  //       }),
-  //       prisma.order.count({
-  //         where: { ...baseWhere, status: "ready_for_delivery" },
-  //       }),
-  //     ]);
-
-  //   return { waitingForFile, inProgress, inProduction, readyForDelivery };
-  // }
 }

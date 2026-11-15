@@ -42,7 +42,12 @@ export const ordersController = {
     async (req: Request, res: Response): Promise<void> => {
       const { id } = orderIdParamSchema.parse(req.params);
       const validated = updateOrderStatusSchema.parse(req.body);
-      const order = await ordersService.updateOrderStatus(id, validated);
+      const userId = req.user!.sub;
+      const order = await ordersService.updateOrderStatus(
+        id,
+        validated,
+        userId,
+      );
       res.status(200).json({
         success: true,
         message: "Statut mis à jour avec succès",
@@ -86,7 +91,7 @@ export const ordersController = {
     });
   }),
 
-deleteFile: catchAsync(async (req: Request, res: Response): Promise<void> => {
+  deleteFile: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const fileId = orderIdParamSchema.parse(req.params).id;
     const userId = req.user!.sub;
     const userRole = req.user!.role;
@@ -104,5 +109,4 @@ deleteFile: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const stats = await ordersService.getStats();
     res.status(200).json({ success: true, data: stats });
   }),
-
 };
