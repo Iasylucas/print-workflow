@@ -1,17 +1,16 @@
-// frontend/src/features/orders/pages/OrdersPage.tsx
 import { useState } from "react";
 import { useOrders, useOrderStats } from "../hooks/useOrders";
 import { OrderFilters } from "../components/OrderFilters";
 import { OrdersTable } from "../components/OrdersTable";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
-// import { FailedTable } from "@/components/shared/FailedTable";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, Clock, PenTool, Printer, PackageCheck } from "lucide-react";
 import type { OrdersQueryParams, Order } from "../types/orders.types";
 import { OrderDetailDrawer } from "../components/OrderDetailDrawer";
 import { EditOrderModal } from "../components/EditOrderModal";
 import { KpiCard } from "@/components/shared/KpiCard";
+import { useSearchParams } from "react-router-dom";
 
 export const OrdersPage = () => {
   const [queryParams, setQueryParams] = useState<OrdersQueryParams>({
@@ -27,9 +26,11 @@ export const OrdersPage = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [detailDrawerOpen, setDetailDrawerOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const openOrderId = searchParams.get("openOrder");
+  const orderIdFromUrl = openOrderId ? Number(openOrderId) : null;
 
   const { data, isLoading, refetch } = useOrders(queryParams);
-  // const { deleteOrderMutation } = useOrderMutations();
   const { data: stats, isLoading: isStatsLoading } = useOrderStats();
 
   const handleFilter = (filters: Partial<OrdersQueryParams>) => {
@@ -54,21 +55,15 @@ export const OrdersPage = () => {
     setDetailDrawerOpen(true);
   };
 
-  // const handleDelete = (order: Order) => {
-  //   if (window.confirm(`Supprimer la commande ${order.designation} ?`)) {
-  //     deleteOrderMutation.mutate(order.id);
-  //   }
-  // };
-
-  // if (isError) {
-  //   return (
-  //     <FailedTable
-  //       refetch={refetch}
-  //       sujet="commandes"
-  //       actionLabel="Réessayer"
-  //     />
-  //   );
-  // }
+  const handleDrawerClose = () => {
+    setSelectedOrder(null);
+    setDetailDrawerOpen(false);
+    if (searchParams.has("openOrder")) {
+      const next = new URLSearchParams(searchParams);
+      next.delete("openOrder");
+      setSearchParams(next, { replace: true });
+    }
+  };
 
   return (
     <div className="w-full space-y-6 animate-in fade-in duration-300">
@@ -146,9 +141,13 @@ export const OrdersPage = () => {
       </div>
 
       <OrderDetailDrawer
-        isOpen={detailDrawerOpen}
-        onOpenChange={setDetailDrawerOpen}
-        orderId={selectedOrder?.id || null}
+        key={selectedOrder?.id ?? orderIdFromUrl ?? "closed"}
+        isOpen={detailDrawerOpen || !!orderIdFromUrl}
+        onOpenChange={(open) => {
+          if (!open) handleDrawerClose();
+          else setDetailDrawerOpen(true);
+        }}
+        orderId={selectedOrder?.id ?? orderIdFromUrl}
       />
 
       <EditOrderModal

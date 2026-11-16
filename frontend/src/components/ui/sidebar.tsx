@@ -257,6 +257,7 @@ function SidebarTrigger({
       size="icon-sm"
       className={cn(
         className,
+        "hidden",
         "absolute -right-9.5 top-1/2 -translate-y-1/2 bg-secondary",
         "rounded-l-none rounded-r-lg",
         "border border-primary/20 border-l-0",

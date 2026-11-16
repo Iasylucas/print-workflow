@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "@/components/shared/ThemeToggle";
 
 interface PageHeaderProps {
   title: string;
@@ -34,8 +33,6 @@ export const PageHeader = ({
       </div>
 
       <div className="flex items-center gap-3 shrink-0 sm:ml-auto">
-        <ThemeToggle className="hidden lg:block" />
-
         {children}
       </div>
     </div>
