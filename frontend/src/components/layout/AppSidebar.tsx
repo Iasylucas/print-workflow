@@ -15,7 +15,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, User, Settings } from "lucide-react";
+import { LogOut, User, Briefcase } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Skeleton } from "../ui/skeleton";
 import { useCompanyStore } from "@/features/company-info/stores/companyStore";
@@ -132,16 +132,16 @@ export const AppSidebar = () => {
 
                 {user?.role === "ADMIN" && (
                   <SidebarMenuItem>
-                    <NavLink to="/settings">
+                    <NavLink to="/company">
                       {({ isActive }) => (
                         <SidebarMenuButton
                           asChild
-                          tooltip="Paramètres"
+                          tooltip="Entreprise"
                           isActive={isActive}
                         >
                           <div>
-                            <Settings className="h-4 w-4" />
-                            <span>Paramètres</span>
+                            <Briefcase className="h-4 w-4" />
+                            <span>Entreprise</span>
                           </div>
                         </SidebarMenuButton>
                       )}
@@ -184,9 +184,9 @@ export const AppSidebar = () => {
                   Mon profil
                 </DropdownMenuItem>
                 {user?.role === "ADMIN" && (
-                  <DropdownMenuItem onClick={() => navigate("/settings")}>
-                    <Settings className="h-4 w-4" />
-                    Paramètres
+                  <DropdownMenuItem onClick={() => navigate("/company")}>
+                    <Briefcase className="h-4 w-4" />
+                    Entreprise
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem

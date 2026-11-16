@@ -28,6 +28,7 @@
     "express-rate-limit": "^8.7.0",
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^8.0.7",
+    "openai": "^7.57.0",
     "pg": "^8.20.0",
     "resend": "^6.12.3",
     "tsconfig-paths": "^4.2.0",

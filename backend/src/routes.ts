@@ -14,6 +14,7 @@ import { paymentAuditLogRoutes } from "./features/payment-audit-log/payment-audi
 import { dashboardRoutes } from "./features/dashboard/dashboard.routes.js";
 import { orderStatusHistoryRoutes } from "@/features/order-status-history/index.js";
 import { notificationsRoutes } from "@/features/notifications/index.js";
+import { assistantRoutes } from "./features/assistant/assistant.routes.js";
 
 const router: Router = Router();
 
@@ -31,5 +32,6 @@ router.use("/payment-audit-logs", paymentAuditLogRoutes);
 router.use("/order-status-history", orderStatusHistoryRoutes);
 router.use("/notifications", notificationsRoutes);
 router.use("/dashboard", dashboardRoutes);
+router.use("/assistant", assistantRoutes);
 
 export default router;

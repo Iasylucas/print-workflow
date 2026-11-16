@@ -1,12 +1,15 @@
 import { useSidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Menu, PanelLeftIcon } from "lucide-react";
+import { Menu, PanelLeftIcon, Plus } from "lucide-react";
 import { ThemeToggle } from "../shared/ThemeToggle";
 import { Logo } from "@/features/company-info/components/Logo";
 import { NotificationBell } from "@/features/notifications";
+import { AssistantButton } from "@/features/assistant";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const { toggleSidebar } = useSidebar();
+  const navigate = useNavigate();
 
   return (
     <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center justify-between border-b bg-background/95 backdrop-blur px-4 transition-all">
@@ -32,13 +35,18 @@ export const Header = () => {
       {/* Droite : notifs + thème mobile + burger mobile */}
       <div className="flex items-center gap-2">
         <ThemeToggle />
+
+        <AssistantButton />
+
+        <NotificationBell />
+
         <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Notifications"
-          className="h-9 w-9 text-muted-foreground hover:text-foreground"
+          size="sm"
+          className="gap-2 h-9 hidden sm:inline-flex"
+          onClick={() => navigate("/pos")}
         >
-          <NotificationBell />
+          <Plus className="h-4 w-4" />
+          <span>Nouvelle commande</span>
         </Button>
 
         <Button

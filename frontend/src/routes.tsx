@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
           { path: "/orders", element: <OrdersPage /> },
           { path: "/invoices", element: <InvoicesPage /> },
           { path: "/payment-audit-logs", element: <PaymentAuditLogsPage /> },
-          { path: "/settings", element: <CompanySettingsPage /> },
+          { path: "/company", element: <CompanySettingsPage /> },
           { path: "/notifications", element: <NotificationsPage /> },
         ],
       },
