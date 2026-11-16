@@ -51,6 +51,10 @@ const statusConfig: Record<
     label: "Annulée",
     className: "border-transparent bg-destructive/10 text-destructive",
   },
+  not_applicable: {
+    label: "Service",
+    className: "bg-muted text-muted-foreground border-muted-foreground/30",
+  },
 };
 
 export const OrderStatusBadge = ({ status }: OrderStatusBadgeProps) => {

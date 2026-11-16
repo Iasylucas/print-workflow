@@ -217,34 +217,44 @@ export const OrderDetailDrawer = ({
               </div>
 
               <Separator />
-              <div className="flex items-center gap-3 mt-3">
-                <Select
-                  value={order.status}
-                  onValueChange={(val) => {
-                    const newStatus = val as OrderStatus;
-                    if (newStatus === order.status) return;
-                    updateStatusMutation.mutate({
-                      id: orderId,
-                      data: { status: newStatus },
-                    });
-                    refetch();
-                  }}
-                >
-                  <SelectTrigger className="h-9 w-[220px]">
-                    <SelectValue placeholder="Changer le statut..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {ORDER_STATUSES.map((status) => (
-                      <SelectItem key={status} value={status}>
-                        {ORDER_STATUS_LABELS[status]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {updateStatusMutation.isPending && (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                )}
-              </div>
+              {order.status !== "not_applicable" ? (
+                <div className="flex items-center gap-3 mt-3 ml-1">
+                  <Select
+                    value={order.status}
+                    onValueChange={(val) => {
+                      const newStatus = val as OrderStatus;
+                      if (newStatus === order.status) return;
+                      updateStatusMutation.mutate({
+                        id: orderId,
+                        data: { status: newStatus },
+                      });
+                      refetch();
+                    }}
+                  >
+                    <SelectTrigger className="h-9 w-[220px]">
+                      <SelectValue placeholder="Changer le statut..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ORDER_STATUSES.filter((s) => s !== "not_applicable").map(
+                        (status) => (
+                          <SelectItem key={status} value={status}>
+                            {ORDER_STATUS_LABELS[status]}
+                          </SelectItem>
+                        ),
+                      )}
+                    </SelectContent>
+                  </Select>
+                  {updateStatusMutation.isPending && (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  )}
+                </div>
+              ) : (
+                <div className="mt-3">
+                  <p className="text-xs text-muted-foreground italic">
+                    Prestation de service — pas de suivi de production
+                  </p>
+                </div>
+              )}
               <Separator />
 
               <div>
@@ -473,7 +483,9 @@ export const OrderDetailDrawer = ({
                 </div>
               </div>
               <Separator />
-              <OrderStatusHistoryTable orderId={orderId} />
+              {order.status !== "not_applicable" && (
+                <OrderStatusHistoryTable orderId={orderId} />
+              )}
             </div>
           ) : (
             <div className="text-center text-muted-foreground">

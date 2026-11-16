@@ -8,6 +8,7 @@ import type {
 import { InvoicesRepository } from "../invoices/invoices.repository.js";
 import { notificationsService } from "@/features/notifications/index.js";
 import { NOTIFICATION_TYPES } from "@/features/notifications/index.js";
+import { isServiceProduct } from "../orders/orders.constants.js";
 
 export class OrderRepository {
   async countInvoicesByMonth(year: number, month: number): Promise<number> {
@@ -159,7 +160,9 @@ export class OrderRepository {
             quantity: line.quantity,
             unitPrice: line.unitPrice,
             createdById: currentUserId,
-            status: "waiting_for_file",
+            status: isServiceProduct(line.productId)
+              ? "not_applicable"
+              : "waiting_for_file",
           },
         });
 

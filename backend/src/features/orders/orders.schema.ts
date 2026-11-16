@@ -11,6 +11,7 @@ export const updateOrderStatusSchema = z.object({
     "ready_for_delivery",
     "delivered",
     "cancelled",
+    "not_applicable",
   ]),
 });
 

@@ -9,6 +9,9 @@ import {
   QuoteStats,
 } from "./quotes.types.js";
 import { InternalServerError } from "@/shared/error/error.js";
+import { notificationsService } from "../notifications/notifications.service.js";
+import { NOTIFICATION_TYPES } from "../notifications/notifications.constants.js";
+import { isServiceProduct } from "../orders/orders.constants.js";
 
 export class QuotesRepository {
   async findAll(query: QuotesQuery): Promise<PaginatedQuotesList> {
@@ -184,6 +187,11 @@ export class QuotesRepository {
 
       if (quote.orders && quote.orders.length > 0) {
         for (const order of quote.orders) {
+          const isService = isServiceProduct(order.productId);
+          const initialStatus = isService
+            ? "not_applicable"
+            : "waiting_for_file";
+
           const createdOrder = await tx.order.create({
             data: {
               reference: `CMD-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
@@ -196,18 +204,28 @@ export class QuotesRepository {
               quantity: order.quantity,
               unitPrice: order.unitPrice,
               createdById: userId,
-              status: "waiting_for_file",
+              status: initialStatus,
             },
           });
 
-          await tx.orderStatusHistory.create({
-            data: {
+          if (!isService) {
+            await tx.orderStatusHistory.create({
+              data: {
+                orderId: createdOrder.id,
+                fromStatus: null,
+                toStatus: "waiting_for_file",
+                changedById: userId,
+              },
+            });
+
+            await notificationsService.notifyRoles(tx, ["GRAPHIC_DESIGNER"], {
+              type: NOTIFICATION_TYPES.ORDER_CREATED,
+              title: "Nouvelle commande",
+              message: `Nouvelle commande ${createdOrder.reference} — ${order.designation}`,
+              link: `/orders?openOrder=${createdOrder.id}`,
               orderId: createdOrder.id,
-              fromStatus: null,
-              toStatus: "waiting_for_file",
-              changedById: userId,
-            },
-          });
+            });
+          }
         }
       }
 

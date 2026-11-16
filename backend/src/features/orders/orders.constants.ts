@@ -27,3 +27,8 @@ export const ORDER_STATUS_PIPELINE: Record<string, number> = {
   ready_for_delivery: 5,
   delivered: 6,
 };
+
+export const SERVICE_PRODUCT_ID_THRESHOLD = 12;
+export const isServiceProduct = (
+  productId: number | null | undefined,
+): boolean => !!productId && productId > SERVICE_PRODUCT_ID_THRESHOLD;

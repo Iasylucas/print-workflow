@@ -18,6 +18,7 @@ import {
 import { notificationsService } from "@/features/notifications/index.js";
 import { NOTIFICATION_TYPES } from "@/features/notifications/index.js";
 import { ORDER_STATUS_PIPELINE } from "./orders.constants.js";
+import { BadRequestError } from "@/shared/error/error.js";
 
 export class OrdersRepository {
   async findAll(query: OrdersQuery): Promise<PaginatedOrdersList> {
@@ -128,6 +129,11 @@ export class OrdersRepository {
       changedById: string;
     },
   ) {
+    if (status === "not_applicable") {
+      throw new BadRequestError(
+        "Ce statut ne peut pas être appliqué manuellement",
+      );
+    }
     const updated = await tx.order.update({
       where: { id, deletedAt: null },
       data: { status },
@@ -250,7 +256,10 @@ export class OrdersRepository {
   }
 
   async getStats(): Promise<OrderStats> {
-    const baseWhere: Prisma.OrderWhereInput = { deletedAt: null };
+    const baseWhere: Prisma.OrderWhereInput = {
+      deletedAt: null,
+      status: { not: "not_applicable" },
+    };
 
     const [
       waitingForFile,

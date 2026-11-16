@@ -146,4 +146,5 @@ export type OrderStatus =
   | "cutting_in_progress"
   | "ready_for_delivery"
   | "delivered"
-  | "cancelled";
+  | "cancelled"
+  | "not_applicable";

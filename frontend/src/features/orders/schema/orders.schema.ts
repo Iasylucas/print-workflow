@@ -9,6 +9,7 @@ export const ORDER_STATUSES = [
   "ready_for_delivery",
   "delivered",
   "cancelled",
+  "not_applicable",
 ] as const;
 
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
@@ -20,6 +21,7 @@ export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   ready_for_delivery: "Prêt pour livraison",
   delivered: "Livrée",
   cancelled: "Annulée",
+  not_applicable: "Service",
 };
 
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
