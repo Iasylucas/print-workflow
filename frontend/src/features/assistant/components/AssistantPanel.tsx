@@ -8,8 +8,8 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { ScrollArea } from "@/components/ui/scroll-area";
+// import { Textarea } from "@/components/ui/textarea";
+import TextareaAutosize from "react-textarea-autosize";
 import { useAssistant } from "../hooks/useAssistant";
 import { AssistantMessage } from "./AssistantMessage";
 import type { ChatMessage } from "../types/assistant.types";
@@ -43,7 +43,7 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
     if (!trimmed || isPending) return;
 
     const userMessage: ChatMessage = {
-      id: `u-${Date.now()}`,
+      id: crypto.randomUUID(),
       role: "user",
       content: trimmed,
       createdAt: new Date(),
@@ -54,7 +54,7 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
     try {
       const response = await mutateAsync(trimmed);
       const assistantMessage: ChatMessage = {
-        id: `a-${Date.now()}`,
+        id: crypto.randomUUID(),
         role: "assistant",
         content: response.answer,
         createdAt: new Date(),
@@ -62,7 +62,7 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch {
       const errorMessage: ChatMessage = {
-        id: `e-${Date.now()}`,
+        id: crypto.randomUUID(),
         role: "assistant",
         content:
           "Désolé, une erreur est survenue. Réessayez dans quelques instants.",
@@ -91,7 +91,7 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-md p-0 flex flex-col">
-        <SheetHeader className="px-4 py-3 border-b shrink-0">
+        <SheetHeader className="px-4 py-3 border-b shrink-0 pr-12">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -99,7 +99,7 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
               </div>
               <div>
                 <SheetTitle className="text-base">
-                  Assistant EWA Print
+                  Assistant EWAPrint
                 </SheetTitle>
                 <SheetDescription className="text-xs">
                   Posez une question sur vos données
@@ -172,14 +172,15 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
           className="border-t p-3 shrink-0 bg-background"
         >
           <div className="flex items-end gap-2">
-            <Textarea
+            <TextareaAutosize
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Posez votre question..."
-              rows={1}
+              minRows={1}
+              maxRows={6}
               disabled={isPending}
-              className="min-h-[40px] max-h-[120px] resize-none text-sm"
+              className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
             />
             <Button
               type="submit"
