@@ -202,4 +202,15 @@ export class UserRepository {
       where: { id },
     });
   }
+
+  async findActiveByRoles(roles: string[]) {
+    return await prisma.user.findMany({
+      where: {
+        role: { in: roles },
+        isActive: true,
+        deletedAt: null,
+      },
+      select: { id: true },
+    });
+  }
 }

@@ -55,6 +55,7 @@ model User {
   resetTokens       PasswordResetToken[]
   resetEmailRequest EmailChangeRequest[]
   orderStatusChanges OrderStatusHistory[]
+  notifications Notification[]
 }
 
 enum Role {
@@ -305,6 +306,7 @@ model Order {
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
   statusHistory OrderStatusHistory[]
+  notifications Notification[]
 
   @@index([createdAt])
 }
@@ -359,6 +361,29 @@ model PricingRule {
   updatedAt   DateTime       @updatedAt
 
   @@index([variantId])
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type      String
+  title     String
+  message   String
+  link      String?
+
+  orderId   Int?
+  order     Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  metadata  Json?
+
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId, readAt])
+  @@index([userId, createdAt])
+  @@index([createdAt])
 }
 
 enum PricingMode {

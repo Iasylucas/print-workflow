@@ -15,6 +15,9 @@ import {
   IN_PROGRESS_STATUSES,
   IN_PRODUCTION_STATUSES,
 } from "./orders.constants.js";
+import { notificationsService } from "@/features/notifications/index.js";
+import { NOTIFICATION_TYPES } from "@/features/notifications/index.js";
+import { ORDER_STATUS_PIPELINE } from "./orders.constants.js";
 
 export class OrdersRepository {
   async findAll(query: OrdersQuery): Promise<PaginatedOrdersList> {
@@ -139,6 +142,57 @@ export class OrdersRepository {
         changedById: historyData.changedById,
       },
     });
+    const getStatusIndex = (status: string | null): number => {
+      if (!status) return -1;
+      return ORDER_STATUS_PIPELINE[status] ?? -1;
+    };
+
+    const fromIndex = getStatusIndex(historyData.fromStatus);
+    const toIndex = getStatusIndex(status);
+
+    const isRollback = toIndex < fromIndex && fromIndex >= 0 && toIndex >= 0;
+
+    if (isRollback) {
+      await notificationsService.notifyRoles(
+        tx,
+        ["GRAPHIC_DESIGNER", "PRINTER", "SALES", "ADMIN"],
+        {
+          type: NOTIFICATION_TYPES.ORDER_STATUS_ROLLBACK,
+          title: "Retour arrière de statut",
+          message: `Commande ${updated.reference} : retour de "${historyData.fromStatus}" vers "${status}"`,
+          link: `/orders?openOrder=${id}`,
+          orderId: id,
+          metadata: {
+            fromStatus: historyData.fromStatus,
+            toStatus: status,
+          },
+        },
+      );
+    } else if (status === "file_completed") {
+      await notificationsService.notifyRoles(tx, ["PRINTER"], {
+        type: NOTIFICATION_TYPES.ORDER_FILE_COMPLETED,
+        title: "Fichier prêt à imprimer",
+        message: `Commande ${updated.reference} : fichier prêt`,
+        link: `/orders?openOrder=${id}`,
+        orderId: id,
+        metadata: {
+          fromStatus: historyData.fromStatus,
+          toStatus: status,
+        },
+      });
+    } else if (status === "ready_for_delivery") {
+      await notificationsService.notifyRoles(tx, ["SALES"], {
+        type: NOTIFICATION_TYPES.ORDER_READY_FOR_DELIVERY,
+        title: "Commande prête pour livraison",
+        message: `Commande ${updated.reference} : prête pour livraison`,
+        link: `/orders?openOrder=${id}`,
+        orderId: id,
+        metadata: {
+          fromStatus: historyData.fromStatus,
+          toStatus: status,
+        },
+      });
+    }
 
     return updated;
   }

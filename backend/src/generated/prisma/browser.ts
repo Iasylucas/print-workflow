@@ -107,3 +107,8 @@ export type ProductVariant = Prisma.ProductVariantModel
  * 
  */
 export type PricingRule = Prisma.PricingRuleModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel

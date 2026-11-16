@@ -1,7 +1,4 @@
-export const IN_PROGRESS_STATUSES = [
-  "in_progress",
-  "file_completed",
-] as const;
+export const IN_PROGRESS_STATUSES = ["in_progress", "file_completed"] as const;
 
 export const IN_PRODUCTION_STATUSES = [
   "printing_in_progress",
@@ -20,3 +17,13 @@ export const ORDERS_ERRORS = {
   FORBIDDEN: "Vous n'avez pas les droits pour effectuer cette action",
   STATS_FAILED: "Impossible de récupérer les statistiques des commandes",
 } as const;
+
+export const ORDER_STATUS_PIPELINE: Record<string, number> = {
+  waiting_for_file: 0,
+  in_progress: 1,
+  file_completed: 2,
+  printing_in_progress: 3,
+  cutting_in_progress: 4,
+  ready_for_delivery: 5,
+  delivered: 6,
+};

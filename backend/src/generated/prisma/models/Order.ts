@@ -332,6 +332,7 @@ export type OrderWhereInput = {
   quote?: Prisma.XOR<Prisma.QuoteNullableScalarRelationFilter, Prisma.QuoteWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   statusHistory?: Prisma.OrderStatusHistoryListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }
 
 export type OrderOrderByWithRelationInput = {
@@ -359,6 +360,7 @@ export type OrderOrderByWithRelationInput = {
   quote?: Prisma.QuoteOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
   statusHistory?: Prisma.OrderStatusHistoryOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
 }
 
 export type OrderWhereUniqueInput = Prisma.AtLeast<{
@@ -389,6 +391,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   quote?: Prisma.XOR<Prisma.QuoteNullableScalarRelationFilter, Prisma.QuoteWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   statusHistory?: Prisma.OrderStatusHistoryListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }, "id" | "reference">
 
 export type OrderOrderByWithAggregationInput = {
@@ -456,6 +459,7 @@ export type OrderCreateInput = {
   quote?: Prisma.QuoteCreateNestedOneWithoutOrdersInput
   createdBy: Prisma.UserCreateNestedOneWithoutOrdersCreatedInput
   statusHistory?: Prisma.OrderStatusHistoryCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateInput = {
@@ -478,6 +482,7 @@ export type OrderUncheckedCreateInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOrderInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutOrderInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUpdateInput = {
@@ -499,6 +504,7 @@ export type OrderUpdateInput = {
   quote?: Prisma.QuoteUpdateOneWithoutOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutOrdersCreatedNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateInput = {
@@ -521,6 +527,7 @@ export type OrderUncheckedUpdateInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutOrderNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutOrderNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateManyInput = {
@@ -662,6 +669,11 @@ export type OrderSumOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
   invoiceId?: Prisma.SortOrder
   quoteId?: Prisma.SortOrder
+}
+
+export type OrderNullableScalarRelationFilter = {
+  is?: Prisma.OrderWhereInput | null
+  isNot?: Prisma.OrderWhereInput | null
 }
 
 export type OrderCreateNestedManyWithoutClientInput = {
@@ -916,6 +928,22 @@ export type OrderUncheckedUpdateManyWithoutProductNestedInput = {
   deleteMany?: Prisma.OrderScalarWhereInput | Prisma.OrderScalarWhereInput[]
 }
 
+export type OrderCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutNotificationsInput, Prisma.OrderUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.OrderWhereUniqueInput
+}
+
+export type OrderUpdateOneWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutNotificationsInput, Prisma.OrderUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.OrderUpsertWithoutNotificationsInput
+  disconnect?: Prisma.OrderWhereInput | boolean
+  delete?: Prisma.OrderWhereInput | boolean
+  connect?: Prisma.OrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutNotificationsInput, Prisma.OrderUpdateWithoutNotificationsInput>, Prisma.OrderUncheckedUpdateWithoutNotificationsInput>
+}
+
 export type OrderCreateWithoutClientInput = {
   reference: string
   designation: string
@@ -934,6 +962,7 @@ export type OrderCreateWithoutClientInput = {
   quote?: Prisma.QuoteCreateNestedOneWithoutOrdersInput
   createdBy: Prisma.UserCreateNestedOneWithoutOrdersCreatedInput
   statusHistory?: Prisma.OrderStatusHistoryCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutClientInput = {
@@ -955,6 +984,7 @@ export type OrderUncheckedCreateWithoutClientInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOrderInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutOrderInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutClientInput = {
@@ -1023,6 +1053,7 @@ export type OrderCreateWithoutCreatedByInput = {
   invoice?: Prisma.InvoiceCreateNestedOneWithoutOrdersInput
   quote?: Prisma.QuoteCreateNestedOneWithoutOrdersInput
   statusHistory?: Prisma.OrderStatusHistoryCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutCreatedByInput = {
@@ -1044,6 +1075,7 @@ export type OrderUncheckedCreateWithoutCreatedByInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOrderInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutOrderInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutCreatedByInput = {
@@ -1090,6 +1122,7 @@ export type OrderCreateWithoutQuoteInput = {
   invoice?: Prisma.InvoiceCreateNestedOneWithoutOrdersInput
   createdBy: Prisma.UserCreateNestedOneWithoutOrdersCreatedInput
   statusHistory?: Prisma.OrderStatusHistoryCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutQuoteInput = {
@@ -1111,6 +1144,7 @@ export type OrderUncheckedCreateWithoutQuoteInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOrderInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutOrderInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutQuoteInput = {
@@ -1157,6 +1191,7 @@ export type OrderCreateWithoutInvoiceInput = {
   quote?: Prisma.QuoteCreateNestedOneWithoutOrdersInput
   createdBy: Prisma.UserCreateNestedOneWithoutOrdersCreatedInput
   statusHistory?: Prisma.OrderStatusHistoryCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutInvoiceInput = {
@@ -1178,6 +1213,7 @@ export type OrderUncheckedCreateWithoutInvoiceInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOrderInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutOrderInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutInvoiceInput = {
@@ -1224,6 +1260,7 @@ export type OrderCreateWithoutFilesInput = {
   quote?: Prisma.QuoteCreateNestedOneWithoutOrdersInput
   createdBy: Prisma.UserCreateNestedOneWithoutOrdersCreatedInput
   statusHistory?: Prisma.OrderStatusHistoryCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutFilesInput = {
@@ -1245,6 +1282,7 @@ export type OrderUncheckedCreateWithoutFilesInput = {
   deletedAt?: Date | string | null
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutOrderInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutFilesInput = {
@@ -1281,6 +1319,7 @@ export type OrderUpdateWithoutFilesInput = {
   quote?: Prisma.QuoteUpdateOneWithoutOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutOrdersCreatedNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutFilesInput = {
@@ -1302,6 +1341,7 @@ export type OrderUncheckedUpdateWithoutFilesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NoteUncheckedUpdateManyWithoutOrderNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutNotesInput = {
@@ -1322,6 +1362,7 @@ export type OrderCreateWithoutNotesInput = {
   quote?: Prisma.QuoteCreateNestedOneWithoutOrdersInput
   createdBy: Prisma.UserCreateNestedOneWithoutOrdersCreatedInput
   statusHistory?: Prisma.OrderStatusHistoryCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutNotesInput = {
@@ -1343,6 +1384,7 @@ export type OrderUncheckedCreateWithoutNotesInput = {
   deletedAt?: Date | string | null
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOrderInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutNotesInput = {
@@ -1379,6 +1421,7 @@ export type OrderUpdateWithoutNotesInput = {
   quote?: Prisma.QuoteUpdateOneWithoutOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutOrdersCreatedNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutNotesInput = {
@@ -1400,6 +1443,7 @@ export type OrderUncheckedUpdateWithoutNotesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.FileUncheckedUpdateManyWithoutOrderNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutStatusHistoryInput = {
@@ -1420,6 +1464,7 @@ export type OrderCreateWithoutStatusHistoryInput = {
   invoice?: Prisma.InvoiceCreateNestedOneWithoutOrdersInput
   quote?: Prisma.QuoteCreateNestedOneWithoutOrdersInput
   createdBy: Prisma.UserCreateNestedOneWithoutOrdersCreatedInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutStatusHistoryInput = {
@@ -1441,6 +1486,7 @@ export type OrderUncheckedCreateWithoutStatusHistoryInput = {
   deletedAt?: Date | string | null
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOrderInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutStatusHistoryInput = {
@@ -1477,6 +1523,7 @@ export type OrderUpdateWithoutStatusHistoryInput = {
   invoice?: Prisma.InvoiceUpdateOneWithoutOrdersNestedInput
   quote?: Prisma.QuoteUpdateOneWithoutOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutOrdersCreatedNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutStatusHistoryInput = {
@@ -1498,6 +1545,7 @@ export type OrderUncheckedUpdateWithoutStatusHistoryInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.FileUncheckedUpdateManyWithoutOrderNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateWithoutProductInput = {
@@ -1518,6 +1566,7 @@ export type OrderCreateWithoutProductInput = {
   quote?: Prisma.QuoteCreateNestedOneWithoutOrdersInput
   createdBy: Prisma.UserCreateNestedOneWithoutOrdersCreatedInput
   statusHistory?: Prisma.OrderStatusHistoryCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutProductInput = {
@@ -1539,6 +1588,7 @@ export type OrderUncheckedCreateWithoutProductInput = {
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOrderInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutOrderInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedCreateNestedManyWithoutOrderInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutProductInput = {
@@ -1565,6 +1615,108 @@ export type OrderUpdateWithWhereUniqueWithoutProductInput = {
 export type OrderUpdateManyWithWhereWithoutProductInput = {
   where: Prisma.OrderScalarWhereInput
   data: Prisma.XOR<Prisma.OrderUpdateManyMutationInput, Prisma.OrderUncheckedUpdateManyWithoutProductInput>
+}
+
+export type OrderCreateWithoutNotificationsInput = {
+  reference: string
+  designation: string
+  label?: string | null
+  dimensions?: string | null
+  unitPrice: number
+  quantity: number
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  client: Prisma.ClientCreateNestedOneWithoutOrdersInput
+  product?: Prisma.ProductCreateNestedOneWithoutOrdersInput
+  files?: Prisma.FileCreateNestedManyWithoutOrderInput
+  notes?: Prisma.NoteCreateNestedManyWithoutOrderInput
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutOrdersInput
+  quote?: Prisma.QuoteCreateNestedOneWithoutOrdersInput
+  createdBy: Prisma.UserCreateNestedOneWithoutOrdersCreatedInput
+  statusHistory?: Prisma.OrderStatusHistoryCreateNestedManyWithoutOrderInput
+}
+
+export type OrderUncheckedCreateWithoutNotificationsInput = {
+  id?: number
+  reference: string
+  designation: string
+  label?: string | null
+  dimensions?: string | null
+  clientId: string
+  productId?: number | null
+  unitPrice: number
+  quantity: number
+  status?: string
+  invoiceId?: number | null
+  quoteId?: number | null
+  createdById: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  files?: Prisma.FileUncheckedCreateNestedManyWithoutOrderInput
+  notes?: Prisma.NoteUncheckedCreateNestedManyWithoutOrderInput
+  statusHistory?: Prisma.OrderStatusHistoryUncheckedCreateNestedManyWithoutOrderInput
+}
+
+export type OrderCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutNotificationsInput, Prisma.OrderUncheckedCreateWithoutNotificationsInput>
+}
+
+export type OrderUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutNotificationsInput, Prisma.OrderUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutNotificationsInput, Prisma.OrderUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.OrderWhereInput
+}
+
+export type OrderUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.OrderWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutNotificationsInput, Prisma.OrderUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type OrderUpdateWithoutNotificationsInput = {
+  reference?: Prisma.StringFieldUpdateOperationsInput | string
+  designation?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dimensions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  client?: Prisma.ClientUpdateOneRequiredWithoutOrdersNestedInput
+  product?: Prisma.ProductUpdateOneWithoutOrdersNestedInput
+  files?: Prisma.FileUpdateManyWithoutOrderNestedInput
+  notes?: Prisma.NoteUpdateManyWithoutOrderNestedInput
+  invoice?: Prisma.InvoiceUpdateOneWithoutOrdersNestedInput
+  quote?: Prisma.QuoteUpdateOneWithoutOrdersNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutOrdersCreatedNestedInput
+  statusHistory?: Prisma.OrderStatusHistoryUpdateManyWithoutOrderNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  reference?: Prisma.StringFieldUpdateOperationsInput | string
+  designation?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dimensions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  productId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  unitPrice?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  quoteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  files?: Prisma.FileUncheckedUpdateManyWithoutOrderNestedInput
+  notes?: Prisma.NoteUncheckedUpdateManyWithoutOrderNestedInput
+  statusHistory?: Prisma.OrderStatusHistoryUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderCreateManyClientInput = {
@@ -1603,6 +1755,7 @@ export type OrderUpdateWithoutClientInput = {
   quote?: Prisma.QuoteUpdateOneWithoutOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutOrdersCreatedNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutClientInput = {
@@ -1624,6 +1777,7 @@ export type OrderUncheckedUpdateWithoutClientInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutOrderNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutOrderNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutClientInput = {
@@ -1680,6 +1834,7 @@ export type OrderUpdateWithoutCreatedByInput = {
   invoice?: Prisma.InvoiceUpdateOneWithoutOrdersNestedInput
   quote?: Prisma.QuoteUpdateOneWithoutOrdersNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutCreatedByInput = {
@@ -1701,6 +1856,7 @@ export type OrderUncheckedUpdateWithoutCreatedByInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutOrderNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutOrderNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutCreatedByInput = {
@@ -1757,6 +1913,7 @@ export type OrderUpdateWithoutQuoteInput = {
   invoice?: Prisma.InvoiceUpdateOneWithoutOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutOrdersCreatedNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutQuoteInput = {
@@ -1778,6 +1935,7 @@ export type OrderUncheckedUpdateWithoutQuoteInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutOrderNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutOrderNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutQuoteInput = {
@@ -1834,6 +1992,7 @@ export type OrderUpdateWithoutInvoiceInput = {
   quote?: Prisma.QuoteUpdateOneWithoutOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutOrdersCreatedNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutInvoiceInput = {
@@ -1855,6 +2014,7 @@ export type OrderUncheckedUpdateWithoutInvoiceInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutOrderNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutOrderNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutInvoiceInput = {
@@ -1911,6 +2071,7 @@ export type OrderUpdateWithoutProductInput = {
   quote?: Prisma.QuoteUpdateOneWithoutOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutOrdersCreatedNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutProductInput = {
@@ -1932,6 +2093,7 @@ export type OrderUncheckedUpdateWithoutProductInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutOrderNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutOrderNestedInput
   statusHistory?: Prisma.OrderStatusHistoryUncheckedUpdateManyWithoutOrderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutProductInput = {
@@ -1961,12 +2123,14 @@ export type OrderCountOutputType = {
   files: number
   notes: number
   statusHistory: number
+  notifications: number
 }
 
 export type OrderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   files?: boolean | OrderCountOutputTypeCountFilesArgs
   notes?: boolean | OrderCountOutputTypeCountNotesArgs
   statusHistory?: boolean | OrderCountOutputTypeCountStatusHistoryArgs
+  notifications?: boolean | OrderCountOutputTypeCountNotificationsArgs
 }
 
 /**
@@ -2000,6 +2164,13 @@ export type OrderCountOutputTypeCountStatusHistoryArgs<ExtArgs extends runtime.T
   where?: Prisma.OrderStatusHistoryWhereInput
 }
 
+/**
+ * OrderCountOutputType without action
+ */
+export type OrderCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
 
 export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2026,6 +2197,7 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   quote?: boolean | Prisma.Order$quoteArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   statusHistory?: boolean | Prisma.Order$statusHistoryArgs<ExtArgs>
+  notifications?: boolean | Prisma.Order$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
 
@@ -2106,6 +2278,7 @@ export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   quote?: boolean | Prisma.Order$quoteArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   statusHistory?: boolean | Prisma.Order$statusHistoryArgs<ExtArgs>
+  notifications?: boolean | Prisma.Order$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OrderIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2134,6 +2307,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     quote: Prisma.$QuotePayload<ExtArgs> | null
     createdBy: Prisma.$UserPayload<ExtArgs>
     statusHistory: Prisma.$OrderStatusHistoryPayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -2554,6 +2728,7 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
   quote<T extends Prisma.Order$quoteArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$quoteArgs<ExtArgs>>): Prisma.Prisma__QuoteClient<runtime.Types.Result.GetResult<Prisma.$QuotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   statusHistory<T extends Prisma.Order$statusHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$statusHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderStatusHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.Order$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3126,6 +3301,30 @@ export type Order$statusHistoryArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.OrderStatusHistoryScalarFieldEnum | Prisma.OrderStatusHistoryScalarFieldEnum[]
+}
+
+/**
+ * Order.notifications
+ */
+export type Order$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
 }
 
 /**

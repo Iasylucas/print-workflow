@@ -6,6 +6,8 @@ import type {
   CreateSingleOrderLineInput,
 } from "./order.types.js";
 import { InvoicesRepository } from "../invoices/invoices.repository.js";
+import { notificationsService } from "@/features/notifications/index.js";
+import { NOTIFICATION_TYPES } from "@/features/notifications/index.js";
 
 export class OrderRepository {
   async countInvoicesByMonth(year: number, month: number): Promise<number> {
@@ -100,7 +102,6 @@ export class OrderRepository {
             createdById: currentUserId,
             total: calculatedTotal,
             deposit: data.deposit,
-            // remaining: calculatedTotal - data.deposit,
             deliveryPlace: data.deliveryPlace,
             expectedDeliveryDate: data.expectedDeliveryDate,
             paymentStatus:
@@ -169,6 +170,13 @@ export class OrderRepository {
             toStatus: "waiting_for_file",
             changedById: currentUserId,
           },
+        });
+        await notificationsService.notifyRoles(tx, ["GRAPHIC_DESIGNER"], {
+          type: NOTIFICATION_TYPES.ORDER_CREATED,
+          title: "Nouvelle commande",
+          message: `Nouvelle commande ${reference} — ${line.designation}`,
+          link: `/orders?openOrder=${createdOrder.id}`,
+          orderId: createdOrder.id,
         });
 
         if (line.atelierNote && line.atelierNote.trim() !== "") {
@@ -585,6 +593,20 @@ export class OrderRepository {
           const line = data.lines[i];
 
           if (line.orderId) {
+            // Lire l'ancienne commande pour détecter les changements
+            const oldOrder = await tx.order.findUnique({
+              where: { id: line.orderId },
+              select: {
+                reference: true,
+                designation: true,
+                label: true,
+                dimensions: true,
+                quantity: true,
+                unitPrice: true,
+                productId: true,
+              },
+            });
+
             // Mettre à jour une commande existante
             await tx.order.update({
               where: { id: line.orderId, deletedAt: null },
@@ -597,7 +619,42 @@ export class OrderRepository {
                 unitPrice: line.unitPrice,
               },
             });
-            // Stocker l'ID existant
+
+            // Notifier les graphistes si un champ significatif a changé
+            if (oldOrder) {
+              const fieldsChanged: string[] = [];
+              if (oldOrder.designation !== line.designation)
+                fieldsChanged.push("désignation");
+              if (oldOrder.label !== (line.label ?? null))
+                fieldsChanged.push("label");
+              if (oldOrder.dimensions !== (line.dimensions ?? null))
+                fieldsChanged.push("dimensions");
+              if (oldOrder.quantity !== line.quantity)
+                fieldsChanged.push("quantité");
+              if (oldOrder.unitPrice !== line.unitPrice)
+                fieldsChanged.push("prix unitaire");
+              if (oldOrder.productId !== (line.productId ?? null))
+                fieldsChanged.push("produit");
+
+              if (fieldsChanged.length > 0) {
+                await notificationsService.notifyRoles(
+                  tx,
+                  ["GRAPHIC_DESIGNER"],
+                  {
+                    type: NOTIFICATION_TYPES.ORDER_UPDATED,
+                    title: "Commande modifiée",
+                    message: `Commande ${oldOrder.reference} modifiée : ${fieldsChanged.join(", ")}`,
+                    link: `/orders?openOrder=${line.orderId}`,
+                    orderId: line.orderId,
+                    metadata: {
+                      fieldsChanged,
+                      reference: oldOrder.reference,
+                    },
+                  },
+                );
+              }
+            }
+
             createdOrderIds[i] = line.orderId;
           } else {
             // Créer une nouvelle commande
@@ -625,8 +682,13 @@ export class OrderRepository {
                 changedById: userId,
               },
             });
-
-            // Stocker le nouvel ID
+            await notificationsService.notifyRoles(tx, ["GRAPHIC_DESIGNER"], {
+              type: NOTIFICATION_TYPES.ORDER_CREATED,
+              title: "Nouvelle commande",
+              message: `Nouvelle commande ${created.reference} — ${line.designation}`,
+              link: `/orders?openOrder=${created.id}`,
+              orderId: created.id,
+            });
             createdOrderIds[i] = created.id;
           }
         }

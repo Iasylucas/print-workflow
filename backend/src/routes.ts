@@ -13,6 +13,7 @@ import { standardLimiter } from "./middlewares/rateLimiter.middleware.js";
 import { paymentAuditLogRoutes } from "./features/payment-audit-log/payment-audit-log.routes.js";
 import { dashboardRoutes } from "./features/dashboard/dashboard.routes.js";
 import { orderStatusHistoryRoutes } from "@/features/order-status-history/index.js";
+import { notificationsRoutes } from "@/features/notifications/index.js";
 
 const router: Router = Router();
 
@@ -28,6 +29,7 @@ router.use("/invoices", standardLimiter, invoicesRoutes);
 router.use("/quotes", standardLimiter, quotesRoutes);
 router.use("/payment-audit-logs", paymentAuditLogRoutes);
 router.use("/order-status-history", orderStatusHistoryRoutes);
+router.use("/notifications", notificationsRoutes);
 router.use("/dashboard", dashboardRoutes);
 
 export default router;
