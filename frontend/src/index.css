@@ -124,6 +124,11 @@
   --foreground: oklch(0.145 0 0);
   --card: oklch(0.985 0 0);
   --card-foreground: oklch(0.145 0 0);
+  --card-gradient: linear-gradient(
+    180deg,
+    oklch(1 0 0) 0%,
+    oklch(0.965 0 0) 100%
+  );
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
@@ -159,6 +164,11 @@
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
+  --card-gradient: linear-gradient(
+    180deg,
+    oklch(0.25 0.005 260) 0%,
+    oklch(0.205 0.005 260) 100%
+  );
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
@@ -201,4 +211,13 @@
   button {
     @apply cursor-pointer;
   }
+}
+
+.card-gradient {
+  background-color: var(--card);
+  background-image: var(--card-gradient);
+  border: 1px solid var(--border);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.04),
+    inset 0 1px 0 rgb(255 255 255 / 0.5);
 }

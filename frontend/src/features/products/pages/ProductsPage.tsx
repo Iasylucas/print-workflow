@@ -92,6 +92,15 @@ export const ProductsPage = () => {
         title="Produits"
         subtitle="Gérez votre catalogue de produits, leurs variantes et leurs grilles de prix."
       >
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => refetch()}
+          className="gap-2"
+        >
+          <RefreshCw className="h-4 w-4" />
+          Rafraîchir
+        </Button>
         {showAddButton && (
           <Button
             onClick={() => {
@@ -104,15 +113,6 @@ export const ProductsPage = () => {
             Ajouter un produit
           </Button>
         )}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => refetch()}
-          className="gap-2"
-        >
-          <RefreshCw className="h-4 w-4" />
-          Rafraîchir
-        </Button>
       </PageHeader>
 
       <div className="space-y-4">

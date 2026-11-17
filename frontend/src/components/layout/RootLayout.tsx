@@ -15,7 +15,7 @@ export const RootLayout = () => {
 
           <SidebarInset className="transition-all duration-300 bg-background">
             <Header />
-            <main className="flex-1 w-full max-w-[1700px] mx-auto p-4 sm:p-6 lg:p-10">
+            <main className="flex-1 w-full max-w-[1700px] mx-auto p-4 sm:p-6 lg:p-10 bg-main-bg">
               <Outlet />
             </main>
           </SidebarInset>

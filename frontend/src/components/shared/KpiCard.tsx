@@ -46,7 +46,7 @@ export const KpiCard = ({
   const styles = variantStyles[variant];
 
   return (
-    <Card className={cn("border-border shadow-xs", className)}>
+    <Card className={cn("card-gradient border-border shadow-xs", className)}>
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
@@ -63,9 +63,7 @@ export const KpiCard = ({
               </p>
             )}
             {description && (
-              <p className="text-[10px] text-muted-foreground mt-1 truncate">
-                {description}
-              </p>
+              <p className="text-[10px] mt-1 truncate">{description}</p>
             )}
           </div>
           <div

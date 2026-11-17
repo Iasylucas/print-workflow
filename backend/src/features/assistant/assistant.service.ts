@@ -18,38 +18,21 @@ export class AssistantService {
   private readonly client: OpenAI;
 
   constructor(private readonly repository: AssistantRepository) {
-    console.log("GROQ_API_KEY présente ?", !!process.env.GROQ_API_KEY);
     this.client = new OpenAI({
       apiKey: process.env.GROQ_API_KEY,
       baseURL: "https://api.groq.com/openai/v1",
     });
   }
 
-  // async ask(question: string): Promise<AssistantResponse> {
-  //   try {
-  //     return await this.runConversation(question);
-  //   } catch (error) {
-  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //     const message = (error as any)?.message ?? "Erreur inconnue";
-  //     if (message.includes("rate") || message.includes("429")) {
-  //       throw new InternalServerError(
-  //         "L'assistant est momentanément surchargé. Réessayez dans quelques secondes.",
-  //       );
-  //     }
-  //     throw new InternalServerError(ASSISTANT_ERRORS.LLM_FAILED);
-  //   }
-  // }
   async ask(question: string): Promise<AssistantResponse> {
     try {
       return await this.runConversation(question);
     } catch (error) {
       console.error("[Assistant] Erreur brute:", error);
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const err = error as any;
       const message = err?.message ?? "Erreur inconnue";
 
-      // Erreurs Groq spécifiques
       if (err?.status === 401) {
         throw new InternalServerError("Clé API Groq invalide ou expirée.");
       }
@@ -73,7 +56,6 @@ export class AssistantService {
   }
 
   private async runConversation(question: string): Promise<AssistantResponse> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const messages: any[] = [
       { role: "system", content: ASSISTANT_SYSTEM_PROMPT },
       { role: "user", content: question },
@@ -96,21 +78,18 @@ export class AssistantService {
         throw new InternalServerError(ASSISTANT_ERRORS.LLM_FAILED);
       }
 
-      // Pas de tool call → réponse finale
       if (!message.tool_calls || message.tool_calls.length === 0) {
         return {
           answer: message.content ?? "Je n'ai pas de réponse à cette question.",
         };
       }
 
-      // Ajouter le message assistant (avec les tool_calls) à l'historique
       messages.push({
         role: "assistant",
         content: message.content ?? null,
         tool_calls: message.tool_calls,
       });
 
-      // Exécuter chaque tool call
       for (const toolCall of message.tool_calls) {
         if (toolCall.type !== "function") continue;
 
@@ -134,7 +113,6 @@ export class AssistantService {
       }
     }
 
-    // Trop d'itérations → on renvoie ce qu'on a
     return {
       answer:
         "Je n'ai pas pu terminer le traitement de votre question. Essayez de la reformuler.",
