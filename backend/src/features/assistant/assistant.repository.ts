@@ -11,6 +11,7 @@ export class AssistantRepository {
     return prisma.order.findFirst({
       where: { reference, deletedAt: null },
       select: {
+        id: true,
         reference: true,
         designation: true,
         status: true,
