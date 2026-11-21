@@ -5,4 +5,5 @@ export const UserRole = z.enum([
   "SALES",
   "PRINTER",
   "GRAPHIC_DESIGNER",
+  "DELIVERER",
 ]);

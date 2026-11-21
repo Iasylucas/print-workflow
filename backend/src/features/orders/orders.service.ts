@@ -57,7 +57,7 @@ export class OrdersService {
     const order = await this.getOrderById(id);
 
     if (order.status === data.status) {
-      return order;
+      throw new Error(ORDERS_ERRORS.STATUS_ALREADY_ACTIVE);
     }
 
     try {

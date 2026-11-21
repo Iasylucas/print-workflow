@@ -16,6 +16,7 @@ export const ORDERS_ERRORS = {
   INVALID_STATUS_TRANSITION: "Transition de statut invalide",
   FORBIDDEN: "Vous n'avez pas les droits pour effectuer cette action",
   STATS_FAILED: "Impossible de récupérer les statistiques des commandes",
+  STATUS_ALREADY_ACTIVE: "Ce statut est déjà actif",
 } as const;
 
 export const ORDER_STATUS_PIPELINE: Record<string, number> = {

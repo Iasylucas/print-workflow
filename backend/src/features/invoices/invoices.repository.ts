@@ -118,6 +118,9 @@ export class InvoicesRepository {
       select: {
         orders: {
           select: { id: true },
+          where: {
+            status: { not: "not_applicable" },
+          },
         },
       },
     });

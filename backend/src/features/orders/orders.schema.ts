@@ -11,7 +11,6 @@ export const updateOrderStatusSchema = z.object({
     "ready_for_delivery",
     "delivered",
     "cancelled",
-    "not_applicable",
   ]),
 });
 
@@ -20,7 +19,7 @@ export const addOrderNoteSchema = z.object({
 });
 
 export const addOrderFileSchema = z.object({
-  url: z.string().url("L'URL du fichier est invalide"),
+  url: z.url("L'URL du fichier est invalide"),
   category: z.enum(["client_visual", "final_print"]),
 });
 
@@ -35,6 +34,7 @@ export const ordersQuerySchema = paginationSchema.extend({
       "ready_for_delivery",
       "delivered",
       "cancelled",
+      "not_applicable",
     ])
     .optional(),
   clientId: z.string().optional(),
