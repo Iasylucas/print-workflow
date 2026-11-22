@@ -3,10 +3,12 @@ import {
   ShoppingCart,
   Plus,
   X,
-  ChevronDown,
-  ChevronRight,
   Receipt,
   ReceiptText,
+  ExternalLink,
+  ImagePlus,
+  PencilIcon,
+  PencilLine,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +32,11 @@ import type {
 import { cn } from "@/lib/utils";
 import type { Client } from "@/features/client/types/client.types";
 import { Switch } from "@/components/ui/switch";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface PosCartProps {
   formState: PosFormState;
@@ -98,6 +105,8 @@ export const PosCart = ({
 }: PosCartProps) => {
   // ─── STATE LOCAL (UI uniquement) ───
   const [expandedNotes, setExpandedNotes] = useState<number[]>([]);
+  const [visualMenuIndex, setVisualMenuIndex] = useState<number | null>(null);
+  const [visualInputValue, setVisualInputValue] = useState("");
 
   const toggleNote = useCallback((index: number) => {
     setExpandedNotes((prev) =>
@@ -122,6 +131,39 @@ export const PosCart = ({
       onValidateOrder(type);
     },
     [isValid, onValidateOrder],
+  );
+
+  const handleAddVisualLink = useCallback(
+    (index: number) => {
+      const trimmed = visualInputValue.trim();
+      if (!trimmed) return;
+
+      const currentLinks = formState.cartLines[index]?.visualLinks ?? [];
+      if (currentLinks.includes(trimmed)) {
+        setVisualInputValue("");
+        return;
+      }
+
+      onUpdateLine(index, "visualLinks", [...currentLinks, trimmed]);
+      // Si on ajoute un visuel, on décoche "en attente visuel"
+      if (formState.cartLines[index]?.waitingForVisual) {
+        onUpdateLine(index, "waitingForVisual", false);
+      }
+      setVisualInputValue("");
+    },
+    [visualInputValue, formState.cartLines, onUpdateLine],
+  );
+
+  const handleRemoveVisualLink = useCallback(
+    (index: number, linkIndex: number) => {
+      const currentLinks = formState.cartLines[index]?.visualLinks ?? [];
+      onUpdateLine(
+        index,
+        "visualLinks",
+        currentLinks.filter((_, i) => i !== linkIndex),
+      );
+    },
+    [formState.cartLines, onUpdateLine],
   );
 
   // ─── RENDER ───
@@ -200,7 +242,13 @@ export const PosCart = ({
           <div className="flex items-center gap-2">
             <ClientSearchCombobox
               value={formState.selectedClientId}
-              onChange={(v) => onUpdateFormField("selectedClientId", v)}
+              onChange={(v) => {
+                onUpdateFormField("selectedClientId", v);
+                onUpdateFormField(
+                  "deliveryPlace",
+                  selectedClient?.address || "",
+                );
+              }}
               disabled={isLoadingClients}
               placeholder={
                 isLoadingClients ? "Chargement..." : "Sélectionner un client..."
@@ -247,15 +295,32 @@ export const PosCart = ({
             <Label className="text-[11px] font-medium text-muted-foreground">
               Lieu de livraison (optionnel)
             </Label>
-            <Input
-              type="text"
-              value={formState.deliveryPlace}
-              onChange={(e) =>
-                onUpdateFormField("deliveryPlace", e.target.value)
-              }
-              className="h-8 text-xs"
-              placeholder="Adresse"
-            />
+            <div className="relative">
+              <Input
+                type="text"
+                value={formState.deliveryPlace}
+                onChange={(e) =>
+                  onUpdateFormField("deliveryPlace", e.target.value)
+                }
+                className="h-8 text-xs bg-muted/50 pr-8"
+                placeholder="Adresse"
+              />
+
+              {formState.deliveryPlace && (
+                <button
+                  type="button"
+                  onClick={() => onUpdateFormField("deliveryPlace", "")}
+                  className="absolute right-2 top-1/2 -translate-y-1/2
+                            flex h-4 w-4 items-center justify-center
+                            rounded-full text-muted-foreground
+                            hover:bg-muted hover:text-foreground
+                            transition-colors"
+                  title="Effacer"
+                >
+                  <X size={11} />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -410,22 +475,10 @@ export const PosCart = ({
                         disabled={isService}
                         className="scale-75"
                       />
-                      <span
-                        className={cn(
-                          "text-[10px] font-medium",
-                          isService
-                            ? "text-muted-foreground/50"
-                            : line.waitingForVisual
-                              ? "text-amber-600"
-                              : "text-muted-foreground",
-                        )}
-                      >
-                        {isService ? "—" : "Attente"}
-                      </span>
                     </div>
 
                     {/* Actions */}
-                    <div className="col-span-1 flex items-center justify-center gap-0.5 pt-1">
+                    {/* <div className="col-span-1 flex items-center justify-center gap-0.5 pt-1">
                       <Button
                         variant="ghost"
                         size="icon"
@@ -438,6 +491,142 @@ export const PosCart = ({
                           <ChevronRight size={13} />
                         )}
                       </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => onRemoveLine(index)}
+                        className="h-6 w-6 text-muted-foreground/70 hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <X size={13} />
+                      </Button>
+                    </div> */}
+                    {/* Actions */}
+                    <div className="col-span-1 flex items-center justify-center gap-0.5 pt-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => toggleNote(index)}
+                        className="h-6 w-6 text-muted-foreground/50 hover:text-muted-foreground"
+                      >
+                        {isNoteExpanded ? (
+                          <PencilLine size={13} />
+                        ) : (
+                          <PencilIcon size={13} />
+                        )}
+                      </Button>
+
+                      {/* Dropdown visuels */}
+                      <DropdownMenu
+                        open={visualMenuIndex === index}
+                        onOpenChange={(open) => {
+                          if (open) {
+                            setVisualInputValue("");
+                            setVisualMenuIndex(index);
+                          } else {
+                            setVisualMenuIndex(null);
+                          }
+                        }}
+                      >
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className={cn(
+                              "h-6 w-6 relative",
+                              (line.visualLinks ?? []).length > 0
+                                ? "text-emerald-600 hover:text-emerald-700"
+                                : "text-muted-foreground/50 hover:text-muted-foreground",
+                            )}
+                            title={`Visuels (${(line.visualLinks ?? []).length})`}
+                            disabled={isService}
+                          >
+                            <ImagePlus size={13} />
+                            {(line.visualLinks ?? []).length > 0 && (
+                              <span className="absolute -top-1 -right-1 h-3 min-w-3 rounded-full bg-emerald-600 text-white text-[8px] flex items-center justify-center px-0.5">
+                                {(line.visualLinks ?? []).length}
+                              </span>
+                            )}
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="end"
+                          className="w-80 p-2"
+                          sideOffset={4}
+                        >
+                          <div className="space-y-2">
+                            <p className="text-[10px] font-semibold text-muted-foreground uppercase">
+                              Visuels (Google Drive)
+                            </p>
+
+                            {/* Liste des liens existants */}
+                            {(line.visualLinks ?? []).length > 0 && (
+                              <div className="space-y-1 max-h-32 overflow-y-auto">
+                                {(line.visualLinks ?? []).map(
+                                  (url, linkIndex) => (
+                                    <div
+                                      key={linkIndex}
+                                      className="flex items-center gap-1 px-2 py-1 rounded bg-muted/50"
+                                    >
+                                      <ExternalLink
+                                        size={10}
+                                        className="shrink-0 text-primary"
+                                      />
+                                      <a
+                                        href={url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-[10px] text-primary hover:underline truncate flex-1"
+                                      >
+                                        {url}
+                                      </a>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          handleRemoveVisualLink(
+                                            index,
+                                            linkIndex,
+                                          )
+                                        }
+                                        className="text-muted-foreground/50 hover:text-destructive shrink-0"
+                                      >
+                                        <X size={12} />
+                                      </button>
+                                    </div>
+                                  ),
+                                )}
+                              </div>
+                            )}
+
+                            {/* Ajout d'un nouveau lien */}
+                            <div className="flex gap-1">
+                              <Input
+                                type="url"
+                                placeholder="https://drive.google.com/..."
+                                value={visualInputValue}
+                                onChange={(e) =>
+                                  setVisualInputValue(e.target.value)
+                                }
+                                className="h-8 text-xs"
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleAddVisualLink(index);
+                                  }
+                                }}
+                              />
+                              <Button
+                                size="sm"
+                                onClick={() => handleAddVisualLink(index)}
+                                className="h-8 text-xs gap-1 shrink-0"
+                                disabled={!visualInputValue.trim()}
+                              >
+                                <Plus size={12} />
+                              </Button>
+                            </div>
+                          </div>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+
                       <Button
                         variant="ghost"
                         size="icon"

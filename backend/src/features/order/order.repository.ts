@@ -169,7 +169,16 @@ export class OrderRepository {
             status: initialStatus,
           },
         });
-
+        for (const url of line.visualLinks ?? []) {
+          await tx.file.create({
+            data: {
+              url,
+              category: "client_visual",
+              orderId: createdOrder.id,
+              uploadedById: currentUserId,
+            },
+          });
+        }
         await tx.orderStatusHistory.create({
           data: {
             orderId: createdOrder.id,
@@ -529,7 +538,6 @@ export class OrderRepository {
     });
   }
 
-  // order.repository.ts
   async updateOrderFromPosTransaction(
     invoiceId: number,
     newTotal: number,
@@ -545,13 +553,11 @@ export class OrderRepository {
       // ============================================================
       // 1. METTRE À JOUR LA FACTURE
       // ============================================================
-      // 1. Récupérer la facture actuelle avec deposit
       const currentInvoice = await tx.invoice.findUnique({
         where: { id: invoiceId, deletedAt: null },
         select: { deposit: true, paymentStatus: true },
       });
 
-      // 2. Calculer le nouveau statut de paiement
       let newPaymentStatus = currentInvoice?.paymentStatus;
 
       if (newTotal !== undefined && currentInvoice) {
@@ -564,14 +570,13 @@ export class OrderRepository {
         }
       }
 
-      // 3. Mettre à jour
       await tx.invoice.update({
         where: { id: invoiceId },
         data: {
           total: newTotal,
           deliveryPlace: data.deliveryPlace,
           expectedDeliveryDate: data.expectedDeliveryDate,
-          paymentStatus: newPaymentStatus, // ← Ajouté
+          paymentStatus: newPaymentStatus,
         },
       });
 
@@ -600,9 +605,12 @@ export class OrderRepository {
         // 2b. Mettre à jour ou créer les lignes
         for (let i = 0; i < data.lines.length; i++) {
           const line = data.lines[i];
+          const lineVisualLinks: string[] = line.visualLinks ?? [];
 
           if (line.orderId) {
-            // Lire l'ancienne commande pour détecter les changements
+            // ============================================================
+            // LIGNE EXISTANTE
+            // ============================================================
             const oldOrder = await tx.order.findUnique({
               where: { id: line.orderId },
               select: {
@@ -621,18 +629,20 @@ export class OrderRepository {
             if (oldOrder) {
               const isCurrentlyWaitingVisual =
                 oldOrder.status === "waiting_for_visual";
-              const shouldBeWaitingVisual = line.waitingForVisual === true;
+              const hasVisualsNow = lineVisualLinks.length > 0;
+              const shouldBeWaitingVisual =
+                line.waitingForVisual === true && !hasVisualsNow;
 
               if (shouldBeWaitingVisual && !isCurrentlyWaitingVisual) {
-                // Le commercial coche "en attente visuel" sur une ligne qui ne l'était pas
                 newStatus = "waiting_for_visual";
               } else if (!shouldBeWaitingVisual && isCurrentlyWaitingVisual) {
-                // Le commercial retire "en attente visuel" → le fichier est prêt
+                newStatus = "waiting_for_file";
+              } else if (hasVisualsNow && isCurrentlyWaitingVisual) {
+                // Si on ajoute un visuel sur une ligne en attente de visuel → fichier prêt
                 newStatus = "waiting_for_file";
               }
             }
 
-            // Mettre à jour une commande existante
             await tx.order.update({
               where: { id: line.orderId, deletedAt: null },
               data: {
@@ -646,7 +656,68 @@ export class OrderRepository {
               },
             });
 
-            // Notifier les graphistes si un champ significatif a changé
+            // ---- Gestion des visuels (File) ----
+            const existingFiles = await tx.file.findMany({
+              where: {
+                orderId: line.orderId,
+                category: "client_visual",
+              },
+              select: { id: true, url: true },
+            });
+
+            const existingUrls = new Set(existingFiles.map((f) => f.url));
+            const newUrls = new Set(lineVisualLinks);
+
+            // Supprimer les fichiers qui ne sont plus dans le payload
+            const toDelete = existingFiles.filter((f) => !newUrls.has(f.url));
+            if (toDelete.length > 0) {
+              await tx.file.deleteMany({
+                where: { id: { in: toDelete.map((f) => f.id) } },
+              });
+            }
+
+            // Créer les nouveaux fichiers
+            const toCreate = lineVisualLinks.filter(
+              (url) => !existingUrls.has(url),
+            );
+            for (const url of toCreate) {
+              await tx.file.create({
+                data: {
+                  url,
+                  category: "client_visual",
+                  orderId: line.orderId,
+                  uploadedById: userId,
+                },
+              });
+            }
+
+            // ---- Historique de statut ----
+            if (oldOrder && newStatus && oldOrder.status !== newStatus) {
+              await tx.orderStatusHistory.create({
+                data: {
+                  orderId: line.orderId,
+                  fromStatus: oldOrder.status,
+                  toStatus: newStatus,
+                  changedById: userId,
+                },
+              });
+
+              if (newStatus === "waiting_for_file") {
+                await notificationsService.notifyRoles(
+                  tx,
+                  ["GRAPHIC_DESIGNER"],
+                  {
+                    type: NOTIFICATION_TYPES.ORDER_CREATED,
+                    title: "Fichier prêt",
+                    message: `Commande ${oldOrder.reference} : fichier prêt pour production`,
+                    link: `/orders?openOrder=${line.orderId}`,
+                    orderId: line.orderId,
+                  },
+                );
+              }
+            }
+
+            // ---- Notifier si champs modifiés ----
             if (oldOrder) {
               const fieldsChanged: string[] = [];
               if (oldOrder.designation !== line.designation)
@@ -683,12 +754,16 @@ export class OrderRepository {
 
             createdOrderIds[i] = line.orderId;
           } else {
+            // ============================================================
+            // NOUVELLE LIGNE
+            // ============================================================
             const isService = isServiceProduct(line.productId);
             const initialStatus = isService
               ? "not_applicable"
               : line.waitingForVisual
                 ? "waiting_for_visual"
                 : "waiting_for_file";
+
             const created = await tx.order.create({
               data: {
                 reference: `CMD-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
@@ -705,6 +780,18 @@ export class OrderRepository {
               },
             });
 
+            // Créer les fichiers visuels
+            for (const url of lineVisualLinks) {
+              await tx.file.create({
+                data: {
+                  url,
+                  category: "client_visual",
+                  orderId: created.id,
+                  uploadedById: userId,
+                },
+              });
+            }
+
             await tx.orderStatusHistory.create({
               data: {
                 orderId: created.id,
@@ -713,7 +800,8 @@ export class OrderRepository {
                 changedById: userId,
               },
             });
-            if (initialStatus == "waiting_for_file") {
+
+            if (initialStatus === "waiting_for_file" && !isService) {
               await notificationsService.notifyRoles(tx, ["GRAPHIC_DESIGNER"], {
                 type: NOTIFICATION_TYPES.ORDER_CREATED,
                 title: "Nouvelle commande",
@@ -722,13 +810,14 @@ export class OrderRepository {
                 orderId: created.id,
               });
             }
+
             createdOrderIds[i] = created.id;
           }
         }
       }
 
       // ============================================================
-      // 3. GÉRER LES NOTES (UNE PAR COMMANDE, UNIQUEMENT LA PREMIÈRE)
+      // 3. GÉRER LES NOTES (UNE PAR COMMANDE)
       // ============================================================
       if (data.lines && data.lines.length > 0) {
         for (let i = 0; i < data.lines.length; i++) {
@@ -736,14 +825,12 @@ export class OrderRepository {
           const orderId = createdOrderIds[i];
 
           if (orderId) {
-            // Récupérer la première note existante
             const existingNote = await tx.note.findFirst({
               where: { orderId },
               orderBy: { createdAt: "asc" },
             });
 
             if (line.atelierNote && line.atelierNote.trim() !== "") {
-              // ✅ Note non vide → créer ou mettre à jour
               if (existingNote) {
                 await tx.note.update({
                   where: { id: existingNote.id },
@@ -759,20 +846,18 @@ export class OrderRepository {
                 });
               }
             } else {
-              // ✅ Note vide → supprimer si elle existe
               if (existingNote) {
                 await tx.note.delete({
                   where: { id: existingNote.id },
                 });
               }
-              // Si pas de note et pas de texte → rien à faire
             }
           }
         }
       }
 
       // ============================================================
-      // 4. RETOURNER LA FACTURE MIS À JOUR
+      // 4. RETOURNER LA FACTURE MISE À JOUR
       // ============================================================
       return await tx.invoice.findUnique({
         where: { id: invoiceId },
@@ -790,4 +875,266 @@ export class OrderRepository {
       });
     });
   }
+
+  // order.repository.ts
+  // async updateOrderFromPosTransaction(
+  //   invoiceId: number,
+  //   newTotal: number,
+  //   data: {
+  //     deliveryPlace?: string | null;
+  //     expectedDeliveryDate?: Date | null;
+  //     lines?: any[];
+  //   },
+  //   userId: string,
+  //   clientId: string,
+  // ) {
+  //   return await prisma.$transaction(async (tx) => {
+  //     // ============================================================
+  //     // 1. METTRE À JOUR LA FACTURE
+  //     // ============================================================
+  //     // 1. Récupérer la facture actuelle avec deposit
+  //     const currentInvoice = await tx.invoice.findUnique({
+  //       where: { id: invoiceId, deletedAt: null },
+  //       select: { deposit: true, paymentStatus: true },
+  //     });
+
+  //     // 2. Calculer le nouveau statut de paiement
+  //     let newPaymentStatus = currentInvoice?.paymentStatus;
+
+  //     if (newTotal !== undefined && currentInvoice) {
+  //       if (newTotal === currentInvoice.deposit) {
+  //         newPaymentStatus = "paid";
+  //       } else if (newTotal > currentInvoice.deposit) {
+  //         newPaymentStatus = "partial";
+  //       } else {
+  //         newPaymentStatus = "unpaid";
+  //       }
+  //     }
+
+  //     // 3. Mettre à jour
+  //     await tx.invoice.update({
+  //       where: { id: invoiceId },
+  //       data: {
+  //         total: newTotal,
+  //         deliveryPlace: data.deliveryPlace,
+  //         expectedDeliveryDate: data.expectedDeliveryDate,
+  //         paymentStatus: newPaymentStatus, // ← Ajouté
+  //       },
+  //     });
+
+  //     // ============================================================
+  //     // 2. GÉRER LES LIGNES DE COMMANDE
+  //     // ============================================================
+  //     const createdOrderIds: { [key: number]: number } = {};
+
+  //     if (data.lines && data.lines.length > 0) {
+  //       // 2a. Supprimer les commandes qui ne sont plus dans le payload
+  //       const currentOrderIds = data.lines
+  //         .map((line) => line.orderId)
+  //         .filter((id) => id !== undefined && id !== null);
+
+  //       if (currentOrderIds.length > 0) {
+  //         await tx.order.updateMany({
+  //           where: {
+  //             invoiceId,
+  //             id: { notIn: currentOrderIds },
+  //             deletedAt: null,
+  //           },
+  //           data: { deletedAt: new Date() },
+  //         });
+  //       }
+
+  //       // 2b. Mettre à jour ou créer les lignes
+  //       for (let i = 0; i < data.lines.length; i++) {
+  //         const line = data.lines[i];
+
+  //         if (line.orderId) {
+  //           // Lire l'ancienne commande pour détecter les changements
+  //           const oldOrder = await tx.order.findUnique({
+  //             where: { id: line.orderId },
+  //             select: {
+  //               reference: true,
+  //               designation: true,
+  //               label: true,
+  //               dimensions: true,
+  //               quantity: true,
+  //               unitPrice: true,
+  //               productId: true,
+  //               status: true,
+  //             },
+  //           });
+
+  //           let newStatus: string | undefined;
+  //           if (oldOrder) {
+  //             const isCurrentlyWaitingVisual =
+  //               oldOrder.status === "waiting_for_visual";
+  //             const shouldBeWaitingVisual = line.waitingForVisual === true;
+
+  //             if (shouldBeWaitingVisual && !isCurrentlyWaitingVisual) {
+  //               // Le commercial coche "en attente visuel" sur une ligne qui ne l'était pas
+  //               newStatus = "waiting_for_visual";
+  //             } else if (!shouldBeWaitingVisual && isCurrentlyWaitingVisual) {
+  //               // Le commercial retire "en attente visuel" → le fichier est prêt
+  //               newStatus = "waiting_for_file";
+  //             }
+  //           }
+
+  //           // Mettre à jour une commande existante
+  //           await tx.order.update({
+  //             where: { id: line.orderId, deletedAt: null },
+  //             data: {
+  //               productId: line.productId,
+  //               designation: line.designation,
+  //               label: line.label,
+  //               dimensions: line.dimensions,
+  //               quantity: line.quantity,
+  //               unitPrice: line.unitPrice,
+  //               ...(newStatus ? { status: newStatus } : {}),
+  //             },
+  //           });
+
+  //           // Notifier les graphistes si un champ significatif a changé
+  //           if (oldOrder) {
+  //             const fieldsChanged: string[] = [];
+  //             if (oldOrder.designation !== line.designation)
+  //               fieldsChanged.push("désignation");
+  //             if (oldOrder.label !== (line.label ?? null))
+  //               fieldsChanged.push("label");
+  //             if (oldOrder.dimensions !== (line.dimensions ?? null))
+  //               fieldsChanged.push("dimensions");
+  //             if (oldOrder.quantity !== line.quantity)
+  //               fieldsChanged.push("quantité");
+  //             if (oldOrder.unitPrice !== line.unitPrice)
+  //               fieldsChanged.push("prix unitaire");
+  //             if (oldOrder.productId !== (line.productId ?? null))
+  //               fieldsChanged.push("produit");
+
+  //             if (fieldsChanged.length > 0) {
+  //               await notificationsService.notifyRoles(
+  //                 tx,
+  //                 ["GRAPHIC_DESIGNER"],
+  //                 {
+  //                   type: NOTIFICATION_TYPES.ORDER_UPDATED,
+  //                   title: "Commande modifiée",
+  //                   message: `Commande ${oldOrder.reference} modifiée : ${fieldsChanged.join(", ")}`,
+  //                   link: `/orders?openOrder=${line.orderId}`,
+  //                   orderId: line.orderId,
+  //                   metadata: {
+  //                     fieldsChanged,
+  //                     reference: oldOrder.reference,
+  //                   },
+  //                 },
+  //               );
+  //             }
+  //           }
+
+  //           createdOrderIds[i] = line.orderId;
+  //         } else {
+  //           const isService = isServiceProduct(line.productId);
+  //           const initialStatus = isService
+  //             ? "not_applicable"
+  //             : line.waitingForVisual
+  //               ? "waiting_for_visual"
+  //               : "waiting_for_file";
+  //           const created = await tx.order.create({
+  //             data: {
+  //               reference: `CMD-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+  //               invoiceId,
+  //               clientId,
+  //               designation: line.designation,
+  //               productId: line.productId,
+  //               label: line.label,
+  //               dimensions: line.dimensions,
+  //               quantity: line.quantity,
+  //               unitPrice: line.unitPrice,
+  //               createdById: userId,
+  //               status: initialStatus,
+  //             },
+  //           });
+
+  //           await tx.orderStatusHistory.create({
+  //             data: {
+  //               orderId: created.id,
+  //               fromStatus: null,
+  //               toStatus: initialStatus,
+  //               changedById: userId,
+  //             },
+  //           });
+  //           if (initialStatus == "waiting_for_file") {
+  //             await notificationsService.notifyRoles(tx, ["GRAPHIC_DESIGNER"], {
+  //               type: NOTIFICATION_TYPES.ORDER_CREATED,
+  //               title: "Nouvelle commande",
+  //               message: `Nouvelle commande ${created.reference} — ${line.designation}`,
+  //               link: `/orders?openOrder=${created.id}`,
+  //               orderId: created.id,
+  //             });
+  //           }
+  //           createdOrderIds[i] = created.id;
+  //         }
+  //       }
+  //     }
+
+  //     // ============================================================
+  //     // 3. GÉRER LES NOTES (UNE PAR COMMANDE, UNIQUEMENT LA PREMIÈRE)
+  //     // ============================================================
+  //     if (data.lines && data.lines.length > 0) {
+  //       for (let i = 0; i < data.lines.length; i++) {
+  //         const line = data.lines[i];
+  //         const orderId = createdOrderIds[i];
+
+  //         if (orderId) {
+  //           // Récupérer la première note existante
+  //           const existingNote = await tx.note.findFirst({
+  //             where: { orderId },
+  //             orderBy: { createdAt: "asc" },
+  //           });
+
+  //           if (line.atelierNote && line.atelierNote.trim() !== "") {
+  //             // ✅ Note non vide → créer ou mettre à jour
+  //             if (existingNote) {
+  //               await tx.note.update({
+  //                 where: { id: existingNote.id },
+  //                 data: { text: line.atelierNote.trim() },
+  //               });
+  //             } else {
+  //               await tx.note.create({
+  //                 data: {
+  //                   text: line.atelierNote.trim(),
+  //                   userId,
+  //                   orderId,
+  //                 },
+  //               });
+  //             }
+  //           } else {
+  //             // ✅ Note vide → supprimer si elle existe
+  //             if (existingNote) {
+  //               await tx.note.delete({
+  //                 where: { id: existingNote.id },
+  //               });
+  //             }
+  //             // Si pas de note et pas de texte → rien à faire
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     // ============================================================
+  //     // 4. RETOURNER LA FACTURE MIS À JOUR
+  //     // ============================================================
+  //     return await tx.invoice.findUnique({
+  //       where: { id: invoiceId },
+  //       select: {
+  //         id: true,
+  //         number: true,
+  //         total: true,
+  //         deposit: true,
+  //         paymentStatus: true,
+  //         isDelivered: true,
+  //         clientId: true,
+  //         orders: true,
+  //         payments: true,
+  //       },
+  //     });
+  //   });
+  // }
 }

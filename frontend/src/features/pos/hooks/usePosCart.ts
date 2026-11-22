@@ -170,6 +170,10 @@ export const usePosCart = (initialInvoiceId?: number | null) => {
       unitPrice: order.unitPrice,
       atelierNote: order.notes?.[0]?.text || "",
       waitingForVisual: order.status === "waiting_for_visual",
+      visualLinks:
+        order.files
+          ?.filter((f) => f.category === "client_visual")
+          .map((f) => f.url) ?? [],
     }));
 
     setFormState({
@@ -256,6 +260,7 @@ export const usePosCart = (initialInvoiceId?: number | null) => {
       unitPrice: 0,
       atelierNote: "",
       waitingForVisual: false,
+      visualLinks: [],
     };
     setFormState((prev) => ({
       ...prev,
@@ -307,6 +312,7 @@ export const usePosCart = (initialInvoiceId?: number | null) => {
         unitPrice: line.unitPrice,
         atelierNote: line.atelierNote,
         waitingForVisual: line.waitingForVisual,
+        visualLinks: line.visualLinks ?? [],
       }));
 
       const payload = {

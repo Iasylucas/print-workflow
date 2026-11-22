@@ -352,7 +352,7 @@ export const OrderDetailDrawer = ({
                       </DialogHeader>
                       <div className="space-y-4">
                         <Input
-                          placeholder="URL du fichier (Mega.nz, etc.)"
+                          placeholder="URL du fichier (google drive, etc.)"
                           value={newFileUrl}
                           onChange={(e) => setNewFileUrl(e.target.value)}
                         />
