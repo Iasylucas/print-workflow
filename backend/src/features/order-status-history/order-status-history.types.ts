@@ -1,5 +1,5 @@
 import { Prisma } from "@/generated/prisma/client.js";
-import { z } from "Zod";
+import { z } from "zod";
 import { orderStatusHistoryQuerySchema } from "./order-status-history.schema.js";
 
 export const orderStatusHistorySelect = {

@@ -29,6 +29,7 @@ import type {
 } from "../types/pos.types";
 import { cn } from "@/lib/utils";
 import type { Client } from "@/features/client/types/client.types";
+import { Switch } from "@/components/ui/switch";
 
 interface PosCartProps {
   formState: PosFormState;
@@ -110,6 +111,7 @@ export const PosCart = ({
       const product = products.find((p) => p.id === parseInt(val));
       onUpdateLine(index, "productId", product?.id || null);
       if (product) onUpdateLine(index, "designation", product.name);
+      onUpdateLine(index, "waitingForVisual", false);
     },
     [products, onUpdateLine],
   );
@@ -261,15 +263,13 @@ export const PosCart = ({
       {/* TABLEUR */}
       <div className="mt-4 flex-1 overflow-auto">
         <div className="border border-border rounded-md overflow-hidden">
-          <div className="grid grid-cols-12 bg-muted/50 p-2 border-b border-border font-semibold text-muted-foreground text-[10px] uppercase tracking-wider gap-1">
-            <div className="col-span-1 text-center">#</div>
-            <div className="col-span-2">Produit</div>
-            <div className="col-span-3">Désignation</div>
-            <div className="col-span-1">Dimensions</div>
+          <div className="grid grid-cols-12 bg-muted/50 p-2 border-b border-border font-semibold text-muted-foreground text-[10px] uppercase tracking-wider gap-4">
+            <div className="col-span-4">Article</div>
             <div className="col-span-1">Label</div>
             <div className="col-span-1 text-center">Qté</div>
-            <div className="col-span-1 text-right">Prix U.</div>
-            <div className="col-span-1 text-right">Total</div>
+            <div className="col-span-2 text-center">Prix U.</div>
+            <div className="col-span-2 text-center">Total</div>
+            <div className="col-span-1 text-center">Visuel</div>
             <div className="col-span-1 text-center">Actions</div>
           </div>
 
@@ -297,38 +297,46 @@ export const PosCart = ({
             formState.cartLines.map((line, index) => {
               const isNoteExpanded = expandedNotes.includes(index);
               const lineTotal = getLineTotal(line);
+              const isService = (line.productId ?? 0) > 12;
 
               return (
                 <div key={index}>
                   <div
-                    className={`grid grid-cols-12 items-center p-1.5 border-b border-border/60 gap-1 hover:bg-muted/5 transition-colors ${
+                    className={`grid grid-cols-12 items-center p-1.5 border-b border-border/60 gap-4 hover:bg-muted/5 transition-colors ${
                       isNoteExpanded ? "bg-muted/10" : ""
                     }`}
                   >
-                    <div className="col-span-1 text-center text-muted-foreground text-[10px]">
-                      {index + 1}
-                    </div>
-                    <div className="col-span-2">
-                      <Select
-                        value={line.productId?.toString() || ""}
-                        onValueChange={(v) => handleProductChange(index, v)}
-                      >
-                        <SelectTrigger className="h-7 text-xs w-full">
-                          <SelectValue placeholder="Produit" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {products.map((product) => (
-                            <SelectItem
-                              key={product.id}
-                              value={product.id.toString()}
-                            >
-                              {product.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="col-span-3">
+                    {/* Article : produit + dimensions sur la 1ère ligne, désignation en dessous */}
+                    <div className="col-span-4 flex flex-col gap-1">
+                      <div className="flex items-center gap-1">
+                        <Select
+                          value={line.productId?.toString() || ""}
+                          onValueChange={(v) => handleProductChange(index, v)}
+                        >
+                          <SelectTrigger className="h-7 text-xs flex-1">
+                            <SelectValue placeholder="Produit" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {products.map((product) => (
+                              <SelectItem
+                                key={product.id}
+                                value={product.id.toString()}
+                              >
+                                {product.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Input
+                          type="text"
+                          value={line.dimensions || ""}
+                          onChange={(e) =>
+                            onUpdateLine(index, "dimensions", e.target.value)
+                          }
+                          className="h-7 text-xs px-1.5 w-24 shrink-0"
+                          placeholder="20x30cm"
+                        />
+                      </div>
                       <Input
                         type="text"
                         value={line.designation}
@@ -339,17 +347,8 @@ export const PosCart = ({
                         placeholder="Désignation"
                       />
                     </div>
-                    <div className="col-span-1">
-                      <Input
-                        type="text"
-                        value={line.dimensions || ""}
-                        onChange={(e) =>
-                          onUpdateLine(index, "dimensions", e.target.value)
-                        }
-                        className="h-7 text-xs px-1.5"
-                        placeholder="20x30cm"
-                      />
-                    </div>
+
+                    {/* Label */}
                     <div className="col-span-1">
                       <Input
                         type="text"
@@ -361,6 +360,8 @@ export const PosCart = ({
                         placeholder="Étiquette"
                       />
                     </div>
+
+                    {/* Qté */}
                     <div className="col-span-1">
                       <Input
                         type="number"
@@ -376,7 +377,9 @@ export const PosCart = ({
                         className="h-7 text-xs text-center px-1"
                       />
                     </div>
-                    <div className="col-span-1">
+
+                    {/* Prix unitaire */}
+                    <div className="col-span-2">
                       <Input
                         type="number"
                         min={0}
@@ -391,10 +394,38 @@ export const PosCart = ({
                         className="h-7 text-xs text-right px-1.5 font-medium"
                       />
                     </div>
-                    <div className="col-span-1 text-right font-semibold text-foreground">
+
+                    {/* Total */}
+                    <div className="col-span-2 text-center font-semibold text-foreground pt-1.5">
                       {lineTotal.toLocaleString()} Ar
                     </div>
-                    <div className="col-span-1 flex items-center justify-center gap-0.5">
+
+                    {/* Toggle Visuel */}
+                    <div className="col-span-1 flex items-center justify-center gap-1.5 pt-1">
+                      <Switch
+                        checked={line.waitingForVisual ?? false}
+                        onCheckedChange={(checked) =>
+                          onUpdateLine(index, "waitingForVisual", checked)
+                        }
+                        disabled={isService}
+                        className="scale-75"
+                      />
+                      <span
+                        className={cn(
+                          "text-[10px] font-medium",
+                          isService
+                            ? "text-muted-foreground/50"
+                            : line.waitingForVisual
+                              ? "text-amber-600"
+                              : "text-muted-foreground",
+                        )}
+                      >
+                        {isService ? "—" : "Attente"}
+                      </span>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="col-span-1 flex items-center justify-center gap-0.5 pt-1">
                       <Button
                         variant="ghost"
                         size="icon"

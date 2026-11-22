@@ -63,6 +63,7 @@ enum Role {
   SALES
   PRINTER
   GRAPHIC_DESIGNER
+  DELIVERER
 }
 
 model InvitationToken {

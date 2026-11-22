@@ -131,6 +131,7 @@ export type PaginatedOrdersResponse = {
 };
 
 export type OrderStats = {
+  waitingForVisual: number;
   waitingForFile: number;
   inProgress: number;
   inProduction: number;
@@ -139,6 +140,7 @@ export type OrderStats = {
 };
 
 export type OrderStatus =
+  | "waiting_for_visual"
   | "waiting_for_file"
   | "in_progress"
   | "file_completed"

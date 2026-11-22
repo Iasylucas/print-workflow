@@ -129,11 +129,6 @@ export class OrdersRepository {
       changedById: string;
     },
   ) {
-    if (status === "not_applicable") {
-      throw new BadRequestError(
-        "Ce statut ne peut pas être appliqué manuellement",
-      );
-    }
     const updated = await tx.order.update({
       where: { id, deletedAt: null },
       data: { status },
@@ -187,7 +182,7 @@ export class OrdersRepository {
         },
       });
     } else if (status === "ready_for_delivery") {
-      await notificationsService.notifyRoles(tx, ["SALES"], {
+      await notificationsService.notifyRoles(tx, ["SALES", "DELIVERER"], {
         type: NOTIFICATION_TYPES.ORDER_READY_FOR_DELIVERY,
         title: "Commande prête pour livraison",
         message: `Commande ${updated.reference} : prête pour livraison`,
@@ -262,12 +257,16 @@ export class OrdersRepository {
     };
 
     const [
+      waitingForVisual,
       waitingForFile,
       inProgress,
       inProduction,
       readyForDelivery,
       grouped,
     ] = await Promise.all([
+      prisma.order.count({
+        where: { ...baseWhere, status: "waiting_for_visual" },
+      }),
       prisma.order.count({
         where: { ...baseWhere, status: "waiting_for_file" },
       }),
@@ -299,6 +298,7 @@ export class OrdersRepository {
     }
 
     return {
+      waitingForVisual,
       waitingForFile,
       inProgress,
       inProduction,

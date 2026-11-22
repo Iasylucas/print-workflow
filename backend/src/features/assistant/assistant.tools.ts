@@ -372,6 +372,7 @@ export const assistantTools: ToolDefinition[] = [
       return await orderStatusHistoryRepository.findAll({
         page: safe(args["page"]) || 1,
         limit: safe(args["limit"]) || 20,
+        sortOrder: args["sortOrder"] === "asc" ? "asc" : "desc",
         orderId: safe(args["orderId"]),
         changedById: safe(args["changedById"]),
         startDate: safe(args["startDate"]),

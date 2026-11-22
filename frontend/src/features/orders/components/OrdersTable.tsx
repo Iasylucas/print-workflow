@@ -19,14 +19,13 @@ interface OrdersTableProps {
 const COLUMNS_WIDTHS = [
   "w-[10%]", // Facture
   "w-[12%]", // Référence
-  "w-[18%]", // Désignation
+  "w-[14%]", // Désignation
   "w-[12%]", // Client
   "w-[10%]", // Produit
   "w-[6%]", // Qté
   "w-[10%]", // Prix unit.
   "w-[12%]", // Statut
   "w-[10%]", // Créé le
-  "w-[50px]", // Actions
 ];
 
 export const OrdersTable = ({

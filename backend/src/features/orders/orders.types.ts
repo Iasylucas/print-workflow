@@ -103,6 +103,7 @@ export type OrderDetailOutput = Prisma.OrderGetPayload<{
 }>;
 
 export type OrderStats = {
+  waitingForVisual: number;
   waitingForFile: number;
   inProgress: number;
   inProduction: number;

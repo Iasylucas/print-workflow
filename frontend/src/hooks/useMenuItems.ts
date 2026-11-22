@@ -48,6 +48,10 @@ const MENU_CONFIG: Record<string, MenuItem[]> = {
     { href: "/orders", label: "Commandes", icon: FileText },
     { href: "/invoices", label: "Factures", icon: Receipt },
   ],
+  DELIVERER: [
+    { href: "/orders", label: "Commandes", icon: FileText },
+    { href: "/invoices", label: "Factures", icon: Receipt },
+  ],
 };
 
 export const useMenuItems = (): MenuItem[] => {

@@ -5,7 +5,7 @@ import { OrdersTable } from "../components/OrdersTable";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { TableStatusBar } from "@/components/shared/TableStatusBar";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Clock, PenTool, Printer, PackageCheck } from "lucide-react";
+import { RefreshCw, Clock, Printer, PackageCheck, File } from "lucide-react";
 import type { OrdersQueryParams, Order } from "../types/orders.types";
 import { OrderDetailDrawer } from "../components/OrderDetailDrawer";
 import { EditOrderModal } from "../components/EditOrderModal";
@@ -83,19 +83,19 @@ export const OrdersPage = () => {
       </PageHeader>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard
-          label="En attente fichier"
-          value={stats?.waitingForFile ?? 0}
+          label="En attente visuel"
+          value={stats?.waitingForVisual ?? 0}
           icon={Clock}
           variant="warning"
-          isLoading={isStatsLoading}
-          description="En attente du fichier graphiste"
+          description="Commandes en attente de visuel client"
         />
+
         <KpiCard
-          label="En cours"
-          value={stats?.inProgress ?? 0}
-          icon={PenTool}
-          isLoading={isStatsLoading}
-          description="Graphiste en cours / fichier complet"
+          label="En attente fichier"
+          value={stats?.waitingForFile ?? 0}
+          icon={File}
+          variant="warning"
+          description="En attente du fichier graphiste"
         />
         <KpiCard
           label="En production"

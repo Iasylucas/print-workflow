@@ -169,6 +169,7 @@ export const usePosCart = (initialInvoiceId?: number | null) => {
       quantity: order.quantity,
       unitPrice: order.unitPrice,
       atelierNote: order.notes?.[0]?.text || "",
+      waitingForVisual: order.status === "waiting_for_visual",
     }));
 
     setFormState({
@@ -254,6 +255,7 @@ export const usePosCart = (initialInvoiceId?: number | null) => {
       quantity: 1,
       unitPrice: 0,
       atelierNote: "",
+      waitingForVisual: false,
     };
     setFormState((prev) => ({
       ...prev,
@@ -304,6 +306,7 @@ export const usePosCart = (initialInvoiceId?: number | null) => {
         quantity: line.quantity,
         unitPrice: line.unitPrice,
         atelierNote: line.atelierNote,
+        waitingForVisual: line.waitingForVisual,
       }));
 
       const payload = {

@@ -27,6 +27,7 @@ export const createSingleOrderLineSchema = z.object({
     .number()
     .int()
     .nonnegative("Le prix unitaire doit être positif ou nul"),
+  waitingForVisual: z.boolean().default(false),
 });
 
 export const createBulkOrderSchema = z.object({
@@ -67,6 +68,7 @@ export const updateOrderFromPosSchema = z.object({
         quantity: z.number().int().positive(),
         unitPrice: z.number().int().nonnegative(),
         atelierNote: z.string().trim().optional().nullable(),
+        waitingForVisual: z.boolean().optional(),
       }),
     )
     .optional(),

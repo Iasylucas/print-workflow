@@ -147,6 +147,12 @@ export class OrderRepository {
         if (!reference) {
           throw new Error(`Référence manquante pour la ligne ${lineIndex}`);
         }
+        const isService = isServiceProduct(line.productId);
+        const initialStatus = isService
+          ? "not_applicable"
+          : line.waitingForVisual
+            ? "waiting_for_visual"
+            : "waiting_for_file";
         const createdOrder = await tx.order.create({
           data: {
             reference,
@@ -160,9 +166,7 @@ export class OrderRepository {
             quantity: line.quantity,
             unitPrice: line.unitPrice,
             createdById: currentUserId,
-            status: isServiceProduct(line.productId)
-              ? "not_applicable"
-              : "waiting_for_file",
+            status: initialStatus,
           },
         });
 
@@ -170,17 +174,19 @@ export class OrderRepository {
           data: {
             orderId: createdOrder.id,
             fromStatus: null,
-            toStatus: "waiting_for_file",
+            toStatus: initialStatus,
             changedById: currentUserId,
           },
         });
-        await notificationsService.notifyRoles(tx, ["GRAPHIC_DESIGNER"], {
-          type: NOTIFICATION_TYPES.ORDER_CREATED,
-          title: "Nouvelle commande",
-          message: `Nouvelle commande ${reference} — ${line.designation}`,
-          link: `/orders?openOrder=${createdOrder.id}`,
-          orderId: createdOrder.id,
-        });
+        if (initialStatus === "waiting_for_file") {
+          await notificationsService.notifyRoles(tx, ["GRAPHIC_DESIGNER"], {
+            type: NOTIFICATION_TYPES.ORDER_CREATED,
+            title: "Nouvelle commande",
+            message: `Nouvelle commande ${reference} — ${line.designation}`,
+            link: `/orders?openOrder=${createdOrder.id}`,
+            orderId: createdOrder.id,
+          });
+        }
 
         if (line.atelierNote && line.atelierNote.trim() !== "") {
           await tx.note.create({
@@ -607,8 +613,24 @@ export class OrderRepository {
                 quantity: true,
                 unitPrice: true,
                 productId: true,
+                status: true,
               },
             });
+
+            let newStatus: string | undefined;
+            if (oldOrder) {
+              const isCurrentlyWaitingVisual =
+                oldOrder.status === "waiting_for_visual";
+              const shouldBeWaitingVisual = line.waitingForVisual === true;
+
+              if (shouldBeWaitingVisual && !isCurrentlyWaitingVisual) {
+                // Le commercial coche "en attente visuel" sur une ligne qui ne l'était pas
+                newStatus = "waiting_for_visual";
+              } else if (!shouldBeWaitingVisual && isCurrentlyWaitingVisual) {
+                // Le commercial retire "en attente visuel" → le fichier est prêt
+                newStatus = "waiting_for_file";
+              }
+            }
 
             // Mettre à jour une commande existante
             await tx.order.update({
@@ -620,6 +642,7 @@ export class OrderRepository {
                 dimensions: line.dimensions,
                 quantity: line.quantity,
                 unitPrice: line.unitPrice,
+                ...(newStatus ? { status: newStatus } : {}),
               },
             });
 
@@ -660,7 +683,12 @@ export class OrderRepository {
 
             createdOrderIds[i] = line.orderId;
           } else {
-            // Créer une nouvelle commande
+            const isService = isServiceProduct(line.productId);
+            const initialStatus = isService
+              ? "not_applicable"
+              : line.waitingForVisual
+                ? "waiting_for_visual"
+                : "waiting_for_file";
             const created = await tx.order.create({
               data: {
                 reference: `CMD-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
@@ -673,7 +701,7 @@ export class OrderRepository {
                 quantity: line.quantity,
                 unitPrice: line.unitPrice,
                 createdById: userId,
-                status: "waiting_for_file",
+                status: initialStatus,
               },
             });
 
@@ -681,17 +709,19 @@ export class OrderRepository {
               data: {
                 orderId: created.id,
                 fromStatus: null,
-                toStatus: "waiting_for_file",
+                toStatus: initialStatus,
                 changedById: userId,
               },
             });
-            await notificationsService.notifyRoles(tx, ["GRAPHIC_DESIGNER"], {
-              type: NOTIFICATION_TYPES.ORDER_CREATED,
-              title: "Nouvelle commande",
-              message: `Nouvelle commande ${created.reference} — ${line.designation}`,
-              link: `/orders?openOrder=${created.id}`,
-              orderId: created.id,
-            });
+            if (initialStatus == "waiting_for_file") {
+              await notificationsService.notifyRoles(tx, ["GRAPHIC_DESIGNER"], {
+                type: NOTIFICATION_TYPES.ORDER_CREATED,
+                title: "Nouvelle commande",
+                message: `Nouvelle commande ${created.reference} — ${line.designation}`,
+                link: `/orders?openOrder=${created.id}`,
+                orderId: created.id,
+              });
+            }
             createdOrderIds[i] = created.id;
           }
         }

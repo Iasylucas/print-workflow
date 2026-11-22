@@ -17,12 +17,9 @@ import { Navigate } from "react-router-dom";
 
 export const PosLayout = () => {
   const { user } = useAuth();
-  // Dans le composant
   const { invoiceId } = useParams<{ invoiceId?: string }>();
 
-  // Passe l'ID à `usePosCart`
   const pos = usePosCart(invoiceId ? Number(invoiceId) : null);
-  // Ajouter en haut avec les autres useState
   const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false);
 
   if (user?.role !== "ADMIN" && user?.role !== "SALES") {

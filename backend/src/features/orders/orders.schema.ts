@@ -3,6 +3,7 @@ import { paginationSchema } from "@/shared/schemas/query.schema.js";
 
 export const updateOrderStatusSchema = z.object({
   status: z.enum([
+    "waiting_for_visual",
     "waiting_for_file",
     "in_progress",
     "file_completed",

@@ -11,6 +11,7 @@ export interface PosCartLine {
   quantity: number;
   unitPrice: number;
   atelierNote?: string | null;
+  waitingForVisual?: boolean;
 }
 
 // types for requests

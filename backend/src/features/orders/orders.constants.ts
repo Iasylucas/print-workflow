@@ -20,6 +20,7 @@ export const ORDERS_ERRORS = {
 } as const;
 
 export const ORDER_STATUS_PIPELINE: Record<string, number> = {
+  waiting_for_visual: -1,
   waiting_for_file: 0,
   in_progress: 1,
   file_completed: 2,

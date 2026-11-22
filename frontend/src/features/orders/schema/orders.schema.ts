@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const ORDER_STATUSES = [
+  "waiting_for_visual",
   "waiting_for_file",
   "in_progress",
   "file_completed",
@@ -13,6 +14,7 @@ export const ORDER_STATUSES = [
 ] as const;
 
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
+  waiting_for_visual: "En attente de visuel client",
   waiting_for_file: "En attente fichier",
   in_progress: "En cours",
   file_completed: "Fichier complet",
