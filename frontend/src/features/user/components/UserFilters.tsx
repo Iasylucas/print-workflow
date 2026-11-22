@@ -135,6 +135,9 @@ export const UserFilters = ({ filters, onFilterChange }: UserFiltersProps) => {
             <SelectItem value="GRAPHIC_DESIGNER" className="text-xs">
               Graphiste
             </SelectItem>
+            <SelectItem value="DELIVERER" className="text-xs">
+              Livreur
+            </SelectItem>
           </SelectContent>
         </Select>
 

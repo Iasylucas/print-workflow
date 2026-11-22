@@ -204,6 +204,7 @@ export function EditUserModal({
                   <SelectItem value="SALES">Commercial</SelectItem>
                   <SelectItem value="PRINTER">Imprimeur</SelectItem>
                   <SelectItem value="GRAPHIC_DESIGNER">Graphiste</SelectItem>
+                  <SelectItem value="DELIVERER">Livreur</SelectItem>
                 </SelectContent>
               </Select>
               {fieldState.invalid && fieldState.error && (

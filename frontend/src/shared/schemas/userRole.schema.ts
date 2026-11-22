@@ -5,6 +5,7 @@ export const UserRole = z.enum([
   "SALES",
   "PRINTER",
   "GRAPHIC_DESIGNER",
+  "DELIVERER",
 ]);
 
 export type UserRole = z.infer<typeof UserRole>;

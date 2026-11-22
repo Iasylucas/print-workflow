@@ -16,7 +16,9 @@ export const editUserSchema = z.object({
     .max(50)
     .optional()
     .nullable(),
-  role: z.enum(["ADMIN", "SALES", "PRINTER", "GRAPHIC_DESIGNER"]).optional(),
+  role: z
+    .enum(["ADMIN", "SALES", "PRINTER", "GRAPHIC_DESIGNER", "DELIVERER"])
+    .optional(),
   isActive: z.boolean().optional(),
   avatarUrl: z.string().optional(),
 });

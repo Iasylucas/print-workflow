@@ -1,1 +1,6 @@
-export type UserRole = "ADMIN" | "SALES" | "PRINTER" | "GRAPHIC_DESIGNER";
+export type UserRole =
+  | "ADMIN"
+  | "SALES"
+  | "PRINTER"
+  | "GRAPHIC_DESIGNER"
+  | "DELIVERER";
