@@ -38,7 +38,8 @@ export const useInvoiceDetail = (id: number | null) => {
     queryKey: [INVOICES_QUERY_KEY, "detail", id],
     queryFn: () => invoicesApi.getInvoiceById(id!),
     enabled: !!id,
-    staleTime: 0,
+    staleTime: 1000 * 60 * 2,
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -79,7 +80,6 @@ export const useInvoiceMutations = () => {
     }) => invoicesApi.markAsDelivered(id, data),
     onSuccess: (_, { id }) => {
       toast.success("Facture marquée comme livrée");
-      invalidateInvoices();
       queryClient.invalidateQueries({
         queryKey: [INVOICES_QUERY_KEY, "detail", id],
       });
@@ -98,7 +98,6 @@ export const useInvoiceMutations = () => {
       queryClient.invalidateQueries({
         queryKey: [INVOICES_QUERY_KEY, "detail", id],
       });
-      invalidateInvoices();
     },
     onError: (error: Error) => {
       toast.error(error.message || "Échec de l'ajout du paiement");
@@ -134,7 +133,6 @@ export const useInvoiceMutations = () => {
     mutationFn: (id: number) => invoicesApi.restoreInvoice(id),
     onSuccess: (_, id) => {
       toast.success("Facture restaurée avec succès");
-      invalidateInvoices();
       queryClient.invalidateQueries({
         queryKey: [INVOICES_QUERY_KEY, "detail", id],
       });

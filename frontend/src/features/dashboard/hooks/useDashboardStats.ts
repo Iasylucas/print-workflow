@@ -5,6 +5,7 @@ export const useDashboardStats = () => {
   return useQuery({
     queryKey: ["dashboard", "stats"],
     queryFn: dashboardApi.getStats,
-    staleTime: 30_000,
+    staleTime: 1000 * 60 * 3,
+    refetchOnWindowFocus: true,
   });
 };

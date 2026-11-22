@@ -15,8 +15,9 @@ export const useUsers = (params: UsersQueryParams) => {
   return useQuery({
     queryKey: [USERS_QUERY_KEY, params],
     queryFn: () => userApi.getUsers(params),
-    staleTime: Infinity,
+    staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: true,
   });
 };
 

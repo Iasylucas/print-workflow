@@ -17,6 +17,7 @@ export const useInvoiceForPos = (invoiceId: number | null) => {
     enabled: !!invoiceId,
     retry: 1,
     staleTime: 0,
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -32,7 +33,8 @@ export const useProductsCatalog = () => {
   return useQuery({
     queryKey: ["products-catalog"],
     queryFn: () => orderApi.getProductsCatalog(),
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 2,
+    refetchOnWindowFocus: true,
   });
 };
 
