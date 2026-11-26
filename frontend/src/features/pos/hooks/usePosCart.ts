@@ -10,6 +10,8 @@ import type {
   PosFormState,
 } from "../types/pos.types";
 import type { Invoice } from "@/features/invoices/types/invoices.types";
+import { toast } from "sonner";
+import { invoicesApi } from "@/features/invoices/services/invoicesApi";
 
 export const usePosCart = (initialInvoiceId?: number | null) => {
   // ─── MODE / NAVIGATION ───
@@ -244,10 +246,38 @@ export const usePosCart = (initialInvoiceId?: number | null) => {
     if (editingInvoiceId) openConfirm({ type: "cancelEdit" });
   }, [editingInvoiceId, openConfirm]);
 
-  const handleLoadInvoice = useCallback((invoice: Invoice) => {
-    setLastLoadedId(null);
-    setLoadingInvoiceId(invoice.id);
-    setIsInvoiceModalOpen(false);
+  // const handleLoadInvoice = useCallback((invoice: Invoice) => {
+  //   setLastLoadedId(null);
+  //   setLoadingInvoiceId(invoice.id);
+  //   setIsInvoiceModalOpen(false);
+  // }, []);
+
+  const handleLoadInvoice = useCallback(async (invoice: Invoice) => {
+    try {
+      const detail = await invoicesApi.getInvoiceById(invoice.id);
+
+      const modifiableStatuses = [
+        "waiting_for_file",
+        "waiting_for_visual",
+        "not_applicable",
+      ];
+      const nonModifiableOrders = detail.orders.filter(
+        (o) => !modifiableStatuses.includes(o.status),
+      );
+
+      if (nonModifiableOrders.length > 0) {
+        toast.error(
+          `Cette facture contient ${nonModifiableOrders.length} commande(s) en production. Impossible de la modifier.`,
+        );
+        return;
+      }
+
+      setLastLoadedId(null);
+      setLoadingInvoiceId(invoice.id);
+      setIsInvoiceModalOpen(false);
+    } catch {
+      toast.error("Impossible de vérifier la facture.");
+    }
   }, []);
 
   const handleAddEmptyLine = useCallback(() => {

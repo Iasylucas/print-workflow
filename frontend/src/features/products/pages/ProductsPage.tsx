@@ -76,6 +76,10 @@ export const ProductsPage = () => {
     });
   };
 
+  // Déterminer si l'utilisateur peut modifier les produits
+  // Seuls les ADMIN peuvent modifier, SALES (commercial) ne peuvent que créer
+  const canModifyProduct = user?.role !== "SALES";
+
   if (isError) {
     return <FailedTable refetch={refetch} sujet="produits" />;
   }
@@ -146,6 +150,7 @@ export const ProductsPage = () => {
         isOpen={formModalOpen}
         onOpenChange={setFormModalOpen}
         product={selectedProduct}
+        canModify={canModifyProduct}
       />
 
       {/* Confirmation Dialog */}

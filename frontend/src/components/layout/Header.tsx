@@ -6,10 +6,12 @@ import { Logo } from "@/features/company-info/components/Logo";
 import { NotificationBell } from "@/features/notifications";
 import { AssistantButton } from "@/features/assistant";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export const Header = () => {
   const { toggleSidebar } = useSidebar();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   return (
     <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center justify-between border-b bg-background/95 backdrop-blur px-4 transition-all">
@@ -35,8 +37,8 @@ export const Header = () => {
       {/* Droite : notifs + thème mobile + burger mobile */}
       <div className="flex items-center gap-2">
         <ThemeToggle />
-
-        <AssistantButton />
+        {user?.role === "ADMIN" && <AssistantButton />}
+        {/* <AssistantButton /> */}
 
         <NotificationBell />
 

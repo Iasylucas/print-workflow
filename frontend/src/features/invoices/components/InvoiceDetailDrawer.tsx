@@ -29,6 +29,8 @@ import { useInvoiceDetail, useInvoiceMutations } from "../hooks/useInvoices";
 // import type { InvoiceDetail } from "../types/invoices.types";
 import { AddPaymentModal } from "./AddPaymentModal";
 import { downloadInvoicePDF } from "@/shared/pdf/InvoicePdf";
+import { ORDER_STATUS_LABELS } from "@/features/orders/schema/orders.schema";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 // import type { InvoicePaymentStatus } from "../schema/invoices.schema";
 
 interface InvoiceDetailDrawerProps {
@@ -43,6 +45,13 @@ export const InvoiceDetailDrawer = ({
   invoiceId,
 }: InvoiceDetailDrawerProps) => {
   const { data: invoice, isLoading, refetch } = useInvoiceDetail(invoiceId);
+  const { user } = useAuth();
+  const { role } = user || {};
+
+  const canToggleDelivered = ["ADMIN", "SALES", "DELIVERER"].includes(
+    role || "",
+  );
+
   const {
     // updateInvoiceMutation,
     deletePaymentMutation,
@@ -193,7 +202,7 @@ export const InvoiceDetailDrawer = ({
                       id="delivered-toggle"
                       checked={invoice.isDelivered}
                       onCheckedChange={handleDeliverToggle}
-                      disabled={invoiceRemain > 0}
+                      disabled={invoiceRemain > 0 || !canToggleDelivered}
                     />
                   </div>
                 </div>
@@ -277,6 +286,7 @@ export const InvoiceDetailDrawer = ({
                           <button
                             onClick={() => handleDeletePayment(payment.id)}
                             className="text-muted-foreground/50 hover:text-destructive transition-colors shrink-0 ml-2"
+                            disabled = {!canToggleDelivered}
                           >
                             <Trash2 className="h-3.5 w-3.5" />
                           </button>
@@ -321,7 +331,7 @@ export const InvoiceDetailDrawer = ({
                             </span>
                           </div>
                           <Badge variant="outline" className="text-xs shrink-0">
-                            {order.status}
+                            {ORDER_STATUS_LABELS[order.status] ?? order.status}
                           </Badge>
                         </div>
                       ))}
@@ -391,7 +401,7 @@ export const InvoiceDetailDrawer = ({
                     </td>
                     <td className="py-2 px-3">
                       <Badge variant="outline" className="text-xs">
-                        {order.status}
+                        {ORDER_STATUS_LABELS[order.status] ?? order.status}
                       </Badge>
                     </td>
                   </tr>

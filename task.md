@@ -1,54 +1,116 @@
-# Task Summary: New Order Status & Commercial Workflow
+# Plan: Affichage Prix Produits à Multiples Variants (POS)
 
-## Problem
-Need to add a new order status for visual files waiting, plus a quick link insertion UI for commercials, plus delivery person interface.
+## Problème Actuel
 
-## New Status to Add
-- `waiting_for_visual` (or French: `en_attente_visuel`)
-- Position: First status when commercial creates an order
-- Meaning: Client may or may not have provided visual files
-  - If yes: Commercial saves file + sends Google Drive link
-  - If file is heavy: Save to hard drive first, then Google Drive (takes time)
-  - Toggle in POS: "Still waiting for visual" to add later
+- Uniquement `variants[0]` est utilisé dans `handleProductChange` (PosCart.tsx:133)
+- Pour Flyers : seulement "Recto" s'affiche, "Recto Verso" manqué
+- Bug identique pour tout produit avec >1 variante et mode FIXED
 
-## Required Changes
+## Cause Racine
 
-### 1. Update Order Status Enum
-Add `"waiting_for_visual"` to all status enums:
-- `backend/src/features/orders/orders.schema.ts` - updateOrderStatusSchema, addOrderStatusSchema, ordersQuerySchema, updateOrderSchema
-- `frontend/src/features/orders/types/orders.types.ts` - OrderStatus type
-- `frontend/src/features/orders/schema/orders.schema.ts` - ORDER_STATUSES, ORDER_STATUS_LABELS
+- `product.variants?.[0]?.pricingRules?.[0]?.config` ne prend que la 1ère variante
+- Les autres variantes sont ignorées visuellement
 
-### 2. Update Order Constants
-- `backend/src/features/orders/orders.constants.ts` - Add `waiting_for_visual` to ORDER_STATUS_PIPELINE, update IN_PROGRESS_STATUSES/IN_PRODUCTION_STATUSES if needed
+## Solution Architecturale
 
-### 3. Add Order Labels (French)
-- `frontend/src/features/orders/schema/orders.schema.ts` - Add `waiting_for_visual: "En attente visuel"` to ORDER_STATUS_LABELS
+Stocker **TOUS** les configs de variante keyed par le nom de la variante, au lieu d'un seul.
 
-### 4. Commercial Quick Link Insertion
-- Create modal/space in POS with:
-  - List of orders in `waiting_for_visual` status
-  - Quick input field for Google Drive link
-  - Button to update status to `waiting_for_file` after link insertion
-- Avoid navigating pages/filters one by one
+### Structure de Données Ciblée
 
-### 5. Status Transition Logic
-- When link is inserted → status changes directly to `waiting_for_file`
-- Toggle in POS to mark "still waiting for visual" to add link later
+```typescript
+// Dans PosCartLine.productPricingConfig :
+// Flyers: { Recto: {A4:1200, A3:2400}, "Recto Verso": {A4:1800, A3:3600} }
+// Oriflamme: { Standard: {"2.8m":200000, "3.5m":240000, "4.5m":300000} }
+// Impression: { Standard: {unit:100} }
+```
 
-### 6. Delivery Person Interface
-- Implement interface for livreur (delivery person)
-- This completes the task
+## Fichiers Impactés (non modifiés ici - à faire demain)
 
-## Files to Modify (6 files total)
-1. `backend/src/features/orders/orders.schema.ts`
-2. `frontend/src/features/orders/types/orders.types.ts`
-3. `frontend/src/features/orders/schema/orders.schema.ts`
-4. `backend/src/features/orders/orders.constants.ts`
-5. [POS modal/space component - to create]
-6. [Delivery person interface - to implement]
+1. `frontend/src/features/pos/types/pos.types.ts` - type `productPricingConfig`
+2. `frontend/src/features/pos/components/PosCart.tsx` - `handleProductChange` + tooltip
+3. Aucun autre fichier - la solution est isolée
 
-## Priority
-- High: Add new status enum + constants
-- High: Commercial quick link insertion UI
-- Medium: Delivery person interface
+## Plan d'Implémentation (3 Étapes)
+
+### Étape 1: Types (pos.types.ts)
+
+Modifier `productPricingConfig` pour accepter un objet dynamique :
+
+```typescript
+productPricingConfig?: Record<string, Record<string, number>>;
+```
+
+_Clé = nom variante, Valeur = config pricing_
+
+### Étape 2: Gestion Produit (PosCart.tsx - handleProductChange)
+
+Remplacer la ligne actuelle :
+
+```typescript
+// ACTUEL (buggé - 1 variante seulement)
+onUpdateLine(index, "productPricingConfig",
+  product.variants?.[0]?.pricingRules?.[0]?.config || {}
+);
+
+// NOUVEAU (toutes variantes)
+onUpdateLine(index, "productPricingConfig",
+  product.variants?.reduce<(Record<string, number>) => Record<string, Record<string, number>>>(
+    (acc, variant) => {
+      const config = variant.pricingRules?.[0]?.config;
+      if (config) { acc[variant.name] = config; }
+      return acc;
+    },
+    {}
+  )
+);
+```
+
+### Étape 3: Affichage Tooltip (PosCart.tsx)
+
+Modifier le contenu du tooltip pour itérer sur toutes les variantes :
+
+```typescript
+{line.productPricingConfig && Object.keys(line.productPricingConfig).length > 0 ? (
+  <p className="text-xs">
+    {Object.entries(line.productPricingConfig)
+      .map(([variantName, config]) =>
+        `${variantName}: ${Object.entries(config)
+          .map(([key, value]) => `${key} → ${value.toLocaleString()} Ar`)
+          .join(", ")}`
+      )
+      .join(" | ")}
+  </p>
+) : (
+  "Prix non disponible"
+)}
+```
+
+## Résultat Attendu
+
+| Produit     | Tooltip Affiche      |
+| ----------- | -------------------- | --------------------- | -------------------- | ------- | ------- |
+| Flyers      | Recto: A4→1200       | A3→2400               | Recto Verso: A4→1800 | A3→3600 |
+| Oriflamme   | Standard: 2.8m→200k  | 3.5m→240k             | 4.5m→300k            |
+| Panneau PVC | A1→40k               | A2→22k                | A3→15k               | A4→10k  | max→72k |
+| T-Shirt     | Marquage DTF: A4→21k | Marquage Flex: A4→28k |
+
+## Avantage Concurrentiel
+
+- ✅ Fonctionne pour TOUS les produits (pas seulement Flyers)
+- ✅ Plus jamais à refaire quand de nouveaux produits ajoutés
+- ✅ Affiche tous les prix de toutes les variantes
+- ✅ Implementation isolée (3 fichiers seulement)
+- ✅ Compatible avec config existantes (unit, A4, per_m2, 2.8m, etc.)
+
+## Critères de Sucess
+
+- [ ] Tooltip s'affiche pour tout produit avec >=1 variante
+- [ ] Tous les prix des variantes sont affichés
+- [ ] Aucun régression sur produits à 1 variante
+- [ ] Code TypeScript sans erreur
+
+## Next Steps (Demain)
+
+1. Ouvrir `task.md` et suivre les 3 étapes
+2. Tester sur Flyers, Oriflamme, Panneau PVC
+3. Vérifier visuellement sur navigateur

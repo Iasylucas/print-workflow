@@ -37,7 +37,7 @@ export type User = {
   firstName: string | null;
   lastName: string | null;
   avatarUrl: string | null;
-  role: "ADMIN" | "SALES" | "PRINTER" | "GRAPHIC_DESIGNER";
+  role: "ADMIN" | "SALES" | "PRINTER" | "GRAPHIC_DESIGNER" | "DELIVERER";
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

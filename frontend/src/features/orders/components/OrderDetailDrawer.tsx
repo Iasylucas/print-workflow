@@ -30,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 interface OrderDetailDrawerProps {
   isOpen: boolean;
@@ -58,6 +59,41 @@ export const OrderDetailDrawer = ({
   >("client_visual");
   const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
   const [isFileDialogOpen, setIsFileDialogOpen] = useState(false);
+  const { user } = useAuth();
+  const { role } = user || {};
+
+  // Permission de modification de statut par rôle
+  // Les rôles disponibles : ADMIN, SALES, PRINTER, GRAPHIC_DESIGNER
+  const isAdmin = role === "ADMIN";
+  const isSales = role === "SALES";
+  const isPrinter = role === "PRINTER";
+  const isGraphicDesigner = role === "GRAPHIC_DESIGNER";
+
+  const canEditStatusByRole = (status: OrderStatus): boolean => {
+    if (isSales) {
+      return (
+        status === "waiting_for_visual" ||
+        status === "waiting_for_file"
+      );
+    }
+    if (isPrinter) {
+      return (
+        status === "printing_in_progress" ||
+        status === "cutting_in_progress" ||
+        status === "ready_for_delivery"
+      );
+    }
+    if (isGraphicDesigner) {
+      return (
+        status === "in_progress" || status === "file_completed"
+      );
+    }
+    // ADMIN can edit all statuses
+    if (isAdmin) {
+      return true;
+    }
+    return false;
+  };
 
   if (!orderId) return null;
 
@@ -105,6 +141,15 @@ export const OrderDetailDrawer = ({
       refetch();
     }
   };
+
+  const isDeliverer = user?.role === "DELIVERER";
+
+  const availableStatuses = isDeliverer
+    ? (["ready_for_delivery", "delivered"] as OrderStatus[])
+    : ORDER_STATUSES.filter((s) => s !== "not_applicable");
+  const canChangeStatus = availableStatuses.includes(
+    order?.status as OrderStatus,
+  );
 
   return (
     <Drawer
@@ -230,19 +275,24 @@ export const OrderDetailDrawer = ({
                       });
                       refetch();
                     }}
+                    disabled={!canChangeStatus}
                   >
                     <SelectTrigger className="h-9 w-[220px]">
                       <SelectValue placeholder="Changer le statut..." />
                     </SelectTrigger>
                     <SelectContent>
-                      {ORDER_STATUSES.filter((s) => s !== "not_applicable").map(
-                        (status) => (
-                          <SelectItem key={status} value={status}>
-                            {ORDER_STATUS_LABELS[status]}
-                          </SelectItem>
-                        ),
-                      )}
-                    </SelectContent>
+                  {availableStatuses
+                    .filter((s) => s !== "not_applicable")  // Garde delivered affiché
+                    .map((status) => (
+                      <SelectItem 
+                        key={status} 
+                        value={status}
+                        disabled={status === "delivered" || !canEditStatusByRole(status)}
+                      >
+                        {ORDER_STATUS_LABELS[status]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                   </Select>
                   {updateStatusMutation.isPending && (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -459,13 +509,13 @@ export const OrderDetailDrawer = ({
                             key={file.id}
                             className="bg-muted/20 p-2 rounded-lg flex items-center justify-between group"
                           >
-                            <div className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
+                            <div className="flex items-center gap-2 min-w-0 max- overflow-hidden">
                               <FileText className="h-3.5 w-3.5 shrink-0" />
                               <a
                                 href={file.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-sm hover:underline truncate block max-w-[300px]"
+                                className="text-sm hover:underline truncate block max-w-[200px]"
                               >
                                 {file.url}
                               </a>

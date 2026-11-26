@@ -24,13 +24,15 @@ const STATUS_ORDER: OrderStatus[] = [
 ];
 
 const STATUS_COLORS: Record<OrderStatus, string> = {
-  waiting_for_file: "#e57373",
+  waiting_for_visual: "#e57373",
+  waiting_for_file: "var(--muted-foreground)",
   in_progress: "var(--chart-2)",
   file_completed: "var(--chart-2)",
   printing_in_progress: "var(--chart-3)",
   cutting_in_progress: "var(--chart-3)",
   ready_for_delivery: "var(--chart-4)",
   delivered: "var(--muted-foreground)",
+  not_applicable: "var(--muted)",
   cancelled: "var(--muted)",
 };
 

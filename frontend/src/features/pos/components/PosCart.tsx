@@ -22,6 +22,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { ClientSearchCombobox } from "./ClientSearchCombobox";
 import type {
   payments,
@@ -107,6 +112,7 @@ export const PosCart = ({
   const [expandedNotes, setExpandedNotes] = useState<number[]>([]);
   const [visualMenuIndex, setVisualMenuIndex] = useState<number | null>(null);
   const [visualInputValue, setVisualInputValue] = useState("");
+  const [openSelectIndex, setOpenSelectIndex] = useState<number | null>(null);
 
   const toggleNote = useCallback((index: number) => {
     setExpandedNotes((prev) =>
@@ -119,7 +125,14 @@ export const PosCart = ({
     (index: number, val: string) => {
       const product = products.find((p) => p.id === parseInt(val));
       onUpdateLine(index, "productId", product?.id || null);
-      if (product) onUpdateLine(index, "designation", product.name);
+      if (product) {
+        onUpdateLine(index, "designation", product.name);
+        onUpdateLine(
+          index,
+          "productPricingConfig",
+          product.variants?.[0]?.pricingRules?.[0]?.config || {},
+        );
+      }
       onUpdateLine(index, "waitingForVisual", false);
     },
     [products, onUpdateLine],
@@ -374,24 +387,53 @@ export const PosCart = ({
                     {/* Article : produit + dimensions sur la 1ère ligne, désignation en dessous */}
                     <div className="col-span-4 flex flex-col gap-1">
                       <div className="flex items-center gap-1">
-                        <Select
-                          value={line.productId?.toString() || ""}
-                          onValueChange={(v) => handleProductChange(index, v)}
+                        <Tooltip
+                          open={openSelectIndex !== index ? undefined : false}
                         >
-                          <SelectTrigger className="h-7 text-xs flex-1">
-                            <SelectValue placeholder="Produit" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {products.map((product) => (
-                              <SelectItem
-                                key={product.id}
-                                value={product.id.toString()}
+                          <TooltipTrigger asChild>
+                            <div className="flex-1">
+                              <Select
+                                value={line.productId?.toString() || ""}
+                                onValueChange={(v) =>
+                                  handleProductChange(index, v)
+                                }
+                                onOpenChange={(open) =>
+                                  setOpenSelectIndex(open ? index : null)
+                                }
                               >
-                                {product.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                                <SelectTrigger className="h-7 text-xs w-full">
+                                  <SelectValue placeholder="Produit" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {products.map((product) => (
+                                    <SelectItem
+                                      key={product.id}
+                                      value={product.id.toString()}
+                                    >
+                                      {product.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs text-xs">
+                            {line.productPricingConfig &&
+                            Object.keys(line.productPricingConfig).length >
+                              0 ? (
+                              <p className="text-xs">
+                                {Object.entries(line.productPricingConfig)
+                                  .map(
+                                    ([key, value]) =>
+                                      `${key} → ${value.toLocaleString()} Ar`,
+                                  )
+                                  .join(", ")}
+                              </p>
+                            ) : (
+                              "Prix non disponible"
+                            )}
+                          </TooltipContent>
+                        </Tooltip>
                         <Input
                           type="text"
                           value={line.dimensions || ""}

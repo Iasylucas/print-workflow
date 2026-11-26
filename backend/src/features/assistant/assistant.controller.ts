@@ -5,8 +5,13 @@ import { assistantQuerySchema } from "./assistant.schema.js";
 
 export const assistantController = {
   ask: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const { question } = assistantQuerySchema.parse(req.body);
-    const result = await assistantService.ask(question);
+    const { question, sessionId } = assistantQuerySchema.parse(req.body);
+
+    // sub = id de l'utilisateur dans le JWT
+    const userId = req.user.sub;
+    const session = `${userId}:${sessionId ?? "default"}`;
+
+    const result = await assistantService.ask(question, session);
     res.status(200).json({ success: true, data: result });
   }),
 };

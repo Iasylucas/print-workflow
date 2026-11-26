@@ -13,6 +13,7 @@ export interface PosCartLine {
   atelierNote?: string | null;
   waitingForVisual?: boolean;
   visualLinks?: string[];
+  productPricingConfig?: Record<string, number>;
 }
 
 // types for requests

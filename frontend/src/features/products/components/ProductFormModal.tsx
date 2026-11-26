@@ -24,6 +24,7 @@ interface ProductFormModalProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   product?: Product | null;
+  canModify?: boolean;
 }
 
 const productFormVariantSchema = z.object({
@@ -78,6 +79,7 @@ export const ProductFormModal = ({
   isOpen,
   onOpenChange,
   product = null,
+  canModify = true,
 }: ProductFormModalProps) => {
   const { createProductMutation, updateProductMutation } =
     useProductMutations();
@@ -284,7 +286,7 @@ export const ProductFormModal = ({
               >
                 Annuler
               </Button>
-              <Button type="submit" disabled={isPending}>
+              <Button type="submit" disabled={isPending || (!canModify && isEditing)}>
                 {isPending
                   ? "Enregistrement..."
                   : isEditing
