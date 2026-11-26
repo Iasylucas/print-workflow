@@ -15,10 +15,10 @@ import type { Product, ProductVariant } from "@/shared/types/product.types";
 const MACHINE_WIDTH = 148;
 const MACHINE_REF_LENGTH = 68;
 
-const computeRowLigne = (machineDimension: number, objectDimension: number) =>
-  objectDimension > 0
-    ? Number((machineDimension / objectDimension).toFixed(5))
-    : 0;
+// const computeRowLigne = (machineDimension: number, objectDimension: number) =>
+//   objectDimension > 0
+//     ? Number((machineDimension / objectDimension).toFixed(5))
+//     : 0;
 
 const computeTotalPieces = (width: number, height: number) => {
   if (width <= 0 || height <= 0) return 0;
@@ -82,14 +82,14 @@ export const AmalgamM2Block = ({
   const height = typeof objectHeight === "number" ? objectHeight : 0;
   const quantity = typeof quantityWanted === "number" ? quantityWanted : 0;
 
-  const rowLigneW = useMemo(
-    () => computeRowLigne(MACHINE_WIDTH, width),
-    [width],
-  );
-  const rowLigneH = useMemo(
-    () => computeRowLigne(MACHINE_REF_LENGTH, height),
-    [height],
-  );
+  // const rowLigneW = useMemo(
+  //   () => computeRowLigne(MACHINE_WIDTH, width),
+  //   [width],
+  // );
+  // const rowLigneH = useMemo(
+  //   () => computeRowLigne(MACHINE_REF_LENGTH, height),
+  //   [height],
+  // );
   const piecesPerM2 = useMemo(
     () => computeTotalPieces(width, height),
     [width, height],
@@ -142,7 +142,7 @@ export const AmalgamM2Block = ({
   };
 
   return (
-    <Card className="border-border bg-background shadow-sm">
+    <Card className="border-border bg-card shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <div className="flex items-center gap-2">
           <Layers className="h-4 w-4 text-primary" />
@@ -173,15 +173,14 @@ export const AmalgamM2Block = ({
       </CardHeader>
 
       <CardContent className="space-y-3 text-xs">
-        <div className="grid grid-cols-5 gap-2 items-center p-1.5 bg-muted/30 rounded-t-md border-b border-border font-semibold text-muted-foreground text-[10px] uppercase tracking-wider">
+        <div className="grid grid-cols-4 gap-2 items-center p-1.5 bg-muted/30 rounded-t-md border-b border-border font-semibold text-muted-foreground text-[10px] uppercase tracking-wider">
           <div>Largeur machine</div>
           <div>Dimension objet</div>
-          <div className="text-center">Lignes / Colonnes</div>
           <div className="text-center">Pièces / m²</div>
           <div className="text-right">Quantité</div>
         </div>
 
-        <div className="grid grid-cols-5 gap-2 items-center p-1.5 bg-background rounded-b-md">
+        <div className="grid grid-cols-4 gap-2 items-center p-1.5 rounded-b-md">
           <div className="font-semibold text-foreground">
             {MACHINE_WIDTH} cm
           </div>
@@ -194,22 +193,10 @@ export const AmalgamM2Block = ({
               placeholder="Largeur"
             />
           </div>
-          <div className="text-center font-mono font-medium">
-            {rowLigneW || "-"}
-          </div>
-          <div className="text-center font-mono font-medium">
+          <div className="text-center font-mono font-bold">
             {piecesPerM2 || "-"}
           </div>
           <div className="text-right">
-            {/* <Input
-              type="number"
-              value={quantityWanted}
-              onChange={(e) =>
-                setQuantityWanted(parseFloat(e.target.value) || "")
-              }
-              className="h-7 w-24 text-xs px-2 text-right"
-              placeholder="Qté"
-            /> */}
             <Input
               type="number"
               value={
@@ -226,7 +213,7 @@ export const AmalgamM2Block = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-5 gap-2 items-center p-1.5 bg-muted/10 rounded-b-md">
+        <div className="grid grid-cols-4 gap-2 items-center p-1.5 bg-muted/10 rounded-b-md">
           <div className="font-semibold text-foreground">
             {MACHINE_REF_LENGTH} cm
           </div>
@@ -241,10 +228,6 @@ export const AmalgamM2Block = ({
               placeholder="Hauteur"
             />
           </div>
-          <div className="text-center font-mono font-medium">
-            {rowLigneH || "-"}
-          </div>
-
           <div></div>
           <div className="flex items-center justify-end gap-2">
             <span className="text-[10px] text-muted-foreground">m²</span>
@@ -273,7 +256,7 @@ export const AmalgamM2Block = ({
               type="number"
               value={effectivePrice || ""}
               onChange={(e) => setPricePerM2(parseFloat(e.target.value) || "")}
-              className="h-7 text-xs font-medium text-primary bg-background flex-1"
+              className="h-7 text-xs font-medium text-primary bg-card flex-1"
               placeholder="Auto"
             />
           </div>

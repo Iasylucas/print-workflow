@@ -61,7 +61,7 @@ export const PaymentAuditLogFilters = ({
         <div
           onClick={() => searchInputRef.current?.focus()}
           className={cn(
-            "relative h-9 flex items-center transition-all duration-300 ease-in-out border rounded-lg bg-background/50 cursor-pointer",
+            "relative h-9 flex items-center transition-all duration-300 ease-in-out border rounded-lg bg-card cursor-pointer",
             hasSearch
               ? "w-full sm:w-[220px] px-3 border-primary/40 shadow-xs"
               : "w-9 sm:w-9 px-0 justify-center border-input hover:bg-muted/50 focus-within:w-full focus-within:sm:w-[220px] focus-within:px-3 focus-within:border-primary/40 focus-within:shadow-xs",
@@ -106,7 +106,7 @@ export const PaymentAuditLogFilters = ({
             onFilterChange({ action: parseAction(val), page: 1 })
           }
         >
-          <SelectTrigger className="h-9 min-w-[140px] bg-background/50 text-xs border-input rounded-lg">
+          <SelectTrigger className="h-9 min-w-[140px] bg-card text-xs border-input rounded-lg">
             <Filter className="h-3.5 w-3.5 text-muted-foreground/70" />
             <SelectValue placeholder="Action" />
           </SelectTrigger>
@@ -127,7 +127,7 @@ export const PaymentAuditLogFilters = ({
                 page: 1,
               })
             }
-            className="h-9 w-[140px] bg-background/50 text-xs border-input rounded-l-md"
+            className="h-9 w-[140px] bg-card text-xs border-input rounded-l-md"
             placeholder="Du"
           />
           <span className="text-xs text-muted-foreground/50">au</span>
@@ -140,7 +140,7 @@ export const PaymentAuditLogFilters = ({
                 page: 1,
               })
             }
-            className="h-9 w-[140px] bg-background/50 text-xs border-input rounded-r-md"
+            className="h-9 w-[140px] bg-card text-xs border-input rounded-r-md"
             placeholder="À"
           />
         </div>

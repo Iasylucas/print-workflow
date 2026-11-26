@@ -86,8 +86,8 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
   const qty = Number(quantityWanted);
   const currentPriceA4 = Number(displayPrice) || 0;
 
-  const rowLigne1 = w > 0 ? Number((laizeMachineA4 / w).toFixed(5)) : 0;
-  const rowLigne2 = h > 0 ? Number((longueurReferenceA4 / h).toFixed(5)) : 0;
+  // const rowLigne1 = w > 0 ? Number((laizeMachineA4 / w).toFixed(5)) : 0;
+  // const rowLigne2 = h > 0 ? Number((longueurReferenceA4 / h).toFixed(5)) : 0;
 
   const totalPiecesPerA4 =
     w > 0 && h > 0
@@ -150,7 +150,7 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-background p-4 shadow-xs space-y-4 font-sans text-xs">
+    <div className="rounded-lg border border-border bg-card p-4 shadow-xs space-y-4 font-sans text-xs">
       <div className="flex items-center justify-between pb-2 border-b border-border">
         <div className="flex items-center gap-2">
           <FileText className="h-4 w-4 text-primary stroke-[2.5]" />
@@ -175,7 +175,7 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
           <select
             value={selectedProductSlug}
             onChange={(e) => handleProductChange(e.target.value)}
-            className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs font-medium focus:outline-hidden"
+            className="w-full h-8 rounded-md border border-input bg-card px-2 text-xs font-medium focus:outline-hidden"
           >
             {filteredProducts.map((p) => (
               <option key={p.id} value={p.slug}>
@@ -195,7 +195,7 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
             onChange={(e) =>
               handleFaceChange(e.target.value as "RECTO" | "RECTO_VERSO")
             }
-            className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs font-medium focus:outline-hidden disabled:bg-muted disabled:opacity-50"
+            className="w-full h-8 rounded-md border border-input bg-card px-2 text-xs font-medium focus:outline-hidden disabled:bg-muted disabled:opacity-50"
           >
             <option value="RECTO">Recto Seul</option>
             <option value="RECTO_VERSO">Recto Verso</option>
@@ -210,21 +210,19 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
             type="number"
             value={displayPrice}
             onChange={(e) => setManualPrice(e.target.value)}
-            className="h-8 font-bold text-primary focus-visible:ring-0 bg-background"
+            className="h-8 font-bold text-primary focus-visible:ring-0 bg-card"
           />
         </div>
       </div>
 
-      <div className="border border-border rounded-md overflow-hidden bg-background">
-        <div className="grid grid-cols-5 bg-muted/60 p-2 font-semibold text-muted-foreground text-[10px] uppercase border-b border-border">
+      <div className="border border-border rounded-md overflow-hidden bg-card">
+        <div className="grid grid-cols-3 bg-muted/60 p-2 font-semibold text-muted-foreground text-[10px] uppercase border-b border-border">
           <div>Format Réf.</div>
           <div>Dim. Objet (cm)</div>
-          <div>Nb / Ligne</div>
-          <div>Nb / Colonne</div>
           <div className="text-right">Total Utile (-1)</div>
         </div>
 
-        <div className="grid grid-cols-5 p-2 items-center gap-2">
+        <div className="grid grid-cols-3 p-2 items-center gap-2">
           <div className="font-bold text-muted-foreground">A4 (19 × 27 cm)</div>
           <div className="flex items-center gap-1">
             <Input
@@ -243,12 +241,12 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
               placeholder="H"
             />
           </div>
-          <div className="font-mono font-medium pl-2">
+          {/* <div className="font-mono font-medium pl-2">
             {w > 0 ? rowLigne1 : "-"}
           </div>
           <div className="font-mono font-medium pl-2">
             {h > 0 ? rowLigne2 : "-"}
-          </div>
+          </div> */}
           <div className="text-right font-black text-primary pr-2">
             {totalPiecesPerA4 > 0 ? `${totalPiecesPerA4} pcs` : "-"}
           </div>
@@ -269,7 +267,7 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
         />
       </div>
 
-      <div className="border border-border rounded-md overflow-hidden bg-background mt-2">
+      <div className="border border-border rounded-md overflow-hidden bg-card mt-2">
         <div className="grid grid-cols-4 bg-primary/5 p-2 font-bold text-primary text-[10px] uppercase border-b border-border tracking-wider">
           <div>Type de Feuille</div>
           <div>Total Pièces / Feuille</div>
@@ -282,7 +280,7 @@ export const AmalgamA4Block = ({ products }: AmalgamA4BlockProps) => {
             key={formatKey}
             className={cn(
               "grid grid-cols-4 p-2 items-center border-b last:border-0 border-border/60 text-[11px] font-medium",
-              formatKey === "A4" ? "bg-background" : "bg-muted/10",
+              formatKey === "A4" ? "bg-card" : "bg-muted/10",
             )}
           >
             <div className="font-bold text-foreground uppercase">

@@ -97,5 +97,20 @@ Date du jour : ${today} (${iso}). Monnaie : Ariary (Ar). Réponds toujours en fr
 - Pour plusieurs éléments, utilise un tableau ou une liste Markdown : numéro, client, total, reste, statut.
 - Montants formatés avec séparateur de milliers (1 250 000 Ar). Dates au format JJ/MM/AAAA.
 - Termine par un total ou une synthèse utile quand c'est pertinent (ex : "Total restant à encaisser : …"),
-  puis, au besoin, UNE suggestion de suite en une ligne.`.trim();
+  puis, au besoin, UNE suggestion de suite en une ligne.
+
+  # LANGUE ET AFFICHAGE (IMPORTANT)
+- Tout ce que tu écris doit être en français. N'affiche JAMAIS une valeur technique brute de la base :
+  ni snake_case (waiting_for_file), ni anglais (unpaid, partial, pending, ADMIN), ni noms de champs.
+- Traduis toujours les statuts :
+  waiting_for_file → En attente de fichier ; in_progress → En cours ; file_completed → Fichier terminé ;
+  printing_in_progress → En impression ; cutting_in_progress → En découpe ; ready_for_delivery → Prête à livrer ;
+  delivered → Livrée ; unpaid → Impayée ; partial → Partiellement payée ; paid → Payée ;
+  pending → En attente ; converted → Converti en facture.
+- Rôles : ADMIN → Administrateur ; SALES → Commercial ; PRINTER → Imprimeur ;
+  GRAPHIC_DESIGNER → Graphiste ; DELIVERER → Livreur.
+- Moyens de paiement et autres valeurs : écris-les en français lisible (ex : "mobile money", "espèces", "virement").
+- Dans un tableau : 4 colonnes maximum (ex : Référence, Client, Désignation, Statut). Mets les montants en Ar.
+  Ne crée pas de colonne "Statut" si tous les éléments ont le même statut : dis-le dans la phrase d'introduction.
+  `.trim();
 };

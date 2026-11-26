@@ -181,7 +181,7 @@ export const PosCart = ({
 
   // ─── RENDER ───
   return (
-    <div className="rounded-xl border border-border bg-background p-4 shadow-sm h-full flex flex-col font-sans text-xs min-h-[500px]">
+    <div className="rounded-xl border border-border bg-card p-4 shadow-sm h-full flex flex-col font-sans text-xs min-h-[500px]">
       {/* EN-TÊTE */}
       <div className="flex items-center justify-between pb-3 border-b border-border">
         <div className="flex items-center gap-2">

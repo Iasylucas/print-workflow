@@ -10,6 +10,8 @@ import { OrderStatusHistoryRepository } from "@/features/order-status-history/or
 import { PaymentAuditLogRepository } from "@/features/payment-audit-log/payment-audit-log.repository.js";
 import { UserRepository } from "@/features/user/user.repository.js";
 import type { ToolDefinition, OpenAIToolFormat } from "./assistant.types.js";
+import { extraTools } from "./assistant.tools.extra.js";
+import { actorTools } from "./assistant.tools.actors.js";
 
 // Instantiation des repositories de features (lecture seule)
 const invoicesRepository = new InvoicesRepository();
@@ -549,6 +551,8 @@ export const assistantTools: ToolDefinition[] = [
       return await userRepository.findActiveByRoles([role]);
     },
   },
+  ...extraTools,
+  ...actorTools,
 ];
 
 /**
@@ -642,22 +646,66 @@ const zodFieldToJsonSchema = (
 /**
  * Exécute un tool par son nom.
  */
+const cleanArgs = (args: Record<string, unknown>): Record<string, unknown> =>
+  Object.fromEntries(
+    Object.entries(args).filter(([, v]) => {
+      if (v === null || v === undefined) return false;
+      if (typeof v === "string") {
+        const s = v.trim().toLowerCase();
+        return s !== "" && s !== "null" && s !== "undefined";
+      }
+      return true;
+    }),
+  );
+
+// Accepte "2026-11-01", "2026-11-01T00:00:00+03:00"… et renvoie un ISO strict (UTC, avec Z)
+const normalizeDates = (
+  args: Record<string, unknown>,
+): Record<string, unknown> => {
+  const out = { ...args };
+  for (const key of ["startDate", "endDate"]) {
+    const v = out[key];
+    if (typeof v !== "string") continue;
+    const s = v.trim();
+    let d: Date;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+      // jour seul : début ou fin de journée à Madagascar (UTC+3)
+      d = new Date(
+        `${s}T${key === "endDate" ? "23:59:59.999" : "00:00:00.000"}+03:00`,
+      );
+    } else {
+      d = new Date(s);
+    }
+    if (Number.isNaN(d.getTime())) delete out[key];
+    else out[key] = d.toISOString();
+  }
+  return out;
+};
+
 export const executeTool = async (
   name: string,
   args: Record<string, unknown>,
 ): Promise<unknown> => {
   const tool = assistantTools.find((t) => t.name === name);
   if (!tool) {
-    return { error: `Tool inconnu : ${name}` };
+    console.warn(`[Assistant] Tool inconnu : ${name}`);
+    return {
+      error: `Tool inconnu : ${name}`,
+      hint: "Utilise un autre outil de la liste.",
+    };
   }
 
   try {
-    const validated = tool.parameters.parse(args);
+    const cleaned = normalizeDates(cleanArgs(args));
+    console.log(`[Assistant] ${name}`, JSON.stringify(cleaned));
+    const validated = tool.parameters.parse(cleaned);
     return await tool.execute(validated as Record<string, unknown>);
   } catch (error) {
+    console.error(`[Assistant] ${name} a échoué :`, error);
     return {
       error: `Échec de l'exécution du tool ${name}`,
       details: (error as Error).message,
+      hint: "Réessaie sans les paramètres optionnels, ou utilise un autre outil.",
     };
   }
 };

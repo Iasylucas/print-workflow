@@ -50,7 +50,7 @@ export const ProductFilters = ({
             if (input) input.focus();
           }}
           className={cn(
-            "relative h-9 flex items-center transition-all duration-300 ease-in-out border rounded-lg bg-background/50 cursor-pointer",
+            "relative h-9 flex items-center transition-all duration-300 ease-in-out border rounded-lg bg-card cursor-pointer",
             localSearch
               ? "w-full sm:w-[220px] px-3 border-primary/40 shadow-xs"
               : "w-9 sm:w-9 px-0 justify-center border-input hover:bg-muted/50 focus-within:w-full focus-within:sm:w-[220px] focus-within:px-3 focus-within:border-primary/40 focus-within:shadow-xs",

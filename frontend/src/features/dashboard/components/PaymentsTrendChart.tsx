@@ -40,7 +40,7 @@ export const PaymentsTrendChart = () => {
   const points = data?.data ?? [];
 
   return (
-    <div className="rounded-xl border bg-background p-4 h-full flex flex-col">
+    <div className="rounded-xl border bg-card p-4 h-full flex flex-col">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div>
           <p className="text-sm font-medium">Encaissements — 6 derniers mois</p>

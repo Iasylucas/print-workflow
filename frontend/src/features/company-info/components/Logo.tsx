@@ -2,6 +2,7 @@ import { useCompanyStore } from "@/features/company-info/stores/companyStore";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import logoFallback from "@/assets/images/logo.png";
+import logoDark from "@/assets/images/darklogo.png";
 
 interface LogoProps {
   variant?: "default" | "icon";
@@ -26,18 +27,27 @@ export const Logo = ({ variant = "default", className, style }: LogoProps) => {
     );
   }
 
-  const renderIcon = (sizeClass: string) => {
-    const src = logoFallback;
-
-    return (
+  const renderIcon = (sizeClass: string) => (
+    <>
       <img
-        src={src}
-        alt={`${companyName}`}
-        className={cn(sizeClass, "object-contain", className)}
+        src={logoFallback}
+        alt={companyName}
+        className={cn(sizeClass, "object-contain", className, "dark:hidden")}
         style={style}
       />
-    );
-  };
+      <img
+        src={logoDark}
+        alt={companyName}
+        className={cn(
+          sizeClass,
+          "object-contain",
+          className,
+          "hidden dark:block",
+        )}
+        style={style}
+      />
+    </>
+  );
 
   if (variant === "icon") {
     return renderIcon(className || "h-10 w-22");

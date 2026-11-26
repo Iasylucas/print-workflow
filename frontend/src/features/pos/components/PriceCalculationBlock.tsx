@@ -45,7 +45,7 @@ export const PriceCalculationBlock = ({
   };
 
   return (
-    <div className="rounded-lg border border-border bg-background p-4 shadow-xs space-y-4 font-sans text-xs">
+    <div className="rounded-lg border border-border bg-card p-4 shadow-xs space-y-4 font-sans text-xs">
       <div className="flex items-center justify-between pb-2 border-b border-border">
         <div className="flex items-center gap-2">
           <Calculator className="h-4 w-4 text-primary stroke-[2.5]" />
@@ -62,7 +62,7 @@ export const PriceCalculationBlock = ({
         </Button>
       </div>
 
-      <div className=" overflow-hidden bg-background">
+      <div className=" overflow-hidden bg-card">
         <div className="grid grid-cols-3 bg-muted/50 p-2 border-b border-border font-semibold text-muted-foreground text-[10px] uppercase tracking-wider">
           <div>Dimension (m)</div>
           <div>Prix m² / Saisie libre</div>
@@ -90,16 +90,16 @@ export const PriceCalculationBlock = ({
 
           <div className="space-y-1.5">
             <div className="flex items-center gap-1">
+              <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                Ar/m²
+              </span>
               <Input
                 type="number"
                 value={displayPrice}
                 onChange={(e) => setManualPrice(e.target.value)}
-                className="h-7 w-24 text-xs font-bold text-primary focus-visible:ring-0 bg-background"
+                className="h-7 w-24 text-xs font-bold text-primary focus-visible:ring-0 bg-card"
                 placeholder="Auto"
               />
-              <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-                Ar/m²
-              </span>
             </div>
             <div className="flex items-center gap-1">
               <span className="text-muted-foreground font-medium text-[10px]">
@@ -109,7 +109,7 @@ export const PriceCalculationBlock = ({
                 type="number"
                 value={customQuantity}
                 onChange={(e) => setCustomQuantity(e.target.value)}
-                className="h-6 w-12 text-xs p-1 focus-visible:ring-0 text-center font-medium"
+                className="h-6 w-20 text-xs p-1 focus-visible:ring-0 text-center font-medium"
               />
             </div>
           </div>

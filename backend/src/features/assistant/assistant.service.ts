@@ -216,6 +216,11 @@ export class AssistantService {
       });
 
       const message = completion.choices[0]?.message;
+      messages.push({
+        role: "assistant",
+        content: null,
+        tool_calls: message?.tool_calls,
+      });
       if (!message) throw new InternalServerError(ASSISTANT_ERRORS.LLM_FAILED);
 
       if (!message.tool_calls || message.tool_calls.length === 0) {

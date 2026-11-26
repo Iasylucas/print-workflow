@@ -71,7 +71,7 @@ export const UserFilters = ({ filters, onFilterChange }: UserFiltersProps) => {
             if (input) input.focus();
           }}
           className={cn(
-            "relative h-9 flex items-center transition-all duration-300 ease-in-out border rounded-lg bg-background/50 cursor-pointer",
+            "relative h-9 flex items-center transition-all duration-300 ease-in-out border rounded-lg bg-card cursor-pointer",
             localSearch
               ? "w-full sm:w-[240px] px-3 border-primary/40 shadow-xs"
               : "w-9 sm:w-9 px-0 justify-center border-input hover:bg-muted/50 focus-within:w-full focus-within:sm:w-[240px] focus-within:px-3 focus-within:border-primary/40 focus-within:shadow-xs",
@@ -115,7 +115,7 @@ export const UserFilters = ({ filters, onFilterChange }: UserFiltersProps) => {
             })
           }
         >
-          <SelectTrigger className="h-9 min-w-[130px] bg-background/50 text-xs font-medium border-input rounded-lg hover:bg-muted/50 transition-colors gap-2 focus:ring-0">
+          <SelectTrigger className="h-9 min-w-[130px] bg-card text-xs font-medium border-input rounded-lg hover:bg-muted/50 transition-colors gap-2 focus:ring-0">
             <ShieldAlert className="h-3.5 w-3.5 text-muted-foreground/70 stroke-[2.5]" />
             <SelectValue placeholder="Rôle" />
           </SelectTrigger>
@@ -150,7 +150,7 @@ export const UserFilters = ({ filters, onFilterChange }: UserFiltersProps) => {
             });
           }}
         >
-          <SelectTrigger className="h-9 min-w-[120px] bg-background/50 text-xs font-medium border-input rounded-lg hover:bg-muted/50 transition-colors gap-2 focus:ring-0">
+          <SelectTrigger className="h-9 min-w-[120px] bg-card text-xs font-medium border-input rounded-lg hover:bg-muted/50 transition-colors gap-2 focus:ring-0">
             <ToggleLeft className="h-3.5 w-3.5 text-muted-foreground/70 stroke-[2.5]" />
             <SelectValue placeholder="Statut" />
           </SelectTrigger>

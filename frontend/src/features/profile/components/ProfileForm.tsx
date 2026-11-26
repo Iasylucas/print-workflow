@@ -20,6 +20,51 @@ const profileSchema = z.object({
   phone: z.string().trim().optional().nullable(),
   address: z.string().trim().optional().nullable(),
 });
+import type { Control } from "react-hook-form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+type TextFieldProps = {
+  control: Control<ProfileFormData>;
+  name: keyof ProfileFormData;
+  label: string;
+  placeholder?: string;
+  className?: string;
+};
+
+const TextField = ({
+  control,
+  name,
+  label,
+  placeholder,
+  className,
+}: TextFieldProps) => (
+  <Controller
+    name={name}
+    control={control}
+    render={({ field, fieldState }) => (
+      <Field data-invalid={fieldState.invalid} className={className}>
+        <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
+        <Input
+          {...field}
+          id={field.name}
+          value={field.value ?? ""}
+          aria-invalid={fieldState.invalid}
+          placeholder={placeholder}
+        />
+        {fieldState.invalid && fieldState.error && (
+          <FieldError errors={[fieldState.error]} />
+        )}
+      </Field>
+    )}
+  />
+);
 
 type ProfileFormData = z.infer<typeof profileSchema>;
 
@@ -100,8 +145,126 @@ export const ProfileForm = ({
     onSubmit({ ...form.getValues(), avatarUrl: url });
   };
 
+  // return (
+  //   <form
+  //     onSubmit={form.handleSubmit((data) => {
+  //       onSubmit({
+  //         firstName: data.firstName || null,
+  //         lastName: data.lastName || "",
+  //         phone: data.phone || null,
+  //         address: data.address || null,
+  //       });
+  //     })}
+  //   >
+  //     <AvatarUpload
+  //       avatarUrl={profile.avatarUrl}
+  //       name={`${profile.firstName || ""} ${profile.lastName}`}
+  //       onUploadSuccess={handleAvatarUpload}
+  //     />
+
+  //     <FieldGroup className="flex flex-col gap-4">
+  //       <Controller
+  //         name="firstName"
+  //         control={form.control}
+  //         render={({ field, fieldState }) => (
+  //           <Field data-invalid={fieldState.invalid}>
+  //             <FieldLabel htmlFor={field.name}>Prénom</FieldLabel>
+  //             <Input
+  //               {...field}
+  //               id={field.name}
+  //               value={field.value ?? ""}
+  //               aria-invalid={fieldState.invalid}
+  //               placeholder="Jean"
+  //               className="bg-background"
+  //             />
+  //             {fieldState.invalid && fieldState.error && (
+  //               <FieldError errors={[fieldState.error]} />
+  //             )}
+  //           </Field>
+  //         )}
+  //       />
+
+  //       <Controller
+  //         name="lastName"
+  //         control={form.control}
+  //         render={({ field, fieldState }) => (
+  //           <Field data-invalid={fieldState.invalid}>
+  //             <FieldLabel htmlFor={field.name}>Nom *</FieldLabel>
+  //             <Input
+  //               {...field}
+  //               id={field.name}
+  //               value={field.value ?? ""}
+  //               aria-invalid={fieldState.invalid}
+  //               placeholder="Dupont"
+  //               className="bg-background"
+  //             />
+  //             {fieldState.invalid && fieldState.error && (
+  //               <FieldError errors={[fieldState.error]} />
+  //             )}
+  //           </Field>
+  //         )}
+  //       />
+
+  //       <Controller
+  //         name="phone"
+  //         control={form.control}
+  //         render={({ field, fieldState }) => (
+  //           <Field data-invalid={fieldState.invalid}>
+  //             <FieldLabel htmlFor={field.name}>Téléphone</FieldLabel>
+  //             <Input
+  //               {...field}
+  //               id={field.name}
+  //               value={field.value ?? ""}
+  //               aria-invalid={fieldState.invalid}
+  //               placeholder="034 12 345 67"
+  //               className="bg-background"
+  //             />
+  //             {fieldState.invalid && fieldState.error && (
+  //               <FieldError errors={[fieldState.error]} />
+  //             )}
+  //           </Field>
+  //         )}
+  //       />
+
+  //       <Controller
+  //         name="address"
+  //         control={form.control}
+  //         render={({ field, fieldState }) => (
+  //           <Field data-invalid={fieldState.invalid}>
+  //             <FieldLabel htmlFor={field.name}>Adresse</FieldLabel>
+  //             <Input
+  //               {...field}
+  //               id={field.name}
+  //               value={field.value ?? ""}
+  //               aria-invalid={fieldState.invalid}
+  //               placeholder="10 rue de Paris"
+  //               className="bg-background"
+  //             />
+  //             {fieldState.invalid && fieldState.error && (
+  //               <FieldError errors={[fieldState.error]} />
+  //             )}
+  //           </Field>
+  //         )}
+  //       />
+
+  //       {form.formState.errors.root && (
+  //         <div className="rounded-md bg-destructive/15 p-3 text-sm font-medium text-destructive">
+  //           {form.formState.errors.root.message}
+  //         </div>
+  //       )}
+
+  //       <div className="flex justify-end gap-2 pt-4">
+  //         <Button type="submit" disabled={isUpdating || !hasChanges}>
+  //           {isUpdating ? "Enregistrement..." : "Enregistrer les modifications"}
+  //         </Button>
+  //       </div>
+  //     </FieldGroup>
+  //   </form>
+  // );
+
   return (
     <form
+      className="grid gap-6 lg:grid-cols-[300px_1fr] lg:items-start"
       onSubmit={form.handleSubmit((data) => {
         onSubmit({
           firstName: data.firstName || null,
@@ -111,109 +274,71 @@ export const ProfileForm = ({
         });
       })}
     >
-      <AvatarUpload
-        avatarUrl={profile.avatarUrl}
-        name={`${profile.firstName || ""} ${profile.lastName}`}
-        onUploadSuccess={handleAvatarUpload}
-      />
-
-      <FieldGroup className="flex flex-col gap-4">
-        <Controller
-          name="firstName"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Prénom</FieldLabel>
-              <Input
-                {...field}
-                id={field.name}
-                value={field.value ?? ""}
-                aria-invalid={fieldState.invalid}
-                placeholder="Jean"
-                className="bg-background"
-              />
-              {fieldState.invalid && fieldState.error && (
-                <FieldError errors={[fieldState.error]} />
-              )}
-            </Field>
-          )}
-        />
-
-        <Controller
-          name="lastName"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Nom *</FieldLabel>
-              <Input
-                {...field}
-                id={field.name}
-                value={field.value ?? ""}
-                aria-invalid={fieldState.invalid}
-                placeholder="Dupont"
-                className="bg-background"
-              />
-              {fieldState.invalid && fieldState.error && (
-                <FieldError errors={[fieldState.error]} />
-              )}
-            </Field>
-          )}
-        />
-
-        <Controller
-          name="phone"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Téléphone</FieldLabel>
-              <Input
-                {...field}
-                id={field.name}
-                value={field.value ?? ""}
-                aria-invalid={fieldState.invalid}
-                placeholder="034 12 345 67"
-                className="bg-background"
-              />
-              {fieldState.invalid && fieldState.error && (
-                <FieldError errors={[fieldState.error]} />
-              )}
-            </Field>
-          )}
-        />
-
-        <Controller
-          name="address"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Adresse</FieldLabel>
-              <Input
-                {...field}
-                id={field.name}
-                value={field.value ?? ""}
-                aria-invalid={fieldState.invalid}
-                placeholder="10 rue de Paris"
-                className="bg-background"
-              />
-              {fieldState.invalid && fieldState.error && (
-                <FieldError errors={[fieldState.error]} />
-              )}
-            </Field>
-          )}
-        />
-
-        {form.formState.errors.root && (
-          <div className="rounded-md bg-destructive/15 p-3 text-sm font-medium text-destructive">
-            {form.formState.errors.root.message}
+      <Card className="shadow-none">
+        <CardContent className="flex flex-col items-center gap-3 text-center">
+          <AvatarUpload
+            avatarUrl={profile.avatarUrl}
+            name={`${profile.firstName || ""} ${profile.lastName}`}
+            onUploadSuccess={handleAvatarUpload}
+          />
+          <div>
+            <p className="font-semibold">
+              {`${profile.firstName || ""} ${profile.lastName}`.trim()}
+            </p>
+            {/* Optionnel : <p className="text-sm text-muted-foreground">{profile.email}</p> */}
           </div>
-        )}
+        </CardContent>
+      </Card>
 
-        <div className="flex justify-end gap-2 pt-4">
-          <Button type="submit" disabled={isUpdating || !hasChanges}>
+      <Card className="shadow-none">
+        <CardHeader className="border-b">
+          <CardTitle>Informations personnelles</CardTitle>
+          <CardDescription>
+            Ces informations sont visibles par les autres membres de l'équipe.
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <FieldGroup className="grid gap-4 sm:grid-cols-2">
+            <TextField
+              control={form.control}
+              name="firstName"
+              label="Prénom"
+              placeholder="Jean"
+            />
+            <TextField
+              control={form.control}
+              name="lastName"
+              label="Nom *"
+              placeholder="Dupont"
+            />
+            <TextField
+              control={form.control}
+              name="phone"
+              label="Téléphone"
+              placeholder="034 12 345 67"
+            />
+            <TextField
+              control={form.control}
+              name="address"
+              label="Adresse"
+              placeholder="10 rue de Paris"
+            />
+          </FieldGroup>
+
+          {form.formState.errors.root && (
+            <div className="mt-4 rounded-md bg-destructive/10 p-3 text-sm font-medium text-destructive">
+              {form.formState.errors.root.message}
+            </div>
+          )}
+        </CardContent>
+
+        <CardFooter className="justify-end border-t">
+          <Button type="submit" disabled={isUpdating || !hasChanges()}>
             {isUpdating ? "Enregistrement..." : "Enregistrer les modifications"}
           </Button>
-        </div>
-      </FieldGroup>
+        </CardFooter>
+      </Card>
     </form>
   );
 };

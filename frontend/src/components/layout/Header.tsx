@@ -14,7 +14,8 @@ export const Header = () => {
   const { user } = useAuth();
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center justify-between border-b bg-background/95 backdrop-blur px-4 transition-all">
+    // <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center justify-between border-b bg-background/95 backdrop-blur px-4 transition-all">
+    <header className="sticky top-0 z-30 flex h-14 w-full shrink-0 items-center justify-between border-b bg-card/95 backdrop-blur px-4 transition-all">
       {/* Gauche : trigger desktop + logo mobile */}
       <div className="flex items-center gap-2">
         {/* Trigger desktop : visible seulement en desktop */}
@@ -42,6 +43,7 @@ export const Header = () => {
 
         <NotificationBell />
 
+        <div className="mx-1 hidden h-5 w-px bg-border sm:block" />
         <Button
           size="sm"
           className="gap-2 h-9 hidden sm:inline-flex"
@@ -49,6 +51,14 @@ export const Header = () => {
         >
           <Plus className="h-4 w-4" />
           <span>Nouvelle commande</span>
+        </Button>
+        <Button
+          size="icon"
+          className="h-9 w-9 sm:hidden"
+          onClick={() => navigate("/pos")}
+          aria-label="Nouvelle commande"
+        >
+          <Plus className="h-4 w-4" />
         </Button>
 
         <Button

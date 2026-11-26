@@ -11,6 +11,7 @@ import {
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -34,6 +35,29 @@ interface DataTableProps<TData> {
   onRowClick?: (row: TData) => void;
 }
 
+// Pages à afficher : tout si <= 7, sinon 1 … courante±1 … dernière
+const getPageItems = (
+  current: number,
+  total: number,
+): (number | "ellipsis")[] => {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+  const pages = [...new Set([1, total, current - 1, current, current + 1])]
+    .filter((p) => p >= 1 && p <= total)
+    .sort((a, b) => a - b);
+
+  const items: (number | "ellipsis")[] = [];
+  pages.forEach((page, i) => {
+    const prev = pages[i - 1];
+    if (prev !== undefined) {
+      if (page - prev === 2) items.push(prev + 1);
+      else if (page - prev > 2) items.push("ellipsis");
+    }
+    items.push(page);
+  });
+  return items;
+};
+
 export const DataTable = <TData,>({
   table,
   columnsWidths,
@@ -50,14 +74,20 @@ export const DataTable = <TData,>({
   const rows = table.getRowModel().rows;
 
   return (
-    <div className="border rounded-md overflow-hidden bg-background">
-      <Table className="table-layout-fixed w-full">
+    <div className="border rounded-lg overflow-hidden bg-card">
+      <Table className="table-fixed w-full">
         {/* EN-TÊTE DU TABLEAU GÉNÉRIQUE */}
         <TableHeader className="bg-muted/40 border-b">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header, index) => (
-                <TableHead key={header.id} className={columnsWidths[index]}>
+                <TableHead
+                  key={header.id}
+                  className={cn(
+                    "h-10 text-xs font-medium text-muted-foreground",
+                    columnsWidths[index],
+                  )}
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -88,17 +118,9 @@ export const DataTable = <TData,>({
               <TableRow
                 key={row.id}
                 onClick={() => onRowClick?.(row.original)}
-                // className={
-                //   (cn(
-                //     onRowClick &&
-                //       "cursor-pointer hover:bg-muted/50 transition-colors",
-                //   ),
-                //   "hover:bg-muted/30 transition-colors")
-                // }
                 className={cn(
-                  onRowClick &&
-                    "cursor-pointer hover:bg-muted/50 transition-colors",
-                  "hover:bg-muted/30 transition-colors",
+                  "transition-colors hover:bg-muted/40",
+                  onRowClick && "cursor-pointer",
                 )}
               >
                 {row.getVisibleCells().map((cell) => (
@@ -114,7 +136,11 @@ export const DataTable = <TData,>({
 
       {/* PIED DE TABLEAU GÉNÉRIQUE : Pagination universelle */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-end px-4 py-2 border-t bg-muted/40">
+        <div className="flex items-center justify-between px-4 py-2 border-t bg-muted/40">
+          <p className="text-xs text-muted-foreground tabular-nums">
+            Page {currentPage} sur {totalPages}
+          </p>
+
           <Pagination className="w-auto mx-0">
             <PaginationContent>
               <PaginationItem>
@@ -133,25 +159,28 @@ export const DataTable = <TData,>({
                 />
               </PaginationItem>
 
-              {Array.from({ length: totalPages }).map((_, index) => {
-                const pageNumber = index + 1;
-                return (
-                  <PaginationItem key={pageNumber}>
+              {getPageItems(currentPage, totalPages).map((item, index) =>
+                item === "ellipsis" ? (
+                  <PaginationItem key={`ellipsis-${index}`}>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                ) : (
+                  <PaginationItem key={item}>
                     <PaginationLink
                       href="#"
                       size="icon"
                       onClick={(e) => {
                         e.preventDefault();
-                        goToPage(pageNumber);
+                        goToPage(item);
                       }}
-                      isActive={currentPage === pageNumber}
+                      isActive={currentPage === item}
                       className="cursor-pointer text-xs"
                     >
-                      {pageNumber}
+                      {item}
                     </PaginationLink>
                   </PaginationItem>
-                );
-              })}
+                ),
+              )}
 
               <PaginationItem>
                 <PaginationNext

@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
-import { Check, Clock, Loader2, X, Printer, Calendar } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { OrderStatus } from "../schema/orders.schema";
+import { Loader2 } from "lucide-react";
 
 interface OrderStatusBadgeProps {
   status: OrderStatus;
@@ -8,83 +9,22 @@ interface OrderStatusBadgeProps {
 
 const statusConfig: Record<
   OrderStatus,
-  {
-    label: string;
-    icon: React.ComponentType<{ className?: string }>;
-    iconClass: string;
-    className: string;
-  }
+  { label: string; dot: string; pulse?: boolean }
 > = {
   waiting_for_visual: {
     label: "En attente visuel",
-    icon: Loader2,
-    iconClass: "h-3 w-3 text-yellow-500 animate-spin rounded-full border-2 border-yellow-500/30 bg-yellow-500/5",
-    className:
-      "bg-background/20 border border-border rounded-xl text-foreground hover:bg-background/30 transition-colors",
+    dot: "bg-warning",
+    pulse: true,
   },
-  waiting_for_file: {
-    label: "En attente fichier",
-    icon: Clock,
-    iconClass: "h-3 w-3 text-yellow-600",
-    className:
-      "bg-background/20 border border-border rounded-xl text-foreground hover:bg-background/30 transition-colors",
-  },
-  in_progress: {
-    label: "En cours",
-    icon: Clock,
-    iconClass: "h-3 w-3 text-blue-600",
-    className:
-      "bg-background/20 border border-border rounded-xl text-foreground hover:bg-background/30 transition-colors",
-  },
-  file_completed: {
-    label: "Fichier complet",
-    icon: Check,
-    iconClass: "h-3 w-3 text-green-600",
-    className:
-      "bg-background/20 border border-border rounded-xl text-foreground hover:bg-background/30 transition-colors",
-  },
-  printing_in_progress: {
-    label: "Impression en cours",
-    icon: Printer,
-    iconClass: "h-3 w-3 text-blue-500",
-    className:
-      "bg-background/20 border border-border rounded-xl text-foreground hover:bg-background/30 transition-colors",
-  },
-  cutting_in_progress: {
-    label: "Découpe en cours",
-    icon: Calendar,
-    iconClass: "h-3 w-3 text-blue-500",
-    className:
-      "bg-background/20 border border-border rounded-xl text-foreground hover:bg-background/30 transition-colors",
-  },
-  ready_for_delivery: {
-    label: "Prêt pour livraison",
-    icon: Check,
-    iconClass: "h-3 w-3 text-emerald-600 bg-emerald-500 rounded-full",
-    className:
-      "bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-600 hover:bg-emerald-500/30 transition-colors",
-  },
-  delivered: {
-    label: "Livrée",
-    icon: Check,
-    iconClass: "h-3 w-3 text-green-600",
-    className:
-      "bg-background/20 border border-border rounded-xl text-foreground hover:bg-background/30 transition-colors",
-  },
-  cancelled: {
-    label: "Annulée",
-    icon: X,
-    iconClass: "h-3 w-3 text-destructive",
-    className:
-      "bg-background/20 border border-border rounded-xl text-foreground hover:bg-background/30 transition-colors",
-  },
-  not_applicable: {
-    label: "Service",
-    icon: Calendar,
-    iconClass: "h-3 w-3 text-muted-foreground",
-    className:
-      "bg-background/20 border border-border rounded-xl text-foreground hover:bg-background/30 transition-colors",
-  },
+  waiting_for_file: { label: "En attente fichier", dot: "bg-warning" },
+  in_progress: { label: "En cours", dot: "bg-info" },
+  file_completed: { label: "Fichier complet", dot: "bg-info" },
+  printing_in_progress: { label: "Impression en cours", dot: "bg-info" },
+  cutting_in_progress: { label: "Découpe en cours", dot: "bg-info" },
+  ready_for_delivery: { label: "Prêt pour livraison", dot: "bg-success" },
+  delivered: { label: "Livrée", dot: "bg-muted-foreground/50" },
+  cancelled: { label: "Annulée", dot: "bg-destructive" },
+  not_applicable: { label: "Service", dot: "bg-muted-foreground/50" },
 };
 
 export const OrderStatusBadge = ({ status }: OrderStatusBadgeProps) => {
@@ -93,12 +33,14 @@ export const OrderStatusBadge = ({ status }: OrderStatusBadgeProps) => {
   return (
     <Badge
       variant="outline"
-      className={config.className}
+      className="gap-1.5 px-2 py-0.5 text-xs font-normal"
     >
-      <div className="flex items-center gap-1.5">
-        <config.icon className={config.iconClass} />
-        <span>{config.label}</span>
-      </div>
+      {config.pulse ? (
+        <Loader2 className="size-3 shrink-0 animate-spin text-warning" />
+      ) : (
+        <span className={cn("size-2 shrink-0 rounded-full", config.dot)} />
+      )}
+      {config.label}
     </Badge>
   );
 };

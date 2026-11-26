@@ -205,7 +205,14 @@
 //   );
 // };
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowDown, Sparkles, Send, Loader2, Trash2 } from "lucide-react";
+import {
+  ArrowDown,
+  Sparkles,
+  Send,
+  Loader2,
+  Trash2,
+  ArrowRight,
+} from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -394,7 +401,7 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleSend(input);Combien de commandes sont en attente fichier ?
+    handleSend(input);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -413,12 +420,7 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
-        // max-w-none annule la limite sm:max-w-md ; la largeur vient du style inline
-        // className={`p-0 flex flex-col max-w-none sm:max-w-none ${
-        //   isResizing ? "select-none" : ""
-        // }`}
-        // style={{ width: `min(${width}px, 100vw)` }}
-        className={`p-0 flex flex-col ${isResizing ? "select-none" : ""}`}
+        className={`p-0 bg-card flex flex-col ${isResizing ? "select-none" : ""}`}
         style={{ width: `min(${width}px, 100vw)`, maxWidth: "none" }}
         onOpenAutoFocus={(e) => {
           e.preventDefault();
@@ -457,9 +459,6 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
         <SheetHeader className="px-4 py-3 border-b shrink-0 pr-12">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <Sparkles className="h-4 w-4" />
-              </div>
               <div>
                 <SheetTitle className="text-base">
                   Assistant EWAPrint
@@ -490,28 +489,26 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
             className="h-full overflow-y-auto px-4 py-4"
           >
             {messages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Sparkles className="h-6 w-6" />
-                </div>
+              <div className="flex h-full flex-col justify-center">
                 <div>
-                  <p className="text-sm font-medium">
+                  <p className="text-base font-semibold">
                     Comment puis-je vous aider ?
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     Je peux répondre sur les commandes, factures, devis,
                     paiements et utilisateurs.
                   </p>
                 </div>
-                <div className="w-full space-y-2 mt-4">
+                <div className="mt-6 space-y-2">
                   {SUGGESTIONS.map((s) => (
                     <button
                       key={s}
                       type="button"
                       onClick={() => handleSend(s)}
-                      className="w-full text-left text-xs px-3 py-2 rounded-lg border bg-background/50 hover:bg-muted/50 transition-colors"
+                      className="group flex w-full items-center justify-between gap-3 rounded-lg border bg-card px-3 py-2.5 text-left text-sm transition-colors hover:bg-muted/50"
                     >
-                      {s}
+                      <span>{s}</span>
+                      <ArrowRight className="size-4 shrink-0 text-muted-foreground/50 transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
                     </button>
                   ))}
                 </div>
@@ -550,11 +547,8 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
           )}
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="border-t p-3 shrink-0 bg-background"
-        >
-          <div className="flex items-end gap-2">
+        <form onSubmit={handleSubmit} className="border-t p-3 shrink-0 bg-card">
+          <div className="flex items-end gap-2 rounded-xl border bg-background p-2 focus-within:ring-2 focus-within:ring-ring/30">
             <TextareaAutosize
               ref={inputRef}
               value={input}
@@ -564,22 +558,22 @@ export const AssistantPanel = ({ open, onOpenChange }: AssistantPanelProps) => {
               minRows={1}
               maxRows={6}
               disabled={isPending}
-              className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+              className="flex-1 resize-none bg-transparent px-2 py-1.5 text-sm placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
             <Button
               type="submit"
               size="icon"
               disabled={!input.trim() || isPending}
-              className="h-10 w-10 shrink-0"
+              className="size-8 shrink-0 rounded-lg"
             >
               {isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="size-4 animate-spin" />
               ) : (
-                <Send className="h-4 w-4" />
+                <Send className="size-4" />
               )}
             </Button>
           </div>
-          <p className="text-[10px] text-muted-foreground mt-2 text-center">
+          <p className="mt-2 text-center text-xs text-muted-foreground">
             L'assistant peut faire des erreurs. Vérifiez les informations
             importantes.
           </p>

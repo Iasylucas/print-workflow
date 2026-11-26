@@ -78,7 +78,7 @@ export const InvoiceFilters = ({
             if (input) input.focus();
           }}
           className={cn(
-            "relative h-9 flex items-center transition-all duration-300 ease-in-out border rounded-lg bg-background/50 cursor-pointer",
+            "relative h-9 flex items-center transition-all duration-300 ease-in-out border rounded-lg bg-card cursor-pointer",
             localSearch
               ? "w-full sm:w-[220px] px-3 border-primary/40 shadow-xs"
               : "w-9 sm:w-9 px-0 justify-center border-input hover:bg-muted/50 focus-within:w-full focus-within:sm:w-[220px] focus-within:px-3 focus-within:border-primary/40 focus-within:shadow-xs",
@@ -122,7 +122,7 @@ export const InvoiceFilters = ({
             })
           }
         >
-          <SelectTrigger className="h-9 min-w-[140px] bg-background/50 text-xs font-medium border-input rounded-lg hover:bg-muted/50 transition-colors gap-2 focus:ring-0">
+          <SelectTrigger className="h-9 min-w-[140px] bg-card text-xs font-medium border-input rounded-lg hover:bg-muted/50 transition-colors gap-2 focus:ring-0">
             <Filter className="h-3.5 w-3.5 text-muted-foreground/70 stroke-[2.5]" />
             <SelectValue placeholder="Statut" />
           </SelectTrigger>
@@ -155,7 +155,7 @@ export const InvoiceFilters = ({
             });
           }}
         >
-          <SelectTrigger className="h-9 min-w-[130px] bg-background/50 text-xs font-medium border-input rounded-lg hover:bg-muted/50 transition-colors gap-2 focus:ring-0">
+          <SelectTrigger className="h-9 min-w-[130px] bg-card text-xs font-medium border-input rounded-lg hover:bg-muted/50 transition-colors gap-2 focus:ring-0">
             <Filter className="h-3.5 w-3.5 text-muted-foreground/70 stroke-[2.5]" />
             <SelectValue placeholder="Livraison" />
           </SelectTrigger>
@@ -191,7 +191,7 @@ export const InvoiceFilters = ({
                 page: 1,
               });
             }}
-            className="h-9 w-[130px] text-xs bg-background/50 border-input rounded-lg hover:bg-muted/50 transition-colors"
+            className="h-9 w-[130px] text-xs bg-card border-input rounded-lg hover:bg-muted/50 transition-colors"
           />
         </div>
 
@@ -214,7 +214,7 @@ export const InvoiceFilters = ({
                 page: 1,
               });
             }}
-            className="h-9 w-[130px] text-xs bg-background/50 border-input rounded-lg hover:bg-muted/50 transition-colors"
+            className="h-9 w-[130px] text-xs bg-card border-input rounded-lg hover:bg-muted/50 transition-colors"
           />
         </div>
 
